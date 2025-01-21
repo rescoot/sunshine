@@ -19,9 +19,27 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app %>
+    <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <% if user_signed_in? %>
+      <nav>
+        <%= link_to 'Dashboard', root_path %>
+        <%= link_to 'My Scooters', scooters_path %>
+        <%= link_to 'Trip History', trips_path %>
+        <%= button_to 'Logout', destroy_user_session_path, method: :delete %>
+      </nav>
+    <% end %>
+
+    <% if notice %>
+      <div class="notice"><%= notice %></div>
+    <% end %>
+    
+    <% if alert %>
+      <div class="alert"><%= alert %></div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

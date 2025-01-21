@@ -1,0 +1,80 @@
+<div class="trip-details">
+  <div class="trip-header">
+    <h1>Trip with <%= @trip.scooter.name %></h1>
+    <div class="trip-meta">
+      <p class="trip-date"><%= l @trip.started_at.to_date, format: :long %></p>
+      <% if @trip.ended_at %>
+        <p class="trip-status completed">Completed</p>
+      <% else %>
+        <p class="trip-status ongoing">In Progress</p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="trip-info">
+    <div class="trip-times">
+      <h2>Time</h2>
+      <p>Started: <%= l @trip.started_at, format: :long %></p>
+      <% if @trip.ended_at %>
+        <p>Ended: <%= l @trip.ended_at, format: :long %></p>
+        <p>Duration: <%= distance_of_time_in_words(@trip.started_at, @trip.ended_at) %></p>
+      <% else %>
+        <p>Duration: <%= distance_of_time_in_words(@trip.started_at, Time.current) %> and counting</p>
+      <% end %>
+    </div>
+
+    <% if @trip.distance %>
+      <div class="trip-stats">
+        <h2>Statistics</h2>
+        <p>Distance: <%= format_distance(@trip.distance) %></p>
+        <p>Average Speed: <%= format_speed(@trip.avg_speed) %></p>
+      </div>
+    <% end %>
+
+    <div class="trip-location">
+      <h2>Location</h2>
+      
+      <div class="location-points">
+        <div class="start-point">
+          <h3>Start Point</h3>
+          <% if @trip.start_lat && @trip.start_lng %>
+            <iframe 
+              width="100%" 
+              height="250" 
+              src="https://www.openstreetmap.org/export/embed.html?bbox=<%= @trip.start_lng %>%2C<%= @trip.start_lat %>%2C<%= @trip.start_lng %>%2C<%= @trip.start_lat %>&amp;layer=mapnik&amp;marker=<%= @trip.start_lat %>%2C<%= @trip.start_lng %>" 
+              style="border: 1px solid black"
+            ></iframe>
+            <br/>
+            <small>
+              <a href="https://www.openstreetmap.org/?mlat=<%= @trip.start_lat %>&amp;mlon=<%= @trip.start_lng %>#map=17/<%= @trip.start_lat %>/<%= @trip.start_lng %>">
+                View Larger Map
+              </a>
+            </small>
+          <% else %>
+            <p>Start location not available</p>
+          <% end %>
+        </div>
+
+        <% if @trip.end_lat && @trip.end_lng %>
+          <div class="end-point">
+            <h3>End Point</h3>
+            <iframe 
+              width="100%" 
+              height="250" 
+              src="https://www.openstreetmap.org/export/embed.html?bbox=<%= @trip.end_lng %>%2C<%= @trip.end_lat %>%2C<%= @trip.end_lng %>%2C<%= @trip.end_lat %>&amp;layer=mapnik&amp;marker=<%= @trip.end_lat %>%2C<%= @trip.end_lng %>" 
+              style="border: 1px solid black"
+            ></iframe>
+            <br/>
+            <small>
+              <a href="https://www.openstreetmap.org/?mlat=<%= @trip.end_lat %>&amp;mlon=<%= @trip.end_lng %>#map=17/<%= @trip.end_lat %>/<%= @trip.end_lng %>">
+                View Larger Map
+              </a>
+            </small>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <%= link_to 'Back to Trips', trips_path, class: 'back-link' %>
+</div>

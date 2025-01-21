@@ -1,0 +1,59 @@
+services:
+  # sunshine:
+  #   build: .
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - .:/app
+  #     - bundle_cache:/usr/local/bundle
+  #   environment:
+  #     - RAILS_ENV=development
+  #     - RAILS_MAX_THREADS=5
+  #     - MQTT_HOST=mqtt
+  #     - MQTT_PORT=1883
+  #     - MQTT_USER=sunshine
+  #     - MQTT_PASSWORD=development
+  #   depends_on:
+  #     - mqtt
+
+  # radio-gaga:
+  #   build:
+  #     context: ../reunu-radio-gaga
+  #   environment:
+  #     - MQTT_HOST=mqtt
+  #     - MQTT_PORT=1883
+  #     - MQTT_USER=sunshine
+  #     - MQTT_PASSWORD=development
+  #     - CLOUD_WS_ENDPOINT=ws://web:3000/api/v1/ws
+  #     - DEVICE_ID=REUNU-TEST-VOID
+  #     - UPLOAD_RATE=5
+  #   volumes:
+  #     - ../radio-gaga:/app
+  #   depends_on:
+  #     - sunshine
+  #     - mqtt
+  
+  mqtt:
+    image: eclipse-mosquitto:2
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./config/mosquitto/passwd:/mosquitto/config/passwd
+      - ./config/mosquitto/acl:/mosquitto/config/acl
+      - mqtt_data:/mosquitto/data
+      - mqtt_log:/mosquitto/log
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  bundle_cache:
+  redis_data:
+  mqtt_data:
+  mqtt_log:

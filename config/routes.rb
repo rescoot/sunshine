@@ -1,4 +1,33 @@
 Rails.application.routes.draw do
+  get "dashboard/index"
+  devise_for :users
+
+  namespace :api do
+    namespace :v1 do
+      resources :telemetry, only: [ :create ]
+      resources :trips, only: [] do
+        collection do
+          post :start
+          post :end
+        end
+      end
+      post "command", to: "commands#receive"
+    end
+  end
+
+  resources :scooters do
+    member do
+      post :lock
+      post :unlock
+      post :blinkers
+      post :honk
+      post :play_sound
+    end
+  end
+
+  resources :trips, only: [ :index, :show ]
+
+  root "dashboard#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

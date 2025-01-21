@@ -33,4 +33,27 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 end
 
+gem "actioncable"
 
+gem "devise", "~> 4.9"
+
+gem "jwt", "~> 2.10"
+
+gem "telegram-bot-ruby", "~> 2.2"
+
+gem "active_model_serializers", "~> 0.10.15"
+
+gem "connection_pool", "~> 2.4"
+
+gem "kaminari", "~> 1.2"
+
+gem "ostruct"
+
+gem "redis", "~> 5.3"
+
+
+gem "mqtt-rails", "~> 1.0"
+
+gem "mqtt", "~> 0.6.0"
+
+gem "importmap-rails", "~> 2.1"

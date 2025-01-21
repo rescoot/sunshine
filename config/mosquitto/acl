@@ -1,0 +1,9 @@
+# Common topics - allow cloud service to read all, publish to commands
+user cloud_service
+topic read scooters/#
+topic write scooters/+/commands
+
+# Per-device topics - allow each device to publish telemetry and read its commands
+pattern write scooters/%u/telemetry
+pattern write scooters/%u/acks
+pattern read scooters/%u/commands

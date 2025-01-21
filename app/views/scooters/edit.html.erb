@@ -1,0 +1,9 @@
+<div>
+  <h1>Edit <%= @scooter.name %></h1>
+  <%= render 'form', scooter: @scooter %>
+  
+  <div>
+    <%= link_to 'Back to Scooter', scooter_path(@scooter) %>
+    <%= link_to 'Back to List', scooters_path %>
+  </div>
+</div>

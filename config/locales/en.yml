@@ -28,4 +28,34 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  number:
+    human:
+      storage_units:
+        format: "%n %u"
+      decimal_units:
+        format: "%n %u"
+        units:
+          unit: ""
+          thousand: k
+          million: M
+          billion: B
+          trillion: T
+          quadrillion: Q
+  distance:
+    centi:
+      one: "centimeter"
+      other: "centimeters"
+    unit:
+      one: "meter"
+      other: "meters"
+    thousand:
+      one: "kilometer"
+      other: "kilometers"
+  units:
+    km: "km"
+    kmh: "km/h"
+    m: "m"
+    h: "h"
+  time:
+    formats:
+      time: "%H:%M"

@@ -1,0 +1,101 @@
+<h1>Dashboard</h1>
+
+<div class="lifetime-statistics">
+  <h2>Lifetime Statistics</h2>
+  
+  <div class="stats-grid">
+    <div class="stat-box">
+      <h3>Total Trips</h3>
+      <p><%= @lifetime_stats[:total_trips] %></p>
+      <small>This month: <%= @lifetime_stats[:trips_this_month] %></small>
+    </div>
+
+    <div class="stat-box">
+      <h3>Total Distance</h3>
+      <p><%= format_distance(@lifetime_stats[:total_distance]) %></p>
+      <small>This month: <%= format_distance(@lifetime_stats[:distance_this_month]) %></small>
+    </div>
+
+    <div class="stat-box">
+      <h3>Total Time</h3>
+      <% hours = @lifetime_stats[:total_time] / 3600 %>
+      <p><%= pluralize(hours.to_i, 'hour') %></p>
+    </div>
+
+    <div class="stat-box">
+      <h3>Average Trip</h3>
+      <p>
+        <%= format_distance(@lifetime_stats[:avg_trip_distance]) %>
+        at <%= format_speed(@lifetime_stats[:avg_speed]) %>
+      </p>
+    </div>
+
+    <% if longest_trip = @lifetime_stats[:longest_trip] %>
+      <div class="stat-box">
+        <h3>Longest Trip</h3>
+        <p>
+          <%= format_distance(longest_trip.distance) %>
+          <small>(<%= l longest_trip.started_at.to_date %>)</small>
+        </p>
+      </div>
+    <% end %>
+
+    <% if fastest_trip = @lifetime_stats[:fastest_trip] %>
+      <div class="stat-box">
+        <h3>Top Speed</h3>
+        <p>
+          <%= format_speed(fastest_trip.avg_speed) %>
+          <small>(<%= l fastest_trip.started_at.to_date %>)</small>
+        </p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="scooters-overview">
+  <h2>My Scooters (<%= @lifetime_stats[:scooter_count] %>)</h2>
+  <% @scooters.each do |scooter| %>
+    <%= render 'layouts/scooter_status', scooter: scooter %>
+  <% end %>
+</div>
+
+<div class="recent-trips">
+  <h2>Recent Trips</h2>
+  <% if @recent_trips.any? %>
+    <div class="trips-list">
+      <% @recent_trips.each do |trip| %>
+        <div class="trip">
+          <div class="trip-basic-info">
+            <h3><%= trip.scooter.name %></h3>
+            <p>
+              <%= l trip.started_at, format: :short %>
+              <% if trip.ended_at %>
+                - <%= l trip.ended_at, format: :short %>
+                (<%= distance_of_time_in_words(trip.started_at, trip.ended_at) %>)
+              <% else %>
+                <span class="ongoing">(In Progress)</span>
+              <% end %>
+            </p>
+          </div>
+
+          <% if trip.distance %>
+            <div class="trip-stats">
+              <p>Distance: <%= format_distance(trip.distance) %></p>
+              <p>Average Speed: <%= format_speed(trip.avg_speed) %></p>
+            </div>
+          <% end %>
+
+          <div class="trip-link">
+            <%= link_to 'View Details', trip_path(trip) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="view-all">
+      <%= link_to 'View All Trips', trips_path %>
+    </div>
+  <% else %>
+    <p>No trips recorded yet.</p>
+  <% end %>
+</div>

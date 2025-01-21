@@ -1,0 +1,67 @@
+<div>
+  <h1><%= @scooter.name %></h1>
+
+  <div>
+    <%= render 'layouts/scooter_status', scooter: @scooter %>
+    
+    <div>
+      <h2>Location</h2>
+      <% if @scooter.lat && @scooter.lng %>
+        <iframe 
+          width="100%" 
+          height="350" 
+          src="https://www.openstreetmap.org/export/embed.html?bbox=<%= @scooter.lng - 0.006 %>%2C<%= @scooter.lat - 0.003 %>%2C<%= @scooter.lng + 0.006 %>%2C<%= @scooter.lat + 0.003 %>&amp;layer=mapnik&amp;marker=<%= @scooter.lat %>%2C<%= @scooter.lng %>" 
+          style="border: 1px solid black"
+        ></iframe>
+        <br/>
+        <small>
+          <a href="https://www.openstreetmap.org/?mlat=<%= @scooter.lat %>&amp;mlon=<%= @scooter.lng %>#map=17/<%= @scooter.lat %>/<%= @scooter.lng %>">
+            View Larger Map
+          </a>
+        </small>
+      <% else %>
+        <p>Location not available</p>
+      <% end %>
+    </div>
+
+    <div>
+      <h2>Recent Trips</h2>
+      <% if @trips.any? %>
+        <div>
+          <% @trips.each do |trip| %>
+            <div>
+              <div>
+                <%= l trip.started_at, format: :short %>
+                <% if trip.ended_at %>
+                  - <%= l trip.ended_at, format: :short %>
+                  (<%= distance_of_time_in_words(trip.started_at, trip.ended_at) %>)
+                <% else %>
+                  (In Progress)
+                <% end %>
+              </div>
+
+              <% if trip.distance %>
+                <div>
+                  Distance: <%= format_distance(trip.distance) %>
+                  Speed: <%= format_speed(trip.avg_speed) %>
+                </div>
+              <% end %>
+
+              <%= link_to 'View Details', trip_path(trip) %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p>No trips recorded</p>
+      <% end %>
+    </div>
+  </div>
+
+  <% if current_user.owner_of?(@scooter) %>
+    <div>
+      <%= link_to 'Edit Scooter', edit_scooter_path(@scooter) %>
+      <%= button_to 'Remove Scooter', scooter_path(@scooter), method: :delete, 
+                    data: { turbo_confirm: 'Are you sure? This cannot be undone.' } %>
+    </div>
+  <% end %>
+</div>

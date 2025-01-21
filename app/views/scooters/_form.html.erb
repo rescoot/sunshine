@@ -1,0 +1,26 @@
+<%= form_with(model: scooter) do |form| %>
+  <% if scooter.errors.any? %>
+    <div>
+      <h2><%= pluralize(scooter.errors.count, "error") %> prohibited this scooter from being saved:</h2>
+      <ul>
+        <% scooter.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :vin %>
+    <%= form.text_field :vin %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

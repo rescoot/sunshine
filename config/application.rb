@@ -11,7 +11,7 @@ require "action_controller/railtie"
 # require "action_mailbox/engine"
 # require "action_text/engine"
 require "action_view/railtie"
-# require "action_cable/engine"
+require "action_cable/engine"
 # require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
@@ -38,5 +38,7 @@ module Sunshine
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    config.action_cable.mount_path = "/api/v1/ws"
   end
 end

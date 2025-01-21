@@ -1,0 +1,45 @@
+<div class="scooter-status" data-scooter-id="<%= scooter.id %>">
+  <h3><%= scooter.name %></h3>
+  <div>
+    <p>Status: <span data-online-status><%= scooter.online? ? 'Online' : 'Offline' %></span></p>
+    <p>State: <span data-scooter-state><%= scooter.state %></span></p>
+    <p>Last seen: <span data-last-seen><%= time_ago_in_words(scooter.last_seen_at) if scooter.last_seen_at %> ago</span></p>
+  </div>
+  
+  <div>
+    <p>Main Battery: <span data-battery="main"><%= number_to_percentage(scooter.battery0_level, precision: 1) %></span></p>
+    <p>Second Battery: <span data-battery="second"><%= number_to_percentage(scooter.battery1_level, precision: 1) %></span></p>
+    <p>Aux Battery: <span data-battery="aux"><%= number_to_percentage(scooter.aux_battery_level, precision: 1) %></span></p>
+    <p>CBB Battery: <span data-battery="cbb"><%= number_to_percentage(scooter.cbb_battery_level, precision: 1) %></span></p>
+  </div>
+  
+  <div>
+    <p>Kickstand: <span data-kickstand-state><%= scooter.kickstand %></span></p>
+    <p>Seatbox: <span data-seatbox-state><%= scooter.seatbox %></span></p>
+    <p>Blinkers: <span data-blinkers-state><%= scooter.blinkers %></span></p>
+  </div>
+
+  <div class="controls">
+    <%= button_to 'Lock', lock_scooter_path(scooter), method: :post,
+        data: { action: 'lock' },
+        style: scooter.locked? ? "display: none" : "" %>
+    <%= button_to 'Unlock', unlock_scooter_path(scooter), method: :post,
+        data: { action: 'unlock' },
+        style: scooter.locked? ? "" : "display: none" %>
+        
+    <div class="blinker-controls">
+      <%= button_to 'Left', blinkers_scooter_path(scooter, state: 'left'), method: :post,
+          class: scooter.blinkers == 'left' ? 'active' : '',
+          data: { blinker_action: 'left' } %>
+      <%= button_to 'Right', blinkers_scooter_path(scooter, state: 'right'), method: :post,
+          class: scooter.blinkers == 'right' ? 'active' : '',
+          data: { blinker_action: 'right' } %>
+      <%= button_to 'Hazard', blinkers_scooter_path(scooter, state: 'hazard'), method: :post,
+          class: scooter.blinkers == 'hazard' ? 'active' : '',
+          data: { blinker_action: 'hazard' } %>
+      <%= button_to 'Off', blinkers_scooter_path(scooter, state: 'off'), method: :post,
+          class: scooter.blinkers == 'off' ? 'active' : '',
+          data: { blinker_action: 'off' } %>
+    </div>
+  </div>
+</div>

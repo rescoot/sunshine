@@ -1,0 +1,81 @@
+<h1>Trip History</h1>
+
+<% if @trips.any? %>
+  <div class="trip-statistics">
+    <h2>Statistics</h2>
+    <div class="stats-grid">
+      <div class="stat-box">
+        <h3>Total Trips</h3>
+        <p><%= @trips.count %></p>
+      </div>
+      
+      <div class="stat-box">
+        <h3>Total Distance</h3>
+        <p><%= format_trip_distance(OpenStruct.new(distance: @trips.sum(:distance))) %></p>
+      </div>
+      
+      <div class="stat-box">
+        <h3>Average Trip Distance</h3>
+        <p><%= format_trip_distance(OpenStruct.new(distance: @trips.average(:distance))) %></p>
+      </div>
+      
+      <div class="stat-box">
+        <h3>Average Speed</h3>
+        <p><%= format_trip_speed(OpenStruct.new(avg_speed: @trips.average(:avg_speed))) %></p>
+      </div>
+      
+      <div class="stat-box">
+        <h3>Longest Trip</h3>
+        <% longest_trip = @trips.order(distance: :desc).first %>
+        <% if longest_trip&.distance %>
+          <p>
+            <%= format_trip_distance(longest_trip) %>
+            <small>(<%= l longest_trip.started_at.to_date %>)</small>
+          </p>
+        <% else %>
+          <p>N/A</p>
+        <% end %>
+      </div>
+      
+      <div class="stat-box">
+        <h3>Most Recent</h3>
+        <% latest_trip = @trips.order(started_at: :desc).first %>
+        <% if latest_trip %>
+          <p><%= time_ago_in_words(latest_trip.started_at) %> ago</p>
+        <% else %>
+          <p>N/A</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="trips-filters">
+    <%= form_tag trips_path, method: :get do %>
+      <div>
+        <%= label_tag :scooter_id, "Filter by Scooter:" %>
+        <%= select_tag :scooter_id, 
+            options_from_collection_for_select(current_user.scooters, :id, :name, params[:scooter_id]),
+            prompt: "All Scooters" %>
+      </div>
+      
+      <div>
+        <%= label_tag :start_date, "From:" %>
+        <%= date_field_tag :start_date, params[:start_date] %>
+        
+        <%= label_tag :end_date, "To:" %>
+        <%= date_field_tag :end_date, params[:end_date] %>
+      </div>
+      
+      <%= submit_tag "Filter" %>
+      <%= link_to "Clear", trips_path %>
+    <% end %>
+  </div>
+
+  <div class="trips-list">
+    <%= render partial: 'trip', collection: @trips %>
+  </div>
+  
+  <%= paginate @trips if @trips.respond_to?(:current_page) %>
+<% else %>
+  <p>No trips recorded yet.</p>
+<% end %>

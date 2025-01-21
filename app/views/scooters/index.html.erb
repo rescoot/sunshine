@@ -1,0 +1,45 @@
+<div>
+  <div>
+    <h1>My Scooters</h1>
+    <%= link_to 'Register New Scooter', new_scooter_path %>
+  </div>
+
+  <div>
+    <% @scooters.each do |scooter| %>
+      <div>
+        <div>
+          <h2><%= link_to scooter.name, scooter_path(scooter) %></h2>
+          <span><%= scooter.online? ? 'Online' : 'Offline' %></span>
+        </div>
+
+        <div>
+          <div>
+            <p>VIN: <%= scooter.vin %></p>
+            <p>Status: <%= scooter.state %></p>
+            <p>Last seen: <%= scooter.last_seen_at ? time_ago_in_words(scooter.last_seen_at) + ' ago' : 'Never' %></p>
+          </div>
+
+          <div>
+            <p>Main Battery: <%= number_to_percentage(scooter.battery0_level, precision: 0) %></p>
+            <p>Second Battery: <%= number_to_percentage(scooter.battery1_level, precision: 0) %></p>
+            <p>Aux Battery: <%= number_to_percentage(scooter.aux_battery_level, precision: 0) %></p>
+            <p>CBB Battery: <%= number_to_percentage(scooter.cbb_battery_level, precision: 0) %></p>
+          </div>
+
+          <div>
+            <% if scooter.locked? %>
+              <%= button_to 'Unlock', unlock_scooter_path(scooter), method: :post %>
+            <% else %>
+              <%= button_to 'Lock', lock_scooter_path(scooter), method: :post %>
+            <% end %>
+            <%= button_to 'Find Me', play_sound_scooter_path(scooter, sound: 'find_me'), method: :post %>
+            <%= link_to 'Details', scooter_path(scooter) %>
+            <% if current_user.owner_of?(scooter) %>
+              <%= link_to 'Edit', edit_scooter_path(scooter) %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
