@@ -10,6 +10,6 @@ class User < ApplicationRecord
   validates :name, presence: true
 
   def owner_of?(scooter)
-    user_scooters.exists?(scooter: scooter, role: 'owner')
+    user_scooters.exists?(scooter: scooter, role: "owner")
   end
 end

@@ -1,26 +1,49 @@
-<%= form_with(model: scooter) do |form| %>
+<%= form_with(model: scooter, class: "space-y-6") do |form| %>
   <% if scooter.errors.any? %>
-    <div>
-      <h2><%= pluralize(scooter.errors.count, "error") %> prohibited this scooter from being saved:</h2>
-      <ul>
-        <% scooter.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+    <div class="rounded-md bg-red-50 p-4">
+      <div class="flex">
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800">
+            <%= pluralize(scooter.errors.count, "error") %> prohibited this scooter from being saved:
+          </h3>
+          <div class="mt-2 text-sm text-red-700">
+            <ul role="list" class="list-disc space-y-1 pl-5">
+              <% scooter.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   <% end %>
 
   <div>
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.label :name, class: "form-label" %>
+    <div class="mt-2">
+      <%= form.text_field :name, class: "form-input" %>
+    </div>
   </div>
 
   <div>
-    <%= form.label :vin %>
-    <%= form.text_field :vin %>
+    <%= form.label :vin, "VIN", class: "form-label" %>
+    <div class="mt-2">
+      <%= form.text_field :vin, class: "form-input" %>
+    </div>
   </div>
 
   <div>
-    <%= form.submit %>
+    <%= form.label :color, class: "form-label" %>
+    <div class="mt-2">
+      <%= form.select :color, 
+          %w[Black White Red Blue Green Yellow Orange Purple Silver Gray].map { |c| [c, c.downcase] },
+          { include_blank: "Select a color" },
+          class: "form-input" %>
+    </div>
+  </div>
+
+  <div class="flex justify-end gap-3">
+    <%= link_to "Cancel", scooters_path, class: "btn-secondary" %>
+    <%= form.submit class: "btn-primary" %>
   </div>
 <% end %>

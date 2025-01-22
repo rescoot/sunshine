@@ -1,0 +1,169 @@
+<%
+  def speed_color(speed)
+    case speed.to_i
+    when 0 then "#888888"
+    when 1..30 then "#00CB00"    # Green
+    when 31..55 then "#FFA500"   # Orange
+    else "#FF0000"               # Red
+    end
+  end
+
+  def power_color(motor_current)
+    case motor_current
+    when ..0 then "#0000ff"
+    when 0..10000 then "#7f0000"
+    when 10000..20000 then "#af0000"
+    when 20000.. then "#ff0000"
+    end
+  end
+
+  def battery_color(battery_pct)
+    case battery_pct
+    when 0..0.15 then "#ff0000"
+    when 0.15..0.25 then "#af0000"
+    when 0.25..0.5 then "#0000ff"
+    when 0.5..0.75 then "#00ffff"
+    when 0.75..1 then "#00ff00"
+    else "#7f7f7f"
+    end
+  end
+%>
+
+<%= turbo_frame_tag "scooter_#{scooter.id}_speed" do %>
+  <%
+    width = 480
+    height = 480
+    center_x = width / 2
+    center_y = height / 2
+
+    speed_stroke = 25
+    speed_radius = (320 - speed_stroke) / 2
+
+    power_stroke = 15
+    power_radius = (450 - 25 - power_stroke) / 2
+
+    battery_stroke = scooter.telemetry.battery1_present ? power_stroke / 3 : power_stroke
+    battery0_radius = (450 - 25 - battery_stroke) / 2
+    battery1_radius = (450 - 25 - (4*battery_stroke)) / 2
+
+    max_speed = 65.0
+    speed_percent = [scooter.speed.to_f / max_speed, 1.0].min
+    speed_circumference = 2 * Math::PI * speed_radius
+    speed_arc_length = speed_circumference * 0.75  # 270 degrees = 3/4 of circle
+    speed_dash_offset = speed_arc_length * (1 - speed_percent)
+
+    def map_arc_offset(c, in_min, in_max, arc_offset = 0.25)
+      if c < 0
+        (c.clamp(in_min, 0) * arc_offset / in_min.abs)
+      else
+        (c.clamp(0, in_max) * (1 - arc_offset) / in_max)
+      end
+    end
+
+    power_arc_offset = 0.25
+    power_percent = map_arc_offset(scooter.telemetry.motor_current, -5000, 50000, power_arc_offset)
+    power_circumference = 2 * Math::PI * power_radius
+    power_arc_length = power_circumference * 0.25
+    power_arc_val_length = power_arc_length * power_percent.abs
+    power_dash_offset = -power_arc_length * power_arc_offset
+    power_dash_offset += (power_percent < 0 ? power_arc_val_length : 0)
+
+    battery0_percent = scooter.telemetry.battery0_level / 100.0
+    battery0_circumference = 2 * Math::PI * battery0_radius
+    battery0_arc_length = battery0_circumference * 0.25
+    battery0_dash_offset = battery0_arc_length * (1 - battery0_percent)
+
+    battery1_percent = scooter.telemetry.battery1_level / 100.0
+    battery1_circumference = 2 * Math::PI * battery1_radius
+    battery1_arc_length = battery1_circumference * 0.25
+    battery1_dash_offset = battery1_arc_length * (1 - battery1_percent)
+  %>
+  <svg class="gauges" viewBox="0 0 480 480">
+    <!-- speed -->
+    <!-- Background arc -->
+    <circle cx="<%= center_x %>" cy="<%= center_y %>" r="<%= speed_radius %>"
+            class="background"
+            stroke-dasharray="<%= speed_arc_length %> <%= speed_circumference %>"
+            stroke-dashoffset="0"
+            stroke-width="<%= speed_stroke %>"
+            fill="none"
+            transform="rotate(-225 <%= center_x %> <%= center_y %>)" />
+            
+    <!-- Speed indicator -->
+    <% if scooter.state != "parked" && scooter.speed > 0 %>
+      <circle cx="<%= center_x %>" cy="<%= center_y %>" r="<%= speed_radius %>"
+              class="indicator"
+              stroke-dasharray="<%= speed_arc_length %> <%= speed_circumference %>"
+              stroke-dashoffset="<%= speed_dash_offset %>"
+              style="stroke: <%= speed_color(scooter.speed) %>"
+              stroke-width="<%= speed_stroke %>"
+              fill="none"
+              transform="rotate(-225 <%= center_x %> <%= center_y %>)" />
+    <% end %>
+
+    <!-- power -->
+    <!-- background -->
+    <circle cx="<%= center_x %>" cy="<%= center_y %>" r="<%= power_radius %>"
+        class="background"
+        stroke-dasharray="<%= power_arc_length %> <%= power_circumference %>"
+        stroke-dashoffset="0"
+        stroke-width="<%= power_stroke %>"
+        fill="none"
+        transform="rotate(-225 <%= center_x %> <%= center_y %>)" />
+    <circle cx="<%= center_x %>" cy="<%= center_y %>" r="<%= power_radius %>"
+        class="indicator"
+        stroke-dasharray="<%= power_arc_val_length %> <%= power_circumference %>"
+        style="stroke: <%= power_color(scooter.telemetry.motor_current) %>; stroke-dashoffset: <%= power_dash_offset %>;"
+        stroke-width="<%= power_stroke %>"
+        fill="none"
+        transform="rotate(-225 <%= center_x %> <%= center_y %>)" />
+
+    <!-- battery0 -->
+    <circle cx="<%= center_x %>" cy="<%= center_y %>" r="<%= battery0_radius %>"
+        class="background"
+        stroke-dasharray="<%= battery0_arc_length %> <%= battery0_circumference %>"
+        stroke-dashoffset="<%= battery0_circumference * 0.75 %>"
+        stroke-width="<%= battery_stroke %>"
+        fill="none"
+        transform="rotate(-225 <%= center_x %> <%= center_y %>)" />
+    <circle cx="<%= center_x %>" cy="<%= center_y %>" r="<%= battery0_radius %>"
+        class="indicator"
+        stroke-dasharray="<%= battery0_arc_length %> <%= battery0_circumference %>"
+        style="stroke: <%= battery_color(battery0_percent) %>; stroke-dashoffset: <%= battery0_dash_offset %>;"
+        stroke-width="<%= battery_stroke %>"
+        fill="none"
+        transform="scale(-1, 1) rotate(-225)"
+        transform-origin="center" />
+
+    <% if scooter.telemetry.battery1_present %>
+    <!-- battery1 -->
+    <circle cx="<%= center_x %>" cy="<%= center_y %>" r="<%= battery1_radius %>"
+        class="background"
+        stroke-dasharray="<%= battery1_arc_length %> <%= battery1_circumference %>"
+        stroke-dashoffset="<%= battery1_circumference * 0.75 %>"
+        stroke-width="<%= battery_stroke %>"
+        fill="none"
+        transform="rotate(-225 <%= center_x %> <%= center_y %>)" />
+    <circle cx="<%= center_x %>" cy="<%= center_y %>" r="<%= battery1_radius %>"
+        class="indicator"
+        stroke-dasharray="<%= battery1_arc_length %> <%= battery1_circumference %>"
+        style="stroke: <%= battery_color(battery1_percent) %>; stroke-dashoffset: <%= battery1_dash_offset %>;"
+        stroke-width="<%= battery_stroke %>"
+        fill="none"
+        transform="scale(-1, 1) rotate(-225)"
+        transform-origin="center" />
+    <% end %>
+  </svg>
+
+  <div class="speedometer">
+    <div class="speed-value">
+      <% if scooter.state == "parked" %>
+        <div class="speed-number">P</div>
+        <div class="speed-unit">parked</div>
+      <% else %>
+        <div class="speed-number"><%= scooter.speed.round %></div>
+        <div class="speed-unit">km/h</div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

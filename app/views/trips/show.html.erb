@@ -1,80 +1,181 @@
-<div class="trip-details">
-  <div class="trip-header">
-    <h1>Trip with <%= @trip.scooter.name %></h1>
-    <div class="trip-meta">
-      <p class="trip-date"><%= l @trip.started_at.to_date, format: :long %></p>
-      <% if @trip.ended_at %>
-        <p class="trip-status completed">Completed</p>
-      <% else %>
-        <p class="trip-status ongoing">In Progress</p>
-      <% end %>
+<div>
+  <div class="sm:flex sm:items-center justify-between">
+    <div class="sm:flex-auto">
+      <h1 class="text-2xl font-semibold leading-6 text-gray-900">Trip Details</h1>
+      <p class="mt-2 text-sm text-gray-700">
+        <%= @trip.started_at.strftime("%B %d, %Y") %> with <%= @trip.scooter.name %>
+      </p>
     </div>
-  </div>
+    <div class="mt-4 sm:mt-0 flex items-center gap-4">
+      <div class="flex items-center gap-2">
+        <% prev_trip = @trip.previous_trip %>
+        <%= link_to(
+          trip_path(prev_trip || @trip),
+          class: "inline-flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset #{prev_trip ? 'text-gray-900 ring-gray-300 hover:bg-gray-50' : 'text-gray-400 ring-gray-200 cursor-not-allowed'}",
+          disabled: prev_trip.nil?
+        ) do %>
+          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+          </svg>
+          Previous Trip
+        <% end %>
 
-  <div class="trip-info">
-    <div class="trip-times">
-      <h2>Time</h2>
-      <p>Started: <%= l @trip.started_at, format: :long %></p>
-      <% if @trip.ended_at %>
-        <p>Ended: <%= l @trip.ended_at, format: :long %></p>
-        <p>Duration: <%= distance_of_time_in_words(@trip.started_at, @trip.ended_at) %></p>
-      <% else %>
-        <p>Duration: <%= distance_of_time_in_words(@trip.started_at, Time.current) %> and counting</p>
-      <% end %>
-    </div>
-
-    <% if @trip.distance %>
-      <div class="trip-stats">
-        <h2>Statistics</h2>
-        <p>Distance: <%= format_distance(@trip.distance) %></p>
-        <p>Average Speed: <%= format_speed(@trip.avg_speed) %></p>
-      </div>
-    <% end %>
-
-    <div class="trip-location">
-      <h2>Location</h2>
-      
-      <div class="location-points">
-        <div class="start-point">
-          <h3>Start Point</h3>
-          <% if @trip.start_lat && @trip.start_lng %>
-            <iframe 
-              width="100%" 
-              height="250" 
-              src="https://www.openstreetmap.org/export/embed.html?bbox=<%= @trip.start_lng %>%2C<%= @trip.start_lat %>%2C<%= @trip.start_lng %>%2C<%= @trip.start_lat %>&amp;layer=mapnik&amp;marker=<%= @trip.start_lat %>%2C<%= @trip.start_lng %>" 
-              style="border: 1px solid black"
-            ></iframe>
-            <br/>
-            <small>
-              <a href="https://www.openstreetmap.org/?mlat=<%= @trip.start_lat %>&amp;mlon=<%= @trip.start_lng %>#map=17/<%= @trip.start_lat %>/<%= @trip.start_lng %>">
-                View Larger Map
-              </a>
-            </small>
-          <% else %>
-            <p>Start location not available</p>
-          <% end %>
-        </div>
-
-        <% if @trip.end_lat && @trip.end_lng %>
-          <div class="end-point">
-            <h3>End Point</h3>
-            <iframe 
-              width="100%" 
-              height="250" 
-              src="https://www.openstreetmap.org/export/embed.html?bbox=<%= @trip.end_lng %>%2C<%= @trip.end_lat %>%2C<%= @trip.end_lng %>%2C<%= @trip.end_lat %>&amp;layer=mapnik&amp;marker=<%= @trip.end_lat %>%2C<%= @trip.end_lng %>" 
-              style="border: 1px solid black"
-            ></iframe>
-            <br/>
-            <small>
-              <a href="https://www.openstreetmap.org/?mlat=<%= @trip.end_lat %>&amp;mlon=<%= @trip.end_lng %>#map=17/<%= @trip.end_lat %>/<%= @trip.end_lng %>">
-                View Larger Map
-              </a>
-            </small>
-          </div>
+        <% next_trip = @trip.next_trip %>
+        <%= link_to(
+          trip_path(next_trip || @trip),
+          class: "inline-flex items-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset #{next_trip ? 'text-gray-900 ring-gray-300 hover:bg-gray-50' : 'text-gray-400 ring-gray-200 cursor-not-allowed'}",
+          disabled: next_trip.nil?
+        ) do %>
+          Next Trip
+          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+          </svg>
         <% end %>
       </div>
+
+      <%= link_to "Back to Trips", trips_path, 
+          class: "rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
     </div>
   </div>
 
-  <%= link_to 'Back to Trips', trips_path, class: 'back-link' %>
+  <!-- Map Section -->
+  <div class="mt-8 card">
+    <div id="map" class="h-96 w-full rounded-lg"></div>
+  </div>
+
+  <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <!-- Trip Stats -->
+    <div class="card">
+      <div class="p-6">
+        <dt class="text-sm font-medium text-gray-500 truncate">Duration</dt>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+          <%= format_trip_duration(@trip) %>
+        </dd>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="p-6">
+        <dt class="text-sm font-medium text-gray-500 truncate">Distance</dt>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+          <%= format_trip_distance(@trip) %>
+        </dd>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="p-6">
+        <dt class="text-sm font-medium text-gray-500 truncate">Average Speed</dt>
+        <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
+          <%= format_trip_speed(@trip) %>
+        </dd>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="p-6">
+        <dt class="text-sm font-medium text-gray-500 truncate">Status</dt>
+        <dd class="mt-1">
+          <%= trip_status_badge(@trip) %>
+        </dd>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trip Details -->
+  <div class="mt-8">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">
+          Detailed Information
+        </h3>
+      </div>
+      <div class="border-t border-gray-200">
+        <dl>
+          <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Scooter</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              <%= link_to @trip.scooter.name, scooter_path(@trip.scooter), class: "text-indigo-600 hover:text-indigo-900" %>
+            </dd>
+          </div>
+
+          <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Start Time</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              <%= @trip.started_at.strftime("%B %d, %Y %H:%M:%S") %>
+            </dd>
+          </div>
+
+          <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">End Time</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              <%= @trip.ended_at&.strftime("%B %d, %Y %H:%M:%S") || "In Progress" %>
+            </dd>
+          </div>
+
+          <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Start Location</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              <%= format_coordinates(@trip.start_lat, @trip.start_lng) %>
+            </dd>
+          </div>
+
+          <% if @trip.ended_at %>
+            <div class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt class="text-sm font-medium text-gray-500">End Location</dt>
+              <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                <%= format_coordinates(@trip.end_lat, @trip.end_lng) %>
+              </dd>
+            </div>
+          <% end %>
+        </dl>
+      </div>
+    </div>
+  </div>
 </div>
+
+<%= content_for :head do %>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+<% end %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const map = L.map('map');
+  
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  const startMarker = L.marker([<%= @trip.start_lat %>, <%= @trip.start_lng %>])
+    .addTo(map)
+    .bindPopup('Start');
+
+  <% if @trip.end_lat && @trip.end_lng %>
+    const endMarker = L.marker([<%= @trip.end_lat %>, <%= @trip.end_lng %>])
+      .addTo(map)
+      .bindPopup('End');
+
+    // Draw line between start and end
+    const tripPath = L.polyline([
+      [<%= @trip.start_lat %>, <%= @trip.start_lng %>],
+      [<%= @trip.end_lat %>, <%= @trip.end_lng %>]
+    ], {color: 'blue'}).addTo(map);
+
+    // Fit map to show both markers
+    const bounds = L.latLngBounds([
+      [<%= @trip.start_lat %>, <%= @trip.start_lng %>],
+      [<%= @trip.end_lat %>, <%= @trip.end_lng %>]
+    ]);
+    map.fitBounds(bounds, { padding: [50, 50] });
+  <% else %>
+    // If no end point, center on start point
+    map.setView([<%= @trip.start_lat %>, <%= @trip.start_lng %>], 15);
+  <% end %>
+});
+</script>

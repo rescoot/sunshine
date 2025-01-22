@@ -19,7 +19,7 @@ class Api::V1::TelemetryController < Api::BaseController
       :speed, :odometer,
       :battery0_level, :battery1_level,
       :aux_battery_level, :cbb_battery_level,
-      :lat, :lng, :last_seen_at
+      :lat, :lng, :timestamp
     ).merge(last_seen_at: Time.current)
   end
 end

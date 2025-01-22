@@ -9,6 +9,11 @@ class ScootersController < ApplicationController
 
   def show
     @trips = @scooter.trips.order(started_at: :desc).limit(10)
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def new
@@ -93,6 +98,10 @@ class ScootersController < ApplicationController
     else
       redirect_to @scooter, alert: "Failed to play sound: #{result.error}"
     end
+  end
+
+  def regenerating?
+    false
   end
 
   private

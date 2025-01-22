@@ -1,101 +1,120 @@
-<h1>Dashboard</h1>
-
-<div class="lifetime-statistics">
-  <h2>Lifetime Statistics</h2>
-  
-  <div class="stats-grid">
-    <div class="stat-box">
-      <h3>Total Trips</h3>
-      <p><%= @lifetime_stats[:total_trips] %></p>
-      <small>This month: <%= @lifetime_stats[:trips_this_month] %></small>
-    </div>
-
-    <div class="stat-box">
-      <h3>Total Distance</h3>
-      <p><%= format_distance(@lifetime_stats[:total_distance]) %></p>
-      <small>This month: <%= format_distance(@lifetime_stats[:distance_this_month]) %></small>
-    </div>
-
-    <div class="stat-box">
-      <h3>Total Time</h3>
-      <% hours = @lifetime_stats[:total_time] / 3600 %>
-      <p><%= pluralize(hours.to_i, 'hour') %></p>
-    </div>
-
-    <div class="stat-box">
-      <h3>Average Trip</h3>
-      <p>
-        <%= format_distance(@lifetime_stats[:avg_trip_distance]) %>
-        at <%= format_speed(@lifetime_stats[:avg_speed]) %>
-      </p>
-    </div>
-
-    <% if longest_trip = @lifetime_stats[:longest_trip] %>
-      <div class="stat-box">
-        <h3>Longest Trip</h3>
-        <p>
-          <%= format_distance(longest_trip.distance) %>
-          <small>(<%= l longest_trip.started_at.to_date %>)</small>
-        </p>
-      </div>
-    <% end %>
-
-    <% if fastest_trip = @lifetime_stats[:fastest_trip] %>
-      <div class="stat-box">
-        <h3>Top Speed</h3>
-        <p>
-          <%= format_speed(fastest_trip.avg_speed) %>
-          <small>(<%= l fastest_trip.started_at.to_date %>)</small>
-        </p>
-      </div>
-    <% end %>
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Dashboard</h1>
+    <p class="mt-2 text-sm text-gray-700">Overview of your scooters and riding statistics.</p>
   </div>
 </div>
 
-<div class="scooters-overview">
-  <h2>My Scooters (<%= @lifetime_stats[:scooter_count] %>)</h2>
-  <% @scooters.each do |scooter| %>
-    <%= render 'layouts/scooter_status', scooter: scooter %>
-  <% end %>
-</div>
+<div class="mt-8">
+  <!-- Stats Grid -->
+  <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
+      <dt>
+        <div class="absolute rounded-md bg-indigo-500 p-3">
+          <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <p class="ml-16 truncate text-sm font-medium text-gray-500">Total Trips</p>
+      </dt>
+      <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
+        <p class="text-2xl font-semibold text-gray-900"><%= @lifetime_stats[:total_trips] %></p>
+      </dd>
+    </div>
 
-<div class="recent-trips">
-  <h2>Recent Trips</h2>
-  <% if @recent_trips.any? %>
-    <div class="trips-list">
-      <% @recent_trips.each do |trip| %>
-        <div class="trip">
-          <div class="trip-basic-info">
-            <h3><%= trip.scooter.name %></h3>
-            <p>
-              <%= l trip.started_at, format: :short %>
-              <% if trip.ended_at %>
-                - <%= l trip.ended_at, format: :short %>
-                (<%= distance_of_time_in_words(trip.started_at, trip.ended_at) %>)
-              <% else %>
-                <span class="ongoing">(In Progress)</span>
-              <% end %>
-            </p>
-          </div>
+    <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
+      <dt>
+        <div class="absolute rounded-md bg-indigo-500 p-3">
+          <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+        </div>
+        <p class="ml-16 truncate text-sm font-medium text-gray-500">Total Distance</p>
+      </dt>
+      <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
+        <p class="text-2xl font-semibold text-gray-900"><%= format_distance(@lifetime_stats[:total_distance]) %></p>
+      </dd>
+    </div>
 
-          <% if trip.distance %>
-            <div class="trip-stats">
-              <p>Distance: <%= format_distance(trip.distance) %></p>
-              <p>Average Speed: <%= format_speed(trip.avg_speed) %></p>
-            </div>
-          <% end %>
+    <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
+      <dt>
+        <div class="absolute rounded-md bg-indigo-500 p-3">
+          <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <p class="ml-16 truncate text-sm font-medium text-gray-500">Avg Trip Distance</p>
+      </dt>
+      <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
+        <p class="text-2xl font-semibold text-gray-900">
+          <%= format_distance(@lifetime_stats[:avg_trip_distance]) %>
+        </p>
+      </dd>
+    </div>
 
-          <div class="trip-link">
-            <%= link_to 'View Details', trip_path(trip) %>
+    <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
+      <dt>
+        <div class="absolute rounded-md bg-indigo-500 p-3">
+          <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <p class="ml-16 truncate text-sm font-medium text-gray-500">Avg Speed</p>
+      </dt>
+      <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
+        <p class="text-2xl font-semibold text-gray-900">
+          <%= format_speed(@lifetime_stats[:avg_speed]) %>
+        </p>
+      </dd>
+    </div>
+  </dl>
+
+  <!-- Recent Trips -->
+  <div class="mt-8">
+    <div class="sm:flex sm:items-center">
+      <div class="sm:flex-auto">
+        <h2 class="text-lg font-medium text-gray-900">Recent Trips</h2>
+      </div>
+      <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+        <%= link_to "View All", trips_path, class: "block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" %>
+      </div>
+    </div>
+    
+    <div class="mt-4 flow-root">
+      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-300">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Date</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooter</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Duration</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Distance</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 bg-white">
+                <% @recent_trips.each do |trip| %>
+                  <tr>
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">
+                      <%= link_to trip.started_at.strftime("%B %d, %Y %H:%M"), trip_path(trip), class: "text-indigo-600 hover:text-indigo-900" %>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <%= trip.scooter.name %>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <%= format_trip_duration(trip) %>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <%= format_trip_distance(trip) %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
           </div>
         </div>
-      <% end %>
+      </div>
     </div>
-
-    <div class="view-all">
-      <%= link_to 'View All Trips', trips_path %>
-    </div>
-  <% else %>
-    <p>No trips recorded yet.</p>
-  <% end %>
+  </div>
 </div>

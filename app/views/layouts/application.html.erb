@@ -1,45 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html class="h-full bg-gray-50">
   <head>
-    <title><%= content_for(:title) || "Sunshine" %></title>
+    <title>Sunshine</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
-    <%= yield :head %>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= action_cable_meta_tag %>
+    <%= yield :head %>
   </head>
 
-  <body>
-    <% if user_signed_in? %>
-      <nav>
-        <%= link_to 'Dashboard', root_path %>
-        <%= link_to 'My Scooters', scooters_path %>
-        <%= link_to 'Trip History', trips_path %>
-        <%= button_to 'Logout', destroy_user_session_path, method: :delete %>
+  <body class="h-full">
+    <div class="min-h-full">
+      <nav class="bg-gray-800">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="flex h-16 items-center justify-between">
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <%= link_to root_path, class: "text-white text-xl font-bold" do %>
+                  🛵 Sunshine
+                <% end %>
+              </div>
+              <div class="hidden md:block">
+                <div class="ml-10 flex items-baseline space-x-4">
+                  <%= link_to "Dashboard", root_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
+                  <%= link_to "Scooters", scooters_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
+                  <%= link_to "Trips", trips_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
+                </div>
+              </div>
+            </div>
+            <div class="hidden md:block">
+              <div class="ml-4 flex items-center md:ml-6">
+                <% if user_signed_in? %>
+                  <div class="relative ml-3">
+                    <div class="flex items-center">
+                      <span class="text-gray-300 mr-4"><%= current_user.name %></span>
+                      <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
+                    </div>
+                  </div>
+                <% else %>
+                  <%= link_to "Sign in", new_user_session_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
       </nav>
-    <% end %>
 
-    <% if notice %>
-      <div class="notice"><%= notice %></div>
-    <% end %>
-    
-    <% if alert %>
-      <div class="alert"><%= alert %></div>
-    <% end %>
+      <main>
+        <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+          <% if notice %>
+            <div class="rounded-md bg-green-50 p-4 mb-4">
+              <div class="flex">
+                <div class="ml-3">
+                  <p class="text-sm font-medium text-green-800"><%= notice %></p>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          
+          <% if alert %>
+            <div class="rounded-md bg-red-50 p-4 mb-4">
+              <div class="flex">
+                <div class="ml-3">
+                  <p class="text-sm font-medium text-red-800"><%= alert %></p>
+                </div>
+              </div>
+            </div>
+          <% end %>
 
-    <%= yield %>
-  </body>
+          <%= yield %>
+        </div>
+      </main>
+    </div>
+  </body>QF
 </html>

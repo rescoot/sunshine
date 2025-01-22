@@ -8,3 +8,221 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+.dashboard {
+  width: 100%;
+  max-width: 480px;
+  height: 480px;
+  background: #111827;
+  color: white;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+/* Status Bar */
+.status-bar {
+  height: 40px;
+  padding: 0 1rem;
+  border-bottom: 1px solid #374151;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.battery-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.battery-icon {
+  color: #10B981;
+  font-size: 1.25rem;
+}
+
+.time {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Warning Indicators */
+.warning-indicators {
+  height: 60px;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.indicator {
+  transition: opacity 0.3s;
+}
+
+.indicator svg {
+  width: 48px;
+  height: 48px;
+}
+
+.indicator.active .blinker {
+  fill: #00CB00;
+  animation: blink 1s ease-in-out infinite;
+}
+
+.indicator.inactive .blinker {
+  fill: #333333;
+}
+
+.indicator.parking.active path {
+}
+
+.indicator.parking.inactive path {
+  stroke: #333333;
+  fill: #333333;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.dashboard {
+  width: 480px;
+  height: 480px;
+  position: relative;
+}
+
+.dashboard .status-bar,
+.dashboard .warning-indicators,
+.dashboard .speedometer,
+.dashboard .stats {
+  position: absolute;
+  width: 480px;
+}
+
+.dashboard .warning-indicators {
+  top: 48px;
+}
+
+.dashboard .stats {
+  bottom: 0px;
+}
+
+svg.gauges {
+  position: absolute;
+  height: 480px;
+  width: 480px;
+  top: 32px;
+}
+
+svg.gauges .background {
+  fill: none;
+  stroke: #222;
+}
+
+/* Speedometer */
+.speedometer {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 480px;
+  top: 32px;
+}
+
+.power-arc {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  height: 300px;
+}
+
+.battery-arc {
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+}
+
+.speed-ring {
+  width: 300px;
+  height: 300px;
+  z-index: 2;
+}
+
+.speed-ring circle {
+  fill: none;
+  stroke-linecap: butt;
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.speed-ring .background {
+  stroke: #333;
+}
+
+.speed-ring .indicator {
+  stroke: #00CB00;
+}
+
+.speed-ring .power-regen {
+  stroke: #8B0000;
+}
+
+.speed-label {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+}
+
+.speed-value {
+  position: absolute;
+  text-align: center;
+}
+
+.speed-number {
+  font-size: 5rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.speed-unit {
+  font-size: 1.25rem;
+  color: #9CA3AF;
+}
+
+/* Bottom Stats */
+.stats {
+  height: 64px;
+  padding: 0.6rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  margin: 0 8px;
+  padding: 2px;
+}
+
+.stat-label {
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 0.9;
+  color: #9CA3AF;
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.stat-unit {
+  font-size: 0.75rem;
+  font-weight: normal;
+}

@@ -1,45 +1,73 @@
-<div>
-  <div>
-    <h1>My Scooters</h1>
-    <%= link_to 'Register New Scooter', new_scooter_path %>
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900">My Scooters</h1>
+    <p class="mt-2 text-sm text-gray-700">A list of all your registered scooters and their current status.</p>
   </div>
+  <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+    <%= link_to "Add Scooter", new_scooter_path, class: "block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+  </div>
+</div>
 
-  <div>
-    <% @scooters.each do |scooter| %>
-      <div>
-        <div>
-          <h2><%= link_to scooter.name, scooter_path(scooter) %></h2>
-          <span><%= scooter.online? ? 'Online' : 'Offline' %></span>
-        </div>
-
-        <div>
-          <div>
-            <p>VIN: <%= scooter.vin %></p>
-            <p>Status: <%= scooter.state %></p>
-            <p>Last seen: <%= scooter.last_seen_at ? time_ago_in_words(scooter.last_seen_at) + ' ago' : 'Never' %></p>
-          </div>
-
-          <div>
-            <p>Main Battery: <%= number_to_percentage(scooter.battery0_level, precision: 0) %></p>
-            <p>Second Battery: <%= number_to_percentage(scooter.battery1_level, precision: 0) %></p>
-            <p>Aux Battery: <%= number_to_percentage(scooter.aux_battery_level, precision: 0) %></p>
-            <p>CBB Battery: <%= number_to_percentage(scooter.cbb_battery_level, precision: 0) %></p>
-          </div>
-
-          <div>
-            <% if scooter.locked? %>
-              <%= button_to 'Unlock', unlock_scooter_path(scooter), method: :post %>
-            <% else %>
-              <%= button_to 'Lock', lock_scooter_path(scooter), method: :post %>
+<div class="mt-8 flow-root">
+  <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+      <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Name</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">VIN</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Color</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Battery</th>
+              <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                <span class="sr-only">Actions</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <% @scooters.each do |scooter| %>
+              <tr>
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                  <%= link_to scooter.name, scooter_path(scooter), class: "text-indigo-600 hover:text-indigo-900" %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= scooter.vin %></td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <% if scooter.color %>
+                    <div class="flex items-center">
+                      <div class="h-4 w-4 rounded-full mr-2" style="background-color: <%= scooter.color_hex %>"></div>
+                      <%= scooter.color.titleize %>
+                    </div>
+                  <% else %>
+                    Not set
+                  <% end %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm">
+                  <% if scooter.online? %>
+                    <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Online</span>
+                  <% else %>
+                    <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">Offline</span>
+                  <% end %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <div class="flex items-center">
+                    <div class="h-2 w-16 bg-gray-200 rounded-full overflow-hidden">
+                      <div class="h-full bg-green-500 rounded-full" style="width: <%= scooter.battery0_level %>%"></div>
+                    </div>
+                    <span class="ml-2"><%= number_to_percentage(scooter.battery0_level, precision: 0) %></span>
+                  </div>
+                </td>
+                <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                  <div class="flex justify-end gap-2">
+                    <%= link_to "Edit", edit_scooter_path(scooter), class: "text-indigo-600 hover:text-indigo-900" %>
+                    <%= button_to "Delete", scooter_path(scooter), method: :delete, class: "text-red-600 hover:text-red-900", data: { confirm: "Are you sure?" } %>
+                  </div>
+                </td>
+              </tr>
             <% end %>
-            <%= button_to 'Find Me', play_sound_scooter_path(scooter, sound: 'find_me'), method: :post %>
-            <%= link_to 'Details', scooter_path(scooter) %>
-            <% if current_user.owner_of?(scooter) %>
-              <%= link_to 'Edit', edit_scooter_path(scooter) %>
-            <% end %>
-          </div>
-        </div>
+          </tbody>
+        </table>
       </div>
-    <% end %>
+    </div>
   </div>
 </div>

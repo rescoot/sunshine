@@ -1,5 +1,7 @@
 development:
-  adapter: async
+  adapter: redis
+  url: redis://localhost:64389/1
+  channel_prefix: sunshine_development
 
 test:
   adapter: test

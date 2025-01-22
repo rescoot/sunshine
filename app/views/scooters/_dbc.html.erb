@@ -1,0 +1,38 @@
+<div class="dashboard" id="scooter_<%= scooter.id %>_dashboard">
+  <div class="status-bar">
+    <div class="battery-indicator">
+      <span class="battery-icon">🔋</span>
+      <span id="scooter_<%= scooter.id %>_battery"><%= number_to_percentage(scooter.telemetry.battery0_level, precision: 0) %></span>
+      <span id="scooter_<%= scooter.id %>_battery"><%= number_to_percentage(scooter.telemetry.battery1_level, precision: 0) %></span>
+    </div>
+    <div class="time" id="current-time">12:00</div>
+  </div>
+
+  <%= render partial: "blinkers", locals: {scooter: scooter} %>
+  <%= render partial: "speed", locals: {scooter: scooter} %>
+
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-label">TRIP</span>
+      <span class="stat-value">0.0 <span class="stat-unit">km</span></span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">TOTAL</span>
+      <span id="scooter_<%= scooter.id %>_odometer" class="stat-value">
+        <%= number_with_precision(scooter.odometer.to_f / 1000, precision: 1) %> <span class="stat-unit">km</span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Update time every minute
+  function updateTime() {
+    const timeElem = document.getElementById('current-time');
+    const now = new Date();
+    timeElem.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+  
+  setInterval(updateTime, 60000);
+  updateTime();
+</script>

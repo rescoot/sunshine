@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+
+@layer components {
+  .btn-primary {
+    @apply py-2 px-4 bg-blue-200;
+  }
+}
+
+*/
+
+@layer utilities {
+  @keyframes pulse {
+    50% {
+      opacity: .5;
+    }
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  @keyframes glow-up {
+    100% { opacity: 1; }
+    40% { opacity: 0.7; }
+    0% { opacity: 0; }
+  }
+  .animate-blink {
+    animation: blink 1s cubic-bezier(0.0, 0.6, 0.2, 1) infinite;
+  }
+  .animate-glow {
+    animation: glow-up 1.5s ease-in 1 forwards;
+  }
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}

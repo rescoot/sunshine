@@ -1,15 +1,16 @@
-# app/helpers/trips_helper.rb
 module TripsHelper
   def trip_status_badge(trip)
     if trip.ended_at.nil?
-      content_tag(:span, 'In Progress', class: 'status-badge in-progress')
+      tag.span "In Progress",
+        class: "inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20"
     else
-      content_tag(:span, 'Completed', class: 'status-badge completed')
+      tag.span "Completed",
+        class: "inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
     end
   end
 
   def format_trip_distance(trip)
-    return 'N/A' unless trip.distance
+    return tag.span("N/A", class: "text-gray-400") unless trip.distance
 
     distance_km = trip.distance / 1000.0
     if distance_km < 1
@@ -20,7 +21,7 @@ module TripsHelper
   end
 
   def format_trip_duration(trip)
-    return 'In Progress' unless trip.ended_at
+    return tag.span("In Progress", class: "text-yellow-600") unless trip.ended_at
 
     duration = trip.ended_at - trip.started_at
     hours = duration / 1.hour
@@ -34,29 +35,12 @@ module TripsHelper
   end
 
   def format_trip_speed(trip)
-    return 'N/A' unless trip.avg_speed
+    return tag.span("N/A", class: "text-gray-400") unless trip.avg_speed
     "#{trip.avg_speed.round(1)} km/h"
   end
 
   def format_coordinates(lat, lng)
-    return 'N/A' unless lat && lng
-    "#{lat.round(6)}, #{lng.round(6)}"
-  end
-
-  def calculate_distance_between(lat1, lng1, lat2, lng2)
-    return nil unless lat1 && lng1 && lat2 && lng2
-
-    rad_per_deg = Math::PI/180  # PI / 180
-    rkm = 6371                  # Earth radius in kilometers
-
-    dlat_rad = (lat2-lat1) * rad_per_deg
-    dlng_rad = (lng2-lng1) * rad_per_deg
-
-    lat1_rad = lat1 * rad_per_deg
-    lat2_rad = lat2 * rad_per_deg
-
-    a = Math.sin(dlat_rad/2)**2 + Math.cos(lat1_rad) * Math.cos(lat2_rad) * Math.sin(dlng_rad/2)**2
-    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
-    rkm * c # Distance in kilometers
+    return tag.span("N/A", class: "text-gray-400") unless lat && lng
+    tag.span "#{lat.round(6)}, #{lng.round(6)}", class: "font-mono"
   end
 end

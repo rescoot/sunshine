@@ -1,81 +1,84 @@
-<h1>Trip History</h1>
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Trips History</h1>
+    <p class="mt-2 text-sm text-gray-700">A list of all your trips with their details.</p>
+  </div>
+</div>
 
-<% if @trips.any? %>
-  <div class="trip-statistics">
-    <h2>Statistics</h2>
-    <div class="stats-grid">
-      <div class="stat-box">
-        <h3>Total Trips</h3>
-        <p><%= @trips.count %></p>
-      </div>
-      
-      <div class="stat-box">
-        <h3>Total Distance</h3>
-        <p><%= format_trip_distance(OpenStruct.new(distance: @trips.sum(:distance))) %></p>
-      </div>
-      
-      <div class="stat-box">
-        <h3>Average Trip Distance</h3>
-        <p><%= format_trip_distance(OpenStruct.new(distance: @trips.average(:distance))) %></p>
-      </div>
-      
-      <div class="stat-box">
-        <h3>Average Speed</h3>
-        <p><%= format_trip_speed(OpenStruct.new(avg_speed: @trips.average(:avg_speed))) %></p>
-      </div>
-      
-      <div class="stat-box">
-        <h3>Longest Trip</h3>
-        <% longest_trip = @trips.order(distance: :desc).first %>
-        <% if longest_trip&.distance %>
-          <p>
-            <%= format_trip_distance(longest_trip) %>
-            <small>(<%= l longest_trip.started_at.to_date %>)</small>
-          </p>
-        <% else %>
-          <p>N/A</p>
-        <% end %>
-      </div>
-      
-      <div class="stat-box">
-        <h3>Most Recent</h3>
-        <% latest_trip = @trips.order(started_at: :desc).first %>
-        <% if latest_trip %>
-          <p><%= time_ago_in_words(latest_trip.started_at) %> ago</p>
-        <% else %>
-          <p>N/A</p>
+<div class="mt-8">
+  <div class="sm:flex sm:items-center sm:justify-between">
+    <div class="mt-4 sm:mt-0">
+      <%= form_tag trips_path, method: :get, class: "flex gap-4" do %>
+        <div>
+          <%= label_tag :start_date, "Start Date", class: "block text-sm font-medium text-gray-700" %>
+          <%= date_field_tag :start_date, params[:start_date], class: "mt-1 block rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+        </div>
+        
+        <div>
+          <%= label_tag :end_date, "End Date", class: "block text-sm font-medium text-gray-700" %>
+          <%= date_field_tag :end_date, params[:end_date], class: "mt-1 block rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+        </div>
+        
+        <div>
+          <%= label_tag :scooter_id, "Scooter", class: "block text-sm font-medium text-gray-700" %>
+          <%= select_tag :scooter_id, 
+              options_from_collection_for_select(current_user.scooters, :id, :name, params[:scooter_id]),
+              { prompt: "All Scooters", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+        </div>
+        
+        <%= submit_tag "Filter", class: "mt-6 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mt-8 flow-root">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Date</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooter</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Duration</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Distance</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Avg Speed</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <% @trips.each do |trip| %>
+                <tr>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                    <%= link_to trip.started_at.strftime("%B %d, %Y %H:%M"), trip_path(trip), class: "text-indigo-600 hover:text-indigo-900" %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= trip.scooter.name %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= format_trip_duration(trip) %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= format_trip_distance(trip) %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= format_trip_speed(trip) %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm">
+                    <%= trip_status_badge(trip) %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        
+        <% if @trips.respond_to?(:page) %>
+          <div class="mt-4 flex items-center justify-between">
+            <%= paginate @trips, class: "pagination" %>
+          </div>
         <% end %>
       </div>
     </div>
   </div>
-
-  <div class="trips-filters">
-    <%= form_tag trips_path, method: :get do %>
-      <div>
-        <%= label_tag :scooter_id, "Filter by Scooter:" %>
-        <%= select_tag :scooter_id, 
-            options_from_collection_for_select(current_user.scooters, :id, :name, params[:scooter_id]),
-            prompt: "All Scooters" %>
-      </div>
-      
-      <div>
-        <%= label_tag :start_date, "From:" %>
-        <%= date_field_tag :start_date, params[:start_date] %>
-        
-        <%= label_tag :end_date, "To:" %>
-        <%= date_field_tag :end_date, params[:end_date] %>
-      </div>
-      
-      <%= submit_tag "Filter" %>
-      <%= link_to "Clear", trips_path %>
-    <% end %>
-  </div>
-
-  <div class="trips-list">
-    <%= render partial: 'trip', collection: @trips %>
-  </div>
-  
-  <%= paginate @trips if @trips.respond_to?(:current_page) %>
-<% else %>
-  <p>No trips recorded yet.</p>
-<% end %>
+</div>

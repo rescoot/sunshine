@@ -1,0 +1,18 @@
+<div class="controls">
+  <% if scooter.locked? %>
+    <%= button_to 'Unlock', unlock_scooter_path(scooter), method: :post %>
+  <% else %>
+    <%= button_to 'Lock', lock_scooter_path(scooter), method: :post %>
+  <% end %>
+        
+  <div class="blinker-controls">
+    <%= button_to 'Left', blinkers_scooter_path(scooter, state: 'left'), method: :post,
+        class: scooter.blinkers == 'left' ? 'active' : '' %>
+    <%= button_to 'Right', blinkers_scooter_path(scooter, state: 'right'), method: :post,
+        class: scooter.blinkers == 'right' ? 'active' : '' %>
+    <%= button_to 'Both', blinkers_scooter_path(scooter, state: 'both'), method: :post,
+        class: scooter.blinkers == 'both' ? 'active' : '' %>
+    <%= button_to 'Off', blinkers_scooter_path(scooter, state: 'off'), method: :post,
+        class: scooter.blinkers == 'off' ? 'active' : '' %>
+  </div>
+</div>

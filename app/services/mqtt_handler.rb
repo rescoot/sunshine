@@ -81,7 +81,7 @@ class MqttHandler
       process_trip_update(scooter_vin, topic_parts[3], message)
     end
   rescue => e
-    Rails.logger.error "Error processing MQTT message: #{e.message}"
+    Rails.logger.error "Error processing MQTT message: #{e.message}\n\n#{e.backtrace.grep(/sunshine/).join("\n")}"
   end
 
   def process_ack(scooter_vin, message)
@@ -92,7 +92,6 @@ class MqttHandler
   end
 
   def process_telemetry(scooter_vin, message)
-      Rails.logger.debug "MQTT: Processing telemetry for #{scooter_vin}: #{message}"
     data = JSON.parse(message)
     scooter = Scooter.find_by(vin: scooter_vin)
     unless scooter
@@ -100,13 +99,23 @@ class MqttHandler
       return
     end
 
-    scooter.update!(data.merge(last_seen_at: Time.current))
+    Rails.logger.debug("Telemetry for #{scooter}: #{data}")
 
-    # Broadcast to WebSocket if anyone is listening
-    ActionCable.server.broadcast "scooter_#{scooter.id}", {
-      type: "telemetry_update",
-      data: scooter.as_json
-    }
+    # Create telemetry record with full data
+    Telemetry.create_from_data!(scooter, data)
+
+    # Update only the fields that exist in the scooter model
+    scooter_attributes = data.slice(
+      "state", "kickstand", "seatbox", "blinkers",
+      "speed", "odometer",
+      "battery0_level", "battery1_level",
+      "aux_battery_level", "cbb_battery_level",
+      "lat", "lng"
+    ).merge(last_seen_at: Time.current)
+
+    Rails.logger.debug("before: #{scooter.state} / was #{scooter.state_was}")
+    scooter.update!(scooter_attributes)
+    Rails.logger.debug("after: #{scooter.state}")
   end
 
   def process_trip_update(scooter_vin, update_type, message)
@@ -138,7 +147,7 @@ class MqttHandler
   end
 end
 
-# Start MQTT handler when Rails boots
-Rails.application.config.after_initialize do
-  MqttHandler.instance
-end
+# # Start MQTT handler when Rails boots
+# Rails.application.config.after_initialize do
+#   MqttHandler.instance
+# end

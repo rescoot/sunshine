@@ -1,67 +1,198 @@
+<%= turbo_stream_from @scooter %>
 <div>
-  <h1><%= @scooter.name %></h1>
-
-  <div>
-    <%= render 'layouts/scooter_status', scooter: @scooter %>
-    
-    <div>
-      <h2>Location</h2>
-      <% if @scooter.lat && @scooter.lng %>
-        <iframe 
-          width="100%" 
-          height="350" 
-          src="https://www.openstreetmap.org/export/embed.html?bbox=<%= @scooter.lng - 0.006 %>%2C<%= @scooter.lat - 0.003 %>%2C<%= @scooter.lng + 0.006 %>%2C<%= @scooter.lat + 0.003 %>&amp;layer=mapnik&amp;marker=<%= @scooter.lat %>%2C<%= @scooter.lng %>" 
-          style="border: 1px solid black"
-        ></iframe>
-        <br/>
-        <small>
-          <a href="https://www.openstreetmap.org/?mlat=<%= @scooter.lat %>&amp;mlon=<%= @scooter.lng %>#map=17/<%= @scooter.lat %>/<%= @scooter.lng %>">
-            View Larger Map
-          </a>
-        </small>
-      <% else %>
-        <p>Location not available</p>
-      <% end %>
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= @scooter.name %></h1>
+      <p class="mt-2 text-sm text-gray-700">Scooter details and controls.</p>
     </div>
-
-    <div>
-      <h2>Recent Trips</h2>
-      <% if @trips.any? %>
-        <div>
-          <% @trips.each do |trip| %>
-            <div>
-              <div>
-                <%= l trip.started_at, format: :short %>
-                <% if trip.ended_at %>
-                  - <%= l trip.ended_at, format: :short %>
-                  (<%= distance_of_time_in_words(trip.started_at, trip.ended_at) %>)
-                <% else %>
-                  (In Progress)
-                <% end %>
-              </div>
-
-              <% if trip.distance %>
-                <div>
-                  Distance: <%= format_distance(trip.distance) %>
-                  Speed: <%= format_speed(trip.avg_speed) %>
-                </div>
-              <% end %>
-
-              <%= link_to 'View Details', trip_path(trip) %>
-            </div>
-          <% end %>
-        </div>
-      <% else %>
-        <p>No trips recorded</p>
-      <% end %>
+    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+      <%= link_to "Edit", edit_scooter_path(@scooter), class: "btn-secondary mr-2" %>
+      <%= link_to "Back", scooters_path, class: "btn-secondary" %>
     </div>
   </div>
 
-  <% if current_user.owner_of?(@scooter) %>
-    <div>
-      <%= link_to 'Edit Scooter', edit_scooter_path(@scooter) %>
-      <%= button_to 'Remove Scooter', scooter_path(@scooter), method: :delete, 
-                    data: { turbo_confirm: 'Are you sure? This cannot be undone.' } %>
+  <% if @scooter.online? %>
+    <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <%= render partial: "scooters/dbc", locals: { scooter: @scooter } %>
     </div>
   <% end %>
+
+  <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <%= render partial: "scooters/visual_status", locals: { scooter: @scooter } %>
+
+    <!-- Battery Status -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">
+          Battery Status
+        </h3>
+      </div>
+      <div class="card-body">
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Main Battery -->
+          <div class="flex items-center space-x-4">
+            <%= image_tag @scooter.battery_image_path(@scooter.battery0_level), class: "w-12 h-12", alt: "Main Battery" %>
+            <div>
+              <p class="text-sm font-medium text-gray-500">Main Battery</p>
+              <p class="text-lg font-semibold"><%= number_to_percentage(@scooter.battery0_level, precision: 1) %></p>
+            </div>
+          </div>
+
+          <!-- Secondary Battery -->
+          <div class="flex items-center space-x-4">
+            <%= image_tag @scooter.battery_image_path(@scooter.battery1_level), class: "w-12 h-12", alt: "Secondary Battery" %>
+            <div>
+              <p class="text-sm font-medium text-gray-500">Secondary</p>
+              <p class="text-lg font-semibold"><%= number_to_percentage(@scooter.battery1_level, precision: 1) %></p>
+            </div>
+          </div>
+
+          <!-- Aux Battery -->
+          <div class="flex items-center space-x-4">
+            <%= image_tag "battery/batt_aux.webp", class: "w-12 h-12", alt: "Aux Battery" %>
+            <div>
+              <p class="text-sm font-medium text-gray-500">Aux Battery</p>
+              <p class="text-lg font-semibold"><%= number_to_percentage(@scooter.aux_battery_level, precision: 1) %></p>
+            </div>
+          </div>
+
+          <!-- CBB Battery -->
+          <div class="flex items-center space-x-4">
+            <%= image_tag "battery/batt_cbb.webp", class: "w-12 h-12", alt: "CBB Battery" %>
+            <div>
+              <p class="text-sm font-medium text-gray-500">CBB Battery</p>
+              <p class="text-lg font-semibold"><%= number_to_percentage(@scooter.cbb_battery_level, precision: 1) %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="card lg:col-span-2">
+      <div class="card-header">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">
+          Controls
+        </h3>
+      </div>
+      <div class="card-body">
+        <div class="flex flex-wrap gap-4">
+          <% if @scooter.locked? %>
+            <%= button_to "Unlock", unlock_scooter_path(@scooter), 
+                class: "rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500" %>
+          <% else %>
+            <%= button_to "Lock", lock_scooter_path(@scooter), 
+                class: "rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" %>
+          <% end %>
+          
+          <%= button_to "Honk", honk_scooter_path(@scooter), 
+              class: "rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500" %>
+          
+          <div class="relative inline-block text-left">
+            <button type="button" onclick="toggleDropdown('blinkerMenu')"
+                class="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500">
+              Blinkers
+            </button>
+            <div id="blinkerMenu" class="hidden absolute z-10 mt-2 w-32 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+              <div class="py-1">
+                <%= button_to "Left", blinkers_scooter_path(@scooter, state: 'left'), 
+                    class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                <%= button_to "Right", blinkers_scooter_path(@scooter, state: 'right'), 
+                    class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                <%= button_to "Both", blinkers_scooter_path(@scooter, state: 'both'), 
+                    class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                <%= button_to "Off", blinkers_scooter_path(@scooter, state: 'off'), 
+                    class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+              </div>
+            </div>
+          </div>
+          
+          <div class="relative inline-block text-left">
+            <button type="button" onclick="toggleDropdown('soundMenu')"
+                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+              Sounds
+            </button>
+            <div id="soundMenu" class="hidden absolute z-10 mt-2 w-32 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+              <div class="py-1">
+                <%= button_to "Find Me", play_sound_scooter_path(@scooter, sound: 'find_me'), 
+                    class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                <%= button_to "Alarm", play_sound_scooter_path(@scooter, sound: 'alarm'), 
+                    class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                <%= button_to "Chirp", play_sound_scooter_path(@scooter, sound: 'chirp'), 
+                    class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Trips -->
+    <div class="card lg:col-span-2">
+      <div class="card-header flex items-center justify-between">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">
+          Recent Trips
+        </h3>
+        <%= link_to "View All", trips_path(scooter_id: @scooter.id), class: "text-sm text-indigo-600 hover:text-indigo-900" %>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Date</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Duration</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Distance</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <% @trips.each do |trip| %>
+              <tr>
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">
+                  <%= link_to trip.started_at.strftime("%B %d, %Y %H:%M"), 
+                      trip_path(trip), class: "text-indigo-600 hover:text-indigo-900" %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <%= format_trip_duration(trip) %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <%= format_trip_distance(trip) %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <%= trip_status_badge(trip) %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script>
+function toggleDropdown(menuId) {
+  const menu = document.getElementById(menuId);
+  const allMenus = document.querySelectorAll('[id$="Menu"]');
+  
+  // Hide all other menus
+  allMenus.forEach(m => {
+    if (m.id !== menuId) m.classList.add('hidden');
+  });
+  
+  // Toggle the clicked menu
+  menu.classList.toggle('hidden');
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(event) {
+  const dropdowns = document.querySelectorAll('[id$="Menu"]');
+  const isDropdownButton = event.target.closest('button');
+  
+  if (!isDropdownButton) {
+    dropdowns.forEach(dropdown => {
+      dropdown.classList.add('hidden');
+    });
+  }
+});
+</script>

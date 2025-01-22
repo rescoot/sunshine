@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_27_213129) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_23_075800) do
   create_table "api_tokens", force: :cascade do |t|
     t.integer "scooter_id", null: false
     t.string "token_digest"
@@ -39,7 +39,36 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_27_213129) do
     t.datetime "last_seen_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "color"
     t.index ["vin"], name: "index_scooters_on_vin", unique: true
+  end
+
+  create_table "telemetries", force: :cascade do |t|
+    t.integer "scooter_id", null: false
+    t.string "state"
+    t.string "kickstand"
+    t.string "seatbox"
+    t.string "blinkers"
+    t.decimal "speed", precision: 10, scale: 2
+    t.decimal "odometer", precision: 10, scale: 2
+    t.decimal "motor_voltage", precision: 10, scale: 2
+    t.decimal "motor_current", precision: 10, scale: 2
+    t.decimal "temperature", precision: 10, scale: 2
+    t.decimal "battery0_level", precision: 5, scale: 2
+    t.decimal "battery1_level", precision: 5, scale: 2
+    t.boolean "battery0_present"
+    t.boolean "battery1_present"
+    t.decimal "aux_battery_level", precision: 5, scale: 2
+    t.decimal "aux_battery_voltage", precision: 10, scale: 2
+    t.decimal "cbb_battery_level", precision: 5, scale: 2
+    t.decimal "cbb_battery_current", precision: 10, scale: 2
+    t.decimal "lat", precision: 10, scale: 6
+    t.decimal "lng", precision: 10, scale: 6
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "timestamp"
+    t.index ["scooter_id", "created_at"], name: "index_telemetries_on_scooter_id_and_created_at"
+    t.index ["scooter_id"], name: "index_telemetries_on_scooter_id"
   end
 
   create_table "trips", force: :cascade do |t|
@@ -86,6 +115,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_27_213129) do
   end
 
   add_foreign_key "api_tokens", "scooters"
+  add_foreign_key "telemetries", "scooters"
   add_foreign_key "trips", "scooters"
   add_foreign_key "trips", "users"
   add_foreign_key "user_scooters", "scooters"

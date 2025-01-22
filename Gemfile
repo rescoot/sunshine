@@ -51,9 +51,12 @@ gem "ostruct"
 
 gem "redis", "~> 5.3"
 
-
 gem "mqtt-rails", "~> 1.0"
 
 gem "mqtt", "~> 0.6.0"
 
 gem "importmap-rails", "~> 2.1"
+
+gem "turbo-rails", "~> 2.0"
+
+gem "tailwindcss-rails", "~> 3.3"
