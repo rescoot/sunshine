@@ -117,6 +117,6 @@ class ScootersController < ApplicationController
   end
 
   def scooter_params
-    params.require(:scooter).permit(:name, :vin)
+    params.require(:scooter).permit(:name, :vin, :color)
   end
 end

@@ -51,7 +51,7 @@ class Scooter < ApplicationRecord
   end
 
   def online?
-    true || last_seen_at && last_seen_at > 5.minutes.ago
+    last_seen_at && last_seen_at > 5.minutes.ago
   end
 
   def locked?

@@ -11,7 +11,7 @@
     </div>
   </div>
 
-  <% if @scooter.online? %>
+  <% if @scooter.online? && @scooter.telemetry %>
     <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
       <%= render partial: "scooters/dbc", locals: { scooter: @scooter } %>
     </div>
