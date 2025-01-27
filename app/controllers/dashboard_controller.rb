@@ -10,14 +10,14 @@ class DashboardController < ApplicationController
     @lifetime_stats = {
       total_trips: completed_trips.count,
       total_distance: completed_trips.sum(:distance),
-      total_time: completed_trips.sum('CAST((ended_at - started_at) AS INTEGER)'),
+      total_time: completed_trips.sum("CAST((ended_at - started_at) AS INTEGER)"),
       avg_trip_distance: completed_trips.average(:distance),
       avg_speed: completed_trips.average(:avg_speed),
       longest_trip: completed_trips.order(distance: :desc).first,
       fastest_trip: completed_trips.order(avg_speed: :desc).first,
       scooter_count: @scooters.count,
-      trips_this_month: completed_trips.where('started_at >= ?', Time.current.beginning_of_month).count,
-      distance_this_month: completed_trips.where('started_at >= ?', Time.current.beginning_of_month).sum(:distance)
+      trips_this_month: completed_trips.where("started_at >= ?", Time.current.beginning_of_month).count,
+      distance_this_month: completed_trips.where("started_at >= ?", Time.current.beginning_of_month).sum(:distance)
     }
   end
 end

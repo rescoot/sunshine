@@ -1,7 +1,7 @@
 # app/controllers/trips_controller.rb
 class TripsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_trip, only: [:show]
+  before_action :set_trip, only: [ :show ]
 
   def index
     @trips = current_user.trips
@@ -16,12 +16,12 @@ class TripsController < ApplicationController
     # Filter by date range if requested
     if params[:start_date].present?
       start_date = Date.parse(params[:start_date])
-      @trips = @trips.where('started_at >= ?', start_date.beginning_of_day)
+      @trips = @trips.where("started_at >= ?", start_date.beginning_of_day)
     end
 
     if params[:end_date].present?
       end_date = Date.parse(params[:end_date])
-      @trips = @trips.where('started_at <= ?', end_date.end_of_day)
+      @trips = @trips.where("started_at <= ?", end_date.end_of_day)
     end
 
     # Optional: Add pagination
@@ -39,7 +39,7 @@ class TripsController < ApplicationController
       distance_km: @trip.distance ? @trip.distance / 1000.0 : nil
     }
   rescue ActiveRecord::RecordNotFound
-    redirect_to trips_path, alert: 'Trip not found'
+    redirect_to trips_path, alert: "Trip not found"
   end
 
   private

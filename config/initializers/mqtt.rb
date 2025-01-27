@@ -7,5 +7,8 @@
 # end
 
 Rails.application.config.after_initialize do
-  MqttHandlerJob.perform_later
+  # MqttHandlerJob.perform_later
+  # MqttHandler.instance
+rescue => e
+  Rails.logger.error e.backtrace.join("\n")
 end
