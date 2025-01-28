@@ -1,0 +1,24 @@
+<div class="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded" data-controller="clipboard">
+  <div class="flex items-center justify-between">
+    <p class="font-mono text-sm break-all">
+      New token (copy this now, it won't be shown again)
+    </p>
+    <button type="button" 
+            onclick="copy()"
+            class="text-sm text-blue-600 hover:text-blue-800">
+      Copy to clipboard
+    </button>
+  </div>
+  <p class="mt-2 font-mono text-sm break-all" data-clipboard-text="<%= token %>">
+    <%= token %>
+  </p>
+</div>
+
+<script>
+function copy() {
+  const token = `<%= token %>`;
+  navigator.clipboard.writeText(token).then(() => {
+    alert('Token copied to clipboard!');
+  });
+}
+</script>

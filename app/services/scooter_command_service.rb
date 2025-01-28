@@ -1,6 +1,6 @@
 # app/services/scooter_command_service.rb
 class ScooterCommandService
-  Result = Struct.new(:success?, :error, :response)
+  Result = Struct.new(:success?, :error, :response, :enqueued)
   COMMAND_TIMEOUT = 10.seconds
 
   def initialize(scooter)
@@ -16,24 +16,38 @@ class ScooterCommandService
       request_id: request_id
     }
 
-    # Send command via MQTT
-    if publish_mqtt(command_data)
-      # Wait for acknowledgment
-      response = wait_for_ack(request_id)
-
-      if response
-        handle_command_response(command, params, response)
-      else
-        Result.new(false, "Command timed out", nil)
-      end
+    if @scooter.online?
+      send_immediate_command(command_data)
     else
-      Result.new(false, "Failed to send command", nil)
+      enqueue_command(command_data)
     end
   rescue StandardError => e
-    Result.new(false, e.message, nil)
+    Result.new(false, e.message, nil, false)
   end
 
   private
+
+  def send_immediate_command(command_data)
+    if publish_mqtt(command_data)
+      response = wait_for_ack(command_data[:request_id])
+
+      if response
+        handle_command_response(command_data[:command], command_data[:params], response)
+      else
+        Result.new(false, "Command timed out", nil, false)
+      end
+    else
+      Result.new(false, "Failed to send command", nil, false)
+    end
+  end
+
+  def enqueue_command(command_data)
+    # Store command in Redis for later execution
+    redis_key = "scooter:#{@scooter.vin}:pending_commands"
+    $redis.with { |conn| conn.rpush(redis_key, command_data.to_json) }
+
+    Result.new(true, nil, nil, true)
+  end
 
   def publish_mqtt(command_data)
     MqttHandler.instance.publish_command(@scooter.vin, command_data)
@@ -82,7 +96,6 @@ class ScooterCommandService
     success = response["status"] == "success"
 
     if success
-      # Update local state only after confirmation from scooter
       case command
       when "lock"
         @scooter.update(state: "locked")
@@ -92,7 +105,6 @@ class ScooterCommandService
         @scooter.update(blinkers: params[:state])
       end
 
-      # Broadcast successful state change to WebSocket
       ActionCable.server.broadcast "scooter_#{@scooter.id}", {
         type: "command_completed",
         command: command,
@@ -101,6 +113,6 @@ class ScooterCommandService
       }
     end
 
-    Result.new(success, response["error"], response)
+    Result.new(success, response["error"], response, false)
   end
 end

@@ -5,13 +5,19 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= action_cable_meta_tag %>
 
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
     <%= javascript_importmap_tags %>
-    <%= action_cable_meta_tag %>
+
     <%= yield :head %>
   </head>
 
@@ -38,8 +44,8 @@
               <div class="ml-4 flex items-center md:ml-6">
                 <% if user_signed_in? %>
                   <div class="relative ml-3">
-                    <div class="flex items-center">
-                      <span class="text-gray-300 mr-4"><%= current_user.name %></span>
+                    <div class="flex items-center space-x-4">
+                      <%= link_to current_user.name, account_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
                       <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
                     </div>
                   </div>
@@ -78,5 +84,5 @@
         </div>
       </main>
     </div>
-  </body>QF
+  </body>
 </html>

@@ -1,0 +1,55 @@
+<div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+  <div class="px-4 sm:px-0">
+    <h2 class="text-base font-semibold leading-7 text-gray-900">Almost there!</h2>
+    <p class="mt-1 text-sm leading-6 text-gray-600">Your scooter <%= @scooter.name %> has been registered. Here's your configuration for telemetry setup.</p>
+  </div>
+
+  <div class="mt-6">
+    <div class="rounded-md bg-gray-50 p-4">
+      <div class="mb-4">
+        <h3 class="text-sm font-medium text-gray-900">Configuration File (radio-gaga.yml)</h3>
+      </div>
+      <div class="flex items-center justify-between">
+        <pre class="text-sm text-gray-900 font-mono"><%= @config.to_yaml %></pre>
+        <button onclick="copyConfig()" class="ml-4 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+          Copy
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-6">
+      <div class="rounded-md bg-yellow-50 p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-yellow-800">Important</h3>
+            <div class="mt-2 text-sm text-yellow-700">
+              <p>This configuration contains your API token which will only be shown once. Make sure to save it now!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 flex justify-between items-center">
+      <%= link_to "Download Configuration", 
+          download_config_scooter_api_tokens_path(@scooter, token_id: params[:token_id]), 
+          data: { turbo: false },
+          class: "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" %>
+      <%= link_to "Go to Dashboard", dashboard_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
+    </div>
+  </div>
+</div>
+
+<script>
+function copyConfig() {
+  const config = `<%= @config.to_yaml.gsub("\n", "\\n") %>`;
+  navigator.clipboard.writeText(config).then(() => {
+    alert('Configuration copied to clipboard!');
+  });
+}
+</script>

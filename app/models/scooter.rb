@@ -95,6 +95,25 @@ class Scooter < ApplicationRecord
     telemetries.order(created_at: :desc).first
   end
 
+  def has_token?
+    !api_token.nil?
+  end
+
+  def generate_config_with_token(token)
+    {
+      "vin" => vin,
+      "mqtt" => {
+        "broker_url" => "tcp://mqtt.sunshine.rescoot.org:1883",
+        "token" => token
+      },
+      "telemetry" => {
+        "check_interval" => "100ms",
+        "min_interval" => "1s",
+        "max_interval" => "300s"
+      }
+    }
+  end
+
   private
 
   def broadcast_updates

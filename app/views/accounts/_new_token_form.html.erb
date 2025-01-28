@@ -1,0 +1,12 @@
+<%= form_with url: account_api_tokens_path, class: "w-full mb-4 p-4 bg-gray-50 rounded-md" do |f| %>
+  <div class="mb-4">
+    <%= f.label :name, "Give your token a name to identify it", class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= f.text_field :name, value: "Token #{Time.current.strftime('%Y-%m-%d %H:%M')}", 
+        class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+  </div>
+  <div class="flex justify-end space-x-3">
+    <%= f.submit "Generate Token", class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700" %>
+    <%= link_to "Cancel", account_path, class: "inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500", 
+        data: { controller: "turbo-frame", action: "click->turbo-frame#src" } %>
+  </div>
+<% end %>

@@ -7,7 +7,7 @@ class MqttHandler
     host: ENV.fetch("MQTT_HOST", "localhost"),
     port: ENV.fetch("MQTT_PORT", 1883).to_i,
     username: ENV.fetch("MQTT_USERNAME", "cloud_service"),
-    password: ENV.fetch("MQTT_PASSWORD", ENV.fetch("MQTT_CLOUD_PASSWORD", "electricdesign")),
+    password: ENV.fetch("MQTT_PASSWORD"),
     ssl: ENV.fetch("MQTT_SSL", "false") == "true"
   }
 
@@ -94,17 +94,14 @@ class MqttHandler
   def process_telemetry(scooter_vin, message)
     data = JSON.parse(message)
     scooter = Scooter.find_by(vin: scooter_vin)
-    unless scooter
-      Rails.logger.error "MQTT: Scooter not found with VIN #{scooter_vin}"
-      return
-    end
+    return unless scooter
 
     Rails.logger.debug("Telemetry for #{scooter}: #{data}")
 
     # Create telemetry record with full data
     Telemetry.create_from_data!(scooter, data)
 
-    # Update only the fields that exist in the scooter model
+    # Update scooter fields
     scooter_attributes = data.slice(
       "state", "kickstand", "seatbox", "blinkers",
       "speed", "odometer",
@@ -113,9 +110,19 @@ class MqttHandler
       "lat", "lng"
     ).merge(last_seen_at: Time.current)
 
-    Rails.logger.debug("before: #{scooter.state} / was #{scooter.state_was}")
     scooter.update!(scooter_attributes)
-    Rails.logger.debug("after: #{scooter.state}")
+
+    # Process any pending commands since the scooter is now online
+    process_pending_commands(scooter)
+  end
+
+  def process_pending_commands(scooter)
+    redis_key = "scooter:#{scooter.vin}:pending_commands"
+
+    while command_json = Redis.current.lpop(redis_key)
+      command_data = JSON.parse(command_json)
+      publish_command(scooter.vin, command_data)
+    end
   end
 
   def process_trip_update(scooter_vin, update_type, message)

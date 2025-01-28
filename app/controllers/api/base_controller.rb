@@ -9,14 +9,14 @@ class Api::BaseController < ApplicationController
     return head :unauthorized unless token
 
     digest = Digest::SHA256.hexdigest(token)
-    @api_token = ApiToken.find_by(token_digest: digest)
+    @api_token = ApiToken.user_tokens.find_by(token_digest: digest)
 
     return head :unauthorized unless @api_token
     @api_token.touch(:last_used_at)
-    @current_scooter = @api_token.scooter
+    @current_user = @api_token.user
   end
 
-  def current_scooter
-    @current_scooter
+  def current_user
+    @current_user
   end
 end

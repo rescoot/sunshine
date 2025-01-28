@@ -4,9 +4,7 @@ class TripsController < ApplicationController
   before_action :set_trip, only: [ :show ]
 
   def index
-    @trips = current_user.trips
-                        .includes(:scooter)
-                        .order(started_at: :desc)
+    @trips = current_user.trips.includes(:scooter).order(started_at: :desc)
 
     # Filter by scooter if requested
     if params[:scooter_id].present?

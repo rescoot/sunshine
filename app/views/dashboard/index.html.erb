@@ -5,116 +5,134 @@
   </div>
 </div>
 
-<div class="mt-8">
-  <!-- Stats Grid -->
-  <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-    <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
-      <dt>
-        <div class="absolute rounded-md bg-indigo-500 p-3">
-          <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-        </div>
-        <p class="ml-16 truncate text-sm font-medium text-gray-500">Total Trips</p>
-      </dt>
-      <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
-        <p class="text-2xl font-semibold text-gray-900"><%= @lifetime_stats[:total_trips] %></p>
-      </dd>
-    </div>
-
-    <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
-      <dt>
-        <div class="absolute rounded-md bg-indigo-500 p-3">
-          <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-          </svg>
-        </div>
-        <p class="ml-16 truncate text-sm font-medium text-gray-500">Total Distance</p>
-      </dt>
-      <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
-        <p class="text-2xl font-semibold text-gray-900"><%= format_distance(@lifetime_stats[:total_distance]) %></p>
-      </dd>
-    </div>
-
-    <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
-      <dt>
-        <div class="absolute rounded-md bg-indigo-500 p-3">
-          <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
-        <p class="ml-16 truncate text-sm font-medium text-gray-500">Avg Trip Distance</p>
-      </dt>
-      <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
-        <p class="text-2xl font-semibold text-gray-900">
-          <%= format_distance(@lifetime_stats[:avg_trip_distance]) %>
-        </p>
-      </dd>
-    </div>
-
-    <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
-      <dt>
-        <div class="absolute rounded-md bg-indigo-500 p-3">
-          <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-        </div>
-        <p class="ml-16 truncate text-sm font-medium text-gray-500">Avg Speed</p>
-      </dt>
-      <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
-        <p class="text-2xl font-semibold text-gray-900">
-          <%= format_speed(@lifetime_stats[:avg_speed]) %>
-        </p>
-      </dd>
-    </div>
-  </dl>
-
-  <!-- Recent Trips -->
+<% if @recent_trips.any? %>
   <div class="mt-8">
-    <div class="sm:flex sm:items-center">
-      <div class="sm:flex-auto">
-        <h2 class="text-lg font-medium text-gray-900">Recent Trips</h2>
+    <!-- Stats Grid -->
+    <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
+        <dt>
+          <div class="absolute rounded-md bg-indigo-500 p-3">
+            <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <p class="ml-16 truncate text-sm font-medium text-gray-500">Total Trips</p>
+        </dt>
+        <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
+          <p class="text-2xl font-semibold text-gray-900"><%= @lifetime_stats[:total_trips] %></p>
+        </dd>
       </div>
-      <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-        <%= link_to "View All", trips_path, class: "block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" %>
+
+      <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
+        <dt>
+          <div class="absolute rounded-md bg-indigo-500 p-3">
+            <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          </div>
+          <p class="ml-16 truncate text-sm font-medium text-gray-500">Total Distance</p>
+        </dt>
+        <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
+          <p class="text-2xl font-semibold text-gray-900"><%= format_distance(@lifetime_stats[:total_distance]) %></p>
+        </dd>
       </div>
-    </div>
-    
-    <div class="mt-4 flow-root">
-      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-            <table class="min-w-full divide-y divide-gray-300">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Date</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooter</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Duration</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Distance</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-200 bg-white">
-                <% @recent_trips.each do |trip| %>
+
+      <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
+        <dt>
+          <div class="absolute rounded-md bg-indigo-500 p-3">
+            <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <p class="ml-16 truncate text-sm font-medium text-gray-500">Avg Trip Distance</p>
+        </dt>
+        <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
+          <p class="text-2xl font-semibold text-gray-900">
+            <%= format_distance(@lifetime_stats[:avg_trip_distance]) %>
+          </p>
+        </dd>
+      </div>
+
+      <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
+        <dt>
+          <div class="absolute rounded-md bg-indigo-500 p-3">
+            <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <p class="ml-16 truncate text-sm font-medium text-gray-500">Avg Speed</p>
+        </dt>
+        <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
+          <p class="text-2xl font-semibold text-gray-900">
+            <%= format_speed(@lifetime_stats[:avg_speed]) %>
+          </p>
+        </dd>
+      </div>
+    </dl>
+
+    <!-- Recent Trips -->
+    <div class="mt-8">
+      <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+          <h2 class="text-lg font-medium text-gray-900">Recent Trips</h2>
+        </div>
+        <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+          <%= link_to "View All", trips_path, class: "block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" %>
+        </div>
+      </div>
+      
+      <div class="mt-4 flow-root">
+        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+            <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+              <table class="min-w-full divide-y divide-gray-300">
+                <thead class="bg-gray-50">
                   <tr>
-                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">
-                      <%= link_to trip.started_at.strftime("%B %d, %Y %H:%M"), trip_path(trip), class: "text-indigo-600 hover:text-indigo-900" %>
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <%= trip.scooter.name %>
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <%= format_trip_duration(trip) %>
-                    </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <%= format_trip_distance(trip) %>
-                    </td>
+                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Date</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooter</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Duration</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Distance</th>
                   </tr>
-                <% end %>
-              </tbody>
-            </table>
+                </thead>
+                <tbody class="divide-y divide-gray-200 bg-white">
+                  <% @recent_trips.each do |trip| %>
+                    <tr>
+                      <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">
+                        <%= link_to trip.started_at.strftime("%B %d, %Y %H:%M"), trip_path(trip), class: "text-indigo-600 hover:text-indigo-900" %>
+                      </td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <%= trip.scooter.name %>
+                      </td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <%= format_trip_duration(trip) %>
+                      </td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <%= format_trip_distance(trip) %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+<% else %>
+  <div class="rounded-md bg-blue-50 p-4 mt-6">
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <h3 class="text-sm font-medium text-blue-800">No trips recorded yet</h3>
+        <div class="mt-2 text-sm text-blue-700">
+          <p>Once you start using your scooter, your trip statistics will appear here.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

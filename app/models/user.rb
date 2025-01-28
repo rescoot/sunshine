@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :user_scooters
   has_many :scooters, through: :user_scooters
   has_many :trips
+  has_many :api_tokens, dependent: :destroy
 
   validates :name, presence: true
 

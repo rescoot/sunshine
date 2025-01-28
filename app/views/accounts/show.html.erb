@@ -1,0 +1,40 @@
+<div class="max-w-3xl mx-auto p-6">
+  <h1 class="text-2xl font-bold mb-6">Account Settings</h1>
+
+  <div class="bg-white shadow rounded-lg mb-6 p-6">
+    <div class="mb-4">
+      <h2 class="text-lg font-semibold mb-2">Account Details</h2>
+      <p><strong>Name:</strong> <%= @user.name %></p>
+      <p><strong>Email:</strong> <%= @user.email %></p>
+    </div>
+    
+    <div class="flex space-x-4">
+      <%= link_to 'Edit Account', edit_account_path, class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700' %>
+      <%= button_to 'Delete Account', account_path, method: :delete, class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200', form: { data: { turbo_confirm: 'Are you sure? This cannot be undone.' } } %>
+    </div>
+  </div>
+
+  <div class="bg-white shadow rounded-lg p-6">
+    <div class="mb-4">
+      <h2 class="text-lg font-semibold">API Tokens</h2>
+      <div class="w-full">
+        <%= turbo_frame_tag "new_token_form" do %>
+          <%= link_to "Generate New Token", new_account_api_token_path,
+              class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700",
+              data: { turbo_frame: "new_token_form" } %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if flash[:api_token].present? %>
+      <%= render partial: "accounts/token_flash", locals: { token: flash[:api_token] } %>
+    <% end %>
+
+    <div id="api_tokens_list">
+      <div id="tokens_table">
+        <%= render "token_list", api_tokens: @api_tokens %>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,18 +1,34 @@
+# config/routes.rb
 Rails.application.routes.draw do
+  devise_for :users
+
   namespace :api do
     namespace :v1 do
-      resources :telemetry, only: [ :create ]
-      resources :trips, only: [] do
-        collection do
-          post :start
-          post :end
+      resources :scooters, only: [ :index, :show, :create, :update, :destroy ] do
+        member do
+          post :lock
+          post :unlock
+          post :blinkers
+          post :honk
+          post :generate_token
+        end
+        resources :trips, only: [ :index, :create ] do
+          collection do
+            post :end
+          end
         end
       end
-      post "command", to: "commands#receive"
     end
   end
 
-  devise_for :users
+  resource :account, only: [ :show, :edit, :update, :destroy ] do
+    resources :api_tokens, only: [ :new, :create, :destroy ], controller: "accounts/api_tokens"
+  end
+
+  # Onboarding flow
+  get "onboarding", to: "onboarding#index"
+  post "onboarding/create_scooter"
+  get "onboarding/config"
 
   root "dashboard#index"
   get "dashboard/index"
@@ -24,6 +40,14 @@ Rails.application.routes.draw do
       post :blinkers
       post :honk
       post :play_sound
+      get :show_token_management
+    end
+
+    # API token management
+    resources :api_tokens, only: [ :create ] do
+      collection do
+        get :download_config
+      end
     end
   end
 

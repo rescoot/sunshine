@@ -8,10 +8,12 @@
   <div class="card-body">
     <div class="relative">
       <!-- Base scooter image -->
-      <%= image_tag scooter.scooter_image_path('base'), class: "w-1/3", alt: "Scooter" %>
+      <%= image_tag scooter.scooter_image_path('side'), class: "w-1/3", alt: "Scooter" %>
 
       <!-- Overlay images based on state -->
       <% if scooter.online? %>
+        <%= image_tag scooter.scooter_image_path('base'), class: "w-1/3", alt: "Scooter" %>
+        
         <% if scooter.blinkers == 'left' || scooter.blinkers == 'both' %>
           <%= image_tag "scooter/blinker_l.webp", class: "absolute top-0 left-0 w-1/3 animate-blink", style: "mix-blend-mode: screen;" %>
         <% end %>

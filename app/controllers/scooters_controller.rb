@@ -9,6 +9,17 @@ class ScootersController < ApplicationController
 
   def show
     @trips = @scooter.trips.order(started_at: :desc).limit(10)
+    @waiting_for_telemetry = @scooter.telemetries.none?
+    @show_token_section = @waiting_for_telemetry || flash[:token].present? || params[:token_id].present?
+
+    if flash[:token].present?
+      $redis.with do |conn|
+        conn.setex("scooter_token:#{@scooter.id}", 5.minutes.to_i, flash[:token])
+      end
+      @token = flash[:token]
+    elsif params[:token_id].present?
+      @token = ApiToken.fetch_token(params[:token_id])
+    end
 
     respond_to do |format|
       format.html
@@ -47,12 +58,24 @@ class ScootersController < ApplicationController
     redirect_to scooters_url, notice: "Scooter was successfully removed."
   end
 
+  def show_token_management
+    respond_to do |format|
+      format.html { redirect_to @scooter }
+      format.turbo_stream {
+        render turbo_stream: turbo_stream.update("api_token_section",
+          partial: "api_token",
+          locals: { scooter: @scooter, token: nil })
+      }
+    end
+  end
+
   # Remote control actions
   def lock
     result = ScooterCommandService.new(@scooter).send_command("lock")
 
     if result.success?
-      redirect_to @scooter, notice: "Lock command sent."
+      notice = result.enqueued ? "Lock command enqueued for when scooter comes online." : "Lock command sent."
+      redirect_to @scooter, notice: notice
     else
       redirect_to @scooter, alert: "Failed to send lock command: #{result.error}"
     end
@@ -62,7 +85,8 @@ class ScootersController < ApplicationController
     result = ScooterCommandService.new(@scooter).send_command("unlock")
 
     if result.success?
-      redirect_to @scooter, notice: "Unlock command sent."
+      notice = result.enqueued ? "Unlock command enqueued for when scooter comes online." : "Unlock command sent."
+      redirect_to @scooter, notice: notice
     else
       redirect_to @scooter, alert: "Failed to send unlock command: #{result.error}"
     end
@@ -73,7 +97,8 @@ class ScootersController < ApplicationController
     result = ScooterCommandService.new(@scooter).send_command("blinkers", state: state)
 
     if result.success?
-      redirect_to @scooter, notice: "Blinkers set to #{state}."
+      notice = result.enqueued ? "Blinkers command enqueued for when scooter comes online." : "Blinkers set to #{state}."
+      redirect_to @scooter, notice: notice
     else
       redirect_to @scooter, alert: "Failed to set blinkers: #{result.error}"
     end
@@ -83,7 +108,8 @@ class ScootersController < ApplicationController
     result = ScooterCommandService.new(@scooter).send_command("honk")
 
     if result.success?
-      redirect_to @scooter, notice: "Honk command sent."
+      notice = result.enqueued ? "Honk command enqueued for when scooter comes online." : "Honk command sent."
+      redirect_to @scooter, notice: notice
     else
       redirect_to @scooter, alert: "Failed to send honk command: #{result.error}"
     end
@@ -94,7 +120,8 @@ class ScootersController < ApplicationController
     result = ScooterCommandService.new(@scooter).send_command("play_sound", sound: sound)
 
     if result.success?
-      redirect_to @scooter, notice: "Playing #{sound} sound."
+      notice = result.enqueued ? "Sound command enqueued for when scooter comes online." : "Playing #{sound} sound."
+      redirect_to @scooter, notice: notice
     else
       redirect_to @scooter, alert: "Failed to play sound: #{result.error}"
     end

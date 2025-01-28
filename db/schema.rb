@@ -10,15 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_23_075800) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_28_105104) do
   create_table "api_tokens", force: :cascade do |t|
-    t.integer "scooter_id", null: false
+    t.integer "scooter_id"
     t.string "token_digest"
     t.datetime "last_used_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.string "scope", null: false
+    t.string "name"
     t.index ["scooter_id"], name: "index_api_tokens_on_scooter_id"
+    t.index ["scope"], name: "index_api_tokens_on_scope"
     t.index ["token_digest"], name: "index_api_tokens_on_token_digest", unique: true
+    t.index ["user_id"], name: "index_api_tokens_on_user_id"
   end
 
   create_table "scooters", force: :cascade do |t|
@@ -84,7 +89,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_075800) do
     t.decimal "avg_speed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["ended_at"], name: "index_trips_on_ended_at"
+    t.index ["scooter_id", "started_at"], name: "index_trips_on_scooter_id_and_started_at"
     t.index ["scooter_id"], name: "index_trips_on_scooter_id"
+    t.index ["user_id", "started_at"], name: "index_trips_on_user_id_and_started_at"
     t.index ["user_id"], name: "index_trips_on_user_id"
   end
 
@@ -95,6 +103,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_075800) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["scooter_id"], name: "index_user_scooters_on_scooter_id"
+    t.index ["user_id", "role"], name: "index_user_scooters_on_user_id_and_role"
     t.index ["user_id", "scooter_id"], name: "index_user_scooters_on_user_id_and_scooter_id", unique: true
     t.index ["user_id"], name: "index_user_scooters_on_user_id"
   end
@@ -115,6 +124,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_23_075800) do
   end
 
   add_foreign_key "api_tokens", "scooters"
+  add_foreign_key "api_tokens", "users"
   add_foreign_key "telemetries", "scooters"
   add_foreign_key "trips", "scooters"
   add_foreign_key "trips", "users"

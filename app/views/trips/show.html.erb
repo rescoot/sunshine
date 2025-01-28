@@ -144,7 +144,7 @@
 <% end %>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+initMap = function() {
   const map = L.map('map');
   
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -177,5 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // If no end point, center on start point
     map.setView([<%= @trip.start_lat %>, <%= @trip.start_lng %>], 15);
   <% end %>
-});
+};
+document.addEventListener('DOMContentLoaded', initMap);
+document.addEventListener('turbo:render', initMap);
 </script>
