@@ -50,7 +50,7 @@ class ScooterCommandService
   end
 
   def publish_mqtt(command_data)
-    MqttHandler.instance.publish_command(@scooter.vin, command_data)
+    MqttService.instance.publish_command(@scooter.vin, command_data)
   rescue => e
     Rails.logger.error "MQTT publish error: #{e.message}"
     false
@@ -82,14 +82,14 @@ class ScooterCommandService
 
   def subscribe_to_acks
     Queue.new.tap do |queue|
-      MqttHandler.instance.subscribe_to_acks(@scooter.vin) do |ack|
+      MqttService.instance.subscribe_to_acks(@scooter.vin) do |ack|
         queue.push(ack)
       end
     end
   end
 
   def unsubscribe_from_acks(subscription)
-    MqttHandler.instance.unsubscribe_from_acks(@scooter.vin)
+    MqttService.instance.unsubscribe_from_acks(@scooter.vin)
   end
 
   def handle_command_response(command, params, response)
@@ -98,11 +98,15 @@ class ScooterCommandService
     if success
       case command
       when "lock"
-        @scooter.update(state: "locked")
       when "unlock"
-        @scooter.update(state: "unlocked")
       when "blinkers"
-        @scooter.update(blinkers: params[:state])
+      when "open_seatbox"
+      when "get_state"
+        # State updates will come through telemetry
+      when "ping"
+        # No response needed
+      when "update"
+        # Scooter will do its thing
       end
 
       ActionCable.server.broadcast "scooter_#{@scooter.id}", {

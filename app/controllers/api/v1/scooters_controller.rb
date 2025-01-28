@@ -1,5 +1,5 @@
 class Api::V1::ScootersController < Api::BaseController
-  before_action :set_scooter, except: [ :index, :create ]
+  before_action :set_scooter, except: [ :index, :create, :config_for_vin ]
 
   def index
     @scooters = current_user.scooters
@@ -66,6 +66,17 @@ class Api::V1::ScootersController < Api::BaseController
   def honk
     result = ScooterCommandService.new(@current_scooter).send_command("honk")
     command_response(result)
+  end
+
+  def config_for_vin
+    @current_scooter = current_user.scooters.find_by!(vin: params[:vin])
+    Rails.logger.debug("config for #{@current_scooter.id}")
+    @current_scooter.api_token&.destroy
+    api_token = ApiToken.generate_for_scooter(@current_scooter)
+    config = @current_scooter.generate_config_with_token(api_token.token)
+    render plain: config.to_yaml, content_type: "application/x-yaml"
+  rescue ActiveRecord::RecordNotFound
+    head :not_found
   end
 
   private

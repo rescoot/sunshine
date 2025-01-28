@@ -10,6 +10,12 @@ Rails.application.routes.draw do
           post :unlock
           post :blinkers
           post :honk
+          post :play_sound
+          post :open_seatbox
+          post :ping
+          post :update_firmware
+          post :get_state
+
           post :generate_token
         end
         resources :trips, only: [ :index, :create ] do
@@ -18,6 +24,10 @@ Rails.application.routes.draw do
           end
         end
       end
+      get "scooters/:vin/config", to: "scooters#config_for_vin", as: "config_for_vin"
+
+      post "mosquitto/auth", to: "mosquitto_auth#authenticate"
+      post "mosquitto/acl", to: "mosquitto_auth#authorize"
     end
   end
 
@@ -40,6 +50,11 @@ Rails.application.routes.draw do
       post :blinkers
       post :honk
       post :play_sound
+      post :open_seatbox
+      post :ping
+      post :update_firmware
+      post :get_state
+
       get :show_token_management
     end
 

@@ -8,6 +8,10 @@ servers:
     hosts:
       - 178.63.144.127
     cmd: bin/jobs
+  mqtt:
+    hosts:
+      - 178.63.144.127
+    cmd: bin/mqtt
 
 proxy:
   ssl: true
@@ -29,7 +33,7 @@ env:
     RAILS_LOG_TO_STDOUT: true
     MQTT_HOST: mqtt.sunshine.rescoot.org
     MQTT_PORT: 1883
-    MQTT_USERNAME: sunshine
+    MQTT_USERNAME: cloud_service
     REDIS_URL: redis://sunshine-redis:6379/1
     # SOLID_QUEUE_IN_PUMA: false
 
@@ -58,8 +62,8 @@ accessories:
 
 volumes:
   - "sunshine_storage:/rails/storage"
-  - "/etc/mosquitto:/etc/mosquitto"
   - "/var/lib/redis:/var/lib/redis"
+  - "/etc/mosquitto:/etc/mosquitto"
 
 builder:
   arch: amd64

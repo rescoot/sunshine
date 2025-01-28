@@ -23,7 +23,16 @@ class ScootersController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.turbo_stream
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.update("scooter_#{@scooter.id}_status",
+                             partial: "scooters/status",
+                             locals: { scooter: @scooter }),
+          turbo_stream.update("scooter_#{@scooter.id}_controls",
+                             partial: "scooters/controls",
+                             locals: { scooter: @scooter })
+        ]
+      end
     end
   end
 
@@ -115,6 +124,26 @@ class ScootersController < ApplicationController
     end
   end
 
+  def open_seatbox
+    result = ScooterCommandService.new(@scooter).send_command("open_seatbox")
+    handle_command_result(result, "Open seatbox")
+  end
+
+  def ping
+    result = ScooterCommandService.new(@scooter).send_command("ping")
+    handle_command_result(result, "Ping")
+  end
+
+  def update_firmware
+    result = ScooterCommandService.new(@scooter).send_command("update")
+    handle_command_result(result, "Firmware update")
+  end
+
+  def get_state
+    result = ScooterCommandService.new(@scooter).send_command("get_state")
+    handle_command_result(result, "State update")
+  end
+
   def play_sound
     sound = params[:sound].presence_in([ "find_me", "alarm", "chirp" ]) || "chirp"
     result = ScooterCommandService.new(@scooter).send_command("play_sound", sound: sound)
@@ -145,5 +174,16 @@ class ScootersController < ApplicationController
 
   def scooter_params
     params.require(:scooter).permit(:name, :vin, :color)
+  end
+
+  def handle_command_result(result, command_name)
+    if result.success?
+      notice = result.enqueued ?
+        "#{command_name} command enqueued for when scooter comes online." :
+        "#{command_name} command sent."
+      redirect_to @scooter, notice: notice
+    else
+      redirect_to @scooter, alert: "Failed to send #{command_name.downcase} command: #{result.error}"
+    end
   end
 end

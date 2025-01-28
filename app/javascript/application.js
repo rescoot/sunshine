@@ -10,3 +10,4 @@ ActionCable.logger.enabled = true
 addEventListener("turbo:before-stream-render", (event) => {
   console.log("Turbo Stream received:", event.target);
 });
+import "controllers"

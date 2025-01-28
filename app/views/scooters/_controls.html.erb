@@ -1,18 +1,81 @@
-<div class="controls">
+<%# app/views/scooters/_controls.html.erb %>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
   <% if scooter.locked? %>
-    <%= button_to 'Unlock', unlock_scooter_path(scooter), method: :post %>
+    <%= button_to unlock_scooter_path(scooter), class: "btn-primary green w-full" do %>
+      Unlock
+    <% end %>
   <% else %>
-    <%= button_to 'Lock', lock_scooter_path(scooter), method: :post %>
+    <%= button_to lock_scooter_path(scooter), class: "btn-primary red w-full" do %>
+      Lock
+    <% end %>
   <% end %>
-        
-  <div class="blinker-controls">
-    <%= button_to 'Left', blinkers_scooter_path(scooter, state: 'left'), method: :post,
-        class: scooter.blinkers == 'left' ? 'active' : '' %>
-    <%= button_to 'Right', blinkers_scooter_path(scooter, state: 'right'), method: :post,
-        class: scooter.blinkers == 'right' ? 'active' : '' %>
-    <%= button_to 'Both', blinkers_scooter_path(scooter, state: 'both'), method: :post,
-        class: scooter.blinkers == 'both' ? 'active' : '' %>
-    <%= button_to 'Off', blinkers_scooter_path(scooter, state: 'off'), method: :post,
-        class: scooter.blinkers == 'off' ? 'active' : '' %>
+
+  <%= button_to honk_scooter_path(scooter), class: "btn-secondary w-full" do %>
+    Honk
+  <% end %>
+
+  <%= button_to open_seatbox_scooter_path(scooter), class: "btn-secondary w-full" do %>
+    Open Seatbox
+  <% end %>
+
+  <div class="relative" data-controller="dropdown">
+    <button type="button" data-action="dropdown#toggle" class="btn-secondary w-full">
+      Turn Signals
+    </button>
+    <div data-dropdown-target="menu" class="dropdown-menu hidden">
+      <div class="py-1">
+        <%= button_to blinkers_scooter_path(scooter, state: "left"), class: "dropdown-item" do %>
+          Left
+        <% end %>
+        <%= button_to blinkers_scooter_path(scooter, state: "right"), class: "dropdown-item" do %>
+          Right
+        <% end %>
+        <%= button_to blinkers_scooter_path(scooter, state: "both"), class: "dropdown-item" do %>
+          Hazards
+        <% end %>
+        <%= button_to blinkers_scooter_path(scooter, state: "off"), class: "dropdown-item" do %>
+          Off
+        <% end %>
+      </div>
+    </div>
   </div>
+</div>
+
+<div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+  <%= button_to ping_scooter_path(scooter), class: "btn-secondary w-full" do %>
+    Ping
+  <% end %>
+
+  <%= button_to get_state_scooter_path(scooter), class: "btn-secondary w-full" do %>
+    Update State
+  <% end %>
+
+  <div class="relative" data-controller="dropdown">
+    <button type="button" data-action="dropdown#toggle" class="btn-secondary w-full">
+      Sounds
+    </button>
+    <div data-dropdown-target="menu" class="dropdown-menu hidden">
+      <div class="py-1">
+        <%= button_to play_sound_scooter_path(scooter, sound: "find_me"), class: "dropdown-item" do %>
+          Find Me
+        <% end %>
+        <%= button_to play_sound_scooter_path(scooter, sound: "alarm"), class: "dropdown-item" do %>
+          Alarm
+        <% end %>
+        <%= button_to play_sound_scooter_path(scooter, sound: "chirp"), class: "dropdown-item" do %>
+          Chirp
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <%= button_to update_firmware_scooter_path(scooter), 
+      class: "btn-warning w-full",
+      data: { 
+        controller: "confirm",
+        action: "confirm#confirm",
+        confirm_message_value: "Start firmware update?"
+      } do %>
+    Update Firmware
+  <% end %>
 </div>

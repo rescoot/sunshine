@@ -115,54 +115,7 @@
         </h3>
       </div>
       <div class="card-body">
-        <div class="flex flex-wrap gap-4">
-          <% if @scooter.locked? %>
-            <%= button_to "Unlock", unlock_scooter_path(@scooter), 
-                class: "rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500" %>
-          <% else %>
-            <%= button_to "Lock", lock_scooter_path(@scooter), 
-                class: "rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" %>
-          <% end %>
-          
-          <%= button_to "Honk", honk_scooter_path(@scooter), 
-              class: "rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500" %>
-          
-          <div class="relative inline-block text-left">
-            <button type="button" onclick="toggleDropdown('blinkerMenu')"
-                class="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500">
-              Blinkers
-            </button>
-            <div id="blinkerMenu" class="hidden absolute z-10 mt-2 w-32 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-              <div class="py-1">
-                <%= button_to "Left", blinkers_scooter_path(@scooter, state: 'left'), 
-                    class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                <%= button_to "Right", blinkers_scooter_path(@scooter, state: 'right'), 
-                    class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                <%= button_to "Both", blinkers_scooter_path(@scooter, state: 'both'), 
-                    class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                <%= button_to "Off", blinkers_scooter_path(@scooter, state: 'off'), 
-                    class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-              </div>
-            </div>
-          </div>
-          
-          <div class="relative inline-block text-left">
-            <button type="button" onclick="toggleDropdown('soundMenu')"
-                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
-              Sounds
-            </button>
-            <div id="soundMenu" class="hidden absolute z-10 mt-2 w-32 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-              <div class="py-1">
-                <%= button_to "Find Me", play_sound_scooter_path(@scooter, sound: 'find_me'), 
-                    class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                <%= button_to "Alarm", play_sound_scooter_path(@scooter, sound: 'alarm'), 
-                    class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                <%= button_to "Chirp", play_sound_scooter_path(@scooter, sound: 'chirp'), 
-                    class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-              </div>
-            </div>
-          </div>
-        </div>
+        <%= render partial: "controls", locals: { scooter: @scooter } %>
       </div>
     </div>
 
@@ -208,30 +161,3 @@
     </div>
   </div>
 </div>
-
-<script>
-function toggleDropdown(menuId) {
-  const menu = document.getElementById(menuId);
-  const allMenus = document.querySelectorAll('[id$="Menu"]');
-  
-  // Hide all other menus
-  allMenus.forEach(m => {
-    if (m.id !== menuId) m.classList.add('hidden');
-  });
-  
-  // Toggle the clicked menu
-  menu.classList.toggle('hidden');
-}
-
-// Close dropdowns when clicking outside
-document.addEventListener('click', function(event) {
-  const dropdowns = document.querySelectorAll('[id$="Menu"]');
-  const isDropdownButton = event.target.closest('button');
-  
-  if (!isDropdownButton) {
-    dropdowns.forEach(dropdown => {
-      dropdown.classList.add('hidden');
-    });
-  }
-});
-</script>

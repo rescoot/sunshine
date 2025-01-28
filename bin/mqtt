@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+require_relative "../config/environment"
+
+Rails.logger = Logger.new($stdout)
+MqttService.instance.run
