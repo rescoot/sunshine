@@ -1,5 +1,11 @@
 # config/routes.rb
 Rails.application.routes.draw do
+  # to reverse the unu cloud requests
+  resources :unu_requests, only: [ :index, :show ]
+  constraints subdomain: "unu.cloud" do
+    match "*path", to: "unu#handle", via: :all
+  end
+
   devise_for :users
 
   namespace :api do

@@ -1,0 +1,2 @@
+class UnuRequest < ApplicationRecord
+end

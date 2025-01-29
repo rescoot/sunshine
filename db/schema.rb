@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_28_105104) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_29_152710) do
   create_table "api_tokens", force: :cascade do |t|
     t.integer "scooter_id"
     t.string "token_digest"
@@ -94,6 +94,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_28_105104) do
     t.index ["scooter_id"], name: "index_trips_on_scooter_id"
     t.index ["user_id", "started_at"], name: "index_trips_on_user_id_and_started_at"
     t.index ["user_id"], name: "index_trips_on_user_id"
+  end
+
+  create_table "unu_requests", force: :cascade do |t|
+    t.string "method"
+    t.string "path"
+    t.string "remote_ip"
+    t.text "headers"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_scooters", force: :cascade do |t|

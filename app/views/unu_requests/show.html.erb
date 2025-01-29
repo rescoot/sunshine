@@ -1,0 +1,67 @@
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <div class="flex items-center justify-between">
+      <h1 class="text-2xl font-semibold leading-6 text-gray-900">Request Details</h1>
+      <%= link_to "Back to List", unu_requests_path, class: "rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+    </div>
+  </div>
+</div>
+
+<div class="mt-8">
+  <dl class="divide-y divide-gray-100">
+    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium leading-6 text-gray-900">Timestamp</dt>
+      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+        <%= @request.created_at.strftime("%Y-%m-%d %H:%M:%S.%3N") %>
+      </dd>
+    </div>
+    
+    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium leading-6 text-gray-900">Method</dt>
+      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+        <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset
+          <%= case @request.method
+              when "GET" then "bg-green-50 text-green-700 ring-green-600/20"
+              when "POST" then "bg-blue-50 text-blue-700 ring-blue-600/20"
+              when "PUT", "PATCH" then "bg-yellow-50 text-yellow-700 ring-yellow-600/20"
+              when "DELETE" then "bg-red-50 text-red-700 ring-red-600/20"
+              else "bg-gray-50 text-gray-600 ring-gray-500/10"
+              end %>">
+          <%= @request.method %>
+        </span>
+      </dd>
+    </div>
+
+    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium leading-6 text-gray-900">Path</dt>
+      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+        <%= @request.path %>
+      </dd>
+    </div>
+
+    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium leading-6 text-gray-900">Remote IP</dt>
+      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+        <%= @request.remote_ip %>
+      </dd>
+    </div>
+
+    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium leading-6 text-gray-900">Headers</dt>
+      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+        <div class="whitespace-pre-wrap font-mono bg-gray-50 p-4 rounded-md">
+          <%= JSON.pretty_generate(JSON.parse(@request.headers)) rescue @request.headers %>
+        </div>
+      </dd>
+    </div>
+
+    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium leading-6 text-gray-900">Body</dt>
+      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+        <div class="whitespace-pre-wrap font-mono bg-gray-50 p-4 rounded-md">
+          <%= JSON.pretty_generate(JSON.parse(@request.body)) rescue @request.body %>
+        </div>
+      </dd>
+    </div>
+  </dl>
+</div>

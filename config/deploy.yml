@@ -15,7 +15,11 @@ servers:
 
 proxy:
   ssl: true
-  host: sunshine.rescoot.org
+  hosts:
+    - rescoot.org
+    - sunshine.rescoot.org
+    - unu.rescoot.org
+    - unu.cloud.rescoot.org
 
 registry:
   server: ghcr.io
