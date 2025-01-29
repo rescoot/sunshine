@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Set up certificate directory
+sudo mkdir -p /etc/mosquitto/certs
+sudo chmod 700 /etc/mosquitto/certs
+
+# Write certificates from environment
+echo "$MQTT_CA_CRT" | sudo tee /etc/mosquitto/certs/ca.crt > /dev/null
+echo "$MQTT_SERVER_CRT" | sudo tee /etc/mosquitto/certs/server.crt > /dev/null
+echo "$MQTT_SERVER_KEY" | sudo tee /etc/mosquitto/certs/server.key > /dev/null
+
+# Set permissions
+sudo chmod 644 /etc/mosquitto/certs/ca.crt
+sudo chmod 644 /etc/mosquitto/certs/server.crt
+sudo chmod 600 /etc/mosquitto/certs/server.key
+sudo chown -R 1883:1883 /etc/mosquitto/certs  # Mosquitto user

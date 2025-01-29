@@ -5,10 +5,15 @@ class MqttService
 
   MQTT_CONFIG = {
     host: ENV.fetch("MQTT_HOST", "localhost"),
-    port: ENV.fetch("MQTT_PORT", 1883).to_i,
+    port: ENV.fetch("MQTT_PORT", 8883).to_i,  # Changed to standard TLS port
     username: ENV.fetch("MQTT_USERNAME", "cloud_service"),
     password: ENV.fetch("MQTT_PASSWORD"),
-    ssl: ENV.fetch("MQTT_SSL", "false") == "true",
+    ssl: true,
+    ssl_version: :TLSv1_2,
+    cert_file: ENV.fetch("MQTT_CLIENT_CERT_PATH"),
+    key_file: ENV.fetch("MQTT_CLIENT_KEY_PATH"),
+    ca_file: ENV.fetch("MQTT_CA_CERT_PATH"),
+    verify_peer: true,
     keep_alive: 300,
     client_id: "sunshine-#{Rails.env}-#{Process.pid}"
   }

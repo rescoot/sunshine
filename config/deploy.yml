@@ -32,25 +32,32 @@ env:
     - RAILS_MASTER_KEY
     - MQTT_PASSWORD
     - SMTP_PASSWORD
+    - MQTT_CA_CRT
+    - MQTT_SERVER_CRT
+    - MQTT_SERVER_KEY
   clear:
     RAILS_ENV: production
     RAILS_LOG_TO_STDOUT: true
     MQTT_HOST: mqtt.sunshine.rescoot.org
-    MQTT_PORT: 1883
+    MQTT_PORT: 8883
     MQTT_USERNAME: cloud_service
     REDIS_URL: redis://sunshine-redis:6379/1
-    # SOLID_QUEUE_IN_PUMA: false
 
 accessories:
   mqtt:
     image: eclipse-mosquitto:latest
     roles:
       - web
-    port: 1883
+    port: "1883"
+    options:
+      publish:
+        - "1883:1883"
+        - "8883:8883"
     volumes:
       - /etc/mosquitto/config:/mosquitto/config
       - /etc/mosquitto/data:/mosquitto/data
       - /etc/mosquitto/log:/mosquitto/log
+      - /etc/mosquitto/certs:/mosquitto/certs
     options:
       restart: unless-stopped
 
