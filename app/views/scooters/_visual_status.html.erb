@@ -28,37 +28,5 @@
         <% end %>
       <% end %>
     </div>
-
-    <!-- Status Indicators -->
-    <div class="mt-6 grid grid-cols-2 gap-4">
-      <div>
-        <span class="text-sm font-medium text-gray-500">Status:</span>
-        <% if scooter.online? %>
-          <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Online</span>
-        <% else %>
-          <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Offline</span>
-        <% end %>
-      </div>
-      <div>
-        <span class="text-sm font-medium text-gray-500">State:</span>
-        <% if scooter.unlocked? %>
-          <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"><%= scooter.state %></span>
-        <% else %>
-          <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"><%= scooter.state %></span>
-        <% end %>
-      </div>
-      <div>
-        <span class="text-sm font-medium text-gray-500">Kickstand:</span>
-        <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
-          <%= scooter.kickstand&.titleize || 'Unknown' %>
-        </span>
-      </div>
-      <div>
-        <span class="text-sm font-medium text-gray-500">Seatbox:</span>
-        <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
-          <%= scooter.seatbox&.titleize || 'Unknown' %>
-        </span>
-      </div>
-    </div>
   </div>
 </div>

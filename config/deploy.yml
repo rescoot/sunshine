@@ -42,6 +42,9 @@ env:
     MQTT_PORT: 8883
     MQTT_USERNAME: cloud_service
     REDIS_URL: redis://sunshine-redis:6379/1
+    MQTT_CA_CERT_PATH: config/mqtt_certs/ca.crt
+    MQTT_CLIENT_CERT_PATH: config/mqtt_certs/clients/sunshine_server/client.crt
+    MQTT_CLIENT_KEY_PATH: config/mqtt_certs/clients/sunshine_server/client.key
 
 accessories:
   mqtt:

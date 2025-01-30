@@ -1,13 +1,10 @@
-<%# app/views/scooters/_controls.html.erb %>
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-  <% if scooter.locked? %>
-    <%= button_to unlock_scooter_path(scooter), class: "btn-primary green w-full" do %>
-      Unlock
-    <% end %>
-  <% else %>
-    <%= button_to lock_scooter_path(scooter), class: "btn-primary red w-full" do %>
-      Lock
-    <% end %>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
+  <%= button_to unlock_scooter_path(scooter), class: "btn-primary green w-full" do %>
+    Unlock
+  <% end %>
+
+  <%= button_to lock_scooter_path(scooter), class: "btn-primary red w-full" do %>
+    Lock
   <% end %>
 
   <%= button_to honk_scooter_path(scooter), class: "btn-secondary w-full" do %>
@@ -39,35 +36,14 @@
       </div>
     </div>
   </div>
-</div>
 
-<div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
   <%= button_to ping_scooter_path(scooter), class: "btn-secondary w-full" do %>
     Ping
   <% end %>
 
   <%= button_to get_state_scooter_path(scooter), class: "btn-secondary w-full" do %>
-    Update State
+    Request Telemetry
   <% end %>
-
-  <div class="relative" data-controller="dropdown">
-    <button type="button" data-action="dropdown#toggle" class="btn-secondary w-full">
-      Sounds
-    </button>
-    <div data-dropdown-target="menu" class="dropdown-menu hidden">
-      <div class="py-1">
-        <%= button_to play_sound_scooter_path(scooter, sound: "find_me"), class: "dropdown-item" do %>
-          Find Me
-        <% end %>
-        <%= button_to play_sound_scooter_path(scooter, sound: "alarm"), class: "dropdown-item" do %>
-          Alarm
-        <% end %>
-        <%= button_to play_sound_scooter_path(scooter, sound: "chirp"), class: "dropdown-item" do %>
-          Chirp
-        <% end %>
-      </div>
-    </div>
-  </div>
 
   <%= button_to update_firmware_scooter_path(scooter), 
       class: "btn-warning w-full",

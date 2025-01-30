@@ -1,0 +1,56 @@
+<!-- Status Indicators -->
+<div class="mt-6 flex flex-wrap gap-2">
+  <% if scooter.online? %>
+    <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Online</span>
+  <% else %>
+    <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Last seen <%= time_ago_in_words(scooter.last_seen_at) %> ago</span>
+  <% end %>
+  
+  <span class="inline-flex items-center rounded-md <%= scooter.unlocked? ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20' %> px-2 py-1 text-xs font-medium ring-1 ring-inset">
+    <%= scooter.state %>
+  </span>
+
+  <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+    Kickstand <%= scooter.kickstand&.titleize || 'unknown' %>
+  </span>
+
+  <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+    Seatbox <%= scooter.seatbox&.titleize || 'unknown' %>
+  </span>
+
+  <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20">
+    <% if scooter.estimated_range %>
+      <%= scooter.estimated_range %> km range
+    <% else %>
+      Range unknown
+    <% end %>
+  </span>
+
+  <% if scooter.location? %>
+    <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-600/20">
+      <%= number_with_precision(scooter.lat, precision: 6) %>, <%= number_with_precision(scooter.lng, precision: 6) %>
+    </span>
+  <% else %>
+    <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+      Location unknown
+    </span>
+  <% end %>
+
+  <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset <%= battery_status_classes(scooter.battery0_level) %>">
+    Main <%= number_to_percentage(scooter.battery0_level, precision: 0) %>
+  </span>
+
+  <% if scooter.battery1_level > 0.0 %>
+    <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset <%= battery_status_classes(scooter.battery1_level) %>">
+      Spare <%= number_to_percentage(scooter.battery1_level, precision: 0) %>
+    </span>
+  <% end %>
+
+  <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset <%= battery_status_classes(scooter.cbb_battery_level) %>">
+    CBB <%= number_to_percentage(scooter.cbb_battery_level, precision: 0) %>
+  </span>
+
+  <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset <%= battery_status_classes(scooter.aux_battery_level) %>">
+    Aux <%= number_to_percentage(scooter.aux_battery_level, precision: 0) %>
+  </span>
+</div>

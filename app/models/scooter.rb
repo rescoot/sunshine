@@ -50,6 +50,10 @@ class Scooter < ApplicationRecord
     )
   end
 
+  def location?
+    lat.present? && lng.present? && !(lat == 0 && lng == 0)
+  end
+
   def online?
     last_seen_at && last_seen_at > 5.minutes.ago
   end
@@ -112,6 +116,11 @@ class Scooter < ApplicationRecord
         "max_interval" => "300s"
       }
     }
+  end
+
+  def estimated_range
+    # scooter gets approx 35-40km per full battery
+    [ battery0_level, battery1_level ].sum * 0.4
   end
 
   private
