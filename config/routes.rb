@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   # to reverse the unu cloud requests
   resources :unu_requests, only: [ :index, :show ]
   constraints subdomain: "unu.cloud" do
+    match "/", to: "unu#handle", via: :all
     match "*path", to: "unu#handle", via: :all
   end
 

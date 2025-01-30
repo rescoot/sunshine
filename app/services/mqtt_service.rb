@@ -5,22 +5,21 @@ class MqttService
 
   MQTT_CONFIG = {
     host: ENV.fetch("MQTT_HOST", "localhost"),
-    port: ENV.fetch("MQTT_PORT", 8883).to_i,  # Changed to standard TLS port
+    port: ENV.fetch("MQTT_PORT", 8883).to_i,
     username: ENV.fetch("MQTT_USERNAME", "cloud_service"),
     password: ENV.fetch("MQTT_PASSWORD"),
-    ssl: true,
-    ssl_version: :TLSv1_2,
-    cert_file: ENV.fetch("MQTT_CLIENT_CERT_PATH"),
-    key_file: ENV.fetch("MQTT_CLIENT_KEY_PATH"),
-    ca_file: ENV.fetch("MQTT_CA_CERT_PATH"),
-    verify_peer: true,
+    ssl: ENV.fetch("MQTT_SSL", "true") == "true",
+    # cert_file: ENV.fetch("MQTT_SERVER_CRT_PATH"),
+    # key_file: ENV.fetch("MQTT_SERVER_KEY_PATH"),
+    # ca_file: ENV.fetch("MQTT_CA_CRT_PATH"),
+    # verify_peer: true,
     keep_alive: 300,
     client_id: "sunshine-#{Rails.env}-#{Process.pid}"
   }
 
   def run
     @terminating = false
-    connect
+
     subscribe_to_topics
 
     Signal.trap("TERM") { @terminating = true }
@@ -36,7 +35,6 @@ class MqttService
     @client = MQTT::Client.new(MQTT_CONFIG)
     @ack_subscribers = Concurrent::Map.new
     connect
-    subscribe_to_topics
   end
 
   def connect

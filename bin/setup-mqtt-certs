@@ -1,16 +1,25 @@
 #!/bin/bash
 
-# Set up certificate directory
-sudo mkdir -p /etc/mosquitto/certs
-sudo chmod 700 /etc/mosquitto/certs
+set -e
 
-# Write certificates from environment
-echo "$MQTT_CA_CRT" | sudo tee /etc/mosquitto/certs/ca.crt > /dev/null
-echo "$MQTT_SERVER_CRT" | sudo tee /etc/mosquitto/certs/server.crt > /dev/null
-echo "$MQTT_SERVER_KEY" | sudo tee /etc/mosquitto/certs/server.key > /dev/null
+cd ..
 
-# Set permissions
-sudo chmod 644 /etc/mosquitto/certs/ca.crt
-sudo chmod 644 /etc/mosquitto/certs/server.crt
-sudo chmod 600 /etc/mosquitto/certs/server.key
-sudo chown -R 1883:1883 /etc/mosquitto/certs  # Mosquitto user
+mkdir -p config/mqtt_certs/{clients,public,server}
+mkdir -p /etc/mosquitto/certs
+
+if [ -z "$MQTT_CA_CRT" ] || [ -z "$MQTT_SERVER_CRT" ] || [ -z "$MQTT_SERVER_KEY" ]; then
+  echo "Missing required MQTT certificate environment variables"
+  exit 1
+fi
+
+if [ -z "$MQTT_CA_CRT_PATH" ] || [ -z "$MQTT_SERVER_CRT_PATH" ] || [ -z "$MQTT_SERVER_KEY_PATH" ]; then
+  echo "Missing required MQTT certificate paths"
+  exit 1
+fi
+
+printf "%s" "$MQTT_CA_CRT" | base64 -d | tee /etc/mosquitto/certs/ca.crt > "$MQTT_CA_CRT_PATH"
+printf "%s" "$MQTT_SERVER_CRT" | base64 -d | tee /etc/mosquitto/certs/server.crt > "$MQTT_SERVER_CRT_PATH"
+printf "%s" "$MQTT_SERVER_KEY" | base64 -d | tee /etc/mosquitto/certs/server.key > "$MQTT_SERVER_KEY_PATH"
+
+chmod 644 /etc/mosquitto/certs/ca.crt /etc/mosquitto/certs/server.crt
+chmod 600 /etc/mosquitto/certs/server.key

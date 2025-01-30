@@ -12,6 +12,10 @@ servers:
     hosts:
       - 178.63.144.127
     cmd: bin/mqtt
+  
+builder:
+  arch: amd64
+  remote: ssh://root@rescoot.org
 
 proxy:
   ssl: true
@@ -32,36 +36,38 @@ env:
     - RAILS_MASTER_KEY
     - MQTT_PASSWORD
     - SMTP_PASSWORD
-    - MQTT_CA_CRT
-    - MQTT_SERVER_CRT
-    - MQTT_SERVER_KEY
   clear:
     RAILS_ENV: production
     RAILS_LOG_TO_STDOUT: true
+    REDIS_URL: redis://sunshine-redis:6379/1
     MQTT_HOST: mqtt.sunshine.rescoot.org
     MQTT_PORT: 8883
+    MQTT_SSL: true
     MQTT_USERNAME: cloud_service
-    REDIS_URL: redis://sunshine-redis:6379/1
-    MQTT_CA_CERT_PATH: config/mqtt_certs/ca.crt
-    MQTT_CLIENT_CERT_PATH: config/mqtt_certs/clients/sunshine_server/client.crt
-    MQTT_CLIENT_KEY_PATH: config/mqtt_certs/clients/sunshine_server/client.key
+    MQTT_CA_CRT_PATH: config/mqtt_certs/ca.crt
+    MQTT_SERVER_CRT_PATH: config/mqtt_certs/server/server.crt
+    MQTT_SERVER_KEY_PATH: config/mqtt_certs/server/server.key
 
 accessories:
   mqtt:
     image: eclipse-mosquitto:latest
     roles:
       - web
-    port: "1883"
-    options:
-      publish:
-        - "1883:1883"
-        - "8883:8883"
+    files:
+      - config/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - config/mosquitto/acl:/mosquitto/config/acl
+      - config/mqtt_certs/ca.crt:/mosquitto/certs/ca.crt
+      - config/mqtt_certs/server/server.crt:/mosquitto/certs/server/server.crt
+      - config/mqtt_certs/server/server.key:/mosquitto/certs/server/server.key
     volumes:
-      - /etc/mosquitto/config:/mosquitto/config
+      - /etc/mosquitto/config/passwd:/mosquitto/config/passwd
       - /etc/mosquitto/data:/mosquitto/data
       - /etc/mosquitto/log:/mosquitto/log
       - /etc/mosquitto/certs:/mosquitto/certs
     options:
+      publish:
+        - "1883:1883"
+        - "8883:8883"
       restart: unless-stopped
 
   redis:
@@ -77,10 +83,6 @@ accessories:
 volumes:
   - "sunshine_storage:/rails/storage"
   - "/var/lib/redis:/var/lib/redis"
-  - "/etc/mosquitto:/etc/mosquitto"
-
-builder:
-  arch: amd64
 
 aliases:
   console: app exec --interactive --reuse "bin/rails console"

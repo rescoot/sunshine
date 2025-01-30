@@ -1,7 +1,7 @@
 <!-- Status Indicators -->
 <div class="mt-6 flex flex-wrap gap-2">
   <% if scooter.online? %>
-    <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Online</span>
+    <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20" title="<%= scooter.last_seen_at %>">Online</span>
   <% else %>
     <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Last seen <%= time_ago_in_words(scooter.last_seen_at) %> ago</span>
   <% end %>
