@@ -99,11 +99,9 @@ class MqttService
     scooter_vin = topic_parts[1]
     message_type = topic_parts[2]
 
-    Rails.logger.debug "MQTT: Processing #{message_type} for scooter #{scooter_vin}"
-
     case message_type
     when "status"
-      process_status(scooteer_vin, message)
+      process_status(scooter_vin, message)
     when "telemetry"
       process_telemetry(scooter_vin, message)
     when "acks"
@@ -128,7 +126,7 @@ class MqttService
   def decode_protobuf(topic, message)
     klass = case topic.split("/").last
     when "scooter_state" then Protos::Unu::V1::ScooterStateBulk
-    when "scooter_event" then Protos::Unu::V1::ScooterEvent
+    when "scooter_event" then Protos::Unu::V1::ScooterEventBulk
     when "command_acknowledgement" then Protos::Unu::V1::CommandAcknowledgement
     end
 
