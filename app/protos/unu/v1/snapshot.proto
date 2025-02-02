@@ -1,0 +1,32 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+package protos.unu.v1;
+
+enum SnapshotCommand {
+  SNAPSHOT_COMMAND_UNSPECIFIED = 0;
+  SNAPSHOT_COMMAND_GET_REDIS_STATE = 1;
+  SNAPSHOT_COMMAND_GET_PS_STATE = 2;
+  SNAPSHOT_COMMAND_GET_SYSTEMD_STATE = 3;
+  SNAPSHOT_COMMAND_ENABLE_LOGGING = 4;
+  SNAPSHOT_COMMAND_DISABLE_LOGGING = 5;
+  SNAPSHOT_COMMAND_GET_SYSTEMD_RESTARTS = 6;
+  SNAPSHOT_COMMAND_HARD_RESET_OTA_MDB = 7;
+  SNAPSHOT_COMMAND_HARD_RESET_OTA_DBC = 8;
+  SNAPSHOT_COMMAND_FETCH_UPDATE = 9;
+  SNAPSHOT_COMMAND_ROTATE_CREDENTIALS = 10;
+  SNAPSHOT_COMMAND_RESTART_OTA_SERVICE = 11;
+  SNAPSHOT_COMMAND_OTA_MIGRATE_TO_HERE = 12;
+  SNAPSHOT_COMMAND_OTA_MIGRATE_TO_FOUNDRIES = 13;
+  SNAPSHOT_COMMAND_OTA_PULL_CONFIG = 14;
+  SNAPSHOT_COMMAND_REFRESH_STATE = 15;
+}
+
+message SnapshotCommandRequest { SnapshotCommand command = 1; }
+
+message SnapshotCommandResponse {
+  SnapshotCommand command = 1;
+  string result = 2;
+  google.protobuf.Timestamp ts = 3;
+  int32 return_code = 4;
+}

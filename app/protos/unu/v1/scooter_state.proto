@@ -1,0 +1,163 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+package protos.unu.v1;
+
+message ScooterStateBulk { repeated ScooterState states = 1; }
+
+message ScooterState {
+  google.protobuf.Timestamp ts = 1;
+  Seatbox seatbox = 2;
+  Handlebar handlebar = 3;
+  ScooterMode mode = 4;
+  MainBattery main_battery_0 = 5;
+  MainBattery main_battery_1 = 6;
+  CBBattery cb_battery = 7;
+  AuxBattery aux_battery = 8;
+  FirmwareVersions versions = 9;
+  optional uint32 odometer = 10;
+  Network network = 11;
+  ScooterDriveMode drive_mode = 12;
+  ScooterPowerMode power_mode = 13;
+  string scooter_protobuf_version = 14;
+  SerialNumbers serial_numbers = 15;
+  Ota ota = 16;
+  Bluetooth bluetooth = 17;
+  Location location = 18;
+
+  message Seatbox { bool open = 1; }
+
+  message Handlebar {
+    bool locked = 1;
+    bool in_place_position = 2;
+  }
+
+  enum ScooterMode {
+    SCOOTER_MODE_UNSPECIFIED = 0;
+    SCOOTER_MODE_READY_TO_DRIVE = 1;
+    SCOOTER_MODE_PARKED = 2;
+    SCOOTER_MODE_STANDBY = 3;
+    SCOOTER_MODE_STANDBY_SUSPEND = 4;
+    SCOOTER_MODE_STANDBY_HIBERNATION = 5;
+  }
+
+  message MainBattery {
+    bool present = 1;
+    MainBatteryState state = 2;
+    optional uint32 charge = 3;
+    optional uint32 cycle_count = 4;
+    google.protobuf.Timestamp manufacturing_date = 5;
+    string serial_number = 6;
+    string fw_version = 7;
+    optional uint32 state_of_health = 8;
+  }
+
+  enum MainBatteryState {
+    MAIN_BATTERY_STATE_UNSPECIFIED = 0;
+    MAIN_BATTERY_STATE_UNKNOWN = 1;
+    MAIN_BATTERY_STATE_ASLEEP = 2;
+    MAIN_BATTERY_STATE_IDLE = 3;
+    MAIN_BATTERY_STATE_ACTIVE = 4;
+  }
+
+  message CBBattery {
+    bool present = 1;
+    optional uint32 charge = 2;
+    CBBatteryState state = 3;
+    optional uint32 cycle_count = 4;
+    string serial_number = 5;
+    optional uint32 state_of_health = 6;
+    optional uint32 cell_voltage = 7;
+  }
+
+  enum CBBatteryState {
+    CB_BATTERY_STATE_UNSPECIFIED = 0;
+    CB_BATTERY_STATE_CHARGING = 1;
+    CB_BATTERY_STATE_NOT_CHARGING = 2;
+  }
+
+  message AuxBattery {
+    optional int32 voltage = 1;
+    optional uint32 charge = 2;
+    AuxChargeStatus charge_status = 3;
+  }
+
+  enum AuxChargeStatus {
+    AUX_CHARGE_STATUS_UNSPECIFIED = 0;
+    AUX_CHARGE_STATUS_NOT_CHARGING = 1;
+    AUX_CHARGE_STATUS_FLOAT_CHARGE = 2;
+    AUX_CHARGE_STATUS_ABSORPTION_CHARGE = 3;
+    AUX_CHARGE_STATUS_BULK_CHARGE = 4;
+  }
+
+  message FirmwareVersions {
+    string dbc_version = 1;
+    string mdb_version = 2;
+    string nrf_fw_version = 3;
+    string engine_ecu_version = 4;
+    string environment = 5;
+    string ble_mac_address = 6;
+  }
+
+  message Network {
+    string ip = 1;
+    string connection_technology = 2;
+  }
+
+  enum ScooterDriveMode {
+    SCOOTER_DRIVE_MODE_UNSPECIFIED = 0;
+    SCOOTER_DRIVE_MODE_DRIVE = 1;
+    SCOOTER_DRIVE_MODE_PARK = 2;
+    SCOOTER_DRIVE_MODE_STANDBY = 3;
+  }
+
+  enum ScooterPowerMode {
+    SCOOTER_POWER_MODE_UNSPECIFIED = 0;
+    SCOOTER_POWER_MODE_RUNNING = 1;
+    SCOOTER_POWER_MODE_SUSPEND = 2;
+    SCOOTER_POWER_MODE_HIBERNATION = 3;
+    SCOOTER_POWER_MODE_MANUAL_HIBERNATION = 4;
+    SCOOTER_POWER_MODE_TIME_BASED_HIBERNATION = 5;
+  }
+
+  message SerialNumbers {
+    string mdb_cpu_sn = 1;
+    string dbc_cpu_sn = 2;
+  }
+
+  enum OtaSystem {
+    OTA_SYSTEM_UNSPECIFIED = 0;
+    OTA_SYSTEM_HERE = 1;
+    OTA_SYSTEM_FOUNDRIES = 2;
+  }
+
+  enum OtaMigrationStatus {
+    OTA_MIGRATION_STATUS_UNSPECIFIED = 0;
+    OTA_MIGRATION_STATUS_WAITING_PREREQUISITE = 1;
+    OTA_MIGRATION_STATUS_PREPARING_MIGRATION = 2;
+    OTA_MIGRATION_STATUS_FOUNDRIES_PROVISIONING = 3;
+    OTA_MIGRATION_STATUS_FOUNDRIES_PROVISIONING_FAILED = 4;
+    OTA_MIGRATION_STATUS_CONFIGURING_SERVICES = 5;
+    OTA_MIGRATION_STATUS_RESTORING_SERVICES = 6;
+    OTA_MIGRATION_STATUS_SUCCESSFUL = 7;
+    OTA_MIGRATION_STATUS_FAILED = 8;
+  }
+
+  message Ota {
+    string tag = 1;
+    OtaSystem system = 2;
+    OtaMigrationStatus migration = 3;
+  }
+
+  message Bluetooth {
+    string mac_address = 1;
+    string pin_code = 2;
+  }
+
+  message Location {
+    double latitude = 1;
+    double longitude = 2;
+    double altitude = 3;
+    google.protobuf.Timestamp ts = 4;
+  }
+}

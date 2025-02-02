@@ -37,6 +37,20 @@
     </div>
   </div>
 
+  <%= button_to locate_scooter_path(scooter), class: "btn-secondary w-full" do %>
+    Locate
+  <% end %>
+
+  <%= button_to alarm_scooter_path(scooter),
+      class: "btn-warning w-full",
+      data: { 
+        controller: "confirm",
+        action: "confirm#confirm",
+        confirm_message_value: "Really sound alarm?"
+      } do %>
+    Alarm (5s)
+  <% end %>
+
   <%= button_to ping_scooter_path(scooter), class: "btn-secondary w-full" do %>
     Ping
   <% end %>
@@ -50,8 +64,8 @@
       data: { 
         controller: "confirm",
         action: "confirm#confirm",
-        confirm_message_value: "Start firmware update?"
+        confirm_message_value: "Start client update?"
       } do %>
-    Update Firmware
+    Update Client
   <% end %>
 </div>

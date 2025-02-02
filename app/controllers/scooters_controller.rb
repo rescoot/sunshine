@@ -147,13 +147,16 @@ class ScootersController < ApplicationController
   def play_sound
     sound = params[:sound].presence_in([ "find_me", "alarm", "chirp" ]) || "chirp"
     result = ScooterCommandService.new(@scooter).send_command("play_sound", sound: sound)
+    handle_command_result(result, "Sound command")
+  end
 
-    if result.success?
-      notice = result.enqueued ? "Sound command enqueued for when scooter comes online." : "Playing #{sound} sound."
-      redirect_to @scooter, notice: notice
-    else
-      redirect_to @scooter, alert: "Failed to play sound: #{result.error}"
-    end
+  def locate
+    handle_command_result(ScooterCommandService.new(@scooter).send_command("locate"), "Location request")
+  end
+
+  def alarm
+    duration = params[:duration] || "5s"  # default to 5 seconds if not specified
+    handle_command_result(ScooterCommandService.new(@scooter).send_command("alarm", duration: duration), "Alarm trigger")
   end
 
   def regenerating?
@@ -173,7 +176,7 @@ class ScootersController < ApplicationController
   end
 
   def scooter_params
-    params.require(:scooter).permit(:name, :vin, :color)
+    params.require(:scooter).permit(:name, :vin, :color, :imei)
   end
 
   def handle_command_result(result, command_name)

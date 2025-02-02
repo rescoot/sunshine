@@ -14,6 +14,7 @@ class MqttService
     # ca_file: ENV.fetch("MQTT_CA_CRT_PATH"),
     # verify_peer: true,
     keep_alive: 300,
+    clean_session: false,
     client_id: "sunshine-#{Rails.env}-#{Process.pid}"
   }
 
@@ -34,6 +35,7 @@ class MqttService
     Rails.logger.debug "MQTT handler initialize"
     @client = MQTT::Client.new(MQTT_CONFIG)
     @ack_subscribers = Concurrent::Map.new
+
     connect
   end
 
@@ -67,9 +69,11 @@ class MqttService
   def subscribe_to_topics
     Thread.new do
       @client.subscribe([
+        "scooters/+/status",
         "scooters/+/telemetry",
-        "scooters/+/acks",     # Command acknowledgments
-        "scooters/+/trip/#"
+        "scooters/+/acks",
+        "scooters/+/trip/#",
+        "+/v1/#"  # unu cloud messages: <imei>/v1/[direction]/[type]
       ])
 
       @client.get do |topic, message|
@@ -83,7 +87,14 @@ class MqttService
     Rails.logger.debug "MQTT: Received message on topic '#{topic}': #{message}"
 
     topic_parts = topic.split("/")
-    return unless topic_parts[0] == "scooters"
+
+    if topic_parts[0] != "scooters"
+      if topic_parts[1] == "v1"
+        # unu cloud message
+        process_unu_message(topic_parts[0], topic, message)
+      end
+      return
+    end
 
     scooter_vin = topic_parts[1]
     message_type = topic_parts[2]
@@ -91,6 +102,8 @@ class MqttService
     Rails.logger.debug "MQTT: Processing #{message_type} for scooter #{scooter_vin}"
 
     case message_type
+    when "status"
+      process_status(scooteer_vin, message)
     when "telemetry"
       process_telemetry(scooter_vin, message)
     when "acks"
@@ -100,6 +113,40 @@ class MqttService
     end
   rescue => e
     Rails.logger.error "Error processing MQTT message: #{e.message}\n\n#{e.backtrace.grep(/sunshine/).join("\n")}"
+  end
+
+  def process_unu_message(imei, topic, message)
+    # Store raw message
+    RawMessage.create!(
+      imei: imei,
+      topic: topic,
+      payload: decode_protobuf(topic, message),
+      received_at: Time.current
+    )
+  end
+
+  def decode_protobuf(topic, message)
+    klass = case topic.split("/").last
+    when "scooter_state" then Protos::Unu::V1::ScooterStateBulk
+    when "scooter_event" then Protos::Unu::V1::ScooterEvent
+    when "command_acknowledgement" then Protos::Unu::V1::CommandAcknowledgement
+    end
+
+    begin
+      decoded = klass.decode(message)
+      return decoded.to_h.merge(raw_hex: message.unpack("H*").first)
+    rescue Google::Protobuf::ParseError
+    end
+
+    { raw_hex: message.unpack("H*").first }
+  end
+
+  def process_status(scooter_vin, message)
+    data = JSON.parse(message)
+    scooter = Scooter.find_by(vin: scooter_vin)
+    return unless scooter
+
+    Rails.logger.debug("Status from #{scooter}: #{data}")
   end
 
   def process_ack(scooter_vin, message)

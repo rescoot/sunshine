@@ -1,0 +1,20 @@
+syntax = "proto3";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "unu/v1/scooter_state.proto";
+
+package protos.unu.v1;
+
+message ScooterEventBulk { repeated ScooterEvent events = 1; }
+
+message ScooterEvent {
+  google.protobuf.Timestamp ts = 1;
+  GenericEvent event = 2;
+  ScooterState state = 3;
+
+  message GenericEvent {
+    bool active = 1;
+    string event_code = 2;
+    google.protobuf.Struct info = 3;
+  }
+}

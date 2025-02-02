@@ -1,0 +1,55 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+package protos.unu.v1;
+
+enum Command {
+  COMMAND_UNSPECIFIED = 0;
+  COMMAND_PING_PONG = 1;
+  COMMAND_GO_TO_HIBERNATION = 2;
+  COMMAND_LOCK = 3;
+  COMMAND_UNLOCK = 4;
+  COMMAND_UPDATE_CONFIG = 5;
+}
+
+enum CommandStatus {
+  COMMAND_STATUS_UNSPECIFIED = 0;
+  COMMAND_STATUS_PENDING = 1;
+  COMMAND_STATUS_EXECUTED = 2;
+  COMMAND_STATUS_EXECUTION_SCHEDULED = 3;
+  COMMAND_STATUS_EXECUTION_REJECTED = 4;
+  COMMAND_STATUS_EXECUTION_FAILED = 5;
+  COMMAND_STATUS_TIMED_OUT = 6;
+  COMMAND_STATUS_CANCELED = 7;
+}
+
+enum PreconditionFailed {
+  PRECONDITION_FAILED_UNSPECIFIED = 0;
+  PRECONDITION_FAILED_SCOOTER_NOT_IN_PARKED_OR_SUSPEND = 1;
+  PRECONDITION_FAILED_NOT_IN_STANDBY = 2;
+  PRECONDITION_FAILED_HIBERNATION_PENDING = 3;
+  PRECONDITION_FAILED_SCOOTER_NOT_IN_PARKED = 4;
+  PRECONDITION_FAILED_KICKSTAND_NOT_OUT = 5;
+  PRECONDITION_FAILED_SCOOTER_NOT_LOCKED = 6;
+}
+
+message ScooterConfig {
+  bool location_disabled = 1;
+  int32 hibernation_timer = 2;
+}
+
+message CommandRequest {
+  Command command = 1;
+  string id = 2;
+  oneof data { ScooterConfig config = 3; }
+}
+
+message CommandAcknowledgement {
+  string id = 1;
+  CommandStatus status = 2;
+  google.protobuf.Timestamp ts = 3;
+  oneof rejection {
+    PreconditionFailed precondition_failed = 4;
+    string other_reason = 5;
+  }
+}

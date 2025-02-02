@@ -22,6 +22,8 @@ Rails.application.routes.draw do
           post :ping
           post :update_firmware
           post :get_state
+          post :locate
+          post :alarm
 
           post :generate_token
         end
@@ -61,6 +63,8 @@ Rails.application.routes.draw do
       post :ping
       post :update_firmware
       post :get_state
+      post :locate
+      post :alarm
 
       get :show_token_management
     end

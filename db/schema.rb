@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_29_152710) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_31_170343) do
   create_table "api_tokens", force: :cascade do |t|
     t.integer "scooter_id"
     t.string "token_digest"
@@ -24,6 +24,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_29_152710) do
     t.index ["scope"], name: "index_api_tokens_on_scope"
     t.index ["token_digest"], name: "index_api_tokens_on_token_digest", unique: true
     t.index ["user_id"], name: "index_api_tokens_on_user_id"
+  end
+
+  create_table "raw_messages", force: :cascade do |t|
+    t.string "imei", null: false
+    t.string "topic", null: false
+    t.json "payload"
+    t.datetime "received_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["imei"], name: "index_raw_messages_on_imei"
   end
 
   create_table "scooters", force: :cascade do |t|
@@ -45,6 +55,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_29_152710) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "color"
+    t.string "imei"
+    t.index ["imei"], name: "index_scooters_on_imei", unique: true
     t.index ["vin"], name: "index_scooters_on_vin", unique: true
   end
 

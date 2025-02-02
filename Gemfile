@@ -62,3 +62,7 @@ gem "turbo-rails", "~> 2.0"
 gem "tailwindcss-rails", "~> 3.3"
 
 gem "stimulus-rails", "~> 1.3"
+
+gem "protobuf", "~> 3.10"
+
+gem "google-protobuf", "~> 3.25"

@@ -5,11 +5,14 @@ class Scooter < ApplicationRecord
   has_many :telemetries
   has_one :api_token, dependent: :destroy
 
-  include ActionView::RecordIdentifier
-  # broadcasts_to ->(scooter) { scooter }
+  has_many :raw_messages, foreign_key: :imei, primary_key: :imei
+  validates :imei, uniqueness: true, allow_nil: true
 
   validates :name, presence: true
   validates :vin, presence: true, uniqueness: true
+
+  include ActionView::RecordIdentifier
+  # broadcasts_to ->(scooter) { scooter }
 
   # Valid states
   STATES = %w[stand-by ready-to-drive off parked hibernating locked].freeze
@@ -120,7 +123,7 @@ class Scooter < ApplicationRecord
 
   def estimated_range
     # scooter gets approx 35-40km per full battery
-    [ battery0_level, battery1_level ].sum * 0.4
+    [ 0.0, battery0_level, battery1_level ].compact.sum * 40.0 / 100.0
   end
 
   private
