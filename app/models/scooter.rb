@@ -87,7 +87,8 @@ class Scooter < ApplicationRecord
 
   def battery_image_path(level)
     case level
-    when 0..25 then "battery/batt_25.webp"
+    when 0 then "battery/batt_empty.webp"
+    when ..25 then "battery/batt_25.webp"
     when 26..50 then "battery/batt_50.webp"
     when 51..75 then "battery/batt_75.webp"
     else "battery/batt_full.webp"

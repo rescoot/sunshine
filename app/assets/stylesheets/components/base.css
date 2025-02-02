@@ -1,0 +1,12 @@
+:root {
+  --transition-smooth: cubic-bezier(0.0, 0.6, 0.2, 1);
+  --dashboard-size: 480px;
+}
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+}
+
+bar { display: none; }

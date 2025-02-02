@@ -66,3 +66,5 @@ gem "stimulus-rails", "~> 1.3"
 gem "protobuf", "~> 3.10"
 
 gem "google-protobuf", "~> 3.25"
+
+gem "tailwindcss-ruby", "~> 3.4"

@@ -1,63 +1,8 @@
+@import "components/base";
+@import "components/buttons";
+@import "components/dashboard";
+@import "components/animations";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/*
-
-@layer components {
-  .btn-primary {
-    @apply py-2 px-4 bg-blue-200;
-  }
-}
-
-*/
-
-@layer components {
-  .btn-primary {
-    @apply rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm bg-indigo-600 hover:bg-indigo-500;
-  }
-  .btn-primary.green {
-    @apply bg-green-600 hover:bg-green-500;
-  }
-  .btn-primary.red {
-    @apply bg-red-600 hover:bg-red-500;
-  }
-  .btn-secondary {
-    @apply rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500;
-  }
-  .btn-warning {
-    @apply rounded-md bg-yellow-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-500;
-  }
-  .dropdown-menu {
-    @apply absolute z-10 mt-2 w-32 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5;
-  }
-  .dropdown-item {
-    @apply block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100;
-  }
-}
-
-@layer utilities {
-  @keyframes pulse {
-    50% {
-      opacity: .5;
-    }
-  }
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-  @keyframes glow-up {
-    100% { opacity: 1; }
-    40% { opacity: 0.7; }
-    0% { opacity: 0; }
-  }
-  .animate-blink {
-    animation: blink 1s cubic-bezier(0.0, 0.6, 0.2, 1) infinite;
-  }
-  .animate-glow {
-    animation: glow-up 1.5s ease-in 1 forwards;
-  }
-  .animate-pulse {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-}

@@ -1,0 +1,42 @@
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <div class="flex items-center justify-between">
+      <h1 class="text-2xl font-semibold leading-6 text-gray-900">Telemetry Details</h1>
+      <%= link_to "Back to List", admin_unu_uplink_requests_path, class: "rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+    </div>
+  </div>
+</div>
+
+<div class="mt-8">
+  <dl class="divide-y divide-gray-100">
+    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium leading-6 text-gray-900">Timestamp</dt>
+      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+        <%= @request.created_at.strftime("%Y-%m-%d %H:%M:%S.%3N") %>
+      </dd>
+    </div>
+    
+    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium leading-6 text-gray-900">IMEI</dt>
+      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+        <%= @request.imei %>
+      </dd>
+    </div>
+
+    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium leading-6 text-gray-900">Topic</dt>
+      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+        <%= @request.topic %>
+      </dd>
+    </div>
+
+    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium leading-6 text-gray-900">Payload</dt>
+      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+        <div class="whitespace-pre-wrap font-mono bg-gray-50 p-4 rounded-md">
+          <%= JSON.pretty_generate(JSON.parse(@request.payload)) rescue @request.payload %>
+        </div>
+      </dd>
+    </div>
+  </dl>
+</div>

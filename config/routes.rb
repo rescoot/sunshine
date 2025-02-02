@@ -1,13 +1,18 @@
 # config/routes.rb
 Rails.application.routes.draw do
-  # to reverse the unu cloud requests
-  resources :unu_requests, only: [ :index, :show ]
-  constraints subdomain: "unu.cloud" do
-    match "/", to: "unu#handle", via: :all
-    match "*path", to: "unu#handle", via: :all
-  end
+  ## turns out the unu "cloud" REST API is used _only_ for activation of the scooter in the warehouse?!
+  # # to reverse the unu cloud requests
+  # constraints subdomain: "unu.cloud" do
+  #   match "/", to: "unu#handle", via: :all
+  #   match "*path", to: "unu#handle", via: :all
+  # end
 
   devise_for :users
+
+  namespace :admin do
+    # resources :unu_requests, only: [ :index, :show ]
+    resources :unu_uplink_requests, only: [ :index, :show ]
+  end
 
   namespace :api do
     namespace :v1 do
@@ -35,22 +40,15 @@ Rails.application.routes.draw do
       end
       get "scooters/:vin/config", to: "scooters#config_for_vin", as: "config_for_vin"
 
-      post "mosquitto/auth", to: "mosquitto_auth#authenticate"
-      post "mosquitto/acl", to: "mosquitto_auth#authorize"
+      ## removed due to switch to dynsec plugin
+      # post "mosquitto/auth", to: "mosquitto_auth#authenticate"
+      # post "mosquitto/acl", to: "mosquitto_auth#authorize"
     end
   end
 
   resource :account, only: [ :show, :edit, :update, :destroy ] do
     resources :api_tokens, only: [ :new, :create, :destroy ], controller: "accounts/api_tokens"
   end
-
-  # Onboarding flow
-  get "onboarding", to: "onboarding#index"
-  post "onboarding/create_scooter"
-  get "onboarding/config"
-
-  root "dashboard#index"
-  get "dashboard/index"
 
   resources :scooters do
     member do
@@ -78,6 +76,15 @@ Rails.application.routes.draw do
   end
 
   resources :trips, only: [ :index, :show ]
+
+  # Onboarding flow
+  get "onboarding", to: "onboarding#index"
+  post "onboarding/create_scooter"
+  get "onboarding/config"
+
+  get "dashboard/index"
+
+  root "dashboard#index"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -9,23 +9,42 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
+/* Base Layout */
 .dashboard {
   width: 100%;
   max-width: 480px;
   height: 480px;
-  background: #111827;
-  color: white;
-  border-radius: 0.5rem;
+  background: theme('colors.gray.900');
+  color: theme('colors.white');
+  border-radius: theme('borderRadius.lg');
   display: flex;
   flex-direction: column;
   margin: 0 auto;
+  position: relative;
+}
+
+/* Component Positioning */
+.dashboard .status-bar,
+.dashboard .warning-indicators,
+.dashboard .speedometer,
+.dashboard .stats {
+  position: absolute;
+  width: 480px;
+}
+
+.dashboard .warning-indicators {
+  top: 48px;
+}
+
+.dashboard .stats {
+  bottom: 0;
 }
 
 /* Status Bar */
 .status-bar {
   height: 40px;
   padding: 0 1rem;
-  border-bottom: 1px solid #374151;
+  border-bottom: 1px solid theme('colors.gray.700');
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,7 +57,7 @@
 }
 
 .battery-icon {
-  color: #10B981;
+  color: theme('colors.emerald.500');
   font-size: 1.25rem;
 }
 
@@ -66,59 +85,16 @@
 }
 
 .indicator.active .blinker {
-  fill: #00CB00;
-  animation: blink 1s ease-in-out infinite;
+  fill: theme('colors.emerald.400');
 }
 
 .indicator.inactive .blinker {
-  fill: #333333;
-}
-
-.indicator.parking.active path {
+  fill: theme('colors.gray.700');
 }
 
 .indicator.parking.inactive path {
-  stroke: #333333;
-  fill: #333333;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-
-.dashboard {
-  width: 480px;
-  height: 480px;
-  position: relative;
-}
-
-.dashboard .status-bar,
-.dashboard .warning-indicators,
-.dashboard .speedometer,
-.dashboard .stats {
-  position: absolute;
-  width: 480px;
-}
-
-.dashboard .warning-indicators {
-  top: 48px;
-}
-
-.dashboard .stats {
-  bottom: 0px;
-}
-
-svg.gauges {
-  position: absolute;
-  height: 480px;
-  width: 480px;
-  top: 32px;
-}
-
-svg.gauges .background {
-  fill: none;
-  stroke: #222;
+  stroke: theme('colors.gray.700');
+  fill: theme('colors.gray.700');
 }
 
 /* Speedometer */
@@ -131,6 +107,18 @@ svg.gauges .background {
   position: relative;
   height: 480px;
   top: 32px;
+}
+
+svg.gauges {
+  position: absolute;
+  height: 480px;
+  width: 480px;
+  top: 32px;
+}
+
+svg.gauges .background {
+  fill: none;
+  stroke: theme('colors.gray.800');
 }
 
 .power-arc {
@@ -161,20 +149,20 @@ svg.gauges .background {
 }
 
 .speed-ring .background {
-  stroke: #333;
+  stroke: theme('colors.gray.700');
 }
 
 .speed-ring .indicator {
-  stroke: #00CB00;
+  stroke: theme('colors.emerald.400');
 }
 
 .speed-ring .power-regen {
-  stroke: #8B0000;
+  stroke: theme('colors.red.900');
 }
 
 .speed-label {
   font-size: 1rem;
-  color: #666;
+  color: theme('colors.gray.500');
   margin-top: 0.5rem;
   text-transform: uppercase;
 }
@@ -192,10 +180,10 @@ svg.gauges .background {
 
 .speed-unit {
   font-size: 1.25rem;
-  color: #9CA3AF;
+  color: theme('colors.gray.400');
 }
 
-/* Bottom Stats */
+/* Stats */
 .stats {
   height: 64px;
   padding: 0.6rem 1rem;
@@ -214,7 +202,7 @@ svg.gauges .background {
   text-align: center;
   font-size: 0.875rem;
   line-height: 0.9;
-  color: #9CA3AF;
+  color: theme('colors.gray.400');
 }
 
 .stat-value {
