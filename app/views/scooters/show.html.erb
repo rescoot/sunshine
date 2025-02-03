@@ -6,6 +6,9 @@
       <p class="mt-2 text-sm text-gray-700">Scooter details and controls.</p>
     </div>
     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none space-x-2">
+      <% if current_user.admin? %>
+        <%= link_to "Admin Shell", admin_scooter_shell_path(@scooter), class: "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" %>
+      <% end %>
       <% unless @waiting_for_telemetry %>
         <%= link_to "Generate New Token", 
             show_token_management_scooter_path(@scooter),
@@ -19,7 +22,7 @@
   </div>
 
   <%= render partial: "status", locals: { scooter: @scooter } %>
-
+  
   <% if @waiting_for_telemetry && @scooter.api_token %>
     <div class="rounded-md bg-yellow-50 p-4 mt-6">
       <div class="flex">

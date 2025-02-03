@@ -5,10 +5,11 @@ topic write scooters/+/commands
 topic readwrite #
 
 # Per-device topics - allow each device to read its commands and publish telemetry, status and command acks
-pattern read scooters/%u/commands
+pattern readwrite scooters/%u/commands
 pattern write scooters/%u/telemetry
 pattern write scooters/%u/acks
 pattern write scooters/%u/status
+pattern write scooters/%u/data
 
 # unu-uplink tries to publish to <IMEI>/v1/...
 pattern readwrite %u/#

@@ -59,13 +59,47 @@
     Request Telemetry
   <% end %>
 
-  <%= button_to update_firmware_scooter_path(scooter), 
-      class: "btn-warning w-full",
-      data: { 
-        controller: "confirm",
-        action: "confirm#confirm",
-        confirm_message_value: "Start client update?"
-      } do %>
-    Update Client
+  <% if current_user.admin? %>
+    <%= button_to update_firmware_scooter_path(scooter), 
+        class: "btn-warning w-full",
+        data: { 
+          controller: "confirm",
+          action: "confirm#confirm",
+          confirm_message_value: "Start client update?"
+        } do %>
+      Update Client
+    <% end %>
+
+    <div class="relative" data-controller="dropdown">
+      <button type="button" data-action="dropdown#toggle" class="btn-secondary w-full">
+        Redis Commands
+      </button>
+      <div data-dropdown-target="menu" class="dropdown-menu hidden">
+        <div class="py-1">
+          <%= button_to redis_command_scooter_path(scooter, cmd: "hgetall", args: ["vehicle"]), class: "dropdown-item" do %>
+            Get Vehicle Info
+          <% end %>
+          <%= button_to redis_command_scooter_path(scooter, cmd: "hgetall", args: ["system"]), class: "dropdown-item" do %>
+            Get System Info
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative" data-controller="dropdown">
+      <button type="button" data-action="dropdown#toggle" class="btn-secondary w-full">
+        Shell Commands
+      </button>
+      <div data-dropdown-target="menu" class="dropdown-menu hidden">
+        <div class="py-1">
+          <%= button_to shell_command_scooter_path(scooter, cmd: "uptime"), class: "dropdown-item" do %>
+            System Uptime
+          <% end %>
+          <%= button_to shell_command_scooter_path(scooter, cmd: "systemctl status rescoot-radio-gaga"), class: "dropdown-item" do %>
+            Service Status
+          <% end %>
+        </div>
+      </div>
+    </div>
   <% end %>
 </div>

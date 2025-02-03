@@ -1,6 +1,6 @@
 development:
   adapter: redis
-  url: redis://localhost:64389/1
+  url: redis://localhost:65127/1
   channel_prefix: sunshine_development
 
 test:

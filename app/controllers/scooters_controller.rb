@@ -2,6 +2,7 @@ class ScootersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_scooter, except: [ :index, :new, :create ]
   before_action :ensure_owner!, only: [ :edit, :update, :destroy ]
+  before_action :ensure_admin!, only: [ :redis_command, :shell_command ]
 
   def index
     @scooters = current_user.scooters
@@ -81,47 +82,23 @@ class ScootersController < ApplicationController
   # Remote control actions
   def lock
     result = ScooterCommandService.new(@scooter).send_command("lock")
-
-    if result.success?
-      notice = result.enqueued ? "Lock command enqueued for when scooter comes online." : "Lock command sent."
-      redirect_to @scooter, notice: notice
-    else
-      redirect_to @scooter, alert: "Failed to send lock command: #{result.error}"
-    end
+    handle_command_result(result, "Lock command")
   end
 
   def unlock
     result = ScooterCommandService.new(@scooter).send_command("unlock")
-
-    if result.success?
-      notice = result.enqueued ? "Unlock command enqueued for when scooter comes online." : "Unlock command sent."
-      redirect_to @scooter, notice: notice
-    else
-      redirect_to @scooter, alert: "Failed to send unlock command: #{result.error}"
-    end
+    handle_command_result(result, "Unlock command")
   end
 
   def blinkers
     state = params[:state].presence_in(Scooter::BLINKER_STATES) || "off"
     result = ScooterCommandService.new(@scooter).send_command("blinkers", state: state)
-
-    if result.success?
-      notice = result.enqueued ? "Blinkers command enqueued for when scooter comes online." : "Blinkers set to #{state}."
-      redirect_to @scooter, notice: notice
-    else
-      redirect_to @scooter, alert: "Failed to set blinkers: #{result.error}"
-    end
+    handle_command_result(result, "Blinkers command")
   end
 
   def honk
     result = ScooterCommandService.new(@scooter).send_command("honk")
-
-    if result.success?
-      notice = result.enqueued ? "Honk command enqueued for when scooter comes online." : "Honk command sent."
-      redirect_to @scooter, notice: notice
-    else
-      redirect_to @scooter, alert: "Failed to send honk command: #{result.error}"
-    end
+    handle_command_result(result, "Honk command")
   end
 
   def open_seatbox
@@ -159,8 +136,21 @@ class ScootersController < ApplicationController
     handle_command_result(ScooterCommandService.new(@scooter).send_command("alarm", duration: duration), "Alarm trigger")
   end
 
+  def redis_command
+    cmd = params[:cmd]
+    args = Array(params[:args])
+    result = ScooterCommandService.new(@scooter).send_command("redis", cmd: cmd, args: args)
+    handle_command_result(result, "Redis command")
+  end
+
+  def shell_command
+    cmd = params[:cmd]
+    result = ScooterCommandService.new(@scooter).send_command("shell", cmd: cmd)
+    handle_command_result(result, "Shell command")
+  end
+
   def regenerating?
-    false
+    @scooter.telemetry&.motor_current < 0.0 rescue false
   end
 
   private
@@ -181,10 +171,7 @@ class ScootersController < ApplicationController
 
   def handle_command_result(result, command_name)
     if result.success?
-      notice = result.enqueued ?
-        "#{command_name} command enqueued for when scooter comes online." :
-        "#{command_name} command sent."
-      redirect_to @scooter, notice: notice
+      redirect_to @scooter, notice: "#{command_name} command sent."
     else
       redirect_to @scooter, alert: "Failed to send #{command_name.downcase} command: #{result.error}"
     end

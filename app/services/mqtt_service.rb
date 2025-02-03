@@ -7,7 +7,7 @@ class MqttService
     host: ENV.fetch("MQTT_HOST", "localhost"),
     port: ENV.fetch("MQTT_PORT", 8883).to_i,
     username: ENV.fetch("MQTT_USERNAME", "cloud_service"),
-    password: ENV.fetch("MQTT_PASSWORD"),
+    password: ENV.fetch("MQTT_PASSWORD", "password"),
     ssl: ENV.fetch("MQTT_SSL", "true") == "true",
     # cert_file: ENV.fetch("MQTT_SERVER_CRT_PATH"),
     # key_file: ENV.fetch("MQTT_SERVER_KEY_PATH"),
@@ -18,9 +18,28 @@ class MqttService
     client_id: "sunshine-#{Rails.env}-#{Process.pid}"
   }
 
-  def run
-    @terminating = false
+  class << self
+    def instance(web_mode: false)
+      @instance ||= new(web_mode: web_mode)
+    end
+  end
 
+  def initialize(web_mode: false)
+    Rails.logger.debug "MQTT handler initialize (web_mode: #{web_mode})"
+    @web_mode = web_mode
+    @ack_subscribers = Concurrent::Map.new if web_mode
+    @client = MQTT::Client.new(MQTT_CONFIG.merge(
+      clean_session: web_mode,
+      client_id: "sunshine-#{Rails.env}-#{web_mode ? 'web' : 'bg'}-#{Process.pid}-#{SecureRandom.hex(4)}"
+    ))
+    connect
+    subscribe_to_topics if @web_mode # Subscribe immediately in web mode
+  end
+
+  def run
+    return if @web_mode
+
+    @terminating = false
     subscribe_to_topics
 
     Signal.trap("TERM") { @terminating = true }
@@ -31,25 +50,19 @@ class MqttService
     @client&.disconnect
   end
 
-  def initialize
-    Rails.logger.debug "MQTT handler initialize"
-    @client = MQTT::Client.new(MQTT_CONFIG)
-    @ack_subscribers = Concurrent::Map.new
-
-    connect
-  end
-
   def connect
+    Rails.logger.info "Attempting to connect to MQTT broker at #{MQTT_CONFIG[:host]}:#{MQTT_CONFIG[:port]} as #{MQTT_CONFIG[:username]}"
     @client.connect
     Rails.logger.info "Connected to MQTT broker at #{MQTT_CONFIG[:host]}:#{MQTT_CONFIG[:port]}"
   rescue => e
     Rails.logger.error "Failed to connect to MQTT: #{e.message}"
+    raise e
   end
 
   def publish_command(scooter_vin, command)
     topic = "scooters/#{scooter_vin}/commands"
     message = command.to_json
-    @client.publish(topic, message, retain: false, qos: 1)
+    @client.publish(topic, message, retain: true, qos: 1)
     Rails.logger.info "Published command to #{topic}: #{message}"
   rescue => e
     Rails.logger.error "Failed to publish command: #{e.message}"
@@ -57,10 +70,15 @@ class MqttService
   end
 
   def subscribe_to_acks(scooter_vin, &block)
+    Rails.logger.debug("#{scooter_vin} subscribed to acks")
+    raise "Not in web mode" unless @web_mode
+
     @ack_subscribers[scooter_vin] = block
   end
 
   def unsubscribe_from_acks(scooter_vin)
+    raise "Not in web mode" unless @web_mode
+
     @ack_subscribers.delete(scooter_vin)
   end
 
@@ -72,15 +90,16 @@ class MqttService
         "scooters/+/status",
         "scooters/+/telemetry",
         "scooters/+/acks",
+        "scooters/+/data",
         "scooters/+/trip/#",
-        "+/v1/#"  # unu cloud messages: <imei>/v1/[direction]/[type]
+        "+/v1/#"  # unu cloud messages
       ])
 
       @client.get do |topic, message|
         process_message(topic, message)
       end
     end
-    Rails.logger.debug "subscribed to topics"
+    Rails.logger.debug "subscribed to topics (web_mode: #{@web_mode})"
   end
 
   def process_message(topic, message)
@@ -106,6 +125,8 @@ class MqttService
       process_telemetry(scooter_vin, message)
     when "acks"
       process_ack(scooter_vin, message)
+    when "data"
+      process_data(scooter_vin, message)
     when "trip"
       process_trip_update(scooter_vin, topic_parts[3], message)
     end
@@ -116,6 +137,7 @@ class MqttService
   def process_unu_message(imei, topic, message)
     # Store raw message
     RawMessage.create!(
+      scooter: Scooter.find_by(imei: imei),
       imei: imei,
       topic: topic,
       payload: decode_protobuf(topic, message),
@@ -149,9 +171,35 @@ class MqttService
 
   def process_ack(scooter_vin, message)
     data = JSON.parse(message)
-    if subscriber = @ack_subscribers[scooter_vin]
-      subscriber.call(data)
+    scooter = Scooter.find_by(vin: scooter_vin)
+    return unless scooter
+
+    if @web_mode
+      # Handle subscriptions for web process
+      if subscriber = @ack_subscribers[scooter_vin]
+        subscriber.call(data)
+      end
+    else
+      # Background process broadcasts to ActionCable
+      ScooterChannel.broadcast_to scooter, {
+        type: "ack",
+        message: data
+      }
     end
+  end
+
+  def process_data(scooter_vin, message)
+    data = JSON.parse(message)
+    scooter = Scooter.find_by(vin: scooter_vin)
+    return unless scooter
+
+    ScooterChannel.broadcast_to scooter, {
+      type: case data["type"].to_s
+            when "redis" then "redis_result"
+            when "shell" then data["done"] ? "shell_complete" : "shell_output"
+            end,
+      message: data
+    }
   end
 
   def process_telemetry(scooter_vin, message)
@@ -159,13 +207,13 @@ class MqttService
     scooter = Scooter.find_by(vin: scooter_vin)
     return unless scooter
 
-    Rails.logger.debug("Telemetry for #{scooter}: #{data}")
+    Rails.logger.debug("Telemetry for #{scooter.vin} (\##{scooter.id}): #{data}")
 
     # Create telemetry record with full data
     Telemetry.create_from_data!(scooter, data)
 
     # Update scooter fields
-    scooter_attributes = data.slice(
+    scooter_attributes = data.reject { |k,v| v.blank? }.slice(
       "state", "kickstand", "seatbox", "blinkers",
       "speed", "odometer",
       "battery0_level", "battery1_level",
@@ -174,18 +222,6 @@ class MqttService
     ).merge(last_seen_at: Time.current)
 
     scooter.update!(scooter_attributes)
-
-    # Process any pending commands since the scooter is now online
-    process_pending_commands(scooter)
-  end
-
-  def process_pending_commands(scooter)
-    redis_key = "scooter:#{scooter.vin}:pending_commands"
-
-    while command_json = $redis.with { |conn| conn.lpop(redis_key) }
-      command_data = JSON.parse(command_json)
-      publish_command(scooter.vin, command_data)
-    end
   end
 
   def process_trip_update(scooter_vin, update_type, message)

@@ -10,6 +10,11 @@ Rails.application.routes.draw do
   devise_for :users
 
   namespace :admin do
+    resources :scooters, only: [] do
+      resource :shell, only: [ :show ] do
+        post :execute
+      end
+    end
     # resources :unu_requests, only: [ :index, :show ]
     resources :unu_uplink_requests, only: [ :index, :show ]
   end
@@ -29,6 +34,8 @@ Rails.application.routes.draw do
           post :get_state
           post :locate
           post :alarm
+          post :redis_command
+          post :shell_command
 
           post :generate_token
         end
@@ -63,6 +70,8 @@ Rails.application.routes.draw do
       post :get_state
       post :locate
       post :alarm
+      post :redis_command
+      post :shell_command
 
       get :show_token_management
     end

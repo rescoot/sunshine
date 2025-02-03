@@ -8,13 +8,13 @@
     <div class="time" id="current-time">12:00</div>
   </div>
 
-  <%= render partial: "blinkers", locals: {scooter: scooter} %>
-  <%= render partial: "speed", locals: {scooter: scooter} %>
+  <%= render partial: "blinkers", locals: { scooter: } %>
+  <%= render partial: "speed", locals: { scooter: } %>
 
   <div class="stats">
     <div class="stat">
       <span class="stat-label">TRIP</span>
-      <span class="stat-value">0.0 <span class="stat-unit">km</span></span>
+      <span class="stat-value"><%= scooter.current_trip ? number_with_precision(scooter.current_trip.distance.to_f / 1000, precision: 1) : "0.0" %> <span class="stat-unit">km</span></span>
     </div>
     <div class="stat">
       <span class="stat-label">TOTAL</span>
@@ -30,7 +30,7 @@
   function updateTime() {
     const timeElem = document.getElementById('current-time');
     const now = new Date();
-    timeElem.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    timeElem.textContent = now.toLocaleTimeString('de-DE');
   }
   
   setInterval(updateTime, 60000);

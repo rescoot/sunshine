@@ -13,4 +13,8 @@ class User < ApplicationRecord
   def owner_of?(scooter)
     user_scooters.exists?(scooter: scooter, role: "owner")
   end
+
+  def admin?
+    id == 1
+  end
 end

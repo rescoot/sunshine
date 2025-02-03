@@ -16,7 +16,7 @@
           <thead class="bg-gray-50">
             <tr>
               <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Name</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">VIN</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">VIN / IMEI</th>
               <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Color</th>
               <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
               <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Battery</th>
@@ -31,7 +31,7 @@
                 <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                   <%= link_to scooter.name, scooter_path(scooter), class: "text-indigo-600 hover:text-indigo-900" %>
                 </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= scooter.vin %></td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= scooter.vin %><br><%= scooter.imei %></td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   <% if scooter.color %>
                     <div class="flex items-center">

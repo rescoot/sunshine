@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_31_170343) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_03_223505) do
   create_table "api_tokens", force: :cascade do |t|
     t.integer "scooter_id"
     t.string "token_digest"
@@ -33,7 +33,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_31_170343) do
     t.datetime "received_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "scooter_id"
     t.index ["imei"], name: "index_raw_messages_on_imei"
+    t.index ["scooter_id"], name: "index_raw_messages_on_scooter_id"
   end
 
   create_table "scooters", force: :cascade do |t|
@@ -147,6 +149,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_31_170343) do
 
   add_foreign_key "api_tokens", "scooters"
   add_foreign_key "api_tokens", "users"
+  add_foreign_key "raw_messages", "scooters"
   add_foreign_key "telemetries", "scooters"
   add_foreign_key "trips", "scooters"
   add_foreign_key "trips", "users"

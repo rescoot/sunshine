@@ -15,7 +15,7 @@ class Scooter < ApplicationRecord
   # broadcasts_to ->(scooter) { scooter }
 
   # Valid states
-  STATES = %w[stand-by ready-to-drive off parked hibernating locked].freeze
+  STATES = %w[ready-to-drive parked locked stand-by hibernating off].freeze
   KICKSTAND_STATES = %w[up down].freeze
   SEATBOX_STATES = %w[closed open].freeze
   BLINKER_STATES = %w[off left right both].freeze
@@ -93,6 +93,10 @@ class Scooter < ApplicationRecord
     when 51..75 then "battery/batt_75.webp"
     else "battery/batt_full.webp"
     end
+  end
+
+  def current_trip
+    trips&.in_progress&.last
   end
 
   def regenerating?

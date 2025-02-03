@@ -1,7 +1,7 @@
-# app/services/scooter_command_service.rb
 class ScooterCommandService
-  Result = Struct.new(:success?, :error, :response, :enqueued)
-  COMMAND_TIMEOUT = 10.seconds
+  Result = Struct.new(:success?, :error, :response)
+  COMMAND_TIMEOUT = 5.seconds
+  VALID_REDIS_COMMANDS = %w[get set hget hset hgetall lpush lpop].freeze
 
   def initialize(scooter)
     @scooter = scooter
@@ -16,37 +16,40 @@ class ScooterCommandService
       request_id: request_id
     }
 
-    if @scooter.online?
-      send_immediate_command(command_data)
-    else
-      enqueue_command(command_data)
+    command_data[:stream] = true if command == "shell"
+
+    # Validate redis commands
+    if command == "redis"
+      return Result.new(false, "Invalid Redis command") unless valid_redis_command?(params[:cmd])
     end
+
+    if publish_mqtt(command_data)
+      Result.new(true, nil)
+    else
+      Result.new(false, "Failed to send command")
+    end
+
+    # Rails.logger.debug("Publishing #{command_data}")
+    # if publish_mqtt(command_data)
+    #   Rails.logger.debug("Waiting for ack for #{request_id}")
+    #   response = wait_for_ack(request_id)
+    #   if response
+    #     Rails.logger.debug("Got ack!")
+    #     handle_command_response(command_data[:command], command_data[:params], response)
+    #   else
+    #     Result.new(false, "Command timed out")
+    #   end
+    # else
+    #   Result.new(false, "Failed to send command")
+    # end
   rescue StandardError => e
-    Result.new(false, e.message, nil, false)
+    Result.new(false, e.message)
   end
 
   private
 
-  def send_immediate_command(command_data)
-    if publish_mqtt(command_data)
-      response = wait_for_ack(command_data[:request_id])
-
-      if response
-        handle_command_response(command_data[:command], command_data[:params], response)
-      else
-        Result.new(false, "Command timed out", nil, false)
-      end
-    else
-      Result.new(false, "Failed to send command", nil, false)
-    end
-  end
-
-  def enqueue_command(command_data)
-    # Store command in Redis for later execution
-    redis_key = "scooter:#{@scooter.vin}:pending_commands"
-    $redis.with { |conn| conn.rpush(redis_key, command_data.to_json) }
-
-    Result.new(true, nil, nil, true)
+  def valid_redis_command?(cmd)
+    VALID_REDIS_COMMANDS.include?(cmd.to_s.downcase)
   end
 
   def publish_mqtt(command_data)
@@ -97,26 +100,61 @@ class ScooterCommandService
 
     if success
       case command
-      when "lock"
-      when "unlock"
-      when "blinkers"
-      when "open_seatbox"
-      when "get_state"
-        # State updates will come through telemetry
-      when "ping"
-        # No response needed
-      when "update"
-        # Scooter will do its thing
+      when "redis", "shell"
+        handle_data_response(command, response)
+      else
+        handle_existing_command(command, params, response)
       end
-
-      ActionCable.server.broadcast "scooter_#{@scooter.id}", {
-        type: "command_completed",
-        command: command,
-        params: params,
-        scooter: @scooter.as_json
-      }
     end
 
-    Result.new(success, response["error"], response, false)
+    Result.new(success, response["error"], response)
+  end
+
+  def handle_data_response(command, response)
+    case command
+    when "shell"
+      if response["stream"]
+        stream_shell_output(response)
+      else
+        handle_shell_completion(response)
+      end
+    when "redis"
+      handle_redis_result(response)
+    end
+  end
+
+  def stream_shell_output(response)
+    ActionCable.server.broadcast "scooter_#{@scooter.id}", {
+      type: "shell_output",
+      output: response["output"],
+      output_type: response["output_type"],
+      done: response["done"]
+    }
+  end
+
+  def handle_shell_completion(response)
+    ActionCable.server.broadcast "scooter_#{@scooter.id}", {
+      type: "shell_complete",
+      stdout: response["stdout"],
+      stderr: response["stderr"],
+      exit_code: response["exit_code"]
+    }
+  end
+
+  def handle_redis_result(response)
+    ActionCable.server.broadcast "scooter_#{@scooter.id}", {
+      type: "redis_result",
+      command: response["command"],
+      result: response["result"]
+    }
+  end
+
+  def handle_existing_command(command, params, response)
+    ActionCable.server.broadcast "scooter_#{@scooter.id}", {
+      type: "command_completed",
+      command: command,
+      params: params,
+      scooter: @scooter.as_json
+    }
   end
 end

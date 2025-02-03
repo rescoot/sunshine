@@ -91,7 +91,7 @@ class Api::V1::ScootersController < Api::BaseController
 
   def command_response(result)
     if result.success?
-      render json: { status: "success", queued: result.enqueued }
+      render json: { status: "success", queued: false }
     else
       render json: { status: "error", message: result.error }, status: :unprocessable_entity
     end
