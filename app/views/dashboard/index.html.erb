@@ -9,7 +9,7 @@
   <div class="mt-8">
     <!-- Stats Grid -->
     <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-      <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
+      <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-5 md:pb-12 pt-5 shadow sm:px-6 sm:pt-6">
         <dt>
           <div class="absolute rounded-md bg-indigo-500 p-3">
             <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -18,12 +18,12 @@
           </div>
           <p class="ml-16 truncate text-sm font-medium text-gray-500">Total Trips</p>
         </dt>
-        <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
+        <dd class="ml-16 flex items-baseline">
           <p class="text-2xl font-semibold text-gray-900"><%= @lifetime_stats[:total_trips] %></p>
         </dd>
       </div>
 
-      <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
+      <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-5 md:pb-12 pt-5 shadow sm:px-6 sm:pt-6">
         <dt>
           <div class="absolute rounded-md bg-indigo-500 p-3">
             <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,12 +32,12 @@
           </div>
           <p class="ml-16 truncate text-sm font-medium text-gray-500">Total Distance</p>
         </dt>
-        <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
+        <dd class="ml-16 flex items-baseline">
           <p class="text-2xl font-semibold text-gray-900"><%= format_distance(@lifetime_stats[:total_distance]) %></p>
         </dd>
       </div>
 
-      <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
+      <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-5 md:pb-12 pt-5 shadow sm:px-6 sm:pt-6">
         <dt>
           <div class="absolute rounded-md bg-indigo-500 p-3">
             <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,14 +46,14 @@
           </div>
           <p class="ml-16 truncate text-sm font-medium text-gray-500">Avg Trip Distance</p>
         </dt>
-        <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
+        <dd class="ml-16 flex items-baseline">
           <p class="text-2xl font-semibold text-gray-900">
             <%= format_distance(@lifetime_stats[:avg_trip_distance]) %>
           </p>
         </dd>
       </div>
 
-      <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
+      <div class="relative overflow-hidden rounded-lg bg-white px-4 pb-5 md:pb-12 pt-5 shadow sm:px-6 sm:pt-6">
         <dt>
           <div class="absolute rounded-md bg-indigo-500 p-3">
             <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,7 +62,7 @@
           </div>
           <p class="ml-16 truncate text-sm font-medium text-gray-500">Avg Speed</p>
         </dt>
-        <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
+        <dd class="ml-16 flex items-baseline">
           <p class="text-2xl font-semibold text-gray-900">
             <%= format_speed(@lifetime_stats[:avg_speed]) %>
           </p>

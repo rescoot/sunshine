@@ -2,6 +2,7 @@ class Scooter < ApplicationRecord
   has_many :user_scooters, dependent: :destroy
   has_many :users, through: :user_scooters
   has_many :trips
+  has_many :scooter_events
   has_many :telemetries
   has_one :api_token, dependent: :destroy
 
@@ -15,7 +16,8 @@ class Scooter < ApplicationRecord
   # broadcasts_to ->(scooter) { scooter }
 
   # Valid states
-  STATES = %w[ready-to-drive parked locked stand-by hibernating off].freeze
+  POWER_STATES = %w[ready-to-drive stand-by entering-hibernation hibernation-imminent hibernating].freeze
+  HANDLEBAR_STATES = %w[locked unlocked].freeze
   KICKSTAND_STATES = %w[up down].freeze
   SEATBOX_STATES = %w[closed open].freeze
   BLINKER_STATES = %w[off left right both].freeze
@@ -24,21 +26,22 @@ class Scooter < ApplicationRecord
   COLOR_MAPPING = {
     "black" => { index: 0, hex: "#000000" },
     "white" => { index: 1, hex: "#FFFFFF" },
-    "green" => { index: 2, hex: "#1B5E20" },  # green.shade900
-    "gray" => { index: 3, hex: "#9E9E9E" },   # grey primary
-    "orange" => { index: 4, hex: "#FF7043" },  # deepOrange.shade400
-    "red" => { index: 5, hex: "#F44336" },     # red primary
-    "blue" => { index: 6, hex: "#2196F3" },    # blue primary
-    "eclipse" => { index: 7, hex: "#424242" },  # grey.shade800
+    "green" => { index: 2, hex: "#1B5E20" },     # green.shade900
+    "gray" => { index: 3, hex: "#9E9E9E" },      # grey primary
+    "orange" => { index: 4, hex: "#FF7043" },    # deepOrange.shade400
+    "red" => { index: 5, hex: "#F44336" },       # red primary
+    "blue" => { index: 6, hex: "#2196F3" },      # blue primary
+    "eclipse" => { index: 7, hex: "#424242" },   # grey.shade800
     "idioteque" => { index: 8, hex: "#80CBC4" }, # teal.shade200
-    "hover" => { index: 9, hex: "#03A9F4" }     # lightBlue primary
+    "hover" => { index: 9, hex: "#03A9F4" }      # lightBlue primary
   }.freeze
 
-  validates :state, inclusion: { in: STATES }, allow_nil: true
+  validates :state, inclusion: { in: POWER_STATES }, allow_nil: true
   validates :kickstand, inclusion: { in: KICKSTAND_STATES }, allow_nil: true
   validates :seatbox, inclusion: { in: SEATBOX_STATES }, allow_nil: true
   validates :blinkers, inclusion: { in: BLINKER_STATES }, allow_nil: true
 
+  after_create :initialize_default_values
   after_update_commit :broadcast_updates
 
   def owner
@@ -53,12 +56,19 @@ class Scooter < ApplicationRecord
     )
   end
 
-  def location?
-    lat.present? && lng.present? && !(lat == 0 && lng == 0)
+  def friendly_state
+    case state
+    when "ready-to-drive", "hibernating"
+      state
+    when "stand-by"
+      kickstand == "up" ? "parked" : "stand-by"
+    else
+      state
+    end.titleize
   end
 
-  def online?
-    last_seen_at && last_seen_at > 5.minutes.ago
+  def location?
+    lat.present? && lng.present? && !(lat == 0 && lng == 0)
   end
 
   def locked?
@@ -97,6 +107,42 @@ class Scooter < ApplicationRecord
 
   def current_trip
     trips&.in_progress&.last
+  end
+
+  def start_trip
+    return if current_trip
+
+    trips.create!(
+      user: owner,
+      started_at: Time.current,
+      start_lat: lat,
+      start_lng: lng,
+      start_odometer: odometer
+    )
+  end
+
+  def end_trip
+    trip = current_trip
+    return unless trip
+
+    trip.update!(
+      ended_at: Time.current,
+      end_lat: lat,
+      end_lng: lng,
+      end_odometer: odometer,
+      distance: odometer - trip.start_odometer,
+      avg_speed: calculate_average_speed(trip)
+    )
+  end
+
+  def calculate_average_speed(trip)
+    return nil unless trip.started_at && trip.end_odometer && trip.start_odometer
+
+    duration_hours = (Time.current - trip.started_at) / 1.hour
+    return nil if duration_hours.zero?
+
+    distance_km = (trip.end_odometer - trip.start_odometer) / 1000.0
+    (distance_km / duration_hours).round(1)
   end
 
   def regenerating?
@@ -178,7 +224,7 @@ class Scooter < ApplicationRecord
     end
     if saved_change_to_last_seen_at?
       broadcast_update_to "last_seen", last_seen_text
-      broadcast_update_to "online_status", online? ? "Online" : "Offline"
+      broadcast_update_to "online_status", is_online? ? "Online" : "Offline"
     end
   end
 
@@ -215,5 +261,31 @@ class Scooter < ApplicationRecord
 
   def number_to_percentage(number, options = {})
     ApplicationController.helpers.number_to_percentage(number, options)
+  end
+
+  def handle_state_change(old_state, new_state)
+    return if old_state == new_state
+
+    case new_state
+    when "ready-to-drive"
+      start_trip(scooter) unless scooter.current_trip
+    when "hibernating"
+      end_trip(scooter) if scooter.current_trip
+    end
+  end
+
+  private
+
+  def initialize_default_values
+    update!(
+      state: "locked",
+      kickstand: "down",
+      seatbox: "closed",
+      blinkers: "off",
+      battery0_level: 0,
+      battery1_level: 0,
+      aux_battery_level: 0,
+      cbb_battery_level: 0
+    )
   end
 end

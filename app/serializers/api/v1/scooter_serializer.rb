@@ -4,7 +4,7 @@ class Api::V1::ScooterSerializer < ActiveModel::Serializer
              :batteries, :location, :last_seen_at
 
   def online
-    object.online?
+    object.is_online?
   end
 
   def batteries

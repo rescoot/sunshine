@@ -1,4 +1,5 @@
 @import "components/base";
+@import "components/badges";
 @import "components/buttons";
 @import "components/dashboard";
 @import "components/animations";

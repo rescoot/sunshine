@@ -1,0 +1,102 @@
+<%= link_to scooter_path(scooter), class: "block bg-white shadow-sm rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-200" do %>
+  <div class="p-4">
+    <div class="relative">
+      <%= image_tag scooter.scooter_image_path("side"), class: "w-full" %>
+      
+      <div class="absolute top-2 right-2 flex flex-col gap-2">
+        <% if scooter.is_online? %>
+          <div class="badge badge-success">Online</div>
+        <% else %>
+          <div class="badge badge-error">
+            Offline since <%= time_ago_in_words(scooter.last_seen_at) if scooter.last_seen_at %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <div class="flex justify-between items-start">
+        <div>
+          <h3 class="text-base font-semibold text-gray-900">
+            <%= scooter.name %>
+          </h3>
+          <div class="mt-1 flex items-center gap-4">
+            <span class="text-sm text-gray-500 font-mono"><%= scooter.vin %></span>
+            <% if scooter.imei.present? %>
+              <span class="text-sm text-gray-500 font-mono"><%= scooter.imei %></span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 grid grid-cols-2 gap-4">
+        <div class="bg-gray-50 rounded-md p-3">
+          <div class="flex items-center gap-2">
+            <%= image_tag scooter.battery_image_path(scooter.battery0_level), class: "w-8 h-8" %>
+            <div class="flex-1">
+              <div class="text-xs text-gray-500 mb-1">Main Battery</div>
+              <div class="h-2 bg-gray-200 rounded-full">
+                <div class="h-full bg-green-500 rounded-full" style="width: <%= scooter.battery0_level %>%"></div>
+              </div>
+              <div class="text-xs text-gray-600 mt-1"><%= number_to_percentage(scooter.battery0_level, precision: 0) %></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-gray-50 rounded-md p-3">
+          <div class="flex items-center gap-2">
+            <%= image_tag scooter.battery_image_path(scooter.battery1_level), class: "w-8 h-8" %>
+            <div class="flex-1">
+              <div class="text-xs text-gray-500 mb-1">Secondary Battery</div>
+              <div class="h-2 bg-gray-200 rounded-full">
+                <div class="h-full bg-green-500 rounded-full" style="width: <%= scooter.battery1_level %>%"></div>
+              </div>
+              <div class="text-xs text-gray-600 mt-1"><%= number_to_percentage(scooter.battery1_level, precision: 0) %></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-gray-50 rounded-md p-3">
+   <div class="flex items-center gap-2">
+     <%= image_tag "battery/batt_aux.webp", class: "w-8 h-8" %>
+     <div class="flex-1">
+       <div class="text-xs text-gray-500 mb-1">Aux Battery</div>
+       <div class="h-2 bg-gray-200 rounded-full">
+         <div class="h-full bg-green-500 rounded-full" style="width: <%= scooter.aux_battery_level %>%"></div>
+       </div>
+       <div class="text-xs text-gray-600 mt-1"><%= number_to_percentage(scooter.aux_battery_level, precision: 0) %></div>
+     </div>
+   </div>
+ </div>
+
+ <div class="bg-gray-50 rounded-md p-3">
+   <div class="flex items-center gap-2">
+     <%= image_tag "battery/batt_cbb.webp", class: "w-8 h-8" %>
+     <div class="flex-1">
+       <div class="text-xs text-gray-500 mb-1">CB Battery</div>
+       <div class="h-2 bg-gray-200 rounded-full">
+         <div class="h-full bg-green-500 rounded-full" style="width: <%= scooter.cbb_battery_level %>%"></div>
+       </div>
+       <div class="text-xs text-gray-600 mt-1"><%= number_to_percentage(scooter.cbb_battery_level, precision: 0) %></div>
+     </div>
+   </div>
+ </div>
+      </div>
+
+      <div class="mt-4">
+        <%# <div class="text-sm text-gray-500 mb-2">Status</div> %>
+        <div class="flex flex-wrap gap-2">
+          <div class="badge <%= scooter.locked? ? 'badge-error' : 'badge-success' %>">
+            <%= scooter.state&.titleize %>
+          </div>
+          <div class="badge badge-info"><%= scooter.kickstand&.titleize %></div>
+          <div class="badge badge-info"><%= scooter.seatbox&.titleize %></div>
+          <% if scooter.estimated_range %>
+            <div class="badge badge-info"><%= scooter.estimated_range.round(1) %> km range</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+<% end %>

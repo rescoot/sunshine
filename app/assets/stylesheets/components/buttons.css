@@ -23,6 +23,10 @@
     @apply btn bg-yellow-600 hover:bg-yellow-500;
   }
 
+  .btn-error {
+    @apply btn bg-red-600 hover:bg-red-500;
+  }
+
   .dropdown-menu {
     @apply absolute z-10 mt-2 w-32 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5;
   }

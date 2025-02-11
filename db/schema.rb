@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_03_223505) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_12_145505) do
   create_table "api_tokens", force: :cascade do |t|
     t.integer "scooter_id"
     t.string "token_digest"
@@ -38,6 +38,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_03_223505) do
     t.index ["scooter_id"], name: "index_raw_messages_on_scooter_id"
   end
 
+  create_table "scooter_events", force: :cascade do |t|
+    t.integer "scooter_id", null: false
+    t.integer "event_type", null: false
+    t.json "data", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["scooter_id", "created_at"], name: "index_scooter_events_on_scooter_id_and_created_at"
+    t.index ["scooter_id", "event_type"], name: "index_scooter_events_on_scooter_id_and_event_type"
+    t.index ["scooter_id"], name: "index_scooter_events_on_scooter_id"
+  end
+
   create_table "scooters", force: :cascade do |t|
     t.string "name"
     t.string "vin"
@@ -58,6 +69,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_03_223505) do
     t.datetime "updated_at", null: false
     t.string "color"
     t.string "imei"
+    t.boolean "is_online", default: false, null: false
     t.index ["imei"], name: "index_scooters_on_imei", unique: true
     t.index ["vin"], name: "index_scooters_on_vin", unique: true
   end
@@ -103,6 +115,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_03_223505) do
     t.decimal "avg_speed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "start_odometer"
+    t.integer "end_odometer"
     t.index ["ended_at"], name: "index_trips_on_ended_at"
     t.index ["scooter_id", "started_at"], name: "index_trips_on_scooter_id_and_started_at"
     t.index ["scooter_id"], name: "index_trips_on_scooter_id"
@@ -150,6 +164,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_03_223505) do
   add_foreign_key "api_tokens", "scooters"
   add_foreign_key "api_tokens", "users"
   add_foreign_key "raw_messages", "scooters"
+  add_foreign_key "scooter_events", "scooters"
   add_foreign_key "telemetries", "scooters"
   add_foreign_key "trips", "scooters"
   add_foreign_key "trips", "users"

@@ -3,7 +3,7 @@
     <h3><%= scooter.name %></h3>
     <div>
       <p>Status: <span id="<%= dom_id(scooter, "online_status") %>">
-        <%= scooter.online? ? 'Online' : 'Offline' %>
+        <%= scooter.is_online? ? 'Online' : 'Offline' %>
       </span></p>
       <p>State: <span id="<%= dom_id(scooter, "state") %>"><%= scooter.state %></span></p>
       <p>Last seen: <span id="<%= dom_id(scooter, "last_seen") %>">
@@ -21,7 +21,7 @@
       <p>Aux Battery: <span id="<%= dom_id(scooter, "aux_battery") %>">
         <%= number_to_percentage(scooter.aux_battery_level, precision: 1) %>
       </span></p>
-      <p>CBB Battery: <span id="<%= dom_id(scooter, "cbb_battery") %>">
+      <p>CB Battery: <span id="<%= dom_id(scooter, "cbb_battery") %>">
         <%= number_to_percentage(scooter.cbb_battery_level, precision: 1) %>
       </span></p>
     </div>

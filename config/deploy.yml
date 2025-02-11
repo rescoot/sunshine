@@ -3,7 +3,10 @@ image: teal-bauer/sunshine
 
 servers:
   web:
-    - 178.63.144.127
+    hosts:
+      - 178.63.144.127
+    env:
+      MQTT_ROLE: web
   job:
     hosts:
       - 178.63.144.127
@@ -11,6 +14,8 @@ servers:
   mqtt:
     hosts:
       - 178.63.144.127
+    env:
+      MQTT_ROLE: background
     cmd: bin/mqtt
   
 builder:

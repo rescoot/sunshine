@@ -15,7 +15,7 @@ class MqttService
     # verify_peer: true,
     keep_alive: 300,
     clean_session: false,
-    client_id: "sunshine-#{Rails.env}-#{Process.pid}"
+    client_id: [ "sunshine", Rails.env, Process.pid, ENV.fetch("MQTT_ROLE", "none") ].join("-"),
   }
 
   class << self
@@ -25,18 +25,20 @@ class MqttService
   end
 
   def initialize(web_mode: false)
-    Rails.logger.debug "MQTT handler initialize (web_mode: #{web_mode})"
+    Rails.logger.info "MQTT handler initialize (web_mode: #{web_mode.inspect} #{ENV.fetch("MQTT_ROLE", "none").inspect})"
+    Rails.logger.info "=== Call Stack ==="
+    caller[0..5].each_with_index do |line, index|
+      Rails.logger.info "#{index}: #{line}"
+    end
     @web_mode = web_mode
     @ack_subscribers = Concurrent::Map.new if web_mode
-    @client = MQTT::Client.new(MQTT_CONFIG.merge(
-      clean_session: web_mode,
-      client_id: "sunshine-#{Rails.env}-#{web_mode ? 'web' : 'bg'}-#{Process.pid}-#{SecureRandom.hex(4)}"
-    ))
+    @client = MQTT::Client.new(MQTT_CONFIG)
     connect
     subscribe_to_topics if @web_mode # Subscribe immediately in web mode
   end
 
   def run
+    Rails.logger.info "Run web_mode=#{@web_mode.inspect}"
     return if @web_mode
 
     @terminating = false
@@ -108,15 +110,14 @@ class MqttService
     topic_parts = topic.split("/")
 
     if topic_parts[0] != "scooters"
-      if topic_parts[1] == "v1"
-        # unu cloud message
-        process_unu_message(topic_parts[0], topic, message)
-      end
+      process_unu_message(topic_parts[0], topic, message) if topic_parts[1] == "v1"
       return
     end
 
     scooter_vin = topic_parts[1]
     message_type = topic_parts[2]
+
+    Scooter.find_by(vin: scooter_vin)&.touch(:last_seen_at) if message_type != "status"
 
     case message_type
     when "status"
@@ -166,7 +167,19 @@ class MqttService
     scooter = Scooter.find_by(vin: scooter_vin)
     return unless scooter
 
-    Rails.logger.debug("Status from #{scooter}: #{data}")
+    connected = data["status"] == "connected"
+
+    scooter.with_lock do
+      scooter.update!(
+        is_online: connected,
+        last_seen_at: connected ? Time.now : scooter.last_seen_at
+      )
+
+      scooter.scooter_events.create!(
+        event_type: connected ? :connect : :disconnect,
+        data: data
+      )
+    end
   end
 
   def process_ack(scooter_vin, message)
@@ -213,15 +226,18 @@ class MqttService
     Telemetry.create_from_data!(scooter, data)
 
     # Update scooter fields
-    scooter_attributes = data.reject { |k,v| v.blank? }.slice(
+    scooter_attributes = data.reject { |k, v| v.blank? }.slice(
       "state", "kickstand", "seatbox", "blinkers",
       "speed", "odometer",
       "battery0_level", "battery1_level",
       "aux_battery_level", "cbb_battery_level",
       "lat", "lng"
-    ).merge(last_seen_at: Time.current)
+    )
 
     scooter.update!(scooter_attributes)
+    if scooter.state_previously_changed?
+      scooter.handle_state_change(scooter.state, scooter.state_previously_was)
+    end
   end
 
   def process_trip_update(scooter_vin, update_type, message)

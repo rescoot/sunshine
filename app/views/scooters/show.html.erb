@@ -53,7 +53,7 @@
     <% end %>
   </div>
 
-  <% if @scooter.online? && !@waiting_for_telemetry && @scooter.unlocked? %>
+  <% if @scooter.is_online? && !@waiting_for_telemetry && @scooter.unlocked? %>
     <div class="card">
       <div class="card-header">
         <h3 class="text-base font-semibold leading-6 text-gray-900">
@@ -144,11 +144,11 @@
             </div>
           </div>
 
-          <!-- CBB Battery -->
+          <!-- CB Battery -->
           <div class="flex items-center space-x-4">
-            <%= image_tag "battery/batt_cbb.webp", class: "w-12 h-12", alt: "CBB Battery" %>
+            <%= image_tag "battery/batt_cbb.webp", class: "w-12 h-12", alt: "CB Battery" %>
             <div>
-              <p class="text-sm font-medium text-gray-500">CBB Battery</p>
+              <p class="text-sm font-medium text-gray-500">CB Battery</p>
               <p class="text-lg font-semibold"><%= number_to_percentage(@scooter.cbb_battery_level, precision: 1) %></p>
             </div>
           </div>
@@ -164,7 +164,7 @@
         </h3>
       </div>
       <div class="card-body">
-        <%= render partial: "command_queue_notice" if @scooter.present? && !@scooter.online? %>
+        <%= render partial: "command_queue_notice" if @scooter&.is_online? %>
         <%= render partial: "controls", locals: { scooter: @scooter } %>
       </div>
     </div>
