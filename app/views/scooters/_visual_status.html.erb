@@ -12,19 +12,15 @@
 
       <!-- Overlay images based on state -->
       <% if scooter.is_online? %>
-        <%= image_tag scooter.scooter_image_path('base'), class: "w-1/3", alt: "Scooter" %>
+        <%= image_tag scooter.scooter_image_path('front'), class: "w-1/3", alt: "Scooter" %>
         
-        <% if scooter.blinkers == 'left' || scooter.blinkers == 'both' %>
-          <%= image_tag "scooter/blinker_l.webp", class: "absolute top-0 left-0 w-1/3 animate-blink", style: "mix-blend-mode: screen;" %>
-        <% end %>
-        
-        <% if scooter.blinkers == 'right' || scooter.blinkers == 'both' %>
-          <%= image_tag "scooter/blinker_r.webp", class: "absolute top-0 left-0 w-1/3 animate-blink", style: "mix-blend-mode: screen;" %>
+        <% if scooter.blinkers != 'off' %>
+          <%= image_tag "scooter/blink_#{scooter.blinkers}.png", class: "absolute top-0 left-0 w-1/3 animate-blink", style: "mix-blend-mode: screen;" %>
         <% end %>
         
         <!-- Light ring for unlocked state -->
         <% if scooter.unlocked? %>
-          <%= image_tag "scooter/light_ring.webp", class: "absolute top-0 left-0 w-1/3 animate-glow", style: "mix-blend-mode: screen;" %>
+          <%= image_tag "scooter/pos_light_on.png", class: "absolute top-0 left-0 w-1/3 animate-glow", style: "mix-blend-mode: screen;" %>
         <% end %>
       <% end %>
     </div>

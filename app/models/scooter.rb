@@ -17,6 +17,9 @@ class Scooter < ApplicationRecord
 
   # Valid states
   POWER_STATES = %w[ready-to-drive stand-by entering-hibernation hibernation-imminent hibernating].freeze
+  SCOOTER_STATES = %w[stand-by parked ready-to-drive shutting-down updating off].freeze
+  POWER_MODES = %w[suspending running hibernating suspending-imminent hibernating-imminent booting unknown].freeze
+  HIBERNATION_LEVELS = %w[L1 L2 unknown]
   HANDLEBAR_STATES = %w[locked unlocked].freeze
   KICKSTAND_STATES = %w[up down].freeze
   SEATBOX_STATES = %w[closed open].freeze
@@ -24,16 +27,16 @@ class Scooter < ApplicationRecord
 
   # color indexes from the unustasis app
   COLOR_MAPPING = {
-    "black" => { index: 0, hex: "#000000" },
-    "white" => { index: 1, hex: "#FFFFFF" },
-    "green" => { index: 2, hex: "#1B5E20" },     # green.shade900
-    "gray" => { index: 3, hex: "#9E9E9E" },      # grey primary
-    "orange" => { index: 4, hex: "#FF7043" },    # deepOrange.shade400
-    "red" => { index: 5, hex: "#F44336" },       # red primary
-    "blue" => { index: 6, hex: "#2196F3" },      # blue primary
-    "eclipse" => { index: 7, hex: "#424242" },   # grey.shade800
-    "idioteque" => { index: 8, hex: "#80CBC4" }, # teal.shade200
-    "hover" => { index: 9, hex: "#03A9F4" }      # lightBlue primary
+    "matte black" => { index: 0, hex: "#0F0F0F" },
+    "white" => { index: 1, hex: "#F9F9F9" },
+    "matte pine" => { index: 2, hex: "#255242" },
+    "stone" => { index: 3, hex: "#A4A4A4" },
+    "matte coral" => { index: 4, hex: "#B86057" },
+    "red" => { index: 5, hex: "#D4220F" },
+    "blue" => { index: 6, hex: "#0F214F" },
+    "eclipse" => { index: 7, hex: "#494949" },
+    "idioteque" => { index: 8, hex: "#80CBC4" },
+    "hover" => { index: 9, hex: "#03A9F4" }
   }.freeze
 
   validates :state, inclusion: { in: POWER_STATES }, allow_nil: true
@@ -68,7 +71,11 @@ class Scooter < ApplicationRecord
   end
 
   def location?
-    lat.present? && lng.present? && !(lat == 0 && lng == 0)
+    location.present? && location.created_at >= 12.hours.ago
+  end
+
+  def location
+    @location ||= telemetries.where.not(lat: 0, lng: 0).order(created_at: :desc).first
   end
 
   def locked?
@@ -87,11 +94,11 @@ class Scooter < ApplicationRecord
     COLOR_MAPPING[color][:hex] if color
   end
 
-  def scooter_image_path(type = "base")
+  def scooter_image_path(type = "side")
     if color
-      "scooter/#{type}_#{color_value}.webp"
+      "scooter/#{type}_#{color_value}.png"
     else
-      "scooter/disconnected.webp"
+      "scooter/disconnected.png"
     end
   end
 

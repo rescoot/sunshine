@@ -70,7 +70,7 @@
     <div class="card">
       <div class="card-header">
         <h3 class="text-base font-semibold leading-6 text-gray-900">
-          Last known position: <%= @scooter.lat %>, <%= @scooter.lng %>
+          Last known position: <%= @scooter.location.lat %>, <%= @scooter.location.lng %> (<%= time_ago_in_words(@scooter.location.timestamp) %>)
         </h3>
       </div>
       <div class="card-body">
@@ -96,9 +96,9 @@
         attribution: '© OpenStreetMap contributors'
       }).addTo(map);
 
-      const startMarker = L.marker([<%= @scooter.lat %>, <%= @scooter.lng %>])
+      const startMarker = L.marker([<%= @scooter.location.lat %>, <%= @scooter.location.lng %>])
         .addTo(map)
-      map.setView([<%= @scooter.lat %>, <%= @scooter.lng %>], 15);
+      map.setView([<%= @scooter.location.lat %>, <%= @scooter.location.lng %>], 15);
     };
     document.addEventListener('DOMContentLoaded', initMap);
     document.addEventListener('turbo:render', initMap);
@@ -164,7 +164,7 @@
         </h3>
       </div>
       <div class="card-body">
-        <%= render partial: "command_queue_notice" if @scooter&.is_online? %>
+        <%= render partial: "command_queue_notice" unless @scooter&.is_online? %>
         <%= render partial: "controls", locals: { scooter: @scooter } %>
       </div>
     </div>
