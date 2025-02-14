@@ -59,7 +59,7 @@
     Request Telemetry
   <% end %>
 
-  <% if current_user.admin? %>
+  <% if current_user&.admin? %>
     <%= button_to update_firmware_scooter_path(scooter), 
         class: "btn-warning w-full",
         data: { 

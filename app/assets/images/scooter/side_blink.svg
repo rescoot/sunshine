@@ -1,0 +1,56 @@
+<svg width="1055" height="869" viewBox="0 0 1055 869" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_i_2020_13397)">
+<rect x="823.108" y="421.016" width="20.0241" height="10.8464" rx="5.42318" transform="rotate(-1.61408 823.108 421.016)" fill="#6F6F6F" fill-opacity="0.8"/>
+<rect x="823.108" y="421.016" width="20.0241" height="10.8464" rx="5.42318" transform="rotate(-1.61408 823.108 421.016)" fill="#CEC089" fill-opacity="0.3"/>
+</g>
+<g filter="url(#filter1_df_2020_13397)">
+<rect x="823.108" y="421.016" width="20.0241" height="10.8464" rx="5.42318" transform="rotate(-1.61408 823.108 421.016)" fill="#FFBF65"/>
+</g>
+<g filter="url(#filter2_f_2020_13397)">
+<path d="M95.6948 408.215C96.2191 406.069 98.3837 404.755 100.53 405.279L114.69 408.738C120.099 410.059 123.413 415.516 122.092 420.926V420.926C120.771 426.335 115.314 429.649 109.904 428.328L95.7443 424.869C93.5982 424.344 92.2835 422.18 92.8078 420.034L95.6948 408.215Z" fill="#FFBF65" fill-opacity="0.15"/>
+</g>
+<g filter="url(#filter3_df_2020_13397)">
+<path d="M95.6943 408.215C96.2186 406.069 98.3833 404.755 100.529 405.279L114.689 408.738C120.099 410.059 123.413 415.516 122.091 420.926V420.926C120.77 426.335 115.313 429.649 109.904 428.328L95.7438 424.869C93.5978 424.344 92.283 422.18 92.8073 420.034L95.6943 408.215Z" fill="#FFBF65"/>
+</g>
+<defs>
+<filter id="filter0_i_2020_13397" x="823.259" y="420.602" width="20.0205" height="13.105" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="2"/>
+<feGaussianBlur stdDeviation="1"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_2020_13397"/>
+</filter>
+<filter id="filter1_df_2020_13397" x="792.959" y="390.302" width="80.6205" height="71.705" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feMorphology radius="11" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_2020_13397"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="9.65"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.723889 0 0 0 0 0.408333 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2020_13397"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2020_13397" result="shape"/>
+<feGaussianBlur stdDeviation="0.75" result="effect2_foregroundBlur_2020_13397"/>
+</filter>
+<filter id="filter2_f_2020_13397" x="91.1924" y="403.664" width="32.6899" height="26.4546" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="0.75" result="effect1_foregroundBlur_2020_13397"/>
+</filter>
+<filter id="filter3_df_2020_13397" x="62.3919" y="374.864" width="90.2899" height="84.0546" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feMorphology radius="11" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_2020_13397"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="9.65"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0.723889 0 0 0 0 0.408333 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2020_13397"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2020_13397" result="shape"/>
+<feGaussianBlur stdDeviation="0.75" result="effect2_foregroundBlur_2020_13397"/>
+</filter>
+</defs>
+</svg>

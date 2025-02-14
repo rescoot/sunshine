@@ -1,23 +1,9 @@
 <svg width="433" height="900" viewBox="0 0 433 900" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_i_2018_36699)">
-<rect x="104.344" y="431.198" width="28.6939" height="14.1154" rx="6.10396" transform="rotate(-0.865125 104.344 431.198)" fill="#6F6F6F" fill-opacity="0.8"/>
-<rect x="104.344" y="431.198" width="28.6939" height="14.1154" rx="6.10396" transform="rotate(-0.865125 104.344 431.198)" fill="#CEC089" fill-opacity="0.3"/>
-</g>
-<g filter="url(#filter1_df_2018_36699)">
+<g filter="url(#filter0_df_2018_36699)">
 <rect width="28.6939" height="14.1154" rx="6.10396" transform="matrix(-0.999886 -0.0150987 -0.0150987 0.999886 330.101 431.198)" fill="#FFBF65"/>
 </g>
 <defs>
-<filter id="filter0_i_2018_36699" x="104.436" y="430.856" width="28.7212" height="15.1273" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dy="0.762996"/>
-<feGaussianBlur stdDeviation="0.381498"/>
-<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
-<feBlend mode="normal" in2="shape" result="effect1_innerShadow_2018_36699"/>
-</filter>
-<filter id="filter1_df_2018_36699" x="289.729" y="419.297" width="51.84" height="37.483" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_df_2018_36699" x="289.729" y="419.297" width="51.84" height="37.483" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feMorphology radius="4.19648" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_2018_36699"/>

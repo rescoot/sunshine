@@ -29,7 +29,7 @@
             <div class="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0">
               <div class="flex items-center">
                 <%= link_to root_path, class: "text-white text-xl font-bold" do %>
-                  🛵 Sunshine
+                  ☀️ Sunshine
                 <% end %>
               </div>
               <div class="flex flex-col md:flex-row md:ml-10 md:space-x-4 space-y-3 md:space-y-0">
@@ -40,7 +40,7 @@
             </div>
 
             <!-- Right section -->  
-            <div class="flex flex-col md:flex-row md:items-center space-y-3 md:space-y-0 pt-4 md:pt-0">
+            <div class="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-3 md:space-y-0 pt-4 md:pt-0">
               <% if user_signed_in? %>
                 <%= link_to current_user.name, account_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
                 <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium w-full md:w-auto text-left" %>

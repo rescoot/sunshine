@@ -27,11 +27,11 @@ class Scooter < ApplicationRecord
 
   # color indexes from the unustasis app
   COLOR_MAPPING = {
-    "matte black" => { index: 0, hex: "#0F0F0F" },
+    "black" => { index: 0, hex: "#0F0F0F" },
     "white" => { index: 1, hex: "#F9F9F9" },
-    "matte pine" => { index: 2, hex: "#255242" },
+    "pine" => { index: 2, hex: "#255242" },
     "stone" => { index: 3, hex: "#A4A4A4" },
-    "matte coral" => { index: 4, hex: "#B86057" },
+    "coral" => { index: 4, hex: "#B86057" },
     "red" => { index: 5, hex: "#D4220F" },
     "blue" => { index: 6, hex: "#0F214F" },
     "eclipse" => { index: 7, hex: "#494949" },
@@ -68,6 +68,10 @@ class Scooter < ApplicationRecord
     else
       state
     end.titleize
+  end
+
+  def ready_to_drive?
+    state == "ready-to-drive" && kickstand == "up" && seatbox == "closed"
   end
 
   def location?

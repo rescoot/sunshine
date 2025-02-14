@@ -32,7 +32,8 @@ proxy:
 
 registry:
   server: ghcr.io
-  username: teal-bauer
+  username:
+    - KAMAL_REGISTRY_USERNAME
   password:
     - KAMAL_REGISTRY_PASSWORD
 

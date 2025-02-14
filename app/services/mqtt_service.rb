@@ -225,7 +225,23 @@ class MqttService
     # Create telemetry record with full data
     Telemetry.create_from_data!(scooter, data)
 
-    # Update scooter fields
+    # Update scooter core fields from telemetry
+  if data["version"] == 2
+    scooter_attributes = {
+      state: data["vehicle_state"]["state"],
+      kickstand: data["vehicle_state"]["kickstand"],
+      seatbox: data["vehicle_state"]["seatbox"],
+      blinkers: data["vehicle_state"]["blinker_state"],
+      speed: data["engine"]["speed"],
+      odometer: data["engine"]["odometer"],
+      battery0_level: data["battery0"]["level"],
+      battery1_level: data["battery1"]["level"],
+      aux_battery_level: data["aux_battery"]["level"],
+      cbb_battery_level: data["cbb_battery"]["level"],
+      lat: data["gps"]["lat"],
+      lng: data["gps"]["lng"]
+    }
+  else
     scooter_attributes = data.reject { |k, v| v.blank? }.slice(
       "state", "kickstand", "seatbox", "blinkers",
       "speed", "odometer",
@@ -233,6 +249,7 @@ class MqttService
       "aux_battery_level", "cbb_battery_level",
       "lat", "lng"
     )
+  end
 
     scooter.update!(scooter_attributes)
     if scooter.state_previously_changed?
