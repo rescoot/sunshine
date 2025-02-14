@@ -16,4 +16,12 @@ class ApplicationController < ActionController::Base
       redirect_to root_path, alert: "Not authorized"
     end
   end
+
+  def after_sign_in_path_for(resource)
+    stored_location_for(resource) || dashboard_path
+  end
+
+  def after_sign_out_path_for(_scope)
+    root_path
+  end
 end

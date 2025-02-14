@@ -1,7 +1,7 @@
 <div class="max-w-2xl mx-auto p-6">
   <h1 class="text-2xl font-bold mb-6">Edit Account</h1>
 
-  <%= form_for(@user, url: account_path, html: { class: "bg-white shadow rounded-lg p-6" }) do |f| %>
+  <%= form_for(@user, url: account_path, html: { class: "bg-white shadow rounded-lg p-6", multipart: true }) do |f| %>
     <% if @user.errors.any? %>
       <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded">
         <h2 class="text-red-700 text-sm font-medium"><%= pluralize(@user.errors.count, "error") %> prevented your account from being saved:</h2>
@@ -12,6 +12,34 @@
         </ul>
       </div>
     <% end %>
+
+    <div class="mb-4">
+      <h2 class="text-lg font-semibold mb-4">Profile Picture</h2>
+      <div class="flex items-center space-x-6">
+        <div class="flex-shrink-0">
+          <% if @user.avatar.attached? %>
+            <%= image_tag @user.avatar, class: "h-16 w-16 rounded-full object-cover" %>
+          <% else %>
+            <div class="h-16 w-16 rounded-full bg-gray-500 flex items-center justify-center text-white text-2xl">
+              <%= @user.name.first %>
+            </div>
+          <% end %>
+        </div>
+        <div>
+          <%= f.label :avatar, "Upload Profile Picture", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.file_field :avatar, 
+              accept: 'image/jpeg,image/png,image/gif',
+              class: "mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-indigo-50 file:py-2 file:px-4 file:text-sm file:font-semibold hover:file:bg-indigo-100" %>
+          <p class="mt-1 text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
+        </div>
+        <% if @user.avatar.attached? %>
+          <%= f.check_box :remove_avatar, 
+              class: "h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" %>
+          <%= f.label :remove_avatar, "Remove current avatar", 
+              class: "ml-2 block text-sm text-gray-900" %>
+        <% end %>
+      </div>
+    </div>
 
     <div class="mb-4">
       <%= f.label :name, class: "block text-sm font-medium text-gray-700" %>

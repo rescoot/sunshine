@@ -1,6 +1,6 @@
 <svg width="1055" height="869" viewBox="0 0 1055 869" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g filter="url(#filter0_f_2022_28199)">
-<rect width="989.688" height="6.62427" rx="3.31213" transform="matrix(-1 0 0 1 1030.27 780.38)" fill="black"/>
+<ellipse cx="535" cy="787" rx="496" ry="7" fill="black" fill-opacity="0.3"/>
 </g>
 <g filter="url(#filter1_i_2022_28199)">
 <circle cx="125.059" cy="125.059" r="125.059" transform="matrix(-1 0 0 1 1051.14 535.59)" fill="#111111"/>
@@ -96,7 +96,7 @@
 <path d="M417.745 151.946C425.97 148.716 435.256 152.766 438.485 160.992C441.714 169.217 437.664 178.503 429.439 181.732L417.745 151.946ZM381.053 183.54L366.405 177.102C368.106 173.231 371.27 170.191 375.206 168.646L381.053 183.54ZM429.439 181.732L386.9 198.433L375.206 168.646L417.745 151.946L429.439 181.732ZM395.701 189.977L370.322 247.723L341.026 234.848L366.405 177.102L395.701 189.977Z" fill="#151515"/>
 <path d="M417.745 151.946C425.97 148.716 435.256 152.766 438.485 160.992C441.714 169.217 437.664 178.503 429.439 181.732L417.745 151.946ZM381.053 183.54L366.405 177.102C368.106 173.231 371.27 170.191 375.206 168.646L381.053 183.54ZM429.439 181.732L386.9 198.433L375.206 168.646L417.745 151.946L429.439 181.732ZM395.701 189.977L370.322 247.723L341.026 234.848L366.405 177.102L395.701 189.977Z" fill="url(#paint32_linear_2022_28199)" fill-opacity="0.1"/>
 <defs>
-<filter id="filter0_f_2022_28199" x="24.182" y="763.98" width="1022.49" height="39.4245" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_f_2022_28199" x="22.6" y="763.6" width="1024.8" height="46.8" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feGaussianBlur stdDeviation="8.2" result="effect1_foregroundBlur_2022_28199"/>

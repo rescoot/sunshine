@@ -1,0 +1,53 @@
+<div class="max-w-2xl mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-6 text-center">unu VIN Decoder</h1>
+  
+  <% if flash[:error] %>
+    <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded relative mb-4" role="alert">
+      <%= flash[:error] %>
+    </div>
+  <% end %>
+
+  <% if flash[:community_help] %>
+    <div class="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded relative mb-4" role="alert">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="font-semibold mb-2"><%= flash[:community_help][:title] %></h3>
+          <p class="text-sm"><%= flash[:community_help][:message] %></p>
+        </div>
+        <a href="<%= flash[:community_help][:link] %>" 
+           target="_blank" 
+           class="ml-4 bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700 transition">
+          <%= flash[:community_help][:link_text] %>
+        </a>
+      </div>
+    </div>
+  <% end %>
+
+  <%= form_with url: decode_vin_path, method: :post, class: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4", data: { turbo: false } do |f| %>
+    <div class="mb-4">
+      <%= f.label :vin, "Enter Vehicle Identification Number (VIN)", class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= f.text_field :vin, 
+          placeholder: "e.g. WUNU2S3A6KZ000001", 
+          required: true,
+          maxlength: 17,
+          class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+      <p class="text-gray-600 text-xs italic mt-2">
+        VIN must be 17 characters long and start with WUN. Try it out with WUNU2S3A6KZ000001.
+      </p>
+    </div>
+
+    <div class="flex items-center justify-center">
+      <%= f.submit "Decode VIN", 
+          class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+    </div>
+  <% end %>
+
+  <div class="text-center mt-6">
+    <h2 class="text-xl font-semibold mb-4">What is a VIN?</h2>
+    <p class="text-gray-600">
+      A Vehicle Identification Number (VIN) is a unique 17-character code used to identify 
+      individual motor vehicles. For unu scooters, the VIN provides details about the 
+      model, year of manufacture, and other specific information.
+    </p>
+  </div>
+</div>

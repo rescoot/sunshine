@@ -3,9 +3,11 @@
 
   <div class="bg-white shadow rounded-lg mb-6 p-6">
     <div class="mb-4">
-      <h2 class="text-lg font-semibold mb-2">Account Details</h2>
-      <p><strong>Name:</strong> <%= @user.name %></p>
-      <p><strong>Email:</strong> <%= @user.email %></p>
+      <% if current_user.avatar.attached? %>
+        <%= image_tag current_user.avatar, class: "h-8 w-8 rounded-full" %>
+      <% end %>
+      <h2 class="text-lg font-semibold mb-2"><%= @user.name %></h2>
+      <p><%= @user.email %></p>
     </div>
     
     <div class="flex space-x-4">

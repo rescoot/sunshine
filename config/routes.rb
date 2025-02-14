@@ -1,5 +1,6 @@
 # config/routes.rb
 Rails.application.routes.draw do
+  get "welcome/index"
   ## turns out the unu "cloud" REST API is used _only_ for activation of the scooter in the warehouse?!
   # # to reverse the unu cloud requests
   # constraints subdomain: "unu.cloud" do
@@ -93,7 +94,13 @@ Rails.application.routes.draw do
 
   get "dashboard/index"
 
-  root "dashboard#index"
+  get "vin-decoder", to: "vin_decoder#index"
+  get "vin-decoder/decode", to: "vin_decoder#index"
+  post "vin-decoder/decode", to: "vin_decoder#decode", as: :decode_vin
+
+  get "dashboard", to: "dashboard#index"
+
+  root "welcome#index"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

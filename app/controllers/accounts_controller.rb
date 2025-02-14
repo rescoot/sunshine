@@ -18,6 +18,16 @@ class AccountsController < ApplicationController
       params[:user].delete(:password_confirmation)
     end
 
+    # Handle avatar removal
+    if params[:user][:remove_avatar] == "1"
+      @user.avatar.purge
+    end
+
+    # Handle avatar upload
+    if params[:user][:avatar].present?
+      @user.avatar.attach(params[:user][:avatar])
+    end
+
     if @user.update(user_params)
       bypass_sign_in(@user)
       respond_to do |format|
@@ -40,6 +50,6 @@ class AccountsController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar)
   end
 end

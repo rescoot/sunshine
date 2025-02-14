@@ -1,0 +1,2 @@
+module VinDecoderHelper
+end

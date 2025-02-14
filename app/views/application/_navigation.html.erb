@@ -12,7 +12,21 @@
           <%= link_to "Dashboard", root_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
           <%= link_to "Scooters", scooters_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
           <%= link_to "Trips", trips_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
+        <% end %>
 
+        <div class="relative" data-controller="dropdown">
+          <button data-action="click->dropdown#toggle" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium inline-flex items-center gap-2">
+            Tools
+            <svg data-dropdown-target="chevron" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+            <%= link_to "VIN Decoder", vin_decoder_path, class: "block px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100" %>
+          </div>
+        </div>
+
+        <% if user_signed_in? %>
           <div class="relative" data-controller="dropdown">
             <button data-action="click->dropdown#toggle" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium inline-flex items-center gap-2">
               <% if current_user.avatar.attached? %>
@@ -48,7 +62,22 @@
               <%= link_to "Dashboard", root_path, class: "block text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-base font-medium" %>
               <%= link_to "Scooters", scooters_path, class: "block text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-base font-medium" %>
               <%= link_to "Trips", trips_path, class: "block text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-base font-medium" %>
-            
+              <div class="border-t border-gray-700 my-2"></div>
+            <% end %>
+
+            <div data-controller="dropdown">
+              <button data-action="click->dropdown#toggle" class="w-full text-left flex items-center justify-between text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-base font-medium">
+                <span>Tools</span>
+                <svg data-dropdown-target="chevron" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+              <div data-dropdown-target="menu" class="hidden">
+                <%= link_to "VIN Decoder", vin_decoder_path, class: "block text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-base font-medium" %>
+              </div>
+            </div>
+
+            <% if user_signed_in? %>
               <div class="border-t border-gray-700 my-2"></div>
 
               <div data-controller="dropdown">
