@@ -64,6 +64,21 @@ Rails.application.configure do
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: ENV.fetch("SMTP_ADDRESS", "mail.rescoot.org"),
+    port: ENV.fetch("SMTP_PORT", 587).to_i,
+    domain: ENV.fetch("SMTP_DOMAIN", "rescoot.org"),
+    user_name: ENV.fetch("SMTP_USERNAME", "rescoot"),
+    password: ENV.fetch("SMTP_PASSWORD", ""),
+    authentication: ENV.fetch("SMTP_AUTH", "plain").to_sym,
+    enable_starttls: ENV.fetch("SMTP_STARTTLS", "true") == "true"
+  }
+  config.action_mailer.default_options = { from: ENV.fetch("MAILER_SENDER", "mail@rescoot.org") }
+  config.action_mailer.default_url_options = {
+    host: ENV.fetch("ACTION_MAILER_DEFAULT_URL", "http://localhost:3000")
+  }
+
   # Store files locally.
   config.active_storage.service = :local
 end

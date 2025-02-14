@@ -1,0 +1,148 @@
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900">
+      <%= @scooter ? "Telemetry for #{@scooter.name}" : "All Telemetry" %>
+    </h1>
+    <p class="mt-2 text-sm text-gray-700">
+      <%= @scooter ? "Telemetry history for this scooter." : "Telemetry history across all scooters." %>
+    </p>
+  </div>
+  <% if @scooter %>
+    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+      <%= link_to "Back to Scooter", admin_scooter_path(@scooter), class: "block rounded-md bg-white px-3 py-2 text-center text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="mt-8 flow-root">
+  <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+      <%= render "admin/shared/filter_form", 
+          url: @scooter ? admin_scooter_telemetries_path(@scooter) : admin_telemetries_path,
+          fields: [
+            {
+              name: :state,
+              label: "State",
+              type: :select,
+              options: Scooter::POWER_STATES.map { |s| [s.titleize, s] }
+            },
+            {
+              name: :start_date,
+              label: "From",
+              type: :date
+            },
+            {
+              name: :end_date,
+              label: "To",
+              type: :date
+            },
+            {
+              name: :min_speed,
+              label: "Min Speed (km/h)",
+              type: :number,
+              min: 0,
+              max: 100,
+              step: 1
+            },
+            {
+              name: :max_speed,
+              label: "Max Speed (km/h)",
+              type: :number,
+              min: 0,
+              max: 100,
+              step: 1
+            },
+            unless @scooter
+              {
+                name: :scooter_name,
+                label: "Scooter",
+                type: :text,
+                placeholder: "Search by scooter name..."
+              }
+            end
+          ].compact %>
+      <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Time</th>
+              <% unless @scooter %>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooter</th>
+              <% end %>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">State</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Speed</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Batteries</th>
+              <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                <span class="sr-only">Actions</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <% @telemetries.each do |telemetry| %>
+              <tr>
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-6">
+                  <time datetime="<%= telemetry.created_at.iso8601 %>">
+                    <%= telemetry.created_at.strftime("%B %d, %Y %H:%M:%S") %>
+                  </time>
+                </td>
+                <% unless @scooter %>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= link_to telemetry.scooter.name, admin_scooter_path(telemetry.scooter), class: "text-indigo-600 hover:text-indigo-900" %>
+                  </td>
+                <% end %>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <span class="inline-flex items-center rounded-md 
+                    <%= case telemetry.state
+                        when 'ready-to-drive' then 'bg-green-50 text-green-700 ring-green-600/20'
+                        when 'hibernating' then 'bg-red-50 text-red-700 ring-red-600/20'
+                        else 'bg-gray-50 text-gray-600 ring-gray-500/10'
+                        end %> 
+                    px-2 py-1 text-xs font-medium ring-1 ring-inset">
+                    <%= telemetry.state&.titleize %>
+                  </span>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <%= number_with_precision(telemetry.speed, precision: 1) %> km/h
+                  <% if telemetry.motor_current&.negative? %>
+                    <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20">
+                      REGEN
+                    </span>
+                  <% end %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-mono">
+                  <% if telemetry.lat && telemetry.lng %>
+                    <%= number_with_precision(telemetry.lat, precision: 6) %>, 
+                    <%= number_with_precision(telemetry.lng, precision: 6) %>
+                  <% else %>
+                    -
+                  <% end %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <div class="flex space-x-1">
+                    <% if telemetry.battery0_present? %>
+                      <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                        B0: <%= number_to_percentage(telemetry.battery0_level, precision: 0) %>
+                      </span>
+                    <% end %>
+                    <% if telemetry.battery1_present? %>
+                      <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                        B1: <%= number_to_percentage(telemetry.battery1_level, precision: 0) %>
+                      </span>
+                    <% end %>
+                  </div>
+                </td>
+                <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                  <%= link_to "View", admin_telemetry_path(telemetry), class: "text-indigo-600 hover:text-indigo-900" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-4">
+        <%= paginate @telemetries %>
+      </div>
+    </div>
+  </div>
+</div>

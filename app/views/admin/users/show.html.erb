@@ -1,0 +1,127 @@
+<!-- app/views/admin/users/show.html.erb -->
+<div>
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-2xl font-semibold leading-6 text-gray-900">User Details</h1>
+      <p class="mt-2 text-sm text-gray-700">Detailed information about <%= @user.name %></p>
+    </div>
+    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+      <%= link_to "Edit User", edit_admin_user_path(@user), class: "ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+      <%= link_to "Back to List", admin_users_path, class: "ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+    </div>
+  </div>
+
+  <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <!-- User Information -->
+    <div class="bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">User Information</h3>
+        <dl class="mt-6 space-y-6 divide-y divide-gray-100">
+          <div class="pt-6 sm:flex">
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Full name</dt>
+            <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+              <div class="text-gray-900"><%= @user.name %></div>
+            </dd>
+          </div>
+          <div class="pt-6 sm:flex">
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Email address</dt>
+            <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+              <div class="text-gray-900"><%= @user.email %></div>
+            </dd>
+          </div>
+          <div class="pt-6 sm:flex">
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Role</dt>
+            <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+              <div class="text-gray-900">
+                <% if @user.admin? %>
+                  <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10">Administrator</span>
+                <% else %>
+                  <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">Regular User</span>
+                <% end %>
+              </div>
+            </dd>
+          </div>
+          <div class="pt-6 sm:flex">
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Member since</dt>
+            <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+              <div class="text-gray-900"><%= @user.created_at.strftime("%B %d, %Y") %></div>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Scooters -->
+    <div class="bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">Scooters (<%= @user.scooters.count %>)</h3>
+        <div class="mt-6 flow-root">
+          <div class="-my-5 divide-y divide-gray-200">
+            <% @user.user_scooters.includes(:scooter).each do |user_scooter| %>
+              <div class="py-4">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center min-w-0">
+                    <div class="min-w-0">
+                      <p class="truncate text-sm font-medium text-gray-900">
+                        <%= link_to user_scooter.scooter.name, admin_scooter_path(user_scooter.scooter), class: "text-indigo-600 hover:text-indigo-900" %>
+                      </p>
+                      <p class="truncate text-sm text-gray-500"><%= user_scooter.scooter.vin %></p>
+                    </div>
+                  </div>
+                  <div class="ml-4 flex-shrink-0">
+                    <span class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium 
+                      <%= user_scooter.role == 'owner' ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-gray-50 text-gray-600 ring-gray-500/10' %> 
+                      ring-1 ring-inset">
+                      <%= user_scooter.role.titleize %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="mt-8">
+    <div class="bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">Recent Trips</h3>
+        <div class="mt-6">
+          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-300">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Date</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooter</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Duration</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Distance</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 bg-white">
+                <% @user.trips.order(started_at: :desc).limit(5).each do |trip| %>
+                  <tr>
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">
+                      <%= trip.started_at.strftime("%B %d, %Y %H:%M") %>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <%= trip.scooter.name %>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <%= trip.duration ? distance_of_time_in_words(trip.duration) : "In Progress" %>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <%= trip.distance ? number_with_precision(trip.distance / 1000.0, precision: 1) + " km" : "-" %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

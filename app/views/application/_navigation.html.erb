@@ -26,6 +26,10 @@
           </div>
         </div>
 
+        <% if user_signed_in? && current_user.admin? %>
+          <%= link_to "Admin", admin_root_path, class: "text-gray-300 bg-red-900 hover:bg-red-800 hover:text-white rounded-md px-3 py-2 text-sm font-bold" %>
+        <% end %>
+
         <% if user_signed_in? %>
           <div class="relative" data-controller="dropdown">
             <button data-action="click->dropdown#toggle" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium inline-flex items-center gap-2">

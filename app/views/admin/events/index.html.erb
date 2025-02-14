@@ -1,0 +1,104 @@
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900">
+      <%= @scooter ? "Events for #{@scooter.name}" : "All Events" %>
+    </h1>
+    <p class="mt-2 text-sm text-gray-700">
+      <%= @scooter ? "Event history for this scooter." : "Event history across all scooters." %>
+    </p>
+  </div>
+  <% if @scooter %>
+    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+      <%= link_to "Back to Scooter", admin_scooter_path(@scooter), class: "block rounded-md bg-white px-3 py-2 text-center text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="mt-8 flow-root">
+  <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+      <%= render "admin/shared/filter_form", 
+          url: @scooter ? admin_scooter_events_path(@scooter) : admin_events_path,
+          fields: [
+            {
+              name: :event_type,
+              label: "Event Type",
+              type: :select,
+              options: ScooterEvent.event_types.keys.map { |k| [k.titleize, k] }
+            },
+            {
+              name: :start_date,
+              label: "From",
+              type: :date
+            },
+            {
+              name: :end_date,
+              label: "To",
+              type: :date
+            },
+            unless @scooter
+              {
+                name: :scooter_name,
+                label: "Scooter",
+                type: :text,
+                placeholder: "Search by scooter name..."
+              }
+            end
+          ].compact %>
+      <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Time</th>
+              <% unless @scooter %>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooter</th>
+              <% end %>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Type</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Data</th>
+              <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                <span class="sr-only">Actions</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <% @events.each do |event| %>
+              <tr>
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900 sm:pl-6">
+                  <time datetime="<%= event.created_at.iso8601 %>">
+                    <%= event.created_at.strftime("%B %d, %Y %H:%M:%S") %>
+                  </time>
+                </td>
+                <% unless @scooter %>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= link_to event.scooter.name, admin_scooter_path(event.scooter), class: "text-indigo-600 hover:text-indigo-900" %>
+                  </td>
+                <% end %>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <span class="inline-flex items-center rounded-md 
+                    <%= case event.event_type
+                        when 'connect'    then 'bg-green-50 text-green-700 ring-green-600/20'
+                        when 'disconnect' then 'bg-red-50 text-red-700 ring-red-600/20'
+                        when 'command'    then 'bg-blue-50 text-blue-700 ring-blue-600/20'
+                        else 'bg-gray-50 text-gray-600 ring-gray-500/10'
+                        end %> 
+                    px-2 py-1 text-xs font-medium ring-1 ring-inset">
+                    <%= event.event_type.titleize %>
+                  </span>
+                </td>
+                <td class="px-3 py-4 text-sm text-gray-500">
+                  <pre class="text-xs max-w-xl truncate"><%= event.data.to_json %></pre>
+                </td>
+                <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                  <%= link_to "View", admin_event_path(event), class: "text-indigo-600 hover:text-indigo-900" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-4">
+        <%= paginate @events %>
+      </div>
+    </div>
+  </div>
+</div>

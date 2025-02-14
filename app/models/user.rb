@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :confirmable
 
   has_many :user_scooters
   has_many :scooters, through: :user_scooters
@@ -22,7 +22,7 @@ class User < ApplicationRecord
   end
 
   def admin?
-    id == 1
+    is_admin?
   end
 
   private

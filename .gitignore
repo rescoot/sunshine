@@ -37,3 +37,6 @@
 !/app/assets/builds/.keep
 config/mqtt_certs/*
 !config/mqtt_certs/.keep
+
+dump.rdb
+flat.sh

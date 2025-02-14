@@ -1,0 +1,109 @@
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Scooters</h1>
+    <p class="mt-2 text-sm text-gray-700">A list of all scooters in the system.</p>
+  </div>
+  <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+    <%= link_to "Add Scooter", new_admin_scooter_path, class: "block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" %>
+  </div>
+</div>
+
+<div class="mt-8 flow-root">
+  <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+      <%= render "admin/shared/filter_form", 
+          url: admin_scooters_path,
+          fields: [
+            {
+              name: :name,
+              label: "Name",
+              type: :text,
+              placeholder: "Search by name..."
+            },
+            {
+              name: :vin,
+              label: "VIN",
+              type: :text,
+              placeholder: "Search by VIN..."
+            },
+            {
+              name: :imei,
+              label: "IMEI",
+              type: :text,
+              placeholder: "Search by IMEI..."
+            },
+            {
+              name: :color,
+              label: "Color",
+              type: :select,
+              options: Scooter::COLOR_MAPPING.keys.map { |k| [k.titleize, k] }
+            },
+            {
+              name: :status,
+              label: "Status",
+              type: :select,
+              options: [["Online", "online"], ["Offline", "offline"]]
+            }
+          ] %>
+      <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Name</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">VIN</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">IMEI</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Owner</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Last Seen</th>
+              <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                <span class="sr-only">Actions</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <% @scooters.each do |scooter| %>
+              <tr>
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                  <%= link_to scooter.name, admin_scooter_path(scooter), class: "text-indigo-600 hover:text-indigo-900" %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-mono">
+                  <%= scooter.vin %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-mono">
+                  <%= scooter.imei %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <% if owner = scooter.owner %>
+                    <%= link_to owner.name, admin_user_path(owner), class: "text-indigo-600 hover:text-indigo-900" %>
+                  <% else %>
+                    <span class="text-red-600">No owner</span>
+                  <% end %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <% if scooter.is_online? %>
+                    <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Online</span>
+                  <% else %>
+                    <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Offline</span>
+                  <% end %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <%= scooter.last_seen_at ? time_ago_in_words(scooter.last_seen_at) + " ago" : "Never" %>
+                </td>
+                <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                  <%= link_to "Shell", admin_scooter_shell_path(scooter), class: "text-indigo-600 hover:text-indigo-900" if scooter.is_online? %>
+                  <%= link_to "Edit", edit_admin_scooter_path(scooter), class: "ml-4 text-indigo-600 hover:text-indigo-900" %>
+                  <%= button_to "Delete", admin_scooter_path(scooter), method: :delete,
+                      class: "ml-4 text-red-600 hover:text-red-900",
+                      data: { turbo_confirm: "Are you sure? This will delete all associated data." } %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-4">
+        <%= paginate @scooters %>
+      </div>
+    </div>
+  </div>
+</div>

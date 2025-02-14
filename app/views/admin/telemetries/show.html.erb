@@ -1,0 +1,370 @@
+<div>
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-2xl font-semibold leading-6 text-gray-900">Telemetry Details</h1>
+      <p class="mt-2 text-sm text-gray-700">
+        Detailed telemetry from <%= @telemetry.scooter.name %> at <%= @telemetry.created_at.strftime("%B %d, %Y %H:%M:%S") %>
+      </p>
+    </div>
+    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+      <%= link_to "Back to Telemetry", admin_telemetries_path, class: "block rounded-md bg-white px-3 py-2 text-center text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+    </div>
+  </div>
+
+  <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <!-- Basic Information -->
+    <div class="bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">Basic Information</h3>
+        <dl class="mt-6 space-y-6 divide-y divide-gray-100">
+          <div class="pt-6 sm:flex">
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Scooter</dt>
+            <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+              <div class="text-gray-900">
+                <%= link_to @telemetry.scooter.name, admin_scooter_path(@telemetry.scooter), class: "text-indigo-600 hover:text-indigo-900" %>
+              </div>
+            </dd>
+          </div>
+          <div class="pt-6 sm:flex">
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">State</dt>
+            <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+              <div class="text-gray-900"><%= @telemetry.state&.titleize %></div>
+            </dd>
+          </div>
+          <div class="pt-6 sm:flex">
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Speed</dt>
+            <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+              <div class="text-gray-900">
+                <%= number_with_precision(@telemetry.speed, precision: 1) %> km/h
+                <% if @telemetry.motor_current&.negative? %>
+                  <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20">
+                    REGEN <%= number_with_precision(@telemetry.motor_current / 1000.0, precision: 1) %> A
+                  </span>
+                <% elsif @telemetry.motor_current&.positive? %>
+                  <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">
+                    DISCHARGE <%= number_with_precision(@telemetry.motor_current / 1000.0, precision: 1) %> A
+                  </span>
+                <% end %>
+                
+              </div>
+            </dd>
+          </div>
+          <div class="pt-6 sm:flex">
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Location</dt>
+            <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
+              <div class="text-gray-900 font-mono">
+                <% if @telemetry.lat && @telemetry.lng %>
+                  <%= number_with_precision(@telemetry.lat, precision: 6) %>, 
+                  <%= number_with_precision(@telemetry.lng, precision: 6) %>
+                  <% if @telemetry.altitude %>
+                    at <%= number_with_precision(@telemetry.altitude, precision: 1) %>m
+                  <% end %>
+                <% else %>
+                  No location data
+                <% end %>
+              </div>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Battery Information -->
+    <div class="bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">Battery Status</h3>
+        <dl class="mt-6 space-y-6 divide-y divide-gray-100">
+          <% if @telemetry.battery0_present? %>
+            <div class="pt-6">
+              <dt class="font-medium text-gray-900">Main Battery</dt>
+              <dd class="mt-2 sm:grid sm:grid-cols-2 sm:gap-4">
+                <div class="space-y-2">
+                  <div class="flex justify-between">
+                    <span class="text-sm text-gray-500">Level</span>
+                    <span class="text-sm text-gray-900"><%= number_to_percentage(@telemetry.battery0_level, precision: 0) %></span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm text-gray-500">State</span>
+                    <span class="text-sm text-gray-900"><%= @telemetry.battery0_state&.titleize %></span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm text-gray-500">Cycles</span>
+                    <span class="text-sm text-gray-900"><%= @telemetry.battery0_cycle_count %></span>
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex justify-between">
+                    <span class="text-sm text-gray-500">Temperature</span>
+                    <span class="text-sm text-gray-900">
+                      <%= @telemetry.battery0_temps&.map { |t| number_with_precision(t, precision: 1) }&.join("°C, ") %>°C
+                    </span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm text-gray-500">Health</span>
+                    <span class="text-sm text-gray-900"><%= number_to_percentage(@telemetry.battery0_soh, precision: 0) %></span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm text-gray-500">Firmware</span>
+                    <span class="text-sm text-gray-900 font-mono"><%= @telemetry.battery0_fw_version %></span>
+                  </div>
+                </div>
+              </dd>
+            </div>
+          <% end %>
+
+          <% if @telemetry.battery1_present? %>
+            <div class="pt-6">
+              <dt class="font-medium text-gray-900">Secondary Battery</dt>
+              <dd class="mt-2 sm:grid sm:grid-cols-2 sm:gap-4">
+                <div class="space-y-2">
+                  <div class="flex justify-between">
+                    <span class="text-sm text-gray-500">Level</span>
+                    <span class="text-sm text-gray-900"><%= number_to_percentage(@telemetry.battery1_level, precision: 0) %></span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm text-gray-500">State</span>
+                    <span class="text-sm text-gray-900"><%= @telemetry.battery1_state&.titleize %></span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm text-gray-500">Cycles</span>
+                    <span class="text-sm text-gray-900"><%= @telemetry.battery1_cycle_count %></span>
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex justify-between">
+                    <span class="text-sm text-gray-500">Temperature</span>
+                    <span class="text-sm text-gray-900">
+                      <%= @telemetry.battery1_temps&.map { |t| number_with_precision(t, precision: 1) }&.join("°C, ") %>°C
+                    </span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm text-gray-500">Health</span>
+                    <span class="text-sm text-gray-900"><%= number_to_percentage(@telemetry.battery1_soh, precision: 0) %></span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-sm text-gray-500">Firmware</span>
+                    <span class="text-sm text-gray-900 font-mono"><%= @telemetry.battery1_fw_version %></span>
+                  </div>
+                </div>
+              </dd>
+            </div>
+          <% end %>
+
+          <!-- Auxiliary Batteries -->
+          <div class="pt-6">
+            <dt class="font-medium text-gray-900">Auxiliary Batteries</dt>
+            <dd class="mt-2 sm:grid sm:grid-cols-2 sm:gap-4">
+              <div class="space-y-2">
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Aux Level</span>
+                  <span class="text-sm text-gray-900"><%= number_to_percentage(@telemetry.aux_battery_level, precision: 0) %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Aux Voltage</span>
+                  <span class="text-sm text-gray-900"><%= number_with_precision(@telemetry.aux_battery_voltage / 1000.0, precision: 2) %>V</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Aux Status</span>
+                  <span class="text-sm text-gray-900"><%= @telemetry.aux_battery_charge_status&.titleize %></span>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">CBB Level</span>
+                  <span class="text-sm text-gray-900"><%= number_to_percentage(@telemetry.cbb_battery_level, precision: 1) %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">CBB Current</span>
+                  <span class="text-sm text-gray-900"><%= number_with_precision(@telemetry.cbb_battery_current / 1_000.0, precision: 3) %>mA</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">CBB Status</span>
+                  <span class="text-sm text-gray-900"><%= @telemetry.cbb_battery_charge_status&.titleize %></span>
+                </div>
+              </div>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- System Status -->
+    <div class="bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">System Status</h3>
+        <dl class="mt-6 space-y-6 divide-y divide-gray-100">
+          <div class="pt-6">
+            <dt class="font-medium text-gray-900">Firmware Versions</dt>
+            <dd class="mt-2">
+              <div class="space-y-2">
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">MDB</span>
+                  <span class="text-sm text-gray-900 font-mono"><%= @telemetry.mdb_version %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">DBC</span>
+                  <span class="text-sm text-gray-900 font-mono"><%= @telemetry.dbc_version %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">NRF</span>
+                  <span class="text-sm text-gray-900 font-mono"><%= @telemetry.nrf_fw_version %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Engine</span>
+                  <span class="text-sm text-gray-900 font-mono"><%= @telemetry.engine_fw_version %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Environment</span>
+                  <span class="text-sm text-gray-900"><%= @telemetry.environment %></span>
+                </div>
+              </div>
+            </dd>
+          </div>
+
+          <div class="pt-6">
+            <dt class="font-medium text-gray-900">Engine Status</dt>
+            <dd class="mt-2">
+              <div class="space-y-2">
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Engine State</span>
+                  <span class="text-sm text-gray-900"><%= @telemetry.engine_state&.titleize %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">KERS</span>
+                  <span class="text-sm text-gray-900">
+                    <%= @telemetry.kers_state&.titleize %>
+                    <% if @telemetry.kers_reason_off.present? %>
+                      (<%= @telemetry.kers_reason_off&.titleize %>)
+                    <% end %>
+                  </span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">RPM</span>
+                  <span class="text-sm text-gray-900"><%= @telemetry.motor_rpm %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Throttle</span>
+                  <span class="text-sm text-gray-900"><%= @telemetry.throttle_state&.titleize %></span>
+                </div>
+              </div>
+            </dd>
+          </div>
+
+          <div class="pt-6">
+            <dt class="font-medium text-gray-900">Connectivity</dt>
+            <dd class="mt-2">
+              <div class="space-y-2">
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Modem</span>
+                  <span class="text-sm text-gray-900"><%= @telemetry.modem_state&.titleize %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Internet</span>
+                  <span class="text-sm text-gray-900"><%= @telemetry.internet_status&.titleize %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Cloud</span>
+                  <span class="text-sm text-gray-900"><%= @telemetry.cloud_status&.titleize %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">IP</span>
+                  <span class="text-sm text-gray-900 font-mono"><%= @telemetry.ip_address %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Network</span>
+                  <span class="text-sm text-gray-900">
+                    <%= @telemetry.access_tech %>
+                    <% if @telemetry.signal_quality %>
+                      (<%= @telemetry.signal_quality %>%)
+                    <% end %>
+                  </span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">BLE</span>
+                  <span class="text-sm text-gray-900">
+                    <%= @telemetry.ble_status&.titleize %>
+                    <% if @telemetry.ble_mac_address %>
+                      (<%= @telemetry.ble_mac_address %>)
+                    <% end %>
+                  </span>
+                </div>
+              </div>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Physical State -->
+    <div class="bg-white shadow sm:rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">Physical State</h3>
+        <dl class="mt-6 space-y-6 divide-y divide-gray-100">
+          <div class="pt-6">
+            <dt class="font-medium text-gray-900">Control States</dt>
+            <dd class="mt-2">
+              <div class="grid grid-cols-2 gap-4">
+                <% [
+                  ['Main Power', @telemetry.main_power],
+                  ['Handlebar Lock', @telemetry.handlebar_lock],
+                  ['Handlebar Position', @telemetry.handlebar_position],
+                  ['Brake Left', @telemetry.brake_left],
+                  ['Brake Right', @telemetry.brake_right],
+                  ['Blinker Switch', @telemetry.blinker_switch],
+                  ['Seatbox', @telemetry.seatbox],
+                  ['Seatbox Button', @telemetry.seatbox_button],
+                  ['Horn Button', @telemetry.horn_button]
+                ].each do |label, value| %>
+                  <div class="flex justify-between">
+                    <span class="text-sm text-gray-500"><%= label %></span>
+                    <span class="text-sm text-gray-900"><%= value&.titleize %></span>
+                  </div>
+                <% end %>
+              </div>
+            </dd>
+          </div>
+
+          <div class="pt-6">
+            <dt class="font-medium text-gray-900">Power System</dt>
+            <dd class="mt-2">
+              <div class="grid grid-cols-2 gap-4">
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Power State</span>
+                  <span class="text-sm text-gray-900"><%= @telemetry.power_state&.titleize %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Power Input</span>
+                  <span class="text-sm text-gray-900"><%= @telemetry.power_mux_input&.titleize %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Wakeup Source</span>
+                  <span class="text-sm text-gray-900"><%= @telemetry.wakeup_source&.titleize %></span>
+                </div>
+              </div>
+            </dd>
+          </div>
+
+          <div class="pt-6">
+            <dt class="font-medium text-gray-900">Dashboard</dt>
+            <dd class="mt-2">
+              <div class="grid grid-cols-2 gap-4">
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Mode</span>
+                  <span class="text-sm text-gray-900"><%= @telemetry.dashboard_mode&.titleize %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Ready</span>
+                  <span class="text-sm text-gray-900"><%= @telemetry.dashboard_ready ? 'Yes' : 'No' %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">Serial</span>
+                  <span class="text-sm text-gray-900 font-mono"><%= @telemetry.dashboard_serial_number %></span>
+                </div>
+              </div>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,5 @@
 # config/routes.rb
 Rails.application.routes.draw do
-  get "welcome/index"
   ## turns out the unu "cloud" REST API is used _only_ for activation of the scooter in the warehouse?!
   # # to reverse the unu cloud requests
   # constraints subdomain: "unu.cloud" do
@@ -11,12 +10,20 @@ Rails.application.routes.draw do
   devise_for :users
 
   namespace :admin do
-    resources :scooters, only: [] do
+    root to: "dashboard#index"
+
+    resources :users
+    resources :scooters do
+      resources :telemetries, only: [ :index, :show ]
+      resources :events, only: [ :index, :show ]
+      resources :user_scooters, only: [ :create, :destroy ]
       resource :shell, only: [ :show ] do
         post :execute
       end
     end
-    # resources :unu_requests, only: [ :index, :show ]
+
+    resources :events, only: [ :index, :show ]
+    resources :telemetries, only: [ :index, :show ]
     resources :unu_uplink_requests, only: [ :index, :show ]
   end
 
