@@ -49,7 +49,7 @@
 
   <div id="api_token_section">
     <% if @waiting_for_telemetry || @show_token_section %>
-      <%= render "api_token", scooter: @scooter, token: @token %>
+      <%= render "scooters/api_token", scooter: @scooter, token: @token %>
     <% end %>
   </div>
 

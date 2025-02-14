@@ -6,10 +6,10 @@
       <div class="absolute top-2 left-2 flex flex-col gap-2">
         <% if scooter.is_online? %>
           <div class="badge badge-success">Online</div>
+        <% elsif scooter.last_seen_at %>
+          <div class="badge badge-error">Offline since <%= time_ago_in_words(scooter.last_seen_at) %></div>
         <% else %>
-          <div class="badge badge-error">
-            Offline since <%= time_ago_in_words(scooter.last_seen_at) if scooter.last_seen_at %>
-          </div>
+          <div class="badge badge-warning">Pending Setup</div>
         <% end %>
       </div>
     </div>

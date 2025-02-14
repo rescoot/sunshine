@@ -10,8 +10,10 @@ class ApiToken < ApplicationRecord
 
   attr_accessor :token
 
-  before_validation :generate_token
   after_create :store_temporary_token
+  after_create :setup_mqtt_auth, if: :scooter_token?
+  before_validation :generate_token
+  before_destroy :revoke_mqtt_auth, if: :scooter_token?
 
   scope :user_tokens, -> { where(scope: "user") }
   scope :scooter_tokens, -> { where(scope: "scooter") }
@@ -43,5 +45,17 @@ class ApiToken < ApplicationRecord
     unless user.present? ^ scooter.present?
       errors.add(:base, "Token must belong to either a user or a scooter, not both or neither")
     end
+  end
+
+  def setup_mqtt_auth
+    MqttAuthService.provision_scooter(scooter, token) if token
+  end
+
+  def revoke_mqtt_auth
+    MqttAuthService.revoke_scooter(scooter)
+  end
+
+  def scooter_token?
+    scope == "scooter" && scooter.present?
   end
 end

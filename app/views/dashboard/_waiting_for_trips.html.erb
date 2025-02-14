@@ -1,0 +1,18 @@
+<div class="mt-8 bg-white shadow sm:rounded-lg">
+  <div class="px-4 py-5 sm:p-6">
+    <h3 class="text-base font-semibold leading-6 text-gray-900">Ready to Ride!</h3>
+    <div class="mt-2 text-sm text-gray-500">
+      <p>You have <%= pluralize(@scooters.count, 'scooter') %> registered. Trips are automatically tracked when:</p>
+      <ul class="mt-4 list-disc space-y-2 pl-5">
+        <li>A trip starts when your scooter enters "ready-to-drive" mode</li>
+        <li>The trip ends when your scooter is parked or enters hibernation</li>
+        <li>All trip data including distance, duration, and route are logged automatically</li>
+      </ul>
+    </div>
+    <div class="mt-5">
+      <%= link_to scooters_path, class: "text-sm font-semibold text-indigo-600 hover:text-indigo-500" do %>
+        View Your Scooters →
+      <% end %>
+    </div>
+  </div>
+</div>

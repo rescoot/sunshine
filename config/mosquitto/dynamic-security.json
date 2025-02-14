@@ -1,0 +1,121 @@
+{
+  "clients": [
+    {
+      "username": "cloud_service",
+      "textName": "Dynsec admin user",
+      "password": "SJ0BnHsKoCUJQ6mmLIT2vDuHZ4W8lDr0MZPcezvVLW5mdVxtrzQRhtYYbQ1wMtL4cOee2cDuVXB3eLIeFAbfIw==",
+      "salt": "2XpXXSBFhe9kDdCK",
+      "iterations": 101,
+      "roles": [
+        {
+          "rolename": "admin"
+        }
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "rolename": "admin",
+      "acls": [
+        {
+          "acltype": "publishClientSend",
+          "topic": "$CONTROL/dynamic-security/#",
+          "allow": true
+        },
+        {
+          "acltype": "publishClientReceive",
+          "topic": "$CONTROL/dynamic-security/#",
+          "allow": true
+        },
+        {
+          "acltype": "subscribePattern",
+          "topic": "$CONTROL/dynamic-security/#",
+          "allow": true
+        },
+        {
+          "acltype": "publishClientReceive",
+          "topic": "$SYS/#",
+          "allow": true
+        },
+        {
+          "acltype": "subscribePattern",
+          "topic": "$SYS/#",
+          "allow": true
+        },
+        {
+          "acltype": "publishClientReceive",
+          "topic": "#",
+          "allow": true
+        },
+        {
+          "acltype": "subscribePattern",
+          "topic": "#",
+          "allow": true
+        },
+        {
+          "acltype": "unsubscribePattern",
+          "topic": "#",
+          "allow": true
+        }
+      ]
+    },
+    {
+      "rolename": "scooter",
+      "acls": [
+        {
+          "acltype": "publishClientSend",
+          "topic": "scooters/%u/commands",
+          "priority": 1,
+          "allow": true
+        },
+        {
+          "acltype": "publishClientSend",
+          "topic": "scooters/%u/telemetry",
+          "priority": 1,
+          "allow": true
+        },
+        {
+          "acltype": "publishClientSend",
+          "topic": "scooters/%u/acks",
+          "priority": 1,
+          "allow": true
+        },
+        {
+          "acltype": "publishClientSend",
+          "topic": "scooters/%u/status",
+          "priority": 1,
+          "allow": true
+        },
+        {
+          "acltype": "publishClientSend",
+          "topic": "scooters/%u/data",
+          "priority": 1,
+          "allow": true
+        },
+        {
+          "acltype": "publishClientReceive",
+          "topic": "scooters/%u/commands",
+          "priority": 1,
+          "allow": true
+        }
+      ]
+    },
+    {
+      "rolename": "unu_uplink",
+      "acls": [
+        {
+          "acltype": "publishClientSend",
+          "topic": "%u/#",
+          "priority": 1,
+          "allow": true
+        }
+      ]
+    }
+  ],
+  "defaultACLAccess": {
+    "publishClientSend": false,
+    "publishClientReceive": true,
+    "subscribe": false,
+    "unsubscribe": true
+  }
+}

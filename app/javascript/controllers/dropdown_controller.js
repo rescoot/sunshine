@@ -1,24 +1,33 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "menu" ]
+  static targets = ["menu", "chevron"]
 
-  toggle() {
+  toggle(event) {
+    event.stopPropagation()
     this.menuTarget.classList.toggle("hidden")
-  }
-
-  hide(event) {
-    if (!this.element.contains(event.target)) {
-      this.menuTarget.classList.add("hidden")
+    
+    // Rotate chevron if it exists
+    if (this.hasChevronTarget) {
+      this.chevronTarget.classList.toggle("rotate-180")
     }
   }
 
   connect() {
-    this.hideHandler = this.hide.bind(this)
-    document.addEventListener("click", this.hideHandler)
+    this.clickOutsideHandler = this.closeOnClickOutside.bind(this)
+    document.addEventListener("click", this.clickOutsideHandler)
   }
 
   disconnect() {
-    document.removeEventListener("click", this.hideHandler)
+    document.removeEventListener("click", this.clickOutsideHandler)
+  }
+
+  closeOnClickOutside(event) {
+    if (!this.element.contains(event.target)) {
+      this.menuTarget.classList.add("hidden")
+      if (this.hasChevronTarget) {
+        this.chevronTarget.classList.remove("rotate-180")
+      }
+    }
   }
 }

@@ -5,17 +5,17 @@ class MqttService
 
   MQTT_CONFIG = {
     host: ENV.fetch("MQTT_HOST", "localhost"),
-    port: ENV.fetch("MQTT_PORT", 8883).to_i,
+    port: ENV.fetch("MQTT_PORT", 1883).to_i,
     username: ENV.fetch("MQTT_USERNAME", "cloud_service"),
     password: ENV.fetch("MQTT_PASSWORD", "password"),
-    ssl: ENV.fetch("MQTT_SSL", "true") == "true",
+    ssl: ENV.fetch("MQTT_SSL", "false") == "true",
     # cert_file: ENV.fetch("MQTT_SERVER_CRT_PATH"),
     # key_file: ENV.fetch("MQTT_SERVER_KEY_PATH"),
     # ca_file: ENV.fetch("MQTT_CA_CRT_PATH"),
     # verify_peer: true,
     keep_alive: 300,
     clean_session: false,
-    client_id: [ "sunshine", Rails.env, Process.pid, ENV.fetch("MQTT_ROLE", "none") ].join("-"),
+    client_id: [ "sunshine", Rails.env, Process.pid, ENV.fetch("MQTT_ROLE", "none") ].join("-")
   }
 
   class << self
@@ -31,10 +31,12 @@ class MqttService
       Rails.logger.info "#{index}: #{line}"
     end
     @web_mode = web_mode
+    @subscriptions = Set.new
+    @response_subscribers = Concurrent::Map.new if web_mode
     @ack_subscribers = Concurrent::Map.new if web_mode
     @client = MQTT::Client.new(MQTT_CONFIG)
     connect
-    subscribe_to_topics if @web_mode # Subscribe immediately in web mode
+    subscribe_to_topics
   end
 
   def run
@@ -53,12 +55,76 @@ class MqttService
   end
 
   def connect
+    @client&.disconnect rescue nil
     Rails.logger.info "Attempting to connect to MQTT broker at #{MQTT_CONFIG[:host]}:#{MQTT_CONFIG[:port]} as #{MQTT_CONFIG[:username]}"
     @client.connect
     Rails.logger.info "Connected to MQTT broker at #{MQTT_CONFIG[:host]}:#{MQTT_CONFIG[:port]}"
   rescue => e
     Rails.logger.error "Failed to connect to MQTT: #{e.message}"
     raise e
+  end
+
+  def subscribe_to_response(&block)
+    subscription_id = SecureRandom.uuid
+    @response_subscribers ||= Concurrent::Map.new
+    @response_subscribers[subscription_id] = block
+
+    unless @subscriptions.include?("$CONTROL/dynamic-security/v1/response")
+      @client.subscribe("$CONTROL/dynamic-security/v1/response", qos: 1)
+      @subscriptions.add("$CONTROL/dynamic-security/v1/response")
+    end
+
+    subscription_id
+  end
+
+  def unsubscribe_from_response(subscription_id)
+    @response_subscribers&.delete(subscription_id)
+  end
+
+  def publish_control(topic, message)
+    # Ensure message is a Hash
+    message = JSON.parse(message) if message.is_a?(String)
+
+    # Remove any duplicate or empty keys
+    message.reject! { |k, v| k.to_s == "" || v.to_s == "" }
+
+    Rails.logger.debug("publish_control(#{topic.inspect}, #{message.inspect})")
+
+    # Wrap the message in the expected commands structure
+    formatted_message = {
+      commands: [
+        {
+          "command" => message[:command].to_s,
+          "correlationData" => message[:correlationData] || SecureRandom.uuid,
+          # Merge other keys, excluding 'command' and 'correlationData' to avoid duplicates
+          **message.except(:command, :correlationData)
+        }
+      ]
+    }
+
+    @client.publish(topic, formatted_message.to_json, retain: false, qos: 1)
+    Rails.logger.info "Published control message to #{topic}: #{formatted_message.to_json}"
+  rescue => e
+    Rails.logger.error "Failed to publish control message: #{e.message}"
+    raise
+  end
+
+  def handle_control_response(topic, message)
+    # Convert message to hash if it's a string
+    parsed_message = message.is_a?(String) ? JSON.parse(message) : message
+
+    # The README shows responses can be nested
+    responses = parsed_message["responses"] || [ parsed_message ]
+
+    responses.each do |response|
+      @response_subscribers&.each do |_, subscriber|
+        # Ensure we're passing the entire response object
+        subscriber.call(topic, response)
+      end
+    end
+  rescue => e
+    Rails.logger.error "Error handling control response: #{e.message}"
+    Rails.logger.error "Problematic message: #{message.inspect}"
   end
 
   def publish_command(scooter_vin, command)
@@ -88,14 +154,25 @@ class MqttService
 
   def subscribe_to_topics
     Thread.new do
-      @client.subscribe([
-        "scooters/+/status",
-        "scooters/+/telemetry",
-        "scooters/+/acks",
-        "scooters/+/data",
-        "scooters/+/trip/#",
-        "+/v1/#"  # unu cloud messages
-      ])
+      topics = if !@web_mode
+        # background service handles background updates
+        [
+          "scooters/+/status",
+          "scooters/+/telemetry",
+          "scooters/+/data",
+          "scooters/+/trip/#",
+          "+/v1/#"  # unu cloud messages
+        ]
+      else
+        # web wants acks and control responses
+        [
+          "scooters/+/acks",
+          "$CONTROL/dynamic-security/v1/response"
+        ]
+      end
+
+      @client.subscribe(topics)
+      topics.each { |t| @subscriptions.add(t) }
 
       @client.get do |topic, message|
         process_message(topic, message)
@@ -106,6 +183,11 @@ class MqttService
 
   def process_message(topic, message)
     Rails.logger.debug "MQTT: Received message on topic '#{topic}': #{message}"
+
+    if topic == "$CONTROL/dynamic-security/v1/response"
+      handle_control_response(topic, message)
+      return
+    end
 
     topic_parts = topic.split("/")
 
@@ -226,30 +308,32 @@ class MqttService
     Telemetry.create_from_data!(scooter, data)
 
     # Update scooter core fields from telemetry
-  if data["version"] == 2
-    scooter_attributes = {
-      state: data["vehicle_state"]["state"],
-      kickstand: data["vehicle_state"]["kickstand"],
-      seatbox: data["vehicle_state"]["seatbox"],
-      blinkers: data["vehicle_state"]["blinker_state"],
-      speed: data["engine"]["speed"],
-      odometer: data["engine"]["odometer"],
-      battery0_level: data["battery0"]["level"],
-      battery1_level: data["battery1"]["level"],
-      aux_battery_level: data["aux_battery"]["level"],
-      cbb_battery_level: data["cbb_battery"]["level"],
-      lat: data["gps"]["lat"],
-      lng: data["gps"]["lng"]
-    }
-  else
-    scooter_attributes = data.reject { |k, v| v.blank? }.slice(
-      "state", "kickstand", "seatbox", "blinkers",
-      "speed", "odometer",
-      "battery0_level", "battery1_level",
-      "aux_battery_level", "cbb_battery_level",
-      "lat", "lng"
-    )
-  end
+    if data["version"] == 2
+      vehicle_state = data.dig("vehicle_state") || {}
+
+      scooter_attributes = {
+        state: vehicle_state["state"].presence,
+        kickstand: vehicle_state["kickstand"].presence,
+        seatbox: vehicle_state["seatbox"].presence,
+        blinkers: vehicle_state["blinker_state"].presence,
+        speed: data.dig("engine", "speed"),
+        odometer: data.dig("engine", "odometer"),
+        battery0_level: data.dig("battery0", "level"),
+        battery1_level: data.dig("battery1", "level"),
+        aux_battery_level: data.dig("aux_battery", "level"),
+        cbb_battery_level: data.dig("cbb_battery", "level"),
+        lat: data.dig("gps", "lat"),
+        lng: data.dig("gps", "lng")
+      }.compact
+    else
+      scooter_attributes = data.reject { |k, v| v.blank? }.slice(
+        "state", "kickstand", "seatbox", "blinkers",
+        "speed", "odometer",
+        "battery0_level", "battery1_level",
+        "aux_battery_level", "cbb_battery_level",
+        "lat", "lng"
+      )
+    end
 
     scooter.update!(scooter_attributes)
     if scooter.state_previously_changed?

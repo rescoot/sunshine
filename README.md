@@ -48,18 +48,18 @@ bin/dev
 
 This application is designed to be deployed using [Kamal](https://kamal-deploy.org/). 
 
-1. First, set up your production environment variables in `.env.production`:
+1. First, set up your production environment variables in `.env`:
 ```bash
 KAMAL_REGISTRY_USERNAME=your-username
 KAMAL_REGISTRY_PASSWORD=your-token
 RAILS_ENV=production
 REDIS_URL=redis://localhost:6379/1
-SECRET_KEY_BASE=your_secret_key_base
 MQTT_HOST=mqtt.yourdomain.com
 MQTT_PORT=8883
 MQTT_USERNAME=cloud_service
 MQTT_PASSWORD=your_mqtt_password
 MQTT_SSL=true
+# ...
 ```
 
 2. Check `config/deploy.yml`
@@ -129,28 +129,11 @@ openssl x509 -req -days 3650 -in server.csr -CA ca.crt -CAkey ca.key -CAcreatese
 
 Remove `cafile`, `certfile`, `keyfile` if you're not using your own CA.
 
-4. Optional: Set up DynSec authentication:
-```bash
-# Initialize DynSec config
-mosquitto_ctrl dynsec init /etc/mosquitto/dynamic-security.json admin adminpassword
-
-# Create cloud service user
-mosquitto_ctrl dynsec createClient cloud_service
-mosquitto_ctrl dynsec setClientPassword cloud_service your_secure_password
-
-# Create scooter user
-mosquitto_ctrl dynsec createClient radio-gaga-YOUR_SCOOTER_VIN
-mosquitto_ctrl dynsec setClientPassword radio-gaga-YOUR_SCOOTER_VIN your_secure_password
-
-# Set up ACLs for telemetry topics
-mosquitto_ctrl dynsec createRole telemetry_publisher
-mosquitto_ctrl dynsec addRoleACL telemetry_publisher publishClientTopic "scooters/%c/telemetry"
-mosquitto_ctrl dynsec addClientRole radio-gaga-YOUR_SCOOTER_VIN telemetry_publisher
-```
+4. Set up DynSec authentication. See config/mosquitto/dynamic-security.json for a baseline.
 
 5. Restart Mosquitto:
 ```bash
-kamal accessory boot mqtt
+kamal accessory reboot mqtt
 # or if not using kamal
 systemctl restart mosquitto
 ```
@@ -162,10 +145,10 @@ systemctl restart mosquitto
 | `RAILS_ENV` | Rails environment | development |
 | `REDIS_URL` | Redis connection URL | redis://localhost:6379/1 |
 | `MQTT_HOST` | MQTT broker hostname | localhost |
-| `MQTT_PORT` | MQTT broker port | 8883 |
+| `MQTT_PORT` | MQTT broker port | 1883 |
+| `MQTT_SSL` | Enable SSL for MQTT | false |
 | `MQTT_USERNAME` | MQTT broker username | - |
 | `MQTT_PASSWORD` | MQTT broker password | - |
-| `MQTT_SSL` | Enable SSL for MQTT | true |
 
 ## Contributing
 

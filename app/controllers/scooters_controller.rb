@@ -65,7 +65,7 @@ class ScootersController < ApplicationController
 
   def destroy
     @scooter.destroy
-    redirect_to scooters_url, notice: "Scooter was successfully removed."
+    redirect_to scooters_path, notice: "Scooter was successfully deleted.", status: :see_other
   end
 
   def show_token_management

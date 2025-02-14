@@ -1,0 +1,47 @@
+<div class="mt-8">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h2 class="text-lg font-medium text-gray-900">Recent Trips</h2>
+    </div>
+    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+      <%= link_to "View All", trips_path, class: "block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" %>
+    </div>
+  </div>
+  
+  <div class="mt-4 flow-root">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Date</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooter</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Duration</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Distance</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <% @recent_trips.each do |trip| %>
+                <tr>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">
+                    <%= link_to trip.started_at.strftime("%B %d, %Y %H:%M"), trip_path(trip), class: "text-indigo-600 hover:text-indigo-900" %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= trip.scooter.name %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= format_trip_duration(trip) %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= format_trip_distance(trip) %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

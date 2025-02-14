@@ -4,13 +4,25 @@ class ApiTokensController < ApplicationController
   before_action :ensure_owner!
 
   def create
-    # Clear any existing tokens
+    # Clear any existing tokens - one scooter, one token
     @scooter.api_token&.destroy
-
     @api_token = ApiToken.generate_for_scooter(@scooter)
-    flash[:notice] = "New API token generated"
-    flash[:token] = @api_token.token
-    redirect_to scooter_path(@scooter, token_id: @api_token.id)
+
+    respond_to do |format|
+      format.html do
+        flash[:token] = @api_token.token
+        redirect_to scooter_path(@scooter, token_id: @api_token.id)
+      end
+      format.turbo_stream do
+        @token = @api_token.token
+        render turbo_stream: [
+          turbo_stream.update("api_token_section",
+            partial: "scooters/api_token",
+            locals: { scooter: @scooter, token: @token }
+          )
+        ]
+      end
+    end
   end
 
   def download_config

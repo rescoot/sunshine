@@ -39,12 +39,13 @@ class Scooter < ApplicationRecord
     "hover" => { index: 9, hex: "#03A9F4" }
   }.freeze
 
-  validates :state, inclusion: { in: POWER_STATES }, allow_nil: true
+  validates :state, inclusion: { in: POWER_STATES }, if: :state?
   validates :kickstand, inclusion: { in: KICKSTAND_STATES }, allow_nil: true
   validates :seatbox, inclusion: { in: SEATBOX_STATES }, allow_nil: true
   validates :blinkers, inclusion: { in: BLINKER_STATES }, allow_nil: true
 
-  after_create :initialize_default_values
+  before_validation :initialize_default_values, on: :create
+  after_update :handle_imei_change, if: :saved_change_to_imei?
   after_update_commit :broadcast_updates
 
   def owner
@@ -170,15 +171,24 @@ class Scooter < ApplicationRecord
 
   def generate_config_with_token(token)
     {
-      "vin" => vin,
-      "mqtt" => {
-        "broker_url" => "tcp://mqtt.sunshine.rescoot.org:1883",
+      "scooter" => {
+        "identifier" => vin,
         "token" => token
       },
+      "environment" => Rails.env.to_s,
+      "mqtt" => {
+        "broker_url" => "ssl://mqtt.sunshine.rescoot.org:8883",
+        "ca_cert" => "/etc/keys/sunshine-mqtt-ca.crt",
+        "keepalive" => "180s"
+      },
+      "redis_url" => "redis://localhost:6379",
       "telemetry" => {
-        "check_interval" => "100ms",
-        "min_interval" => "1s",
-        "max_interval" => "300s"
+        "intervals" => {
+          "driving" => "1s",
+          "standby" => "5m",
+          "standby_no_battery" => "8h",
+          "hibernate" => "24h"
+        }
       }
     }
   end
@@ -288,15 +298,17 @@ class Scooter < ApplicationRecord
   private
 
   def initialize_default_values
-    update!(
-      state: "locked",
-      kickstand: "down",
-      seatbox: "closed",
-      blinkers: "off",
-      battery0_level: 0,
-      battery1_level: 0,
-      aux_battery_level: 0,
-      cbb_battery_level: 0
-    )
+    self.state ||= "stand-by"
+    self.kickstand ||= "down"
+    self.seatbox ||= "closed"
+    self.blinkers ||= "off"
+    self.battery0_level ||= 0
+    self.battery1_level ||= 0
+    self.aux_battery_level ||= 0
+    self.cbb_battery_level ||= 0
+  end
+
+  def handle_imei_change
+    MqttAuthService.setup_imei_auth(self) if imei.present?
   end
 end
