@@ -159,13 +159,14 @@ class MqttService
         [
           "scooters/+/status",
           "scooters/+/telemetry",
-          "scooters/+/data",
           "scooters/+/trip/#",
+          "scooters/+/acks",
           "+/v1/#"  # unu cloud messages
         ]
       else
-        # web wants acks and control responses
+        # web wants acks, command data and control responses
         [
+          "scooters/+/data",
           "scooters/+/acks",
           "$CONTROL/dynamic-security/v1/response"
         ]
@@ -268,6 +269,7 @@ class MqttService
     data = JSON.parse(message)
     scooter = Scooter.find_by(vin: scooter_vin)
     return unless scooter
+    return if data.fetch("status", "") == "error"
 
     if @web_mode
       # Handle subscriptions for web process

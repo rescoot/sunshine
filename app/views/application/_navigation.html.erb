@@ -26,7 +26,7 @@
           </div>
         </div>
 
-        <% if user_signed_in? && current_user.admin? %>
+        <% if false && user_signed_in? && current_user.admin? %>
           <%= link_to "Admin", admin_root_path, class: "text-gray-300 bg-red-900 hover:bg-red-800 hover:text-white rounded-md px-3 py-2 text-sm font-bold" %>
         <% end %>
 
@@ -114,3 +114,28 @@
     </div>
   </div>
 </nav>
+<% if current_user&.is_admin? %>
+      <nav class="bg-red-900">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="flex h-16 items-center justify-between">
+            <div class="flex items-center">
+              <%= link_to admin_root_path, class: "text-white font-bold text-xl" do %>
+                🌞🧑🏼‍💻 Admin
+              <% end %>
+            </div>
+            <div class="hidden md:flex md:items-center md:space-x-4">
+              <%= link_to "Dashboard", admin_root_path, 
+                  class: "text-gray-300 hover:bg-red-950 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
+              <%= link_to "Users", admin_users_path,
+                  class: "text-gray-300 hover:bg-red-950 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
+              <%= link_to "Scooters", admin_scooters_path,
+                  class: "text-gray-300 hover:bg-red-950 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
+              <%= link_to "Events", admin_events_path,
+                  class: "text-gray-300 hover:bg-red-950 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
+              <%= link_to "Telemetry", admin_telemetries_path,
+                  class: "text-gray-300 hover:bg-red-950 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
+            </div>
+          </div>
+        </div>
+      </nav>
+<% end %>

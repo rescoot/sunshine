@@ -28,7 +28,7 @@
                     <%= link_to trip.started_at.strftime("%B %d, %Y %H:%M"), trip_path(trip), class: "text-indigo-600 hover:text-indigo-900" %>
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    <%= trip.scooter.name %>
+                    <%= link_to trip.scooter.name, scooter_path(trip.scooter), class: "text-indigo-600 hover:text-indigo-900" %>
                   </td>
                   <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     <%= format_trip_duration(trip) %>

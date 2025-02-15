@@ -154,14 +154,12 @@ class MqttAuthService
     # Ensure the role exists with correct ACLs
     return false unless ensure_scooter_role
 
-    username = mqtt_username_for(scooter)
-
     # Create client directly with the role
     response = publish_control_and_wait({
       command: "createClient",
-      username: username,
+      username: scooter.vin,
       password: token,
-      clientid: username,
+      clientid: "radio-gaga-#{scooter.vin}",
       textname: "Scooter #{scooter.vin}",
       textdescription: "Radio Gaga client for #{scooter.vin}",
       roles: [ { rolename: "scooter", priority: 0 } ]

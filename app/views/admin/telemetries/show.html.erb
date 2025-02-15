@@ -76,7 +76,7 @@
         <dl class="mt-6 space-y-6 divide-y divide-gray-100">
           <% if @telemetry.battery0_present? %>
             <div class="pt-6">
-              <dt class="font-medium text-gray-900">Main Battery</dt>
+              <dt class="font-medium text-gray-900">Main Battery (<%= @telemetry.battery0_serial_number %>)</dt>
               <dd class="mt-2 sm:grid sm:grid-cols-2 sm:gap-4">
                 <div class="space-y-2">
                   <div class="flex justify-between">
@@ -114,7 +114,7 @@
 
           <% if @telemetry.battery1_present? %>
             <div class="pt-6">
-              <dt class="font-medium text-gray-900">Secondary Battery</dt>
+              <dt class="font-medium text-gray-900">Secondary Battery (<%= @telemetry.battery1_serial_number %>)</dt>
               <dd class="mt-2 sm:grid sm:grid-cols-2 sm:gap-4">
                 <div class="space-y-2">
                   <div class="flex justify-between">
@@ -170,12 +170,20 @@
               </div>
               <div class="space-y-2">
                 <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">CBB S/N</span>
+                  <span class="text-sm text-gray-900"><%= @telemetry.cbb_battery_serial_number %></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-500">CBB SoH</span>
+                  <span class="text-sm text-gray-900"><%= number_to_percentage(@telemetry.cbb_battery_soh, precision: 0) %></span>
+                </div>
+                <div class="flex justify-between">
                   <span class="text-sm text-gray-500">CBB Level</span>
-                  <span class="text-sm text-gray-900"><%= number_to_percentage(@telemetry.cbb_battery_level, precision: 1) %></span>
+                  <span class="text-sm text-gray-900"><%= number_to_percentage(@telemetry.cbb_battery_level, precision: 0) %></span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-sm text-gray-500">CBB Current</span>
-                  <span class="text-sm text-gray-900"><%= number_with_precision(@telemetry.cbb_battery_current / 1_000.0, precision: 3) %>mA</span>
+                  <span class="text-sm text-gray-900"><%= number_with_precision(@telemetry.cbb_battery_current, precision: 0) %>µA</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-sm text-gray-500">CBB Status</span>

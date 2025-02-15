@@ -46,6 +46,7 @@ env:
     RAILS_ENV: production
     RAILS_LOG_TO_STDOUT: true
     REDIS_URL: redis://sunshine-redis:6379/1
+    SMTP_ADDRESS: mail.starsonghosted.com
     MQTT_HOST: mqtt.sunshine.rescoot.org
     MQTT_PORT: 8883
     MQTT_SSL: true
@@ -66,6 +67,7 @@ accessories:
       - config/mqtt_certs/server/server.crt:/mosquitto/certs/server/server.crt
       - config/mqtt_certs/server/server.key:/mosquitto/certs/server/server.key
     volumes:
+      - /etc/mosquitto/data/dynamic-security.json:/mosquitto/data/dynamic-security.json
       - /etc/mosquitto/config/passwd:/mosquitto/config/passwd
       - /etc/mosquitto/data:/mosquitto/data
       - /etc/mosquitto/log:/mosquitto/log

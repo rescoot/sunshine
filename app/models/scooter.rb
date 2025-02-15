@@ -1,7 +1,7 @@
 class Scooter < ApplicationRecord
   has_many :user_scooters, dependent: :destroy
   has_many :users, through: :user_scooters
-  has_many :trips
+  has_many :trips, dependent: :destroy
   has_many :scooter_events
   has_many :telemetries
   has_one :api_token, dependent: :destroy
