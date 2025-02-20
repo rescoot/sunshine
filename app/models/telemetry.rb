@@ -7,6 +7,8 @@ class Telemetry < ApplicationRecord
   scope :recent, -> { order(created_at: :desc) }
   scope :last_24_hours, -> { where("created_at > ?", 24.hours.ago) }
 
+  after_create :update_scooter
+
   # Helper method to create from raw telemetry data
   def self.create_from_data!(scooter, data)
     if data["version"] == 2
@@ -176,5 +178,10 @@ class Telemetry < ApplicationRecord
       # Metadata
       timestamp: data["timestamp"]
     )
+  end
+
+  def update_scooter
+    scooter.ble_mac = ble_mac_address if ble_mac_address.present?
+    scooter.save!
   end
 end

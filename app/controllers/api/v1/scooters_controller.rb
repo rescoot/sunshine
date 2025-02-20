@@ -68,6 +68,43 @@ class Api::V1::ScootersController < Api::BaseController
     command_response(result)
   end
 
+  def open_seatbox
+    result = ScooterCommandService.new(@current_scooter).send_command("open_seatbox")
+    command_response(result)
+  end
+
+  def ping
+    result = ScooterCommandService.new(@current_scooter).send_command("ping")
+    command_response(result)
+  end
+
+  def update_firmware
+    result = ScooterCommandService.new(@current_scooter).send_command("update")
+    command_response(result)
+  end
+
+  def get_state
+    result = ScooterCommandService.new(@current_scooter).send_command("get_state")
+    command_response(result)
+  end
+
+  def play_sound
+    sound = params[:sound].presence_in([ "find_me", "alarm", "chirp" ]) || "chirp"
+    result = ScooterCommandService.new(@current_scooter).send_command("play_sound", sound: sound)
+    command_response(result)
+  end
+
+  def locate
+    result = ScooterCommandService.new(@current_scooter).send_command("locate")
+    command_response(result)
+  end
+
+  def alarm
+    duration = params[:duration] || "5s"
+    result = ScooterCommandService.new(@current_scooter).send_command("alarm", duration: duration)
+    command_response(result)
+  end
+
   def config_for_vin
     @current_scooter = current_user.scooters.find_by!(vin: params[:vin])
     Rails.logger.debug("config for #{@current_scooter.id}")
@@ -86,7 +123,7 @@ class Api::V1::ScootersController < Api::BaseController
   end
 
   def scooter_params
-    params.require(:scooter).permit(:name, :vin, :color)
+    params.require(:scooter).permit(:name, :vin, :color, device_ids: {})
   end
 
   def command_response(result)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_14_224351) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_20_222139) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -98,6 +98,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_14_224351) do
     t.string "color"
     t.string "imei"
     t.boolean "is_online", default: false, null: false
+    t.string "ble_mac"
+    t.json "device_ids"
     t.index ["imei"], name: "index_scooters_on_imei", unique: true
     t.index ["vin"], name: "index_scooters_on_vin", unique: true
   end

@@ -1,7 +1,7 @@
 class Api::V1::ScooterSerializer < ActiveModel::Serializer
-  attributes :id, :name, :vin, :color, :state, :online,
+  attributes :id, :name, :vin, :color, :color_id, :state, :online,
              :kickstand, :seatbox, :blinkers, :speed, :odometer,
-             :batteries, :location, :last_seen_at
+             :batteries, :location, :ble_mac, :device_ids, :last_seen_at
 
   def online
     object.is_online?

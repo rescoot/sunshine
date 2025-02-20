@@ -91,6 +91,10 @@ class Scooter < ApplicationRecord
     %w[parked ready-to-drive].include? state
   end
 
+  def color_id
+    color_value
+  end
+
   def color_value
     COLOR_MAPPING[color][:index] if color
   end
@@ -162,7 +166,7 @@ class Scooter < ApplicationRecord
   end
 
   def telemetry
-    telemetries.order(created_at: :desc).first
+    telemetries.recent.first
   end
 
   def has_token?
@@ -295,6 +299,10 @@ class Scooter < ApplicationRecord
     end
   end
 
+  def ble_mac
+    telemetries.recent.where.not(ble_mac_address: nil)&.first&.ble_mac_address
+  end
+
   private
 
   def initialize_default_values
@@ -302,6 +310,7 @@ class Scooter < ApplicationRecord
     self.kickstand ||= "down"
     self.seatbox ||= "closed"
     self.blinkers ||= "off"
+    self.odometer ||= 0
     self.battery0_level ||= 0
     self.battery1_level ||= 0
     self.aux_battery_level ||= 0
