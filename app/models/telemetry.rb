@@ -6,8 +6,11 @@ class Telemetry < ApplicationRecord
   # Scopes for querying
   scope :recent, -> { order(created_at: :desc) }
   scope :last_24_hours, -> { where("created_at > ?", 24.hours.ago) }
+  scope :with_coordinates, -> { where.not(lat: nil, lng: nil) }
+  scope :with_battery_data, -> { where.not(battery0_level: nil) }
 
   after_create :update_scooter
+  after_commit :invalidate_cache
 
   # Helper method to create from raw telemetry data
   def self.create_from_data!(scooter, data)
@@ -183,5 +186,9 @@ class Telemetry < ApplicationRecord
   def update_scooter
     scooter.ble_mac = ble_mac_address if ble_mac_address.present?
     scooter.save!
+  end
+
+  def invalidate_cache
+    TelemetryCacheService.invalidate_cache_for_scooter(scooter_id)
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_20_222139) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_24_195500) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -101,6 +101,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_20_222139) do
     t.string "ble_mac"
     t.json "device_ids"
     t.index ["imei"], name: "index_scooters_on_imei", unique: true
+    t.index ["is_online"], name: "index_scooters_on_is_online"
+    t.index ["last_seen_at"], name: "index_scooters_on_last_seen_at"
+    t.index ["lat", "lng"], name: "index_scooters_on_coordinates", where: "lat IS NOT NULL AND lng IS NOT NULL"
     t.index ["vin"], name: "index_scooters_on_vin", unique: true
   end
 
@@ -195,7 +198,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_20_222139) do
     t.string "dashboard_mode"
     t.boolean "dashboard_ready"
     t.string "dashboard_serial_number"
+    t.index ["scooter_id", "battery0_level", "battery1_level"], name: "index_telemetries_on_scooter_id_and_battery_levels"
     t.index ["scooter_id", "created_at"], name: "index_telemetries_on_scooter_id_and_created_at"
+    t.index ["scooter_id", "lat", "lng"], name: "index_telemetries_on_scooter_id_and_coordinates", where: "lat IS NOT NULL AND lng IS NOT NULL"
+    t.index ["scooter_id", "odometer"], name: "index_telemetries_on_scooter_id_and_odometer"
     t.index ["scooter_id"], name: "index_telemetries_on_scooter_id"
   end
 
@@ -215,8 +221,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_20_222139) do
     t.integer "start_odometer"
     t.integer "end_odometer"
     t.index ["ended_at"], name: "index_trips_on_ended_at"
+    t.index ["scooter_id", "distance"], name: "index_trips_on_scooter_id_and_distance"
     t.index ["scooter_id", "started_at"], name: "index_trips_on_scooter_id_and_started_at"
     t.index ["scooter_id"], name: "index_trips_on_scooter_id"
+    t.index ["started_at", "ended_at"], name: "index_trips_on_started_at_and_ended_at"
+    t.index ["user_id", "distance"], name: "index_trips_on_user_id_and_distance"
     t.index ["user_id", "started_at"], name: "index_trips_on_user_id_and_started_at"
     t.index ["user_id"], name: "index_trips_on_user_id"
   end
