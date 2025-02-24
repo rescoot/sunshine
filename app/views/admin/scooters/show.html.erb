@@ -6,10 +6,10 @@
     </div>
     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none flex gap-2">
       <% if @scooter.is_online? %>
-        <%= link_to "Shell", admin_scooter_shell_path(@scooter), class: "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" %>
+        <%= link_to "Shell", admin_scooter_shell_path(@scooter), class: "btn-primary" %>
       <% end %>
-      <%= link_to "Edit", edit_admin_scooter_path(@scooter), class: "rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
-      <%= link_to "Back to List", admin_scooters_path, class: "rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+      <%= link_to "Edit", edit_admin_scooter_path(@scooter), class: "btn-secondary" %>
+      <%= link_to "Back to List", admin_scooters_path, class: "btn-secondary" %>
     </div>
   </div>
 
@@ -57,7 +57,7 @@
                     {},
                     class: "block w-32 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
               </div>
-              <%= f.submit "Assign", class: "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" %>
+              <%= f.submit "Assign", class: "btn-primary" %>
             </div>
           <% end %>
         </div>

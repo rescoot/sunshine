@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.5;
+      color: #333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .logo {
+      max-width: 150px;
+      margin-bottom: 20px;
+    }
+    .achievement {
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .achievement-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+    .achievement-name {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #2563eb;
+    }
+    .achievement-description {
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    .achievement-points {
+      display: inline-block;
+      background-color: #dbeafe;
+      color: #1e40af;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+    }
+    .button {
+      display: inline-block;
+      background-color: #2563eb;
+      color: white;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 5px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 12px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="<%= image_url('icon.png') %>" alt="Sunshine Logo" class="logo">
+    <h1>Congratulations, <%= @user.name %>!</h1>
+    <p>You've earned a new achievement with your scooter.</p>
+  </div>
+  
+  <div class="achievement">
+    <div class="achievement-icon"><%= @achievement.icon %></div>
+    <div class="achievement-name"><%= @achievement.name %></div>
+    <div class="achievement-description"><%= @achievement.description %></div>
+    <div class="achievement-points"><%= @achievement.points %> points</div>
+  </div>
+  
+  <div style="text-align: center;">
+    <p>Keep riding to unlock more achievements and climb the leaderboard!</p>
+    <a href="<%= achievements_url %>" class="button">View All Achievements</a>
+  </div>
+  
+  <div class="footer">
+    <p>
+      This email was sent to <%= @user.email %> because you opted in to achievement notifications.
+      <br>
+      You can change your notification preferences in your account settings.
+    </p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<%= form_with(model: [:admin, feature_flag], class: "space-y-4") do |form| %>
+  <% if feature_flag.errors.any? %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+      <strong class="font-bold">Error:</strong>
+      <span class="block sm:inline"><%= pluralize(feature_flag.errors.count, "error") %> prohibited this feature flag from being saved:</span>
+      <ul class="list-disc ml-5 mt-2">
+        <% feature_flag.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" %>
+  </div>
+
+  <div>
+    <%= form.label :key, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :key, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" %>
+    <p class="mt-1 text-sm text-gray-500">Unique identifier for this feature flag (e.g., "leaderboards", "achievements")</p>
+  </div>
+
+  <div>
+    <%= form.label :description, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :description, rows: 3, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50" %>
+  </div>
+
+  <div class="flex items-center">
+    <%= form.check_box :default_enabled, class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
+    <%= form.label :default_enabled, "Default Enabled", class: "ml-2 block text-sm text-gray-900" %>
+    <p class="ml-6 text-sm text-gray-500">If checked, this feature will be enabled by default for all users unless explicitly disabled.</p>
+  </div>
+
+  <div class="flex justify-between pt-4">
+    <%= link_to "Cancel", admin_feature_flags_path, class: "btn-secondary" %>
+    <%= form.submit class: "btn-primary" %>
+  </div>
+<% end %>

@@ -6,7 +6,7 @@
     </div>
     
     <%= link_to "Back to Scooter", scooter_path(@scooter), 
-        class: "rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" %>
+        class: "btn-secondary" %>
   </div>
 
   <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -17,7 +17,7 @@
       <div class="mt-4 space-y-4">
         <% @commands.each do |cmd| %>
           <%= button_to execute_admin_scooter_shell_path(@scooter, type: cmd[:type], cmd: cmd[:cmd], args: cmd[:args]&.join(',')),
-              class: "w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md" do %>
+              class: "w-full dropdown-item" do %>
             <div>
               <div class="font-mono text-xs text-gray-500">
                 <%= cmd[:type] == "shell" ? "$" : "redis>" %>
@@ -44,7 +44,7 @@
             <input type="text" name="args" placeholder="Command arguments (comma-separated)"
                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6">
 
-            <button type="submit" class="w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+            <button type="submit" class="w-full btn-primary">
               Execute
             </button>
           </div>

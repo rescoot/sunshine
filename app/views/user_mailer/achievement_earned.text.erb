@@ -1,0 +1,15 @@
+Congratulations, <%= @user.name %>!
+
+You've earned a new achievement with your scooter.
+
+* <%= @achievement.name %> *
+<%= @achievement.description %>
+Points: <%= @achievement.points %>
+
+Keep riding to unlock more achievements and climb the leaderboard!
+
+View all your achievements at: <%= achievements_url %>
+
+---
+This email was sent to <%= @user.email %> because you opted in to achievement notifications.
+You can change your notification preferences in your account settings.

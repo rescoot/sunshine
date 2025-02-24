@@ -21,6 +21,8 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def edit
+    @feature_flags = FeatureFlag.all.order(:name)
+    @user_feature_flags = @user.user_feature_flags.includes(:feature_flag)
   end
 
   def create

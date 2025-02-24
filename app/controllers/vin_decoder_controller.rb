@@ -1,6 +1,4 @@
 class VinDecoderController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [ :decode ]
-
   def index
     @vin_lookup = VinLookup.new
   end
@@ -22,24 +20,23 @@ class VinDecoderController < ApplicationController
       decode_result = decoder.decode
       Rails.logger.debug decode_result
 
-      # Find or create VIN lookup, ignoring uniqueness errors
-      @vin_lookup = VinLookup.find_or_create_by(vin: vin) do |lookup|
-        lookup.decode_result = decode_result
-        lookup.successful = true
-      end
-      # always overwrite with latest
-      @vin_lookup.decode_result = decode_result
-      @vin_lookup.save
+      # Find or create VIN lookup and increment the lookup count
+      @vin_lookup = VinLookup.find_or_create_and_increment(
+        vin,
+        decode_result: decode_result,
+        successful: true
+      )
 
       render :result
     rescue => e
       Rails.logger.error(e)
-      # Find or create VIN lookup for failed decode
-      @vin_lookup = VinLookup.find_or_create_by(vin: vin) do |lookup|
-        lookup.decode_result = nil
-        lookup.successful = false
-        lookup.error_message = e.message
-      end
+      # Find or create VIN lookup for failed decode and increment the lookup count
+      @vin_lookup = VinLookup.find_or_create_and_increment(
+        vin,
+        decode_result: nil,
+        successful: false,
+        error_message: e.message
+      )
 
       # Check if VIN format is plausible but not fully decodable
       if vin.start_with?("WUN") && vin.length == 17

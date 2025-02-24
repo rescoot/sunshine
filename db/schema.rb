@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_24_195500) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_24_225507) do
+  create_table "achievement_definitions", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description", null: false
+    t.string "achievement_type", null: false
+    t.float "threshold", null: false
+    t.string "icon", null: false
+    t.integer "points", default: 10
+    t.string "badge_color", default: "blue"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["achievement_type"], name: "index_achievement_definitions_on_achievement_type"
+  end
+
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -52,6 +65,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_24_195500) do
     t.index ["scope"], name: "index_api_tokens_on_scope"
     t.index ["token_digest"], name: "index_api_tokens_on_token_digest", unique: true
     t.index ["user_id"], name: "index_api_tokens_on_user_id"
+  end
+
+  create_table "feature_flags", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.boolean "default_enabled", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_feature_flags_on_key", unique: true
   end
 
   create_table "raw_messages", force: :cascade do |t|
@@ -240,6 +263,41 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_24_195500) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_achievements", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "achievement_definition_id", null: false
+    t.datetime "earned_at"
+    t.float "progress", default: 0.0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["achievement_definition_id"], name: "index_user_achievements_on_achievement_definition_id"
+    t.index ["user_id", "achievement_definition_id"], name: "idx_on_user_id_achievement_definition_id_ebd1e08e89", unique: true
+    t.index ["user_id"], name: "index_user_achievements_on_user_id"
+  end
+
+  create_table "user_feature_flags", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "feature_flag_id", null: false
+    t.boolean "enabled", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feature_flag_id"], name: "index_user_feature_flags_on_feature_flag_id"
+    t.index ["user_id", "feature_flag_id"], name: "index_user_feature_flags_on_user_id_and_feature_flag_id", unique: true
+    t.index ["user_id"], name: "index_user_feature_flags_on_user_id"
+  end
+
+  create_table "user_preferences", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.boolean "leaderboard_opt_in", default: false
+    t.string "leaderboard_display_name"
+    t.boolean "receive_achievement_notifications", default: true
+    t.json "notification_settings", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "leaderboard_opt_in"], name: "index_user_preferences_on_user_id_and_leaderboard_opt_in"
+    t.index ["user_id"], name: "index_user_preferences_on_user_id"
+  end
+
   create_table "user_scooters", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "scooter_id", null: false
@@ -279,7 +337,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_24_195500) do
     t.string "error_message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "lookup_count", default: 0, null: false
     t.index ["created_at"], name: "index_vin_lookups_on_created_at"
+    t.index ["lookup_count"], name: "index_vin_lookups_on_lookup_count"
     t.index ["vin"], name: "index_vin_lookups_on_vin", unique: true
   end
 
@@ -292,6 +352,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_24_195500) do
   add_foreign_key "telemetries", "scooters"
   add_foreign_key "trips", "scooters"
   add_foreign_key "trips", "users"
+  add_foreign_key "user_achievements", "achievement_definitions"
+  add_foreign_key "user_achievements", "users"
+  add_foreign_key "user_feature_flags", "feature_flags"
+  add_foreign_key "user_feature_flags", "users"
+  add_foreign_key "user_preferences", "users"
   add_foreign_key "user_scooters", "scooters"
   add_foreign_key "user_scooters", "users"
 end

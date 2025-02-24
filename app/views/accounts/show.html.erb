@@ -11,8 +11,8 @@
     </div>
     
     <div class="flex space-x-4">
-      <%= link_to 'Edit Account', edit_account_path, class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700' %>
-      <%= button_to 'Delete Account', account_path, method: :delete, class: 'inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200', form: { data: { turbo_confirm: 'Are you sure? This cannot be undone.' } } %>
+      <%= link_to 'Edit Account', edit_account_path, class: 'inline-flex items-center btn-primary' %>
+      <%= button_to 'Delete Account', account_path, method: :delete, class: 'inline-flex items-center btn-primary red', form: { data: { turbo_confirm: 'Are you sure? This cannot be undone.' } } %>
     </div>
   </div>
 
@@ -22,7 +22,7 @@
       <div class="w-full">
         <%= turbo_frame_tag "new_token_form" do %>
           <%= link_to "Generate New Token", new_account_api_token_path,
-              class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700",
+              class: "inline-flex items-center btn-primary green",
               data: { turbo_frame: "new_token_form" } %>
         <% end %>
       </div>

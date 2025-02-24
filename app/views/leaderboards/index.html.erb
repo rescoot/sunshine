@@ -1,0 +1,147 @@
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Leaderboard</h1>
+    <p class="mt-2 text-sm text-gray-700">Compare your riding stats with other scooter owners.</p>
+  </div>
+  <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+    <%= link_to "Settings", settings_leaderboards_path, class: "btn-primary" %>
+  </div>
+</div>
+
+<div class="mt-8">
+
+  <% if current_user.leaderboard_opt_in %>
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold">Your Stats</h2>
+        
+        <div class="period-selector flex space-x-2">
+          <%= link_to "Day", leaderboards_path(period: :day), 
+              class: "#{@period == :day ? 'btn-primary' : 'btn-secondary'}" %>
+          <%= link_to "Week", leaderboards_path(period: :week), 
+              class: "#{@period == :week ? 'btn-primary' : 'btn-secondary'}" %>
+          <%= link_to "Month", leaderboards_path(period: :month), 
+              class: "#{@period == :month ? 'btn-primary' : 'btn-secondary'}" %>
+          <%= link_to "All Time", leaderboards_path(period: :all_time), 
+              class: "#{@period == :all_time ? 'btn-primary' : 'btn-secondary'}" %>
+        </div>
+      </div>
+      
+      <% if @user_position %>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+          <div class="bg-gray-100 rounded-lg p-4 text-center">
+            <h3 class="text-lg font-semibold mb-1">Your Rank</h3>
+            <p class="text-3xl font-bold text-indigo-600">#<%= @user_position[:rank] %></p>
+            <p class="text-sm text-gray-500">of <%= @user_position[:total_users] %> riders</p>
+          </div>
+          
+          <div class="bg-gray-100 rounded-lg p-4 text-center">
+            <h3 class="text-lg font-semibold mb-1">Distance</h3>
+            <p class="text-3xl font-bold text-green-600"><%= @user_comparison[:user][:distance_km] %> km</p>
+            <p class="text-sm text-gray-500">
+              <% if @user_comparison[:comparison][:distance_percent] > 100 %>
+                <span class="text-green-500"><%= @user_comparison[:comparison][:distance_percent] - 100 %>% above average</span>
+              <% elsif @user_comparison[:comparison][:distance_percent] < 100 %>
+                <span class="text-red-500"><%= 100 - @user_comparison[:comparison][:distance_percent] %>% below average</span>
+              <% else %>
+                Average
+              <% end %>
+            </p>
+          </div>
+          
+          <div class="bg-gray-100 rounded-lg p-4 text-center">
+            <h3 class="text-lg font-semibold mb-1">Trips</h3>
+            <p class="text-3xl font-bold text-purple-600"><%= @user_comparison[:user][:trip_count] %></p>
+            <p class="text-sm text-gray-500">
+              <% if @user_comparison[:comparison][:trip_count_percent] > 100 %>
+                <span class="text-green-500"><%= @user_comparison[:comparison][:trip_count_percent] - 100 %>% above average</span>
+              <% elsif @user_comparison[:comparison][:trip_count_percent] < 100 %>
+                <span class="text-red-500"><%= 100 - @user_comparison[:comparison][:trip_count_percent] %>% below average</span>
+              <% else %>
+                Average
+              <% end %>
+            </p>
+          </div>
+          
+          <div class="bg-gray-100 rounded-lg p-4 text-center">
+            <h3 class="text-lg font-semibold mb-1">Avg Speed</h3>
+            <p class="text-3xl font-bold text-orange-600"><%= @user_comparison[:user][:avg_speed] %> km/h</p>
+            <p class="text-sm text-gray-500">
+              <% if @user_comparison[:comparison][:speed_percent] > 100 %>
+                <span class="text-green-500"><%= @user_comparison[:comparison][:speed_percent] - 100 %>% above average</span>
+              <% elsif @user_comparison[:comparison][:speed_percent] < 100 %>
+                <span class="text-red-500"><%= 100 - @user_comparison[:comparison][:speed_percent] %>% below average</span>
+              <% else %>
+                Average
+              <% end %>
+            </p>
+          </div>
+        </div>
+      <% else %>
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+          <p class="text-yellow-700">You haven't completed any trips during this period yet.</p>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-semibold mb-4">Top Riders</h2>
+      
+      <% if @leaderboard.any? %>
+        <div class="overflow-x-auto">
+          <table class="min-w-full">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rider</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Distance</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trips</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Max Speed</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @leaderboard.each do |entry| %>
+                <tr class="<%= entry[:user_id] == current_user.id ? 'bg-indigo-50' : '' %>">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <%= entry[:rank] %>
+                    <% if entry[:rank] <= 3 %>
+                      <% case entry[:rank] %>
+                      <% when 1 %>
+                        <span class="text-yellow-500">🥇</span>
+                      <% when 2 %>
+                        <span class="text-gray-400">🥈</span>
+                      <% when 3 %>
+                        <span class="text-amber-600">🥉</span>
+                      <% end %>
+                    <% end %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <%= entry[:display_name] %>
+                    <% if entry[:user_id] == current_user.id %>
+                      <span class="ml-2 text-xs bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded">You</span>
+                    <% end %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= entry[:distance_km] %> km</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= entry[:trip_count] %></td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= entry[:max_speed] %> km/h</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="bg-gray-50 rounded-lg p-8 text-center">
+          <p class="text-gray-500 mb-2">No leaderboard data available for this period.</p>
+          <p class="text-gray-400 text-sm">Be the first to complete a trip and claim the top spot!</p>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="bg-white rounded-lg shadow-md p-8 text-center">
+      <h2 class="text-xl font-semibold mb-4">Join the Leaderboard</h2>
+      <p class="text-gray-600 mb-6">Opt in to the leaderboard to compare your riding stats with other scooter owners.</p>
+      
+      <%= link_to "Opt In Now", settings_leaderboards_path, class: "btn-primary" %>
+    </div>
+  <% end %>
+</div>

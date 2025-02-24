@@ -1,0 +1,165 @@
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Feature Flags for <%= @user.name %></h1>
+    <p class="mt-2 text-sm text-gray-700">Manage feature flag settings for this user.</p>
+  </div>
+  <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+    <%= link_to "Back to Users", admin_users_path, class: "btn-secondary" %>
+  </div>
+</div>
+
+<div class="mt-8">
+
+  <%= form_with(url: admin_user_feature_flags_path(@user), method: :patch, class: "space-y-4", data: { turbo: false }) do |form| %>
+    <div class="flow-root">
+      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-300">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Name</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Key</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Description</th>
+                  <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Default</th>
+                  <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">User Setting</th>
+          </tr>
+        </thead>
+              </thead>
+              <tbody class="divide-y divide-gray-200 bg-white">
+                <% @feature_flags.each do |feature_flag| %>
+                  <tr>
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"><%= feature_flag.name %></td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= feature_flag.key %></td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= feature_flag.description %></td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                      <% if feature_flag.default_enabled %>
+                        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Enabled</span>
+                      <% else %>
+                        <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Disabled</span>
+                      <% end %>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                      <% user_flag = @user_feature_flags.find { |uff| uff.feature_flag_id == feature_flag.id } %>
+                      <% current_state = user_flag.nil? ? "default" : (user_flag.enabled ? "enabled" : "disabled") %>
+                      
+                      <div class="inline-flex rounded-md shadow-sm" role="group" aria-label="Feature flag setting">
+                        <% 
+                          # Define the button states and their styles
+                          button_states = {
+                            "enabled" => {
+                              icon: "✔️",
+                              active_class: "bg-green-50 text-green-700 border-green-200",
+                              inactive_class: "bg-white text-gray-400 hover:bg-gray-50"
+                            },
+                            "default" => {
+                              icon: "⭕",
+                              active_class: "bg-gray-50 text-gray-700 border-gray-200",
+                              inactive_class: "bg-white text-gray-400 hover:bg-gray-50"
+                            },
+                            "disabled" => {
+                              icon: "✖️",
+                              active_class: "bg-red-50 text-red-700 border-red-200",
+                              inactive_class: "bg-white text-gray-400 hover:bg-gray-50"
+                            }
+                          }
+                        %>
+                        
+                        <% button_states.each_with_index do |(state, config), index| %>
+                          <% 
+                            # Add border radius to first and last buttons
+                            border_class = case index
+                              when 0 then "rounded-l-md border-r-0"
+                              when button_states.size - 1 then "rounded-r-md border-l-0"
+                              else "border-x-0"
+                            end
+                          %>
+                          <label class="cursor-pointer" onclick="this.querySelector('input[type=radio]').checked = true;">
+                            <%= radio_button_tag "feature_flags[#{feature_flag.id}]", state, current_state == state, 
+                                class: "hidden" %>
+                            <span class="inline-flex items-center justify-center w-10 h-10 text-sm font-medium border focus:outline-none focus:ring-0 <%= border_class %> <%= current_state == state ? config[:active_class] : config[:inactive_class] %>">
+                              <%= config[:icon] %>
+                            </span>
+                          </label>
+                        <% end %>
+                      </div>
+                      
+                      <div class="mt-1 text-xs text-gray-500">
+                        <% if current_state == "default" %>
+                          Using default (<%= feature_flag.default_enabled ? "Enabled" : "Disabled" %>)
+                        <% elsif current_state == "enabled" %>
+                          Explicitly enabled
+                        <% else %>
+                          Explicitly disabled
+                        <% end %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-end mt-6">
+      <%= form.submit "Save Changes", class: "btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get all the radio button labels
+    const labels = document.querySelectorAll('label.cursor-pointer');
+    
+    // Add click event listeners to each label
+    labels.forEach(label => {
+      label.addEventListener('click', function(e) {
+        // Prevent default behavior to avoid any flashing
+        e.preventDefault();
+        
+        // Get the feature flag ID and state from the radio button
+        const radio = this.querySelector('input[type=radio]');
+        radio.checked = true;
+        const featureFlagId = radio.name.match(/\[(\d+)\]/)[1];
+        const state = radio.value;
+        
+        // Get all labels for this feature flag
+        document.querySelectorAll(`label.cursor-pointer input[name="feature_flags[${featureFlagId}]"]`).forEach(input => {
+          const parentLabel = input.closest('label');
+          const span = parentLabel.querySelector('span');
+          
+          // Set appropriate classes based on state
+          if (input.value === state) {
+            // This is the selected button
+            if (state === 'enabled') {
+              span.className = span.className.replace(/bg-\w+-\d+ text-\w+-\d+(?: \w+-\w+-\d+)?|bg-white text-gray-400 hover:bg-gray-50/, 'bg-green-50 text-green-700 border-green-200');
+            } else if (state === 'default') {
+              span.className = span.className.replace(/bg-\w+-\d+ text-\w+-\d+(?: \w+-\w+-\d+)?|bg-white text-gray-400 hover:bg-gray-50/, 'bg-gray-50 text-gray-700 border-gray-200');
+            } else if (state === 'disabled') {
+              span.className = span.className.replace(/bg-\w+-\d+ text-\w+-\d+(?: \w+-\w+-\d+)?|bg-white text-gray-400 hover:bg-gray-50/, 'bg-red-50 text-red-700 border-red-200');
+            }
+          } else {
+            // This is an unselected button
+            span.className = span.className.replace(/bg-\w+-\d+ text-\w+-\d+(?: \w+-\w+-\d+)?/, 'bg-white text-gray-400 hover:bg-gray-50');
+          }
+        });
+        
+        // Update the text description
+        const descriptionDiv = this.closest('td').querySelector('div.mt-1.text-xs.text-gray-500');
+        const featureFlag = this.closest('tr');
+        const defaultEnabled = featureFlag.querySelector('td:nth-child(4) span').textContent.trim() === 'Enabled';
+        
+        if (state === 'default') {
+          descriptionDiv.textContent = `Using default (${defaultEnabled ? 'Enabled' : 'Disabled'})`;
+        } else if (state === 'enabled') {
+          descriptionDiv.textContent = 'Explicitly enabled';
+        } else {
+          descriptionDiv.textContent = 'Explicitly disabled';
+        }
+      });
+    });
+  });
+</script>

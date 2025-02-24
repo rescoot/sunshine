@@ -10,7 +10,7 @@
         </div>
         <%= button_to scooter_path(@scooter), 
             method: :delete,
-            class: "rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500",
+            class: "btn-error",
             data: { 
               turbo_confirm: "Are you sure you want to delete this scooter? This action cannot be undone and will remove all associated trips and data." 
             } do %>

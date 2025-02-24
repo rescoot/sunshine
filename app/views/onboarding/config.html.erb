@@ -11,7 +11,7 @@
       </div>
       <div class="flex items-center justify-between">
         <pre class="text-sm text-gray-900 font-mono"><%= @config.to_yaml %></pre>
-        <button onclick="copyConfig()" class="ml-4 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+        <button onclick="copyConfig()" class="ml-4 btn-secondary text-xs">
           Copy
         </button>
       </div>
@@ -39,8 +39,8 @@
       <%= link_to "Download Configuration", 
           download_config_scooter_api_tokens_path(@scooter, token_id: params[:token_id]), 
           data: { turbo: false },
-          class: "rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" %>
-      <%= link_to "Go to Dashboard", dashboard_path, class: "text-sm font-semibold leading-6 text-gray-900" %>
+          class: "btn-primary" %>
+      <%= link_to "Go to Dashboard", dashboard_path, class: "btn-secondary" %>
     </div>
   </div>
 </div>

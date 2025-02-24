@@ -12,7 +12,14 @@ Rails.application.routes.draw do
   namespace :admin do
     root to: "dashboard#index"
 
-    resources :users
+    resources :feature_flags
+    resources :users do
+      resources :feature_flags, only: [ :index, :update ], controller: "user_feature_flags" do
+        collection do
+          patch :update
+        end
+      end
+    end
     resources :scooters do
       resources :telemetries, only: [ :index, :show ]
       resources :events, only: [ :index, :show ]
@@ -90,9 +97,27 @@ Rails.application.routes.draw do
         get :download_config
       end
     end
+
+    # Stats
+    resources :statistics, only: [] do
+      collection do
+        get :ride_statistics
+        get :battery_performance
+        get :regeneration_efficiency
+      end
+    end
   end
 
   resources :trips, only: [ :index, :show ]
+
+  resources :leaderboards, only: [ :index ] do
+    collection do
+      get :settings
+      patch :update_settings
+    end
+  end
+
+  resources :achievements, only: [ :index ]
 
   # Onboarding flow
   get "onboarding", to: "onboarding#index"
@@ -102,8 +127,7 @@ Rails.application.routes.draw do
   get "dashboard/index"
 
   get "vin-decoder", to: "vin_decoder#index"
-  get "vin-decoder/decode", to: "vin_decoder#index"
-  post "vin-decoder/decode", to: "vin_decoder#decode", as: :decode_vin
+  get "vin-decoder/:vin", to: "vin_decoder#decode", as: :decode_vin
 
   get "dashboard", to: "dashboard#index"
 

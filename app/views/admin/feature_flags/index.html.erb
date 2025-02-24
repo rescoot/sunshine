@@ -1,0 +1,85 @@
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Feature Flags</h1>
+    <p class="mt-2 text-sm text-gray-700">Manage feature flags for the application.</p>
+  </div>
+  <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+    <%= link_to "New Feature Flag", new_admin_feature_flag_path, class: "btn-primary" %>
+  </div>
+</div>
+
+<div class="mt-8">
+
+  <% if notice.present? %>
+    <div class="rounded-md bg-green-50 p-4 mb-4" role="alert">
+      <span class="block sm:inline"><%= notice %></span>
+    </div>
+  <% end %>
+
+  <div class="flow-root">
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Name</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Key</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Description</th>
+                <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Default Enabled</th>
+                <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Actions</th>
+        </tr>
+      </thead>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <% @feature_flags.each do |feature_flag| %>
+                <tr>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                    <%= link_to feature_flag.name, admin_feature_flag_path(feature_flag), class: "text-indigo-600 hover:text-indigo-900" %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= feature_flag.key %></td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= feature_flag.description %></td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                    <% if feature_flag.default_enabled %>
+                      <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Enabled</span>
+                    <% else %>
+                      <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Disabled</span>
+                    <% end %>
+                  </td>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                    <div class="flex items-center justify-center space-x-2">
+                      <%= link_to admin_feature_flag_path(feature_flag), class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4 mr-1">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        View
+                      <% end %>
+                      
+                      <%= link_to edit_admin_feature_flag_path(feature_flag), class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4 mr-1">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
+                        Edit
+                      <% end %>
+                      
+                      <%= button_to admin_feature_flag_path(feature_flag), method: :delete, 
+                          class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-red-600 bg-white hover:bg-gray-50 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500",
+                          form: { data: { turbo_confirm: "Are you sure you want to delete this feature flag?" } } do %>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4 mr-1">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Delete
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

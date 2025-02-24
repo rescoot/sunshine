@@ -1,0 +1,9 @@
+---
+- name: First Steps
+  description: Travel 10 kilometers on your scooter
+  achievement_type: distance
+  threshold: 10.0
+  icon: "🏁"
+  badge_color: indigo
+  points: 10
+  secret: false

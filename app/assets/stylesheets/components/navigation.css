@@ -1,0 +1,9 @@
+@layer components {
+  .nav-main {
+    @apply bg-indigo-950 border-b-2 border-indigo-900 shadow-sm;
+  }
+
+  .nav-admin {
+    @apply bg-teal-900 border-b-2 border-teal-800 shadow-sm;
+  }
+}

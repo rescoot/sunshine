@@ -1,0 +1,95 @@
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Battery Performance for <%= @scooter.name %></h1>
+    <p class="mt-2 text-sm text-gray-700">View detailed battery performance statistics for your scooter.</p>
+  </div>
+  <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+    <%= link_to "Back to Scooter", scooter_path(@scooter), class: "btn-secondary" %>
+  </div>
+</div>
+
+<div class="mt-8">
+
+  <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold">Battery Data</h2>
+      
+      <div class="period-selector flex space-x-2">
+        <%= link_to "Day", battery_performance_scooter_statistics_path(@scooter, period: :day), 
+            class: "#{@period == :day ? 'btn-primary' : 'btn-secondary'}" %>
+        <%= link_to "Week", battery_performance_scooter_statistics_path(@scooter, period: :week), 
+            class: "#{@period == :week ? 'btn-primary' : 'btn-secondary'}" %>
+        <%= link_to "Month", battery_performance_scooter_statistics_path(@scooter, period: :month), 
+            class: "#{@period == :month ? 'btn-primary' : 'btn-secondary'}" %>
+        <%= link_to "Year", battery_performance_scooter_statistics_path(@scooter, period: :year), 
+            class: "#{@period == :year ? 'btn-primary' : 'btn-secondary'}" %>
+      </div>
+    </div>
+    
+    <div class="chart-container h-80" data-controller="chart" 
+         data-chart-type-value="line"
+         data-chart-data-value="<%= @data.to_json %>"
+         data-chart-options-value="<%= { 
+           responsive: true, 
+           maintainAspectRatio: false,
+           plugins: {
+             tooltip: { mode: 'index', intersect: false },
+             legend: { position: 'top' }
+           },
+           scales: {
+             x: { grid: { display: false } },
+             y: { beginAtZero: true }
+           }
+         }.to_json %>">
+      <canvas data-chart-target="canvas"></canvas>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-lg font-semibold mb-2">Average Consumption</h3>
+      <p class="text-3xl font-bold text-indigo-600">
+        <%= (@data[:datasets][0][:data].compact.sum / @data[:datasets][0][:data].compact.size).round(2) rescue 0 %> kWh/km
+      </p>
+      <p class="text-sm text-gray-500">During selected period</p>
+    </div>
+    
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-lg font-semibold mb-2">Battery Health</h3>
+      <p class="text-3xl font-bold text-green-600">
+        <%= (@data[:datasets][1][:data].last || 0).round(1) %>%
+      </p>
+      <p class="text-sm text-gray-500">Current estimate</p>
+    </div>
+    
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-lg font-semibold mb-2">Charge Cycles</h3>
+      <p class="text-3xl font-bold text-orange-600">
+        <%= @data[:datasets][2][:data].last.to_i rescue 0 %>
+      </p>
+      <p class="text-sm text-gray-500">Total count</p>
+    </div>
+  </div>
+
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-xl font-semibold">Other Statistics</h2>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <%= link_to ride_statistics_scooter_statistics_path(@scooter, period: @period), class: "block" do %>
+        <h3 class="text-lg font-semibold mb-2">Ride Statistics</h3>
+        <p class="text-sm text-gray-500">View detailed ride statistics</p>
+        <div class="mt-4 text-indigo-600">View details →</div>
+      <% end %>
+    </div>
+    
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <%= link_to regeneration_efficiency_scooter_statistics_path(@scooter, period: @period), class: "block" do %>
+        <h3 class="text-lg font-semibold mb-2">Regeneration Efficiency</h3>
+        <p class="text-sm text-gray-500">View energy regeneration data</p>
+        <div class="mt-4 text-indigo-600">View details →</div>
+      <% end %>
+    </div>
+  </div>
+</div>

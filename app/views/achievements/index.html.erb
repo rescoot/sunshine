@@ -1,0 +1,163 @@
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Your Achievements</h1>
+    <p class="mt-2 text-sm text-gray-700">Track your progress and earn rewards as you ride.</p>
+  </div>
+  <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+    <div class="bg-indigo-100 text-indigo-800 px-4 py-2 rounded-lg flex items-center">
+      <span class="text-xl mr-2">🏆</span>
+      <div>
+        <span class="font-bold"><%= @total_points %></span>
+        <span class="text-sm">points</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-8">
+
+  <% if @achievements[:earned].any? %>
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <h2 class="text-xl font-semibold mb-4">Earned Achievements</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <% @achievement_types.each do |type_key, type_name| %>
+          <% if @earned_by_type[type_key.to_s]&.any? %>
+            <div class="col-span-1">
+              <h3 class="text-lg font-medium mb-3"><%= type_name %></h3>
+              
+              <div class="space-y-4">
+                <% @earned_by_type[type_key.to_s].sort_by { |ua| ua.achievement_definition.threshold }.each do |user_achievement| %>
+                  <% achievement = user_achievement.achievement_definition %>
+                  <div class="bg-gray-50 rounded-lg p-4 flex items-start">
+                    <div class="flex-shrink-0 text-3xl mr-3">
+                      <%= achievement.icon %>
+                    </div>
+                    <div class="flex-grow">
+                      <div class="flex justify-between items-start">
+                        <h4 class="font-medium"><%= achievement.name %></h4>
+                        <span class="text-xs px-2 py-1 rounded <%= achievement.badge_class %>">
+                          <%= achievement.points %> pts
+                        </span>
+                      </div>
+                      <p class="text-sm text-gray-600 mb-2"><%= achievement.description %></p>
+                      <div class="text-xs text-gray-500">
+                        Earned <%= time_ago_in_words(user_achievement.earned_at) %> ago
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @achievements[:in_progress].any? %>
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <h2 class="text-xl font-semibold mb-4">Achievements In Progress</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <% @achievement_types.each do |type_key, type_name| %>
+          <% if @in_progress_by_type[type_key.to_s]&.any? %>
+            <div class="col-span-1">
+              <h3 class="text-lg font-medium mb-3"><%= type_name %></h3>
+              
+              <div class="space-y-4">
+                <% @in_progress_by_type[type_key.to_s].sort_by { |ua| ua.achievement_definition.threshold }.each do |user_achievement| %>
+                  <% achievement = user_achievement.achievement_definition %>
+                  <div class="bg-gray-50 rounded-lg p-4">
+                    <div class="flex items-start mb-2">
+                      <div class="flex-shrink-0 text-3xl mr-3 opacity-50">
+                        <%= achievement.icon %>
+                      </div>
+                      <div class="flex-grow">
+                        <div class="flex justify-between items-start">
+                          <h4 class="font-medium text-gray-700"><%= achievement.name %></h4>
+                          <span class="text-xs px-2 py-1 rounded bg-gray-200 text-gray-700">
+                            <%= achievement.points %> pts
+                          </span>
+                        </div>
+                        <p class="text-sm text-gray-600"><%= achievement.description %></p>
+                      </div>
+                    </div>
+                    
+                    <div class="mt-2">
+                      <div class="flex justify-between text-xs text-gray-500 mb-1">
+                        <span><%= user_achievement.formatted_progress %></span>
+                        <span><%= user_achievement.progress_percentage %>%</span>
+                      </div>
+                      <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-indigo-500 h-2 rounded-full" style="width: <%= user_achievement.progress_percentage %>%"></div>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @next_achievements.any? %>
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-semibold mb-4">Next Achievements to Earn</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <% @next_achievements.each do |achievement| %>
+          <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+            <div class="flex items-start">
+              <div class="flex-shrink-0 text-3xl mr-3 opacity-50">
+                <%= achievement.icon %>
+              </div>
+              <div>
+                <h4 class="font-medium"><%= achievement.name %></h4>
+                <p class="text-sm text-gray-600 mb-1"><%= achievement.description %></p>
+                <span class="text-xs px-2 py-1 rounded bg-gray-200 text-gray-700">
+                  <%= achievement.points %> pts
+                </span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @achievements[:earned].empty? && @achievements[:in_progress].empty? %>
+    <div class="bg-white rounded-lg shadow-md p-8 text-center">
+      <div class="text-4xl mb-4">🏆</div>
+      <h2 class="text-xl font-semibold mb-2">No Achievements Yet</h2>
+      <p class="text-gray-600 mb-6">Start riding your scooter to earn achievements and collect points!</p>
+      
+      <% if @next_achievements.any? %>
+        <div class="mt-6">
+          <h3 class="text-lg font-medium mb-3">Here's what you can earn:</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <% @next_achievements.each do |achievement| %>
+              <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 text-3xl mr-3 opacity-50">
+                    <%= achievement.icon %>
+                  </div>
+                  <div>
+                    <h4 class="font-medium"><%= achievement.name %></h4>
+                    <p class="text-sm text-gray-600 mb-1"><%= achievement.description %></p>
+                    <span class="text-xs px-2 py-1 rounded bg-gray-200 text-gray-700">
+                      <%= achievement.points %> pts
+                    </span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
