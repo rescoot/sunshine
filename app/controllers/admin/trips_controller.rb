@@ -3,8 +3,36 @@ class Admin::TripsController < Admin::ApplicationController
 
   def index
     @trips = Trip.includes(:scooter, :user)
-                .order(created_at: :desc)
-                .page(params[:page])
+
+    # Filter by user
+    @trips = @trips.where(user_id: params[:user_id]) if params[:user_id].present?
+
+    # Filter by scooter
+    @trips = @trips.where(scooter_id: params[:scooter_id]) if params[:scooter_id].present?
+
+    # Filter by date range
+    @trips = @trips.where("started_at >= ?", params[:start_date]) if params[:start_date].present?
+    @trips = @trips.where("started_at <= ?", params[:end_date].to_date.end_of_day) if params[:end_date].present?
+
+    # Filter by distance
+    @trips = @trips.where("distance >= ?", params[:min_distance].to_f * 1000) if params[:min_distance].present?
+    @trips = @trips.where("distance <= ?", params[:max_distance].to_f * 1000) if params[:max_distance].present?
+
+    # Filter by average speed
+    @trips = @trips.where("avg_speed >= ?", params[:min_speed]) if params[:min_speed].present?
+    @trips = @trips.where("avg_speed <= ?", params[:max_speed]) if params[:max_speed].present?
+
+    # Filter by status
+    if params[:status].present?
+      case params[:status]
+      when "in_progress"
+        @trips = @trips.where(ended_at: nil)
+      when "completed"
+        @trips = @trips.where.not(ended_at: nil)
+      end
+    end
+
+    @trips = @trips.order(created_at: :desc).page(params[:page])
   end
 
   def show

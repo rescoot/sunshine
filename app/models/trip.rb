@@ -22,6 +22,12 @@ class Trip < ApplicationRecord
   before_update :associate_end_telemetry, if: -> { ended_at_changed? && ended_at.present? }
   after_create :generate_trip_segments
   after_update :generate_trip_segments, if: -> { saved_change_to_ended_at? && ended_at.present? }
+  after_update :check_achievements, if: -> { saved_change_to_ended_at? && ended_at.present? }
+
+  # Check achievements for the trip's user
+  def check_achievements
+    user.check_achievements if user
+  end
 
   def duration
     return nil unless ended_at

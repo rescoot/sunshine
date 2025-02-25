@@ -54,8 +54,10 @@
             <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
               <div class="text-gray-900 font-mono">
                 <% if @telemetry.lat && @telemetry.lng %>
-                  <%= number_with_precision(@telemetry.lat, precision: 6) %>, 
-                  <%= number_with_precision(@telemetry.lng, precision: 6) %>
+                  <%= link_to "#{number_with_precision(@telemetry.lat, precision: 6)}, #{number_with_precision(@telemetry.lng, precision: 6)}", 
+                      "https://www.openstreetmap.org/?mlat=#{@telemetry.lat}&mlon=#{@telemetry.lng}&zoom=16", 
+                      target: "_blank", 
+                      class: "text-indigo-600 hover:text-indigo-900" %>
                   <% if @telemetry.altitude %>
                     at <%= number_with_precision(@telemetry.altitude, precision: 1) %>m
                   <% end %>

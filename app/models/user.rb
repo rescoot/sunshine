@@ -36,6 +36,12 @@ class User < ApplicationRecord
     FeatureFlag.enabled_for?(feature_key, self)
   end
 
+  # Check and update achievements for this user
+  # Returns a hash with earned and in-progress achievements
+  def check_achievements
+    AchievementService.check_achievements(self)
+  end
+
   private
 
   def acceptable_avatar

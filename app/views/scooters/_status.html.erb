@@ -1,5 +1,27 @@
 <!-- Status Indicators -->
 <div class="my-6 flex flex-wrap gap-2">
+  <% if scooter.vin.present? %>
+    <span 
+      id="scooter-vin" 
+      class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 cursor-pointer"
+      onclick="copyToClipboard('scooter-vin', 'vin-copy-message')"
+      title="Click to copy VIN">
+      VIN: <%= scooter.vin %>
+    </span>
+    <span id="vin-copy-message" class="hidden text-xs text-green-600">Copied!</span>
+  <% end %>
+
+  <% if scooter.imei.present? %>
+    <span 
+      id="scooter-imei" 
+      class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 cursor-pointer"
+      onclick="copyToClipboard('scooter-imei', 'imei-copy-message')"
+      title="Click to copy IMEI">
+      IMEI: <%= scooter.imei %>
+    </span>
+    <span id="imei-copy-message" class="hidden text-xs text-green-600">Copied!</span>
+  <% end %>
+
   <% if scooter.is_online? %>
     <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20" title="<%= scooter.last_seen_at %>">Online</span>
   <% elsif scooter.last_seen_at %>
@@ -56,3 +78,23 @@
     Aux <%= number_to_percentage(scooter.aux_battery_level, precision: 0) %>
   </span>
 </div>
+
+<script>
+  function copyToClipboard(elementId, messageId) {
+    const element = document.getElementById(elementId);
+    const text = element.textContent.replace(/^(VIN|IMEI): /, '').trim();
+    
+    navigator.clipboard.writeText(text).then(() => {
+      // Show the success message
+      const message = document.getElementById(messageId);
+      message.classList.remove('hidden');
+      
+      // Hide the message after 2 seconds
+      setTimeout(() => {
+        message.classList.add('hidden');
+      }, 2000);
+    }).catch(err => {
+      console.error('Failed to copy: ', err);
+    });
+  }
+</script>

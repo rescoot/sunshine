@@ -22,6 +22,8 @@ module Mqtt
           Handlers::StatusHandler.new(topic: topic, message: message)
         when "telemetry"
           Handlers::TelemetryHandler.new(topic: topic, message: message)
+        when "telemetry_batch"
+          Handlers::BatchedTelemetryHandler.new(topic: topic, message: message)
         when "acks"
           Handlers::AckHandler.new(topic: topic, message: message, web_mode: web_mode)
         when "trip"

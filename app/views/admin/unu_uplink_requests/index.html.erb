@@ -5,6 +5,46 @@
   </div>
 </div>
 
+<div class="mt-6 bg-white shadow sm:rounded-lg">
+  <div class="px-4 py-5 sm:p-6">
+    <h3 class="text-base font-semibold leading-6 text-gray-900">Filter Requests</h3>
+    
+    <%= form_tag admin_unu_uplink_requests_path, method: :get, class: "mt-4 grid grid-cols-1 gap-y-4 sm:grid-cols-6 sm:gap-x-4" do %>
+      <div class="sm:col-span-2">
+        <%= label_tag :imei, "IMEI", class: "block text-sm font-medium text-gray-700" %>
+        <%= text_field_tag :imei, params[:imei], class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+      </div>
+      
+      <div class="sm:col-span-2">
+        <%= label_tag :type, "Type", class: "block text-sm font-medium text-gray-700" %>
+        <%= text_field_tag :type, params[:type], class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+      </div>
+      
+      <div class="sm:col-span-2">
+        <%= label_tag :scooter_id, "Scooter", class: "block text-sm font-medium text-gray-700" %>
+        <%= select_tag :scooter_id, 
+            options_from_collection_for_select(Scooter.all, :id, :name, params[:scooter_id]),
+            { prompt: "All Scooters", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+      </div>
+      
+      <div class="sm:col-span-2">
+        <%= label_tag :start_date, "Start Date", class: "block text-sm font-medium text-gray-700" %>
+        <%= date_field_tag :start_date, params[:start_date], class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+      </div>
+      
+      <div class="sm:col-span-2">
+        <%= label_tag :end_date, "End Date", class: "block text-sm font-medium text-gray-700" %>
+        <%= date_field_tag :end_date, params[:end_date], class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+      </div>
+      
+      <div class="sm:col-span-6 flex justify-end">
+        <%= submit_tag "Filter", class: "btn-primary" %>
+        <%= link_to "Clear Filters", admin_unu_uplink_requests_path, class: "ml-3 btn-secondary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
 <div class="mt-8 flow-root">
   <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -14,7 +54,8 @@
             <tr>
               <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Timestamp</th>
               <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">IMEI</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Topic</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooter</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Type</th>
               <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"></th>
             </tr>
           </thead>
@@ -25,10 +66,22 @@
                   <%= request.created_at.strftime("%Y-%m-%d %H:%M:%S") %>
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <%= request.imei %>
+                  <% if request.scooter.present? %>
+                    <%= link_to request.imei, admin_scooter_path(request.scooter), class: "text-indigo-600 hover:text-indigo-900" %>
+                  <% else %>
+                    <%= request.imei %>
+                    <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20 ml-2">No scooter</span>
+                  <% end %>
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <%= request.topic %>
+                  <% if request.scooter.present? %>
+                    <%= link_to request.scooter.name, admin_scooter_path(request.scooter), class: "text-indigo-600 hover:text-indigo-900" %>
+                  <% else %>
+                    <span class="text-gray-400">—</span>
+                  <% end %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                  <%= request.topic.split('/').last %>
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   <div class="flex items-center justify-start space-x-2">

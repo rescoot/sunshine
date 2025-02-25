@@ -27,6 +27,7 @@ module Mqtt
           [
             "scooters/+/status",
             "scooters/+/telemetry",
+            "scooters/+/telemetry_batch",
             "scooters/+/trip/#",
             "scooters/+/acks",
             "+/v1/#"  # unu cloud messages

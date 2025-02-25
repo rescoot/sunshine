@@ -41,6 +41,9 @@ module TripsHelper
 
   def format_coordinates(lat, lng)
     return tag.span("N/A", class: "text-gray-400") unless lat && lng
-    tag.span "#{lat.round(6)}, #{lng.round(6)}", class: "font-mono"
+    link_to "#{lat.round(6)}, #{lng.round(6)}",
+      "https://www.openstreetmap.org/?mlat=#{lat}&mlon=#{lng}&zoom=16",
+      target: "_blank",
+      class: "text-indigo-600 hover:text-indigo-900 font-mono"
   end
 end

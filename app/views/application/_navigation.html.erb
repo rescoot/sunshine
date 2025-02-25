@@ -147,10 +147,21 @@
                     class: "text-gray-300 hover:bg-teal-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
                 <%= link_to "Events", admin_events_path,
                     class: "text-gray-300 hover:bg-teal-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
-                <%= link_to "Telemetry", admin_telemetries_path,
+                <%= link_to "Trips", admin_trips_path,
                     class: "text-gray-300 hover:bg-teal-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
-                <%= link_to "UNU Uplink Requests", admin_unu_uplink_requests_path,
-                    class: "text-gray-300 hover:bg-teal-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium" %>
+                
+                <div class="relative" data-controller="dropdown">
+                  <button data-action="click->dropdown#toggle" class="text-gray-300 hover:bg-teal-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium inline-flex items-center gap-2">
+                    Telemetry
+                    <svg data-dropdown-target="chevron" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                  </button>
+                  <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                    <%= link_to "Radio Gaga", admin_telemetries_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md" %>
+                    <%= link_to "unu-uplink", admin_unu_uplink_requests_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md" %>
+                  </div>
+                </div>
                 <button data-action="admin-navbar#toggle" class="text-gray-300 hover:bg-teal-800 hover:text-white rounded-md px-3 py-2 text-sm font-medium ml-4">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />

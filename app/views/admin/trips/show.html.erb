@@ -129,7 +129,10 @@
             <dt class="text-sm font-medium text-gray-500">Start Location</dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
               <% if @trip.start_lat && @trip.start_lng %>
-                <%= number_with_precision(@trip.start_lat, precision: 6) %>, <%= number_with_precision(@trip.start_lng, precision: 6) %>
+                <%= link_to "#{number_with_precision(@trip.start_lat, precision: 6)}, #{number_with_precision(@trip.start_lng, precision: 6)}", 
+                    "https://www.openstreetmap.org/?mlat=#{@trip.start_lat}&mlon=#{@trip.start_lng}&zoom=16", 
+                    target: "_blank", 
+                    class: "text-indigo-600 hover:text-indigo-900 font-mono" %>
               <% else %>
                 No GPS data
               <% end %>
@@ -140,7 +143,10 @@
             <dt class="text-sm font-medium text-gray-500">End Location</dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
               <% if @trip.end_lat && @trip.end_lng %>
-                <%= number_with_precision(@trip.end_lat, precision: 6) %>, <%= number_with_precision(@trip.end_lng, precision: 6) %>
+                <%= link_to "#{number_with_precision(@trip.end_lat, precision: 6)}, #{number_with_precision(@trip.end_lng, precision: 6)}", 
+                    "https://www.openstreetmap.org/?mlat=#{@trip.end_lat}&mlon=#{@trip.end_lng}&zoom=16", 
+                    target: "_blank", 
+                    class: "text-indigo-600 hover:text-indigo-900 font-mono" %>
               <% else %>
                 No GPS data
               <% end %>
@@ -247,18 +253,22 @@
                       N/A
                     <% end %>
                   </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-mono">
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     <% if segment.has_gps_coordinates? %>
-                      <%= number_with_precision(segment.start_lat, precision: 6) %>, 
-                      <%= number_with_precision(segment.start_lng, precision: 6) %>
+                      <%= link_to "#{number_with_precision(segment.start_lat, precision: 6)}, #{number_with_precision(segment.start_lng, precision: 6)}", 
+                          "https://www.openstreetmap.org/?mlat=#{segment.start_lat}&mlon=#{segment.start_lng}&zoom=16", 
+                          target: "_blank", 
+                          class: "text-indigo-600 hover:text-indigo-900 font-mono" %>
                     <% else %>
                       No GPS data
                     <% end %>
                   </td>
-                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-mono">
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     <% if segment.has_gps_coordinates? %>
-                      <%= number_with_precision(segment.end_lat, precision: 6) %>, 
-                      <%= number_with_precision(segment.end_lng, precision: 6) %>
+                      <%= link_to "#{number_with_precision(segment.end_lat, precision: 6)}, #{number_with_precision(segment.end_lng, precision: 6)}", 
+                          "https://www.openstreetmap.org/?mlat=#{segment.end_lat}&mlon=#{segment.end_lng}&zoom=16", 
+                          target: "_blank", 
+                          class: "text-indigo-600 hover:text-indigo-900 font-mono" %>
                     <% else %>
                       No GPS data
                     <% end %>

@@ -1,7 +1,7 @@
 <div class="sm:flex sm:items-center">
   <div class="sm:flex-auto">
     <div class="flex items-center justify-between">
-      <h1 class="text-2xl font-semibold leading-6 text-gray-900">Telemetry Details</h1>
+      <h1 class="text-2xl font-semibold leading-6 text-gray-900">unu-uplink Details</h1>
       <%= link_to "Back to List", admin_unu_uplink_requests_path, class: "btn-secondary" %>
     </div>
   </div>
@@ -19,23 +19,46 @@
     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
       <dt class="text-sm font-medium leading-6 text-gray-900">IMEI</dt>
       <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-        <%= @request.imei %>
+        <% if @request.scooter.present? %>
+          <%= link_to @request.imei, admin_scooter_path(@request.scooter), class: "text-indigo-600 hover:text-indigo-900" %>
+        <% else %>
+          <%= @request.imei %>
+          <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20 ml-2">No scooter</span>
+        <% end %>
       </dd>
     </div>
 
+    <% if @request.scooter.present? %>
     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-      <dt class="text-sm font-medium leading-6 text-gray-900">Topic</dt>
+      <dt class="text-sm font-medium leading-6 text-gray-900">Scooter</dt>
       <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-        <%= @request.topic %>
+        <%= link_to @request.scooter.name, admin_scooter_path(@request.scooter), class: "text-indigo-600 hover:text-indigo-900" %>
+      </dd>
+    </div>
+    <% end %>
+
+    <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+      <dt class="text-sm font-medium leading-6 text-gray-900">Type</dt>
+      <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+        <%= @request.topic.split('/').last %>
       </dd>
     </div>
 
     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
       <dt class="text-sm font-medium leading-6 text-gray-900">Payload</dt>
       <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-        <div class="whitespace-pre-wrap font-mono bg-gray-50 p-4 rounded-md">
-          <%= JSON.pretty_generate(JSON.parse(@request.payload)) rescue @request.payload %>
-        </div>
+        <% begin %>
+          <div class="whitespace-pre-wrap font-mono bg-gray-50 p-4 rounded-md">
+            <pre class="text-sm text-gray-800"><%= YAML.dump(@request.payload.except("raw_hex")) %></pre>
+          </div>
+        <% rescue => e %>
+          <div class="whitespace-pre-wrap font-mono bg-gray-50 p-4 rounded-md">
+            <%= @request.payload %>
+            <% if Rails.env.development? %>
+              <div class="mt-2 text-xs text-red-600">Error: <%= e.message %></div>
+            <% end %>
+          </div>
+        <% end %>
       </dd>
     </div>
   </dl>

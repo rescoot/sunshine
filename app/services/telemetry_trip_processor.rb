@@ -49,6 +49,9 @@ class TelemetryTripProcessor
     end
 
     Rails.logger.info "Ended trip ##{trip.id} for scooter #{@scooter.vin}"
+
+    # Check achievements for the trip's user after trip completion
+    trip.user.check_achievements if trip.user
   end
 
   private
