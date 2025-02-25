@@ -1,0 +1,260 @@
+<div class="sm:flex sm:items-center">
+  <div class="sm:flex-auto">
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Achievements for <%= @user.name %></h1>
+    <p class="mt-2 text-sm text-gray-700">Manage achievement settings for this user.</p>
+  </div>
+  <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+    <%= link_to "Back to Users", admin_users_path, class: "btn-secondary" %>
+  </div>
+</div>
+
+<div class="mt-8">
+  <%= form_with(url: admin_user_achievements_path(@user), method: :patch, class: "space-y-4", data: { turbo: false }) do |form| %>
+    <div class="flow-root">
+      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-300">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Name</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Type</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Description</th>
+                  <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Threshold</th>
+                  <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Secret</th>
+                  <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Status</th>
+                  <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Progress</th>
+                  <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 bg-white">
+                <% @achievement_definitions.each do |achievement| %>
+                  <tr>
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                      <div class="flex items-center">
+                        <span class="mr-2 text-xl"><%= achievement.icon %></span>
+                        <%= achievement.name %>
+                      </div>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= achievement.achievement_type.humanize %></td>
+                    <td class="px-3 py-4 text-sm text-gray-500"><%= achievement.description %></td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center"><%= achievement.threshold %></td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                      <% if achievement.secret %>
+                        <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-600/20">Secret</span>
+                      <% else %>
+                        <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-600/20">Visible</span>
+                      <% end %>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                      <% user_achievement = @user_achievements.find { |ua| ua.achievement_definition_id == achievement.id } %>
+                      <% 
+                        if user_achievement.nil?
+                          current_state = "not_earned"
+                          current_progress = 0
+                        elsif user_achievement.earned_at.present?
+                          current_state = "earned"
+                          current_progress = achievement.threshold
+                        else
+                          current_state = "in_progress"
+                          current_progress = user_achievement.progress
+                        end
+                      %>
+                      
+                      <div class="inline-flex rounded-md shadow-sm" role="group" aria-label="Achievement status">
+                        <% 
+                          # Define the button states and their styles
+                          button_states = {
+                            "earned" => {
+                              icon: "🏆",
+                              active_class: "bg-green-50 text-green-700 border-green-200",
+                              inactive_class: "bg-white text-gray-400 hover:bg-gray-50"
+                            },
+                            "in_progress" => {
+                              icon: "⏳",
+                              active_class: "bg-yellow-50 text-yellow-700 border-yellow-200",
+                              inactive_class: "bg-white text-gray-400 hover:bg-gray-50"
+                            },
+                            "not_earned" => {
+                              icon: "❌",
+                              active_class: "bg-gray-50 text-gray-700 border-gray-200",
+                              inactive_class: "bg-white text-gray-400 hover:bg-gray-50"
+                            }
+                          }
+                        %>
+                        
+                        <% button_states.each_with_index do |(state, config), index| %>
+                          <% 
+                            # Add border radius to first and last buttons
+                            border_class = case index
+                              when 0 then "rounded-l-md border-r-0"
+                              when button_states.size - 1 then "rounded-r-md border-l-0"
+                              else "border-x-0"
+                            end
+                          %>
+                          <label class="cursor-pointer achievement-label" data-achievement-id="<%= achievement.id %>" data-state="<%= state %>">
+                            <%= radio_button_tag "achievements[#{achievement.id}]", state, current_state == state, 
+                                class: "hidden achievement-radio" %>
+                            <span class="inline-flex items-center justify-center w-10 h-10 text-sm font-medium border focus:outline-none focus:ring-0 <%= border_class %> <%= current_state == state ? config[:active_class] : config[:inactive_class] %>">
+                              <%= config[:icon] %>
+                            </span>
+                          </label>
+                        <% end %>
+                      </div>
+                      
+                      <div class="mt-1 text-xs text-gray-500 achievement-status-text">
+                        <% if current_state == "not_earned" %>
+                          Not earned
+                        <% elsif current_state == "earned" %>
+                          Earned
+                        <% else %>
+                          In progress
+                        <% end %>
+                      </div>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                      <div class="w-32 mx-auto">
+                        <div class="flex items-center">
+                          <input type="number" name="progress[<%= achievement.id %>]" value="<%= current_progress %>" 
+                                min="0" max="<%= achievement.threshold %>" step="0.1"
+                                class="progress-input block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 <%= current_state == 'in_progress' ? '' : 'opacity-50' %>"
+                                <%= current_state != 'in_progress' ? 'disabled' : '' %>>
+                        </div>
+                        <div class="mt-1 h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
+                          <% progress_percentage = achievement.progress_percentage(current_progress) %>
+                          <div class="h-full bg-indigo-600 rounded-full" style="width: <%= progress_percentage %>%"></div>
+                        </div>
+                        <div class="mt-1 text-xs text-gray-500 text-center">
+                          <%= current_progress %> / <%= achievement.threshold %>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
+                      <% if user_achievement.nil? %>
+                        <%= button_to "Grant", admin_user_achievements_path(@user), method: :post, params: { achievement_id: achievement.id }, class: "text-indigo-600 hover:text-indigo-900" %>
+                      <% else %>
+                        <%= button_to "Remove", admin_user_achievement_path(@user, user_achievement), method: :delete, class: "text-red-600 hover:text-red-900" %>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-end mt-6">
+      <%= form.submit "Save Changes", class: "btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get all the achievement labels
+    const labels = document.querySelectorAll('label.achievement-label');
+    
+    // Add click event listeners to each label
+    labels.forEach(label => {
+      label.addEventListener('click', function(e) {
+        // Prevent default behavior to avoid any flashing
+        e.preventDefault();
+        
+        // Get the achievement ID and state from the data attributes
+        const achievementId = this.dataset.achievementId;
+        const state = this.dataset.state;
+        
+        // Get the radio button and check it
+        const radio = this.querySelector('input[type=radio]');
+        radio.checked = true;
+        
+        // Get all labels for this achievement
+        document.querySelectorAll(`label.achievement-label[data-achievement-id="${achievementId}"]`).forEach(achievementLabel => {
+          const span = achievementLabel.querySelector('span');
+          const labelState = achievementLabel.dataset.state;
+          
+          // Set appropriate classes based on state
+          if (labelState === state) {
+            // This is the selected button
+            if (state === 'earned') {
+              span.className = span.className.replace(/bg-\w+-\d+ text-\w+-\d+(?: \w+-\w+-\d+)?|bg-white text-gray-400 hover:bg-gray-50/, 'bg-green-50 text-green-700 border-green-200');
+            } else if (state === 'in_progress') {
+              span.className = span.className.replace(/bg-\w+-\d+ text-\w+-\d+(?: \w+-\w+-\d+)?|bg-white text-gray-400 hover:bg-gray-50/, 'bg-yellow-50 text-yellow-700 border-yellow-200');
+            } else if (state === 'not_earned') {
+              span.className = span.className.replace(/bg-\w+-\d+ text-\w+-\d+(?: \w+-\w+-\d+)?|bg-white text-gray-400 hover:bg-gray-50/, 'bg-gray-50 text-gray-700 border-gray-200');
+            }
+          } else {
+            // This is an unselected button
+            span.className = span.className.replace(/bg-\w+-\d+ text-\w+-\d+(?: \w+-\w+-\d+)?/, 'bg-white text-gray-400 hover:bg-gray-50');
+          }
+        });
+        
+        // Update the text description
+        const statusText = this.closest('td').querySelector('div.achievement-status-text');
+        if (state === 'not_earned') {
+          statusText.textContent = 'Not earned';
+        } else if (state === 'earned') {
+          statusText.textContent = 'Earned';
+        } else {
+          statusText.textContent = 'In progress';
+        }
+        
+        // Enable/disable progress input based on state
+        const progressInput = this.closest('tr').querySelector('input.progress-input');
+        if (state === 'in_progress') {
+          progressInput.disabled = false;
+          progressInput.classList.remove('opacity-50');
+        } else {
+          progressInput.disabled = true;
+          progressInput.classList.add('opacity-50');
+          
+          // Set progress value based on state
+          if (state === 'earned') {
+            const threshold = parseFloat(progressInput.max);
+            progressInput.value = threshold;
+            
+            // Update progress bar and text
+            const progressBar = progressInput.closest('div.w-32').querySelector('div.bg-indigo-600');
+            progressBar.style.width = '100%';
+            
+            const progressText = progressInput.closest('div.w-32').querySelector('div.text-xs.text-gray-500');
+            progressText.textContent = `${threshold} / ${threshold}`;
+          } else if (state === 'not_earned') {
+            progressInput.value = 0;
+            
+            // Update progress bar and text
+            const progressBar = progressInput.closest('div.w-32').querySelector('div.bg-indigo-600');
+            progressBar.style.width = '0%';
+            
+            const progressText = progressInput.closest('div.w-32').querySelector('div.text-xs.text-gray-500');
+            progressText.textContent = `0 / ${progressInput.max}`;
+          }
+        }
+      });
+    });
+    
+    // Add event listeners to progress inputs
+    const progressInputs = document.querySelectorAll('input.progress-input');
+    progressInputs.forEach(input => {
+      input.addEventListener('input', function() {
+        const value = parseFloat(this.value);
+        const max = parseFloat(this.max);
+        
+        // Ensure value is within bounds
+        if (value < 0) this.value = 0;
+        if (value > max) this.value = max;
+        
+        // Update progress bar
+        const percentage = (value / max) * 100;
+        const progressBar = this.closest('div.w-32').querySelector('div.bg-indigo-600');
+        progressBar.style.width = `${percentage}%`;
+        
+        // Update progress text
+        const progressText = this.closest('div.w-32').querySelector('div.text-xs.text-gray-500');
+        progressText.textContent = `${value} / ${max}`;
+      });
+    });
+  });
+</script>

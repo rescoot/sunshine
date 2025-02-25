@@ -1,0 +1,77 @@
+@layer components {
+  .achievement-card {
+    @apply rounded-lg p-4 border transition-all duration-200;
+    background: linear-gradient(to bottom, theme('colors.white'), theme('colors.gray.50'));
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.05),
+      0 1px 2px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  .achievement-card:hover {
+    box-shadow: 
+      0 4px 8px rgba(0, 0, 0, 0.05),
+      0 2px 4px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  .achievement-card .achievement-icon {
+    @apply flex-shrink-0 text-3xl mr-3;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+  }
+
+  .achievement-card .achievement-icon.inactive {
+    @apply opacity-50;
+  }
+
+  .achievement-card .badge {
+    @apply whitespace-nowrap;
+  }
+
+  /* Layout for earned achievements */
+  .achievement-card-earned {
+    background: linear-gradient(to bottom, theme('colors.white'), theme('colors.green.50'));
+    border-color: rgba(0, 128, 0, 0.1);
+    @apply flex items-start;
+  }
+
+  /* Layout for secret achievements */
+  .achievement-card-secret {
+    background: linear-gradient(to bottom, theme('colors.white'), theme('colors.purple.50'));
+    border-color: rgba(128, 0, 128, 0.1);
+    box-shadow: 
+      0 4px 8px rgba(128, 0, 128, 0.1),
+      0 2px 4px rgba(128, 0, 128, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  .achievement-card-secret:hover {
+    box-shadow: 
+      0 6px 12px rgba(128, 0, 128, 0.1),
+      0 3px 6px rgba(128, 0, 128, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  .achievement-card-secret .badge {
+    @apply bg-purple-100 text-purple-800;
+  }
+
+  /* Layout for in-progress achievements */
+  .achievement-card-progress {
+    background: linear-gradient(to bottom, theme('colors.white'), theme('colors.blue.50'));
+    border-color: rgba(0, 0, 128, 0.1);
+  }
+
+  .achievement-card-progress .flex,
+  .achievement-card-next .flex {
+    @apply items-start;
+  }
+
+  /* Layout for next achievements */
+  .achievement-card-next {
+    background: linear-gradient(to bottom, theme('colors.white'), theme('colors.gray.100'));
+    border-color: rgba(0, 0, 0, 0.1);
+    opacity: 0.9;
+  }
+}

@@ -4,6 +4,7 @@
 @import "components/dashboard";
 @import "components/animations";
 @import "components/navigation";
+@import "components/achievement_cards";
 
 @tailwind base;
 @tailwind components;

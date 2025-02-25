@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_24_225507) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_25_003929) do
   create_table "achievement_definitions", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
@@ -21,6 +21,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_24_225507) do
     t.string "badge_color", default: "blue"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "secret", default: false, null: false
     t.index ["achievement_type"], name: "index_achievement_definitions_on_achievement_type"
   end
 
@@ -243,10 +244,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_24_225507) do
     t.datetime "updated_at", null: false
     t.integer "start_odometer"
     t.integer "end_odometer"
+    t.integer "start_telemetry_id"
+    t.integer "end_telemetry_id"
+    t.index ["end_telemetry_id"], name: "index_trips_on_end_telemetry_id"
     t.index ["ended_at"], name: "index_trips_on_ended_at"
     t.index ["scooter_id", "distance"], name: "index_trips_on_scooter_id_and_distance"
     t.index ["scooter_id", "started_at"], name: "index_trips_on_scooter_id_and_started_at"
     t.index ["scooter_id"], name: "index_trips_on_scooter_id"
+    t.index ["start_telemetry_id"], name: "index_trips_on_start_telemetry_id"
     t.index ["started_at", "ended_at"], name: "index_trips_on_started_at_and_ended_at"
     t.index ["user_id", "distance"], name: "index_trips_on_user_id_and_distance"
     t.index ["user_id", "started_at"], name: "index_trips_on_user_id_and_started_at"
@@ -351,6 +356,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_24_225507) do
   add_foreign_key "scooter_events", "scooters"
   add_foreign_key "telemetries", "scooters"
   add_foreign_key "trips", "scooters"
+  add_foreign_key "trips", "telemetries", column: "end_telemetry_id"
+  add_foreign_key "trips", "telemetries", column: "start_telemetry_id"
   add_foreign_key "trips", "users"
   add_foreign_key "user_achievements", "achievement_definitions"
   add_foreign_key "user_achievements", "users"

@@ -5,6 +5,12 @@ class DashboardController < ApplicationController
     @scooters = current_user.scooters.includes(:trips)
     @recent_trips = current_user.trips.completed.order(ended_at: :desc).limit(5)
 
+    # Load recent achievements if the feature is enabled
+    if current_user.feature_enabled?(FeatureFlag::ACHIEVEMENTS)
+      @recent_achievements = AchievementService.recent_achievements(current_user)
+      @total_achievement_points = AchievementService.total_points(current_user)
+    end
+
     # Load lifetime statistics
     completed_trips = current_user.trips.where.not(ended_at: nil)
     @lifetime_stats = {

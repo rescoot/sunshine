@@ -1,0 +1,42 @@
+<% if current_user.feature_enabled?(FeatureFlag::ACHIEVEMENTS) && @recent_achievements.any? %>
+  <div class="mt-8">
+    <div class="sm:flex sm:items-center">
+      <div class="sm:flex-auto">
+        <h2 class="text-lg font-medium text-gray-900">Recent Achievements</h2>
+      </div>
+      <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none flex items-center gap-3">
+        <div class="badge badge-info px-3 py-1.5 flex items-center">
+          <span class="text-lg mr-2">🏆</span>
+          <div>
+            <span class="font-bold"><%= @total_achievement_points %></span>
+            <span class="text-xs">points</span>
+          </div>
+        </div>
+        <%= link_to "View All", achievements_path, class: "block btn-primary text-center" %>
+      </div>
+    </div>
+    
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @recent_achievements.each do |user_achievement| %>
+        <% achievement = user_achievement.achievement_definition %>
+        <div class="achievement-card achievement-card-earned">
+          <div class="achievement-icon">
+            <%= achievement.icon %>
+          </div>
+          <div class="flex-grow">
+            <div class="flex justify-between items-start">
+              <h4 class="font-medium"><%= achievement.name %></h4>
+              <span class="badge badge-success">
+                <%= achievement.points %> pts
+              </span>
+            </div>
+            <p class="text-sm text-gray-600 mb-2"><%= achievement.description %></p>
+            <div class="text-xs text-gray-500">
+              Earned <%= time_ago_in_words(user_achievement.earned_at) %> ago
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

@@ -1,6 +1,8 @@
 class Trip < ApplicationRecord
   belongs_to :user
   belongs_to :scooter
+  belongs_to :start_telemetry, class_name: "Telemetry", optional: true
+  belongs_to :end_telemetry, class_name: "Telemetry", optional: true
 
   validates :started_at, presence: true
   validates :start_lat, presence: true
@@ -10,8 +12,13 @@ class Trip < ApplicationRecord
 
   scope :completed, -> { where.not(ended_at: nil) }
   scope :in_progress, -> { where(ended_at: nil) }
+  scope :with_telemetry, -> { where.not(start_telemetry_id: nil, end_telemetry_id: nil) }
+  scope :with_low_end_battery, -> { joins(:end_telemetry).where("telemetries.battery0_level + telemetries.battery1_level < 20") }
+  scope :with_sufficient_start_battery, -> { joins(:start_telemetry).where("telemetries.battery0_level + telemetries.battery1_level >= 25") }
 
   before_create :complete_in_progress_trips
+  before_create :associate_start_telemetry
+  before_update :associate_end_telemetry, if: -> { ended_at_changed? && ended_at.present? }
 
   def duration
     return nil unless ended_at
@@ -94,5 +101,25 @@ class Trip < ApplicationRecord
     a = Math.sin(dlat_rad/2)**2 + Math.cos(lat1_rad) * Math.cos(lat2_rad) * Math.sin(dlng_rad/2)**2
     c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
     rkm * c # Distance in kilometers
+  end
+
+  def associate_start_telemetry
+    # Find the most recent telemetry for the scooter at the time of trip start
+    latest_telemetry = scooter.telemetries
+                              .where("created_at <= ?", started_at)
+                              .order(created_at: :desc)
+                              .first
+
+    self.start_telemetry = latest_telemetry if latest_telemetry
+  end
+
+  def associate_end_telemetry
+    # Find the most recent telemetry for the scooter at the time of trip end
+    latest_telemetry = scooter.telemetries
+                              .where("created_at <= ?", ended_at)
+                              .order(created_at: :desc)
+                              .first
+
+    self.end_telemetry = latest_telemetry if latest_telemetry
   end
 end

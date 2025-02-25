@@ -10,8 +10,10 @@
 <% elsif @recent_trips.none? %>
   <%= render "waiting_for_trips" %>
   <%= render "fleet_stats" %>
+  <%= render "recent_achievements" %>
 <% else %>
   <%= render "fleet_stats" %>
   <%= render "trip_stats" %>
+  <%= render "recent_achievements" %>
   <%= render "recent_trips" %>
 <% end %>

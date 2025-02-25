@@ -19,6 +19,11 @@ Rails.application.routes.draw do
           patch :update
         end
       end
+      resources :achievements, only: [ :index, :create, :destroy ], controller: "user_achievements" do
+        collection do
+          patch :update
+        end
+      end
     end
     resources :scooters do
       resources :telemetries, only: [ :index, :show ]
