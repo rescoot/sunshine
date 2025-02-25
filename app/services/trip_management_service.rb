@@ -10,9 +10,11 @@ class TripManagementService
   def start_trip
     return if current_trip
 
+    current_time = Time.current
+
     @scooter.trips.create!(
-      user: @scooter.owner,
-      started_at: Time.current,
+      user: @scooter.determine_trip_user(current_time),
+      started_at: current_time,
       start_lat: @scooter.lat,
       start_lng: @scooter.lng,
       start_odometer: @scooter.odometer

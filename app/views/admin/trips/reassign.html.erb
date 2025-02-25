@@ -1,0 +1,63 @@
+<div>
+  <div class="sm:flex sm:items-center justify-between">
+    <div class="sm:flex-auto">
+      <h1 class="text-2xl font-semibold leading-6 text-gray-900">Reassign Trip</h1>
+      <p class="mt-2 text-sm text-gray-700">
+        Trip #<%= @trip.id %> - <%= @trip.started_at.strftime("%B %d, %Y") %> with <%= @trip.scooter.name %>
+      </p>
+    </div>
+    <div class="mt-4 sm:mt-0 flex items-center gap-4">
+      <%= link_to "Show", admin_trip_path(@trip), class: "btn-secondary" %>
+      <%= link_to "Back to Trips", admin_trips_path, class: "btn-secondary" %>
+    </div>
+  </div>
+
+  <div class="mt-8">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="text-base font-semibold leading-6 text-gray-900">
+          Reassign Trip to Another User
+        </h3>
+        <p class="mt-1 text-sm text-gray-500">
+          Select a user who has access to this scooter to reassign the trip.
+        </p>
+      </div>
+      <div class="border-t border-gray-200 p-6">
+        <%= form_with(model: [:admin, @trip], url: reassign_admin_trip_path(@trip), method: :post, class: "space-y-6") do |form| %>
+          <% if flash[:alert] %>
+            <div class="bg-red-50 p-4 rounded-md">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <h3 class="text-sm font-medium text-red-800">
+                    Error
+                  </h3>
+                  <div class="mt-2 text-sm text-red-700">
+                    <%= flash[:alert] %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+            <div class="sm:col-span-6">
+              <%= form.label :user_id, "Select User", class: "block text-sm font-medium text-gray-700" %>
+              <div class="mt-1">
+                <%= form.collection_select :user_id, @users, :id, :email, { selected: @trip.user_id }, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end">
+            <%= form.submit "Reassign Trip", class: "btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

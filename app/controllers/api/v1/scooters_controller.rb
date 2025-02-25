@@ -53,7 +53,7 @@ class Api::V1::ScootersController < Api::BaseController
   end
 
   def unlock
-    result = ScooterCommandService.new(@current_scooter).send_command("unlock")
+    result = ScooterCommandService.new(@current_scooter, current_user).send_command("unlock")
     command_response(result)
   end
 

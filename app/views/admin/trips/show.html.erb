@@ -8,6 +8,7 @@
     </div>
     <div class="mt-4 sm:mt-0 flex items-center gap-4">
       <%= link_to t('admin.trips.show.edit'), edit_admin_trip_path(@trip), class: "btn-secondary" %>
+      <%= link_to t('admin.trips.show.reassign'), reassign_admin_trip_path(@trip), class: "btn-secondary" %>
       <%= link_to t('admin.trips.show.back_to_trips'), admin_trips_path, class: "btn-secondary" %>
     </div>
   </div>

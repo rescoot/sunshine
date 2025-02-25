@@ -186,9 +186,12 @@ namespace :trips do
         end
       end
 
+      # Determine the trip user based on the start time
+      user = scooter.determine_trip_user(start_telemetry.created_at)
+
       # Create the trip
       trip = scooter.trips.create!(
-        user: scooter.owner,
+        user: user,
         started_at: start_telemetry.created_at,
         start_lat: start_lat,
         start_lng: start_lng,

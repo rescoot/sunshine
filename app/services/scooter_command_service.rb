@@ -3,8 +3,9 @@ class ScooterCommandService
   COMMAND_TIMEOUT = 5.seconds
   VALID_REDIS_COMMANDS = %w[get set hget hset hgetall lpush lpop].freeze
 
-  def initialize(scooter)
+  def initialize(scooter, user = nil)
     @scooter = scooter
+    @user = user
   end
 
   def send_command(command, **params)
@@ -21,6 +22,24 @@ class ScooterCommandService
     # Validate redis commands
     if command == "redis"
       return Result.new(false, "Invalid Redis command") unless valid_redis_command?(params[:cmd])
+    end
+
+    # Record the command in the database if a user is provided
+    if @user
+      ScooterCommand.create!(
+        scooter: @scooter,
+        user: @user,
+        command: command,
+        params: params
+      )
+
+      # If this is an unlock command, also update the scooter's last_unlock_user
+      if command == "unlock"
+        @scooter.update(
+          last_unlock_user: @user,
+          last_unlocked_at: Time.current
+        )
+      end
     end
 
     if publish_mqtt(command_data)

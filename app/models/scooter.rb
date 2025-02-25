@@ -8,7 +8,9 @@ class Scooter < ApplicationRecord
   has_many :trips, dependent: :destroy
   has_many :scooter_events
   has_many :telemetries
+  has_many :scooter_commands, dependent: :destroy
   has_one :api_token, dependent: :destroy
+  belongs_to :last_unlock_user, class_name: "User", optional: true
 
   has_many :raw_messages, foreign_key: :imei, primary_key: :imei
   validates :imei, uniqueness: true, allow_nil: true
@@ -47,6 +49,31 @@ class Scooter < ApplicationRecord
 
   def has_token?
     !api_token.nil?
+  end
+
+  def determine_trip_user(timestamp = nil)
+    # If a timestamp is provided, find the most recent unlock command before that timestamp
+    # Otherwise, use the current time
+    time_limit = timestamp || Time.current
+
+    # Find the most recent unlock command within the last 30 minutes
+    last_unlock_command = scooter_commands
+      .where(command: "unlock")
+      .where("created_at <= ?", time_limit)
+      .where("created_at >= ?", time_limit - 30.minutes)
+      .order(created_at: :desc)
+      .first
+
+    if last_unlock_command
+      # Use the user who sent the unlock command
+      last_unlock_command.user
+    elsif last_unlock_user_id && last_unlocked_at && last_unlocked_at >= time_limit - 30.minutes
+      # Fall back to the last_unlock_user if available (for backward compatibility)
+      last_unlock_user
+    else
+      # Otherwise fall back to the owner
+      owner
+    end
   end
 
   def generate_config_with_token(token)

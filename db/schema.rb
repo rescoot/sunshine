@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_27_003002) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_25_203655) do
   create_table "achievement_definitions", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
@@ -91,6 +91,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_27_003002) do
     t.index ["scooter_id"], name: "index_raw_messages_on_scooter_id"
   end
 
+  create_table "scooter_commands", force: :cascade do |t|
+    t.integer "scooter_id", null: false
+    t.integer "user_id", null: false
+    t.string "command"
+    t.json "params", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["scooter_id"], name: "index_scooter_commands_on_scooter_id"
+    t.index ["user_id"], name: "index_scooter_commands_on_user_id"
+  end
+
   create_table "scooter_events", force: :cascade do |t|
     t.integer "scooter_id", null: false
     t.integer "event_type", null: false
@@ -125,9 +136,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_27_003002) do
     t.boolean "is_online", default: false, null: false
     t.string "ble_mac"
     t.json "device_ids"
+    t.integer "last_unlock_user_id"
+    t.datetime "last_unlocked_at"
     t.index ["imei"], name: "index_scooters_on_imei", unique: true
     t.index ["is_online"], name: "index_scooters_on_is_online"
     t.index ["last_seen_at"], name: "index_scooters_on_last_seen_at"
+    t.index ["last_unlock_user_id"], name: "index_scooters_on_last_unlock_user_id"
     t.index ["lat", "lng"], name: "index_scooters_on_coordinates", where: "lat IS NOT NULL AND lng IS NOT NULL"
     t.index ["vin"], name: "index_scooters_on_vin", unique: true
   end
@@ -391,7 +405,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_27_003002) do
   add_foreign_key "api_tokens", "scooters"
   add_foreign_key "api_tokens", "users"
   add_foreign_key "raw_messages", "scooters"
+  add_foreign_key "scooter_commands", "scooters"
+  add_foreign_key "scooter_commands", "users"
   add_foreign_key "scooter_events", "scooters"
+  add_foreign_key "scooters", "users", column: "last_unlock_user_id"
   add_foreign_key "telemetries", "scooters"
   add_foreign_key "trip_segments", "telemetries", column: "end_telemetry_id"
   add_foreign_key "trip_segments", "telemetries", column: "start_telemetry_id"

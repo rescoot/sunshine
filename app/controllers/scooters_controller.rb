@@ -86,7 +86,7 @@ class ScootersController < ApplicationController
   end
 
   def unlock
-    result = ScooterCommandService.new(@scooter).send_command("unlock")
+    result = ScooterCommandService.new(@scooter, current_user).send_command("unlock")
     handle_command_result(result, "Unlock command")
   end
 

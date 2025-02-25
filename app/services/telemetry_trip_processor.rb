@@ -120,9 +120,8 @@ class TelemetryTripProcessor
   end
 
   def determine_trip_user
-    # Try to find the user who sent the most recent unlock command
-    # For now, fallback to the scooter's owner
-    # TODO: Enhance this to check for unlock commands
-    @scooter.owner
+    # Use the scooter's method to determine the trip user
+    # Pass the telemetry timestamp to find the most recent unlock command
+    @scooter.determine_trip_user(@telemetry.created_at)
   end
 end

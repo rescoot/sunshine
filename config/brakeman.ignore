@@ -71,6 +71,29 @@
     {
       "warning_type": "SQL Injection",
       "warning_code": 0,
+      "fingerprint": "c3c23d24ddea8c3db63182413c8cd7641b8e7c1e81626198874d74793365508f",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/controllers/admin/trips_controller.rb",
+      "line": 78,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "Trip.find(params[:id]).scooter.users.exists?(params[:trip][:user_id])",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::TripsController",
+        "method": "reassign"
+      },
+      "user_input": "params[:trip][:user_id]",
+      "confidence": "High",
+      "cwe_id": [
+        89
+      ],
+      "note": "Admin"
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
       "fingerprint": "c8a84caa41b786474941f386f864f3daa447a19851192aa3b114cb1a6a67e1e8",
       "check_name": "SQL",
       "message": "Possible SQL injection",

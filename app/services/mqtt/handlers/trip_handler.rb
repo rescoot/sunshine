@@ -18,10 +18,12 @@ module Mqtt
       private
 
       def handle_trip_start(scooter, data)
+        current_time = Time.current
+
         Trip.create!(
           scooter: scooter,
-          user: scooter.owner,
-          started_at: Time.current,
+          user: scooter.determine_trip_user(current_time),
+          started_at: current_time,
           start_lat: data["lat"],
           start_lng: data["lng"]
         )

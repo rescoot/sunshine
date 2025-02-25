@@ -68,6 +68,23 @@ class Admin::TripsController < Admin::ApplicationController
     redirect_to admin_trips_path, notice: "Trip was successfully destroyed."
   end
 
+  def reassign
+    @trip = Trip.find(params[:id])
+    @scooter = @trip.scooter
+    @users = @scooter.users
+
+    if request.post?
+      new_user_id = params[:trip][:user_id]
+      if @users.exists?(new_user_id)
+        @trip.update!(user_id: new_user_id)
+        redirect_to admin_trip_path(@trip), notice: "Trip was successfully reassigned."
+      else
+        flash.now[:alert] = "Selected user does not have access to this scooter."
+        render :reassign
+      end
+    end
+  end
+
   private
 
   def set_trip
