@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_25_003929) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_25_125758) do
   create_table "achievement_definitions", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
@@ -229,6 +229,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_003929) do
     t.index ["scooter_id"], name: "index_telemetries_on_scooter_id"
   end
 
+  create_table "trip_segments", force: :cascade do |t|
+    t.integer "trip_id", null: false
+    t.integer "start_telemetry_id", null: false
+    t.integer "end_telemetry_id", null: false
+    t.float "start_lat"
+    t.float "start_lng"
+    t.float "end_lat"
+    t.float "end_lng"
+    t.integer "distance"
+    t.integer "segment_order"
+    t.string "segment_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "speed"
+    t.index ["end_telemetry_id"], name: "index_trip_segments_on_end_telemetry_id"
+    t.index ["start_telemetry_id"], name: "index_trip_segments_on_start_telemetry_id"
+    t.index ["trip_id", "segment_order"], name: "index_trip_segments_on_trip_id_and_segment_order"
+    t.index ["trip_id"], name: "index_trip_segments_on_trip_id"
+  end
+
   create_table "trips", force: :cascade do |t|
     t.integer "scooter_id", null: false
     t.integer "user_id", null: false
@@ -246,6 +266,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_003929) do
     t.integer "end_odometer"
     t.integer "start_telemetry_id"
     t.integer "end_telemetry_id"
+    t.integer "start_gps_distance", default: 0
+    t.integer "end_gps_distance", default: 0
     t.index ["end_telemetry_id"], name: "index_trips_on_end_telemetry_id"
     t.index ["ended_at"], name: "index_trips_on_ended_at"
     t.index ["scooter_id", "distance"], name: "index_trips_on_scooter_id_and_distance"
@@ -355,6 +377,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_003929) do
   add_foreign_key "raw_messages", "scooters"
   add_foreign_key "scooter_events", "scooters"
   add_foreign_key "telemetries", "scooters"
+  add_foreign_key "trip_segments", "telemetries", column: "end_telemetry_id"
+  add_foreign_key "trip_segments", "telemetries", column: "start_telemetry_id"
+  add_foreign_key "trip_segments", "trips"
   add_foreign_key "trips", "scooters"
   add_foreign_key "trips", "telemetries", column: "end_telemetry_id"
   add_foreign_key "trips", "telemetries", column: "start_telemetry_id"

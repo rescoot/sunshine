@@ -69,7 +69,7 @@
               <% unless @scooter %>
                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooter</th>
               <% end %>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">State</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">State / Trip Detection</th>
               <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Speed</th>
               <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
               <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Batteries</th>
@@ -92,15 +92,33 @@
                   </td>
                 <% end %>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <span class="inline-flex items-center rounded-md 
-                    <%= case telemetry.state
-                        when 'ready-to-drive' then 'bg-green-50 text-green-700 ring-green-600/20'
-                        when 'hibernating' then 'bg-red-50 text-red-700 ring-red-600/20'
-                        else 'bg-gray-50 text-gray-600 ring-gray-500/10'
-                        end %> 
-                    px-2 py-1 text-xs font-medium ring-1 ring-inset">
-                    <%= telemetry.state&.titleize %>
-                  </span>
+                  <div class="flex flex-col space-y-1">
+                    <span class="inline-flex items-center rounded-md 
+                      <%= case telemetry.state
+                          when 'ready-to-drive' then 'bg-green-50 text-green-700 ring-green-600/20'
+                          when 'hibernating' then 'bg-red-50 text-red-700 ring-red-600/20'
+                          else 'bg-gray-50 text-gray-600 ring-gray-500/10'
+                          end %> 
+                      px-2 py-1 text-xs font-medium ring-1 ring-inset">
+                      <%= telemetry.state&.titleize %>
+                    </span>
+                    
+                    <% if @scooter && telemetry.respond_to?(:would_start_trip?) %>
+                      <div class="flex space-x-1">
+                        <% if telemetry.would_start_trip? %>
+                          <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20">
+                            Trip Start
+                          </span>
+                        <% end %>
+                        
+                        <% if telemetry.would_end_trip? %>
+                          <span class="inline-flex items-center rounded-md bg-orange-50 px-2 py-1 text-xs font-medium text-orange-700 ring-1 ring-inset ring-orange-600/20">
+                            Trip End
+                          </span>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </div>
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   <%= number_with_precision(telemetry.speed, precision: 1) %> km/h

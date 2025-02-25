@@ -16,3 +16,7 @@ production:
     command: "Rails.cache.cleanup"
     priority: 1
     schedule: every 6 hours
+  trip_finalization:
+    class: TripFinalizationJob
+    queue: background
+    schedule: every 5 minutes

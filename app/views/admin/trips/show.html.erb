@@ -3,38 +3,12 @@
     <div class="sm:flex-auto">
       <h1 class="text-2xl font-semibold leading-6 text-gray-900">Trip Details</h1>
       <p class="mt-2 text-sm text-gray-700">
-        <%= @trip.started_at.strftime("%B %d, %Y") %> with <%= @trip.scooter.name %>
+        Trip #<%= @trip.id %> - <%= @trip.started_at.strftime("%B %d, %Y") %> with <%= @trip.scooter.name %>
       </p>
     </div>
     <div class="mt-4 sm:mt-0 flex items-center gap-4">
-      <div class="flex items-center gap-2">
-        <% prev_trip = @trip.previous_trip %>
-        <%= link_to(
-          trip_path(prev_trip || @trip),
-          class: "inline-flex items-center gap-x-1.5 #{prev_trip ? 'btn-secondary' : 'btn-secondary opacity-50 cursor-not-allowed'}",
-          disabled: prev_trip.nil?
-        ) do %>
-          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
-          </svg>
-          Previous Trip
-        <% end %>
-
-        <% next_trip = @trip.next_trip %>
-        <%= link_to(
-          trip_path(next_trip || @trip),
-          class: "inline-flex items-center gap-x-1.5 #{next_trip ? 'btn-secondary' : 'btn-secondary opacity-50 cursor-not-allowed'}",
-          disabled: next_trip.nil?
-        ) do %>
-          Next Trip
-          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
-          </svg>
-        <% end %>
-      </div>
-
-      <%= link_to "Back to Trips", trips_path, 
-          class: "btn-secondary" %>
+      <%= link_to "Edit", edit_admin_trip_path(@trip), class: "btn-secondary" %>
+      <%= link_to "Back to Trips", admin_trips_path, class: "btn-secondary" %>
     </div>
   </div>
 
@@ -72,7 +46,7 @@
       <div class="p-6">
         <dt class="text-sm font-medium text-gray-500 truncate">Duration</dt>
         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-          <%= format_trip_duration(@trip) %>
+          <%= @trip.duration ? "#{(@trip.duration / 60).round} min" : "In Progress" %>
         </dd>
       </div>
     </div>
@@ -81,7 +55,7 @@
       <div class="p-6">
         <dt class="text-sm font-medium text-gray-500 truncate">Distance</dt>
         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-          <%= format_trip_distance(@trip) %>
+          <%= number_with_precision(@trip.distance.to_f / 1000, precision: 2) %> km
         </dd>
       </div>
     </div>
@@ -90,7 +64,7 @@
       <div class="p-6">
         <dt class="text-sm font-medium text-gray-500 truncate">Average Speed</dt>
         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-          <%= format_trip_speed(@trip) %>
+          <%= number_with_precision(@trip.avg_speed, precision: 1) %> km/h
         </dd>
       </div>
     </div>
@@ -99,7 +73,15 @@
       <div class="p-6">
         <dt class="text-sm font-medium text-gray-500 truncate">Status</dt>
         <dd class="mt-1">
-          <%= trip_status_badge(@trip) %>
+          <% if @trip.ended_at.nil? %>
+            <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
+              In Progress
+            </span>
+          <% else %>
+            <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+              Completed
+            </span>
+          <% end %>
         </dd>
       </div>
     </div>
@@ -116,9 +98,16 @@
       <div class="border-t border-gray-200">
         <dl>
           <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">User</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              <%= link_to @trip.user.email, admin_user_path(@trip.user), class: "text-indigo-600 hover:text-indigo-900" %>
+            </dd>
+          </div>
+
+          <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt class="text-sm font-medium text-gray-500">Scooter</dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-              <%= link_to @trip.scooter.name, scooter_path(@trip.scooter), class: "text-indigo-600 hover:text-indigo-900" %>
+              <%= link_to @trip.scooter.name, admin_scooter_path(@trip.scooter), class: "text-indigo-600 hover:text-indigo-900" %>
             </dd>
           </div>
 
@@ -139,22 +128,149 @@
           <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt class="text-sm font-medium text-gray-500">Start Location</dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-              <%= format_coordinates(@trip.start_lat, @trip.start_lng) %>
+              <% if @trip.start_lat && @trip.start_lng %>
+                <%= number_with_precision(@trip.start_lat, precision: 6) %>, <%= number_with_precision(@trip.start_lng, precision: 6) %>
+              <% else %>
+                No GPS data
+              <% end %>
             </dd>
           </div>
 
-          <% if @trip.ended_at %>
-            <div class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt class="text-sm font-medium text-gray-500">End Location</dt>
-              <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                <%= format_coordinates(@trip.end_lat, @trip.end_lng) %>
-              </dd>
-            </div>
-          <% end %>
+          <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">End Location</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              <% if @trip.end_lat && @trip.end_lng %>
+                <%= number_with_precision(@trip.end_lat, precision: 6) %>, <%= number_with_precision(@trip.end_lng, precision: 6) %>
+              <% else %>
+                No GPS data
+              <% end %>
+            </dd>
+          </div>
+
+          <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Start Odometer</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              <%= @trip.start_odometer ? "#{number_with_delimiter(@trip.start_odometer)} m" : "N/A" %>
+            </dd>
+          </div>
+
+          <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">End Odometer</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              <%= @trip.end_odometer ? "#{number_with_delimiter(@trip.end_odometer)} m" : "N/A" %>
+            </dd>
+          </div>
+
+          <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">Start GPS Distance</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              <%= @trip.start_gps_distance ? "#{number_with_delimiter(@trip.start_gps_distance)} m" : "N/A" %>
+            </dd>
+          </div>
+
+          <div class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">End GPS Distance</dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              <%= @trip.end_gps_distance ? "#{number_with_delimiter(@trip.end_gps_distance)} m" : "N/A" %>
+            </dd>
+          </div>
         </dl>
       </div>
     </div>
   </div>
+
+  <!-- Trip Segments -->
+  <% if @trip.trip_segments.any? %>
+    <div class="mt-8">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="text-base font-semibold leading-6 text-gray-900">
+            Trip Segments (<%= @trip.trip_segments.count %>)
+          </h3>
+        </div>
+        <div class="border-t border-gray-200">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Order</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Type</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Distance</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Speed</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Bearing</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Start Location</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">End Location</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <% @trip.trip_segments.ordered.each do |segment| %>
+                <tr>
+                  <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                    <%= segment.segment_order + 1 %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <span class="inline-flex items-center rounded-md 
+                      <%= case segment.segment_type
+                          when 'straight' then 'bg-blue-50 text-blue-700 ring-blue-600/20'
+                          when 'turn' then 'bg-orange-50 text-orange-700 ring-orange-600/20'
+                          when 'sharp_turn' then 'bg-amber-50 text-amber-700 ring-amber-600/20'
+                          when 'u_turn' then 'bg-red-50 text-red-700 ring-red-600/20'
+                          when 'loop' then 'bg-purple-50 text-purple-700 ring-purple-600/20'
+                          when 'winding' then 'bg-indigo-50 text-indigo-700 ring-indigo-600/20'
+                          when 'connector' then 'bg-gray-50 text-gray-600 ring-gray-500/10'
+                          else 'bg-gray-50 text-gray-600 ring-gray-500/10'
+                          end %> 
+                      px-2 py-1 text-xs font-medium ring-1 ring-inset">
+                      <%= segment.segment_type.titleize %>
+                    </span>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <%= number_with_precision(segment.distance.to_f, precision: 0) %> m
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <span class="inline-flex items-center rounded-md 
+                      <%= if segment.speed && segment.speed < 10
+                            'bg-green-50 text-green-700 ring-green-600/20'
+                          elsif segment.speed && segment.speed < 30
+                            'bg-yellow-50 text-yellow-700 ring-yellow-600/20'
+                          else
+                            'bg-red-50 text-red-700 ring-red-600/20'
+                          end %> 
+                      px-2 py-1 text-xs font-medium ring-1 ring-inset">
+                      <%= number_with_precision(segment.speed, precision: 1) || 0 %> km/h
+                    </span>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <% if segment.has_gps_coordinates? %>
+                      <% bearing = Trip.calculate_bearing(segment.start_lat, segment.start_lng, segment.end_lat, segment.end_lng).round %>
+                      <%= bearing %>° <%= ["N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"][((bearing + 22.5) % 360) / 45] %>
+                    <% else %>
+                      N/A
+                    <% end %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-mono">
+                    <% if segment.has_gps_coordinates? %>
+                      <%= number_with_precision(segment.start_lat, precision: 6) %>, 
+                      <%= number_with_precision(segment.start_lng, precision: 6) %>
+                    <% else %>
+                      No GPS data
+                    <% end %>
+                  </td>
+                  <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-mono">
+                    <% if segment.has_gps_coordinates? %>
+                      <%= number_with_precision(segment.end_lat, precision: 6) %>, 
+                      <%= number_with_precision(segment.end_lng, precision: 6) %>
+                    <% else %>
+                      No GPS data
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>
 
 <%= content_for :head do %>
@@ -163,6 +279,7 @@
      crossorigin=""/>
 <% end %>
 
+<!-- Include Leaflet directly in the body to ensure it's loaded during Turbo navigation -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
    crossorigin=""></script>
@@ -315,7 +432,7 @@ function initMap() {
         //   lineCap: 'round',
         //   lineJoin: 'round'
         // }).addTo(map);
-
+        
         // Add individual segment paths with speed-based coloring
         <% @trip.trip_segments.ordered.each_with_index do |segment, index| %>
           <% if segment.has_gps_coordinates? %>
@@ -341,12 +458,12 @@ function initMap() {
           <% end %>
         <% end %>
       <% else %>
-        // Draw a direct line between start and end with speed coloring
+        // If no segments, draw a simple line between start and end
         const tripPath = L.polyline([
           [<%= @trip.start_lat %>, <%= @trip.start_lng %>],
           [<%= @trip.end_lat %>, <%= @trip.end_lng %>]
         ], {
-          color: getSpeedColor(<%= @trip.avg_speed || 0 %>),
+          color: '#3b82f6',
           weight: 5,
           opacity: 0.8,
           lineCap: 'round',

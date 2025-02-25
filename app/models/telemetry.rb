@@ -10,6 +10,7 @@ class Telemetry < ApplicationRecord
   scope :with_battery_data, -> { where.not(battery0_level: nil) }
 
   after_create :update_scooter
+  after_create :process_trip_state
   after_commit :invalidate_cache
 
   # Helper method to create from raw telemetry data
@@ -190,5 +191,12 @@ class Telemetry < ApplicationRecord
 
   def invalidate_cache
     TelemetryCacheService.invalidate_cache_for_scooter(scooter_id)
+  end
+
+  def process_trip_state
+    TelemetryTripProcessor.new(self).process
+  rescue => e
+    Rails.logger.error "Error processing trip state for telemetry ##{id}: #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
   end
 end

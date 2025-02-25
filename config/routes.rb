@@ -36,6 +36,7 @@ Rails.application.routes.draw do
 
     resources :events, only: [ :index, :show ]
     resources :telemetries, only: [ :index, :show ]
+    resources :trips
     resources :unu_uplink_requests, only: [ :index, :show ]
   end
 
