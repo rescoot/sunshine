@@ -1,33 +1,33 @@
 <!-- Status Indicators -->
 <div class="my-6 flex flex-wrap gap-2">
   <% if scooter.vin.present? %>
-    <span id="vin-copy-message" class="hidden px-2 py-1 bg-gray-50 absolute text-xs text-green-600">Copied!</span>
+    <span id="vin-copy-message" class="hidden px-2 py-1 bg-gray-50 absolute text-xs text-green-600"><%= t('scooters.status.copied') %></span>
     <span 
       id="scooter-vin" 
       class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 cursor-pointer"
       onclick="copyToClipboard('scooter-vin', 'vin-copy-message')"
-      title="Click to copy VIN">
-      VIN: <%= scooter.vin %>
+      title="<%= t('scooters.status.click_to_copy_vin') %>">
+      <%= t('scooters.status.vin_with_value', vin: scooter.vin) %>
     </span>
   <% end %>
 
   <% if scooter.imei.present? %>
-    <span id="imei-copy-message" class="hidden absolute text-xs text-green-600">Copied!</span>
+    <span id="imei-copy-message" class="hidden absolute text-xs text-green-600"><%= t('scooters.status.copied') %></span>
     <span 
       id="scooter-imei" 
       class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 cursor-pointer"
       onclick="copyToClipboard('scooter-imei', 'imei-copy-message')"
-      title="Click to copy IMEI">
-      IMEI: <%= scooter.imei %>
+      title="<%= t('scooters.status.click_to_copy_imei') %>">
+      <%= t('scooters.status.imei_with_value', imei: scooter.imei) %>
     </span>
   <% end %>
 
   <% if scooter.is_online? %>
-    <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20" title="<%= scooter.last_seen_at %>">Online</span>
+    <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20" title="<%= scooter.last_seen_at %>"><%= t('scooters.status.online') %></span>
   <% elsif scooter.last_seen_at %>
-    <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Last seen <%= time_ago_in_words(scooter.last_seen_at) %> ago</span>
+    <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"><%= t('scooters.status.last_seen_ago', time_ago: time_ago_in_words(scooter.last_seen_at)) %></span>
   <% else %>
-    <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Offline</span>
+    <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"><%= t('scooters.status.offline') %></span>
   <% end %>
   
   <span class="inline-flex items-center rounded-md <%= scooter.unlocked? ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20' %> px-2 py-1 text-xs font-medium ring-1 ring-inset">
@@ -35,18 +35,18 @@
   </span>
 
   <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
-    Kickstand <%= scooter.kickstand&.titleize || 'unknown' %>
+    <%= t('scooters.status.kickstand_with_status', status: scooter.kickstand&.titleize || t('scooters.status.unknown')) %>
   </span>
 
   <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
-    Seatbox <%= scooter.seatbox&.titleize || 'unknown' %>
+    <%= t('scooters.status.seatbox_with_status', status: scooter.seatbox&.titleize || t('scooters.status.unknown')) %>
   </span>
 
   <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20">
     <% if scooter.estimated_range %>
-      <%= scooter.estimated_range %> km range
+      <%= t('scooters.status.range_km', range: scooter.estimated_range) %>
     <% else %>
-      Range unknown
+      <%= t('scooters.status.range_unknown') %>
     <% end %>
   </span>
 
@@ -56,26 +56,26 @@
     </span>
   <% else %>
     <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
-      Location unknown
+      <%= t('scooters.status.location_unknown') %>
     </span>
   <% end %>
 
   <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset <%= battery_status_classes(scooter.battery0_level) %>">
-    Main <%= number_to_percentage(scooter.battery0_level, precision: 0) %>
+    <%= t('scooters.status.main_battery_with_level', level: number_to_percentage(scooter.battery0_level, precision: 0)) %>
   </span>
 
   <% if scooter.battery1_level > 0.0 %>
     <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset <%= battery_status_classes(scooter.battery1_level) %>">
-      Spare <%= number_to_percentage(scooter.battery1_level, precision: 0) %>
+      <%= t('scooters.status.spare_battery_with_level', level: number_to_percentage(scooter.battery1_level, precision: 0)) %>
     </span>
   <% end %>
 
   <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset <%= battery_status_classes(scooter.cbb_battery_level) %>">
-    CBB <%= number_to_percentage(scooter.cbb_battery_level, precision: 0) %>
+    <%= t('scooters.status.cbb_with_level', level: number_to_percentage(scooter.cbb_battery_level, precision: 0)) %>
   </span>
 
   <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset <%= battery_status_classes(scooter.aux_battery_level) %>">
-    Aux <%= number_to_percentage(scooter.aux_battery_level, precision: 0) %>
+    <%= t('scooters.status.aux_with_level', level: number_to_percentage(scooter.aux_battery_level, precision: 0)) %>
   </span>
 </div>
 

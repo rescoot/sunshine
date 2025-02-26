@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get "legal-notice", to: "pages#legal_notice", as: :legal_notice
   get "security", to: "pages#security", as: :security
 
+  post "locale", to: "locales#update", as: :locale
+
   ## turns out the unu "cloud" REST API is used _only_ for activation of the scooter in the warehouse?!
   # # to reverse the unu cloud requests
   # constraints subdomain: "unu.cloud" do

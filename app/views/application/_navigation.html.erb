@@ -3,37 +3,37 @@
     <div class="flex h-16 items-center justify-between">
       <div class="flex items-center">
         <%= link_to root_path, class: "text-white text-xl font-bold" do %>
-          ☀️ Sunshine
+          <%= t('navigation.app_name') %>
         <% end %>
       </div>
 
       <div class="hidden md:flex md:items-center md:space-x-2">
         <% if user_signed_in? %>
-          <%= link_to "Dashboard", root_path, class: "nav-link nav-link-user" %>
-          <%= link_to "Scooters", scooters_path, class: "nav-link nav-link-user" %>
-          <%= link_to "Trips", trips_path, class: "nav-link nav-link-user" %>
+          <%= link_to t('navigation.dashboard'), root_path, class: "nav-link nav-link-user" %>
+          <%= link_to t('navigation.scooters'), scooters_path, class: "nav-link nav-link-user" %>
+          <%= link_to t('navigation.trips'), trips_path, class: "nav-link nav-link-user" %>
           <% if current_user.feature_enabled?(FeatureFlag::LEADERBOARDS) %>
-            <%= link_to "Leaderboard", leaderboards_path, class: "nav-link nav-link-user" %>
+            <%= link_to t('navigation.leaderboard'), leaderboards_path, class: "nav-link nav-link-user" %>
           <% end %>
           <% if current_user.feature_enabled?(FeatureFlag::ACHIEVEMENTS) %>
-            <%= link_to "Achievements", achievements_path, class: "nav-link nav-link-user" %>
+            <%= link_to t('navigation.achievements'), achievements_path, class: "nav-link nav-link-user" %>
           <% end %>
         <% end %>
 
         <div class="relative" data-controller="dropdown">
           <button data-action="click->dropdown#toggle" class="nav-link nav-link-user inline-flex items-center gap-2">
-            Tools
+            <%= t('navigation.tools') %>
             <svg data-dropdown-target="chevron" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
           </button>
           <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
-            <%= link_to "VIN Decoder", vin_decoder_path, class: "block px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100" %>
+            <%= link_to t('navigation.vin_decoder'), vin_decoder_path, class: "block px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100" %>
           </div>
         </div>
 
         <% if false && user_signed_in? && current_user.admin? %>
-          <%= link_to "Admin", admin_root_path, class: "text-gray-300 bg-red-900 hover:bg-red-800 hover:text-white rounded-md px-3 py-2 text-sm font-bold" %>
+          <%= link_to t('navigation.admin'), admin_root_path, class: "text-gray-300 bg-teal-900 hover:bg-teal-800 hover:text-white rounded-md px-3 py-2 text-sm font-bold" %>
         <% end %>
 
         <% if user_signed_in? %>
@@ -49,18 +49,38 @@
               <div class="flex flex-col items-start">
                 <span><%= current_user.name %></span>
                 <% if current_user.feature_enabled?(FeatureFlag::ACHIEVEMENTS) %>
-                  <span class="text-xs text-indigo-300"><%= AchievementService.total_points(current_user) %> points</span>
+                  <span class="text-xs text-indigo-300"><%= AchievementService.total_points(current_user) %> <%= t('navigation.points') %></span>
                 <% end %>
               </div>
               <svg data-dropdown-target="chevron" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
-              <%= link_to "Account Settings", account_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-md" %>
-              <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-b-md" %>
+              <%= link_to t('navigation.account_settings'), account_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-md" %>
+
+              <div class="border-t border-gray-100 my-1"></div>
+
+              <span class="block w-full text-left px-4 py-2 text-xs font-medium text-gray-500 mb-1"><%= t('navigation.language') %></span>
+              <div class="flex flex-col space-y-1">
+                <%= button_to locale_path, method: :post, params: { locale: "en" }, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded px-2 py-1 border-0 bg-transparent" do %>
+                  <%= t('common.english') %>
+                <% end %>
+                <%= button_to locale_path, method: :post, params: { locale: "de_DE" }, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded px-2 py-1 border-0 bg-transparent" do %>
+                  <%= t('common.german') %>
+                <% end %>
+                <% if Rails.env.development? %>
+                  <%= button_to locale_path, method: :post, params: { locale: "pirate" }, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded px-2 py-1 border-0 bg-transparent" do %>
+                    <%= t('common.pirate') %>
+                  <% end %>
+                <% end %>
+              </div>
+
+              <div class="border-t border-gray-100 my-1"></div>
+
+              <%= button_to t('navigation.sign_out'), destroy_user_session_path, method: :delete, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-b-md" %>
             </div>
           </div>
         <% else %>
-          <%= link_to "Sign in / Register", new_user_session_path, class: "nav-link nav-link-user" %>
+          <%= link_to t('navigation.sign_in_register'), new_user_session_path, class: "nav-link nav-link-user" %>
         <% end %>
       </div>
 
@@ -74,27 +94,27 @@
         <div data-mobile-menu-target="menu" class="hidden absolute left-0 right-0 top-16 bg-indigo-950 shadow-lg z-50">
           <div class="px-2 pt-2 pb-3 space-y-1">
             <% if user_signed_in? %>
-              <%= link_to "Dashboard", root_path, class: "nav-link-mobile" %>
-              <%= link_to "Scooters", scooters_path, class: "nav-link-mobile" %>
-              <%= link_to "Trips", trips_path, class: "nav-link-mobile" %>
+              <%= link_to t('navigation.dashboard'), root_path, class: "nav-link-mobile" %>
+              <%= link_to t('navigation.scooters'), scooters_path, class: "nav-link-mobile" %>
+              <%= link_to t('navigation.trips'), trips_path, class: "nav-link-mobile" %>
               <% if current_user.feature_enabled?(FeatureFlag::LEADERBOARDS) %>
-                <%= link_to "Leaderboard", leaderboards_path, class: "nav-link-mobile" %>
+                <%= link_to t('navigation.leaderboard'), leaderboards_path, class: "nav-link-mobile" %>
               <% end %>
               <% if current_user.feature_enabled?(FeatureFlag::ACHIEVEMENTS) %>
-                <%= link_to "Achievements", achievements_path, class: "nav-link-mobile" %>
+                <%= link_to t('navigation.achievements'), achievements_path, class: "nav-link-mobile" %>
               <% end %>
               <div class="border-t border-gray-700 my-2"></div>
             <% end %>
 
             <div data-controller="dropdown">
               <button data-action="click->dropdown#toggle" class="nav-link-mobile w-full text-left flex items-center justify-between">
-                <span>Tools</span>
+                <span><%= t('navigation.tools') %></span>
                 <svg data-dropdown-target="chevron" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                 </svg>
               </button>
               <div data-dropdown-target="menu" class="hidden">
-                <%= link_to "VIN Decoder", vin_decoder_path, class: "nav-link-mobile" %>
+                <%= link_to t('navigation.vin_decoder'), vin_decoder_path, class: "nav-link-mobile" %>
               </div>
             </div>
 
@@ -114,7 +134,7 @@
                     <div class="flex flex-col items-start">
                       <span><%= current_user.name %></span>
                       <% if current_user.feature_enabled?(FeatureFlag::ACHIEVEMENTS) %>
-                        <span class="text-xs text-indigo-300"><%= AchievementService.total_points(current_user) %> points</span>
+                        <span class="text-xs text-indigo-300"><%= AchievementService.total_points(current_user) %> <%= t('navigation.points') %></span>
                       <% end %>
                     </div>
                   </div>
@@ -123,12 +143,26 @@
                   </svg>
                 </button>
                 <div data-dropdown-target="menu" class="hidden">
-                <%= link_to "Account Settings", account_path, class: "nav-link-mobile" %>
-                <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "nav-link-mobile w-full text-left" %>
+                  <%= link_to t('navigation.account_settings'), account_path, class: "nav-link-mobile" %>
+                  <%= button_to t('navigation.sign_out'), destroy_user_session_path, method: :delete, class: "nav-link-mobile w-full text-left" %>
+                  <div class="border-t border-gray-700 my-2"></div>
+                  <div class="flex flex-row space-x-2 mb-2">
+                    <%= button_to locale_path, method: :post, params: { locale: "en" }, class: "nav-link-mobile" do %>
+                      <%= t('common.english') %>
+                    <% end %>
+                    <%= button_to locale_path, method: :post, params: { locale: "de_DE" }, class: "nav-link-mobile" do %>
+                      <%= t('common.german') %>
+                    <% end %>
+                    <% if Rails.env.development? %>
+                      <%= button_to locale_path, method: :post, params: { locale: "pirate" }, class: "nav-link-mobile" do %>
+                        <%= t('common.pirate') %>
+                      <% end %>
+                    <% end %>
+                  </div>
                 </div>
               </div>
             <% else %>
-              <%= link_to "Sign in / Register", new_user_session_path, class: "nav-link-mobile" %>
+              <%= link_to t('navigation.sign_in_register'), new_user_session_path, class: "nav-link-mobile" %>
             <% end %>
           </div>
         </div>
@@ -137,43 +171,80 @@
   </div>
 </nav>
 <% if current_user&.is_admin? %>
-      <div data-controller="admin-navbar">
-        <nav class="nav-admin" data-admin-navbar-target="navbar">
-          <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="flex h-16 items-center justify-between">
-              <div class="flex items-center">
-                <%= link_to admin_root_path, class: "text-white font-bold text-xl" do %>
-                  🌞🧑🏼‍💻 Admin
-                <% end %>
+  <div data-controller="admin-navbar">
+    <nav class="nav-admin" data-admin-navbar-target="navbar">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
+          <div class="flex items-center">
+            <%= link_to admin_root_path, class: "text-white font-bold text-xl" do %>
+              <%= t('navigation.admin_panel') %>
+            <% end %>
+          </div>
+          <div class="hidden md:flex md:items-center md:space-x-2">
+            <%= link_to t('navigation.dashboard'), admin_root_path, class: "nav-link nav-link-admin" %>
+            <%= link_to t('navigation.users'), admin_users_path, class: "nav-link nav-link-admin" %>
+            <%= link_to t('navigation.feature_flags'), admin_feature_flags_path, class: "nav-link nav-link-admin" %>
+            <%= link_to t('navigation.scooters'), admin_scooters_path, class: "nav-link nav-link-admin" %>
+            <%= link_to t('navigation.events'), admin_events_path, class: "nav-link nav-link-admin" %>
+            <%= link_to t('navigation.trips'), admin_trips_path, class: "nav-link nav-link-admin" %>
+
+            <div class="relative" data-controller="dropdown">
+              <button data-action="click->dropdown#toggle" class="nav-link nav-link-admin inline-flex items-center gap-2">
+                <%= t('navigation.telemetry') %>
+                <svg data-dropdown-target="chevron" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+              <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                <%= link_to t('navigation.radio_gaga'), admin_telemetries_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md" %>
+                <%= link_to t('navigation.unu_uplink'), admin_unu_uplink_requests_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md" %>
               </div>
-              <div class="hidden md:flex md:items-center md:space-x-2">
-                <%= link_to "Dashboard", admin_root_path, class: "nav-link nav-link-admin" %>
-                <%= link_to "Users", admin_users_path, class: "nav-link nav-link-admin" %>
-                <%= link_to "Feature Flags", admin_feature_flags_path, class: "nav-link nav-link-admin" %>
-                <%= link_to "Scooters", admin_scooters_path, class: "nav-link nav-link-admin" %>
-                <%= link_to "Events", admin_events_path, class: "nav-link nav-link-admin" %>
-                <%= link_to "Trips", admin_trips_path, class: "nav-link nav-link-admin" %>
-                
-                <div class="relative" data-controller="dropdown">
-                  <button data-action="click->dropdown#toggle" class="nav-link nav-link-admin inline-flex items-center gap-2">
-                    Telemetry
+            </div>
+            <button data-action="admin-navbar#toggle" class="nav-link nav-link-admin ml-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="md:hidden">
+            <button data-action="click->admin-navbar#toggleMobile" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+              </svg>
+            </button>
+
+            <div data-admin-navbar-target="mobileMenu" class="hidden absolute left-0 right-0 top-32 bg-teal-950 shadow-lg z-50">
+              <div class="px-2 pt-2 pb-3 space-y-1">
+                <%= link_to t('navigation.dashboard'), admin_root_path, class: "nav-link-mobile-admin" %>
+                <%= link_to t('navigation.users'), admin_users_path, class: "nav-link-mobile-admin" %>
+                <%= link_to t('navigation.feature_flags'), admin_feature_flags_path, class: "nav-link-mobile-admin" %>
+                <%= link_to t('navigation.scooters'), admin_scooters_path, class: "nav-link-mobile-admin" %>
+                <%= link_to t('navigation.events'), admin_events_path, class: "nav-link-mobile-admin" %>
+                <%= link_to t('navigation.trips'), admin_trips_path, class: "nav-link-mobile-admin" %>
+
+                <div data-controller="dropdown">
+                  <button data-action="click->dropdown#toggle" class="nav-link-mobile-admin w-full text-left flex items-center justify-between">
+                    <span><%= t('navigation.telemetry') %></span>
                     <svg data-dropdown-target="chevron" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                   </button>
-                  <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
-                    <%= link_to "Radio Gaga", admin_telemetries_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md" %>
-                    <%= link_to "unu-uplink", admin_unu_uplink_requests_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md" %>
+                  <div data-dropdown-target="menu" class="hidden pl-4">
+                    <%= link_to t('navigation.radio_gaga'), admin_telemetries_path, class: "nav-link-mobile-admin" %>
+                    <%= link_to t('navigation.unu_uplink'), admin_unu_uplink_requests_path, class: "nav-link-mobile-admin" %>
                   </div>
                 </div>
-                <button data-action="admin-navbar#toggle" class="nav-link nav-link-admin ml-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                  </svg>
-                </button>
               </div>
+
+              <div class="border-t border-red-800 my-2"></div>
+              <button data-action="admin-navbar#toggle" class="nav-link-mobile-admin w-full text-left">
+                <%= t('navigation.hide_admin') %>
+              </button>
             </div>
           </div>
-        </nav>
+        </div>
       </div>
+    </nav>
+  </div>
 <% end %>

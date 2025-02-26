@@ -1,10 +1,10 @@
 <div class="sm:flex sm:items-center">
   <div class="sm:flex-auto">
-    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Scooters</h1>
-    <p class="mt-2 text-sm text-gray-700">A list of all scooters in the system.</p>
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= t('admin.scooters.index.title') %></h1>
+    <p class="mt-2 text-sm text-gray-700"><%= t('admin.scooters.index.description') %></p>
   </div>
   <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-    <%= link_to "Add Scooter", new_admin_scooter_path, class: "block btn-primary" %>
+    <%= link_to t('admin.scooters.index.add_scooter'), new_admin_scooter_path, class: "block btn-primary" %>
   </div>
 </div>
 
@@ -16,47 +16,47 @@
           fields: [
             {
               name: :name,
-              label: "Name",
+              label: t('admin.scooters.index.name'),
               type: :text,
-              placeholder: "Search by name..."
+              placeholder: t('admin.scooters.index.search_by_name')
             },
             {
               name: :vin,
-              label: "VIN",
+              label: t('admin.scooters.index.vin'),
               type: :text,
-              placeholder: "Search by VIN..."
+              placeholder: t('admin.scooters.index.search_by_vin')
             },
             {
               name: :imei,
-              label: "IMEI",
+              label: t('admin.scooters.index.imei'),
               type: :text,
-              placeholder: "Search by IMEI..."
+              placeholder: t('admin.scooters.index.search_by_imei')
             },
             {
               name: :color,
-              label: "Color",
+              label: t('admin.scooters.index.color'),
               type: :select,
               options: Scooter::COLOR_MAPPING.keys.map { |k| [k.titleize, k] }
             },
             {
               name: :status,
-              label: "Status",
+              label: t('admin.scooters.index.status'),
               type: :select,
-              options: [["Online", "online"], ["Offline", "offline"]]
+              options: [[t('admin.scooters.index.online'), "online"], [t('admin.scooters.index.offline'), "offline"]]
             }
           ] %>
       <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
         <table class="min-w-full divide-y divide-gray-300">
           <thead class="bg-gray-50">
             <tr>
-              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Name</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">VIN</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">IMEI</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Owner</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Last Seen</th>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"><%= t('admin.scooters.index.name') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.scooters.index.vin') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.scooters.index.imei') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.scooters.index.owner') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.scooters.index.status') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.scooters.index.last_seen') %></th>
               <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                <span class="sr-only">Actions</span>
+                <span class="sr-only"><%= t('admin.scooters.index.actions') %></span>
               </th>
             </tr>
           </thead>
@@ -76,18 +76,18 @@
                   <% if owner = scooter.owner %>
                     <%= link_to owner.name, admin_user_path(owner), class: "text-indigo-600 hover:text-indigo-900" %>
                   <% else %>
-                    <span class="text-red-600">No owner</span>
+                    <span class="text-red-600"><%= t('admin.scooters.index.no_owner') %></span>
                   <% end %>
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   <% if scooter.is_online? %>
-                    <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Online</span>
+                    <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"><%= t('admin.scooters.index.online') %></span>
                   <% else %>
-                    <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Offline</span>
+                    <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"><%= t('admin.scooters.index.offline') %></span>
                   <% end %>
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <%= scooter.last_seen_at ? time_ago_in_words(scooter.last_seen_at) + " ago" : "Never" %>
+                  <%= scooter.last_seen_at ? time_ago_in_words(scooter.last_seen_at) + " " + t('admin.scooters.index.ago') : t('admin.scooters.index.never') %>
                 </td>
                 <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                   <div class="flex items-center justify-end space-x-2">
@@ -96,7 +96,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                       </svg>
-                      View
+                      <%= t('admin.scooters.index.view') %>
                     <% end %>
                     
                     <% if scooter.is_online? %>
@@ -104,7 +104,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4 mr-1">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
-                        Shell
+                        <%= t('admin.scooters.index.shell') %>
                       <% end %>
                     <% end %>
                     
@@ -112,16 +112,16 @@
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4 mr-1">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                       </svg>
-                      Edit
+                      <%= t('admin.scooters.index.edit') %>
                     <% end %>
                     
                     <%= button_to admin_scooter_path(scooter), method: :delete,
                         class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-red-600 bg-white hover:bg-gray-50 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500",
-                        data: { turbo_confirm: "Are you sure? This will delete all associated data." } do %>
+                        data: { turbo_confirm: t('admin.scooters.index.delete_confirm') } do %>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4 mr-1">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
-                      Delete
+                      <%= t('admin.scooters.index.delete') %>
                     <% end %>
                   </div>
                 </td>

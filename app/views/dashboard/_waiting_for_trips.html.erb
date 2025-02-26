@@ -1,17 +1,17 @@
 <div class="mt-8 bg-white shadow sm:rounded-lg">
   <div class="px-4 py-5 sm:p-6">
-    <h3 class="text-base font-semibold leading-6 text-gray-900">Ready to Ride!</h3>
+    <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('dashboard.ready_to_ride') %></h3>
     <div class="mt-2 text-sm text-gray-500">
-      <p>You have <%= pluralize(@scooters.count, 'scooter') %> registered. Trips are automatically tracked when:</p>
+      <p><%= t('dashboard.scooters_registered', count: @scooters.count) %></p>
       <ul class="mt-4 list-disc space-y-2 pl-5">
-        <li>A trip starts when your scooter enters "ready-to-drive" mode</li>
-        <li>The trip ends when your scooter is parked or enters hibernation</li>
-        <li>All trip data including distance, duration, and route are logged automatically</li>
+        <li><%= t('dashboard.trip_starts') %></li>
+        <li><%= t('dashboard.trip_ends') %></li>
+        <li><%= t('dashboard.trip_data_logged') %></li>
       </ul>
     </div>
     <div class="mt-5">
       <%= link_to scooters_path, class: "text-sm font-semibold text-indigo-600 hover:text-indigo-500" do %>
-        View Your Scooters →
+        <%= t('dashboard.view_scooters') %> →
       <% end %>
     </div>
   </div>

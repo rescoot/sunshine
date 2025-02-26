@@ -1,6 +1,6 @@
 namespace :achievements do
   desc "Process achievements for a specific user"
-  task :process_for_user, [:user_id] => :environment do |t, args|
+  task :process_for_user, [ :user_id ] => :environment do |t, args|
     user_id = args[:user_id] || 1 # Default to user 1 if no ID provided
 
     puts "Processing achievements for user #{user_id}..."

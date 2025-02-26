@@ -3,12 +3,12 @@
     <h3><%= trip.scooter.name %></h3>
     <div class="trip-time">
       <p>
-        Started: <%= l trip.started_at, format: :short %>
+        <%= t('trips.start') %>: <%= l trip.started_at, format: :short %>
         <% if trip.ended_at %>
-          - Ended: <%= l trip.ended_at, format: :short %>
+          - <%= t('trips.end') %>: <%= l trip.ended_at, format: :short %>
           (<%= format_trip_duration(trip) %>)
         <% else %>
-          <span>(In Progress)</span>
+          <span>(<%= t('trips.in_progress') %>)</span>
         <% end %>
       </p>
     </div>
@@ -18,8 +18,8 @@
     <% if trip.ended_at %>
       <div>
         <% if trip.distance %>
-          <p><strong>Distance:</strong> <%= format_trip_distance(trip) %></p>
-          <p><strong>Average Speed:</strong> <%= format_trip_speed(trip) %></p>
+          <p><strong><%= t('trips.distance') %>:</strong> <%= format_trip_distance(trip) %></p>
+          <p><strong><%= t('trips.average_speed') %>:</strong> <%= format_trip_speed(trip) %></p>
         <% end %>
       </div>
     <% end %>
@@ -29,7 +29,7 @@
     <div class="trip-maps">
       <div class="map-container">
         <div class="map-start">
-          <small>Start Location</small>
+          <small><%= t('trips.start_location') %></small>
           <iframe 
             width="100%" 
             height="150" 
@@ -40,7 +40,7 @@
 
         <% if trip.end_lat && trip.end_lng && trip.ended_at %>
           <div class="map-end">
-            <small>End Location</small>
+            <small><%= t('trips.end_location') %></small>
             <iframe 
               width="100%" 
               height="150" 
@@ -53,5 +53,5 @@
     </div>
   <% end %>
   
-  <%= link_to 'View Details', trip_path(trip), class: "btn-secondary" %>
+  <%= link_to t('trips.details'), trip_path(trip), class: "btn-secondary" %>
 </div>

@@ -1,74 +1,74 @@
 <div class="sm:flex sm:items-center">
   <div class="sm:flex-auto">
-    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Trips</h1>
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= t('admin.trips.index.title') %></h1>
     <p class="mt-2 text-sm text-gray-700">
-      A list of all trips in the system.
+      <%= t('admin.trips.index.description') %>
     </p>
   </div>
   <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-    <%= link_to "New Trip", new_admin_trip_path, class: "btn-primary" %>
+    <%= link_to t('admin.trips.index.new_trip'), new_admin_trip_path, class: "btn-primary" %>
   </div>
 </div>
 
 <div class="mt-6 bg-white shadow sm:rounded-lg">
   <div class="px-4 py-5 sm:p-6">
-    <h3 class="text-base font-semibold leading-6 text-gray-900">Filter Trips</h3>
+    <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('admin.trips.index.filter_trips') %></h3>
     
     <%= form_tag admin_trips_path, method: :get, class: "mt-4 grid grid-cols-1 gap-y-4 sm:grid-cols-12 sm:gap-x-4" do %>
       <div class="sm:col-span-3">
-        <%= label_tag :user_id, "User", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :user_id, t('admin.trips.index.user'), class: "block text-sm font-medium text-gray-700" %>
         <%= select_tag :user_id, 
             options_from_collection_for_select(User.all, :id, :email, params[:user_id]),
-            { prompt: "All Users", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+            { prompt: t('admin.trips.index.all_users'), class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
       </div>
       
       <div class="sm:col-span-3">
-        <%= label_tag :scooter_id, "Scooter", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :scooter_id, t('admin.trips.index.scooter'), class: "block text-sm font-medium text-gray-700" %>
         <%= select_tag :scooter_id, 
             options_from_collection_for_select(Scooter.all, :id, :name, params[:scooter_id]),
-            { prompt: "All Scooters", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+            { prompt: t('admin.trips.index.all_scooters'), class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
       </div>
       
       <div class="sm:col-span-3">
-        <%= label_tag :start_date, "Start Date", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :start_date, t('admin.trips.index.start_date'), class: "block text-sm font-medium text-gray-700" %>
         <%= date_field_tag :start_date, params[:start_date], class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       
       <div class="sm:col-span-3">
-        <%= label_tag :end_date, "End Date", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :end_date, t('admin.trips.index.end_date'), class: "block text-sm font-medium text-gray-700" %>
         <%= date_field_tag :end_date, params[:end_date], class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       
       <div class="sm:col-span-3">
-        <%= label_tag :min_distance, "Min Distance (km)", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :min_distance, t('admin.trips.index.min_distance'), class: "block text-sm font-medium text-gray-700" %>
         <%= number_field_tag :min_distance, params[:min_distance], min: 0, step: 0.1, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       
       <div class="sm:col-span-3">
-        <%= label_tag :max_distance, "Max Distance (km)", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :max_distance, t('admin.trips.index.max_distance'), class: "block text-sm font-medium text-gray-700" %>
         <%= number_field_tag :max_distance, params[:max_distance], min: 0, step: 0.1, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       
       <div class="sm:col-span-3">
-        <%= label_tag :min_speed, "Min Avg Speed (km/h)", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :min_speed, t('admin.trips.index.min_avg_speed'), class: "block text-sm font-medium text-gray-700" %>
         <%= number_field_tag :min_speed, params[:min_speed], min: 0, step: 0.1, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       
       <div class="sm:col-span-3">
-        <%= label_tag :max_speed, "Max Avg Speed (km/h)", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :max_speed, t('admin.trips.index.max_avg_speed'), class: "block text-sm font-medium text-gray-700" %>
         <%= number_field_tag :max_speed, params[:max_speed], min: 0, step: 0.1, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       
       <div class="sm:col-span-3">
-        <%= label_tag :status, "Status", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :status, t('admin.trips.index.status'), class: "block text-sm font-medium text-gray-700" %>
         <%= select_tag :status, 
-            options_for_select([["All", ""], ["In Progress", "in_progress"], ["Completed", "completed"]], params[:status]),
+            options_for_select([[t('admin.trips.index.all'), ""], [t('admin.trips.index.in_progress'), "in_progress"], [t('admin.trips.index.completed'), "completed"]], params[:status]),
             { class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
       </div>
       
       <div class="sm:col-span-12 flex justify-end">
-        <%= submit_tag "Filter", class: "btn-primary" %>
-        <%= link_to "Clear Filters", admin_trips_path, class: "ml-3 btn-secondary" %>
+        <%= submit_tag t('admin.trips.index.filter_button'), class: "btn-primary" %>
+        <%= link_to t('admin.trips.index.clear_filters'), admin_trips_path, class: "ml-3 btn-secondary" %>
       </div>
     <% end %>
   </div>
@@ -81,14 +81,14 @@
         <table class="min-w-full divide-y divide-gray-300">
           <thead class="bg-gray-50">
             <tr>
-              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">ID</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">User</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooter</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Started At</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Ended At</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Distance</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Avg Speed</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"><%= t('admin.trips.index.id') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.trips.index.user') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.trips.index.scooter') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.trips.index.started_at') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.trips.index.ended_at') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.trips.index.distance') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.trips.index.avg_speed') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.trips.index.status') %></th>
               <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
                 <span class="sr-only">Actions</span>
               </th>
@@ -110,7 +110,7 @@
                   <%= trip.started_at.strftime("%Y-%m-%d %H:%M:%S") %>
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <%= trip.ended_at&.strftime("%Y-%m-%d %H:%M:%S") || "In Progress" %>
+                  <%= trip.ended_at&.strftime("%Y-%m-%d %H:%M:%S") || t('admin.trips.index.in_progress') %>
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   <%= number_with_precision(trip.distance.to_f / 1000, precision: 2) %> km
@@ -121,11 +121,11 @@
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   <% if trip.ended_at.nil? %>
                     <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
-                      In Progress
+                      <%= t('admin.trips.index.in_progress') %>
                     </span>
                   <% else %>
                     <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                      Completed
+                      <%= t('admin.trips.index.completed') %>
                     </span>
                   <% end %>
                 </td>
@@ -136,23 +136,23 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                       </svg>
-                      View
+                      <%= t('admin.trips.index.view') %>
                     <% end %>
                     
                     <%= link_to edit_admin_trip_path(trip), class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4 mr-1">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                       </svg>
-                      Edit
+                      <%= t('admin.trips.index.edit') %>
                     <% end %>
                     
                     <%= button_to admin_trip_path(trip), method: :delete, 
                         class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-red-600 bg-white hover:bg-gray-50 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500",
-                        form: { data: { turbo_confirm: "Are you sure you want to delete this trip?" } } do %>
+                        form: { data: { turbo_confirm: t('admin.trips.index.delete_confirm') } } do %>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4 mr-1">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
-                      Delete
+                      <%= t('admin.trips.index.delete') %>
                     <% end %>
                   </div>
                 </td>

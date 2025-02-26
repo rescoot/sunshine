@@ -2,81 +2,81 @@
   <div class="flex flex-wrap gap-6">
     <!-- Primary Commands -->
     <div class="min-w-[200px]">
-      <h4 class="text-sm font-medium text-gray-700 mb-2">Primary Commands</h4>
+      <h4 class="text-sm font-medium text-gray-700 mb-2"><%= t('scooters.primary_commands') %></h4>
       <div class="flex flex-wrap gap-2">
         <%= button_to unlock_scooter_path(scooter), class: "btn-primary green py-3 flex items-center justify-center" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M14.5 1A4.5 4.5 0 0010 5.5V9H3a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-1.5V5.5a3 3 0 116 0v2.75a.75.75 0 001.5 0V5.5A4.5 4.5 0 0014.5 1z" clip-rule="evenodd" />
           </svg>
-          Unlock & turn on
+          <%= t('scooters.unlock_turn_on') %>
         <% end %>
 
         <%= button_to lock_scooter_path(scooter), class: "btn-primary red py-3 flex items-center justify-center" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
           </svg>
-          Turn off & lock
+          <%= t('scooters.turn_off_lock') %>
         <% end %>
 
         <%= button_to open_seatbox_scooter_path(scooter), class: "btn-primary py-3 flex items-center justify-center" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
           </svg>
-          Open Seatbox
+          <%= t('scooters.open_seatbox') %>
         <% end %>
 
         <%= button_to locate_scooter_path(scooter), class: "btn-primary py-3 flex items-center justify-center" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
           </svg>
-          Find My Scooter
+          <%= t('scooters.find_my_scooter') %>
         <% end %>
       </div>
     </div>
     
     <!-- Turn Signals -->
     <div class="min-w-[200px]">
-      <h4 class="text-sm font-medium text-gray-700 mb-2">Turn Signals</h4>
+      <h4 class="text-sm font-medium text-gray-700 mb-2"><%= t('scooters.turn_signals') %></h4>
       <div class="flex flex-wrap gap-2">
         <%= button_to blinkers_scooter_path(scooter, state: "left"), class: "btn-warning py-3 flex items-center justify-center" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
           </svg>
-          Left Signal
+          <%= t('scooters.left_signal') %>
         <% end %>
         
         <%= button_to blinkers_scooter_path(scooter, state: "right"), class: "btn-warning py-3 flex items-center justify-center" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
           </svg>
-          Right Signal
+          <%= t('scooters.right_signal') %>
         <% end %>
         
         <%= button_to blinkers_scooter_path(scooter, state: "both"), class: "btn-primary red py-3 flex items-center justify-center" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
           </svg>
-          Hazard Lights
+          <%= t('scooters.hazard_lights') %>
         <% end %>
         
         <%= button_to blinkers_scooter_path(scooter, state: "off"), class: "btn-secondary py-3 flex items-center justify-center text-gray-700" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
           </svg>
-          Turn Off Signals
+          <%= t('scooters.turn_off_signals') %>
         <% end %>
       </div>
     </div>
     
     <!-- Alerts -->
     <div class="min-w-[200px]">
-      <h4 class="text-sm font-medium text-gray-700 mb-2">Alerts</h4>
+      <h4 class="text-sm font-medium text-gray-700 mb-2"><%= t('scooters.alerts') %></h4>
       <div class="flex flex-wrap gap-2">
         <%= button_to honk_scooter_path(scooter), class: "btn-secondary py-3 flex items-center justify-center" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1v-4.382l6.553 3.276A1 1 0 0018 15V3z" clip-rule="evenodd" />
           </svg>
-          Honk
+          <%= t('scooters.honk') %>
         <% end %>
 
         <%= button_to alarm_scooter_path(scooter),
@@ -84,32 +84,32 @@
             data: { 
               controller: "confirm",
               action: "confirm#confirm",
-              confirm_message_value: "Really sound alarm?"
+              confirm_message_value: t('scooters.confirm_alarm')
             } do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
           </svg>
-          Alarm (5s)
+          <%= t('scooters.alarm_5s') %>
         <% end %>
       </div>
     </div>
     
     <!-- Diagnostics -->
     <div class="min-w-[200px]">
-      <h4 class="text-sm font-medium text-gray-700 mb-2">Diagnostics</h4>
+      <h4 class="text-sm font-medium text-gray-700 mb-2"><%= t('scooters.diagnostics') %></h4>
       <div class="flex flex-wrap gap-2">
         <%= button_to ping_scooter_path(scooter), class: "btn-secondary py-3 flex items-center justify-center" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
           </svg>
-          Ping
+          <%= t('scooters.ping') %>
         <% end %>
 
         <%= button_to get_state_scooter_path(scooter), class: "btn-secondary py-3 flex items-center justify-center" do %>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
           </svg>
-          Request Telemetry
+          <%= t('scooters.request_telemetry') %>
         <% end %>
       </div>
     </div>
@@ -117,19 +117,19 @@
     <% if current_user&.admin? %>
       <!-- Admin Controls -->
       <div class="min-w-[200px]">
-        <h4 class="text-sm font-medium text-gray-700 mb-2">Admin Controls</h4>
+        <h4 class="text-sm font-medium text-gray-700 mb-2"><%= t('scooters.admin_controls') %></h4>
         <div class="flex flex-wrap gap-2">
           <%= button_to update_firmware_scooter_path(scooter), 
               class: "btn-warning py-3 flex items-center justify-center",
               data: { 
                 controller: "confirm",
                 action: "confirm#confirm",
-                confirm_message_value: "Start client update?"
+                confirm_message_value: t('scooters.confirm_update')
               } do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
             </svg>
-            Update Client
+            <%= t('scooters.update_client') %>
           <% end %>
 
           <div class="relative" data-controller="dropdown">
@@ -139,15 +139,15 @@
                 <path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z" />
                 <path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z" />
               </svg>
-              Redis Commands
+              <%= t('scooters.redis_commands') %>
             </button>
             <div data-dropdown-target="menu" class="dropdown-menu hidden">
               <div class="py-1">
                 <%= button_to redis_command_scooter_path(scooter, cmd: "hgetall", args: ["vehicle"]), class: "dropdown-item" do %>
-                  Get Vehicle Info
+                  <%= t('scooters.get_vehicle_info') %>
                 <% end %>
                 <%= button_to redis_command_scooter_path(scooter, cmd: "hgetall", args: ["system"]), class: "dropdown-item" do %>
-                  Get System Info
+                  <%= t('scooters.get_system_info') %>
                 <% end %>
               </div>
             </div>
@@ -158,15 +158,15 @@
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
               </svg>
-              Shell Commands
+              <%= t('scooters.shell_commands') %>
             </button>
             <div data-dropdown-target="menu" class="dropdown-menu hidden">
               <div class="py-1">
                 <%= button_to shell_command_scooter_path(scooter, cmd: "uptime"), class: "dropdown-item" do %>
-                  System Uptime
+                  <%= t('scooters.system_uptime') %>
                 <% end %>
                 <%= button_to shell_command_scooter_path(scooter, cmd: "systemctl status rescoot-radio-gaga"), class: "dropdown-item" do %>
-                  Service Status
+                  <%= t('scooters.service_status') %>
                 <% end %>
               </div>
             </div>

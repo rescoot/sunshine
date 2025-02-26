@@ -48,12 +48,18 @@ class User < ApplicationRecord
 
     # If the user is an admin, check if they're within the grace period
     if confirmed_at.present? && !otp_enabled?
-      grace_period = self.class.otp_mandatory_admin_grace_period || 24.hours
+      grace_period = 24.hours
       return Time.now > (confirmed_at + grace_period)
     end
 
     # If the user is an admin and outside the grace period, 2FA is mandatory
     is_admin?
+  end
+
+  # Get the user's preferred locale
+  def preferred_locale
+    return locale if locale.present?
+    I18n.default_locale
   end
 
   private

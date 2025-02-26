@@ -1,0 +1,832 @@
+---
+de_DE:
+  date:
+    formats:
+      default: "%d.%m.%Y"
+      short: "%e. %b"
+      long: "%e. %B %Y"
+    day_names: [Sonntag, Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag]
+    abbr_day_names: [So, Mo, Di, Mi, Do, Fr, Sa]
+    month_names: [~, Januar, Februar, März, April, Mai, Juni, Juli, August, September, Oktober, November, Dezember]
+    abbr_month_names: [~, Jan, Feb, Mär, Apr, Mai, Jun, Jul, Aug, Sep, Okt, Nov, Dez]
+    order:
+      - :day
+      - :month
+      - :year
+  
+  time:
+    formats:
+      time: "%H:%M"
+      date_time: "%d. %B %Y %H:%M"
+      default: "%a, %d. %b %Y %H:%M:%S %z"
+      short: "%d. %b %H:%M"
+      long: "%d. %B %Y %H:%M"
+    am: "vormittags"
+    pm: "nachmittags"
+  
+  datetime:
+    distance_in_words:
+      less_than_x_seconds:
+        one: weniger als 1 Sekunde
+        other: weniger als %{count} Sekunden
+      x_seconds:
+        one: 1 Sekunde
+        other: "%{count} Sekunden"
+      less_than_x_minutes:
+        one: weniger als eine Minute
+        other: weniger als %{count} Minuten
+      x_minutes:
+        one: 1 Minute
+        other: "%{count} Minuten"
+      about_x_hours:
+        one: etwa 1 Stunde
+        other: etwa %{count} Stunden
+      x_hours:
+        one: 1 Stunde
+        other: "%{count} Stunden"
+      x_days:
+        one: 1 Tag
+        other: "%{count} Tage"
+      about_x_months:
+        one: etwa 1 Monat
+        other: etwa %{count} Monate
+      x_months:
+        one: 1 Monat
+        other: "%{count} Monate"
+      about_x_years:
+        one: etwa 1 Jahr
+        other: etwa %{count} Jahre
+      over_x_years:
+        one: mehr als 1 Jahr
+        other: mehr als %{count} Jahre
+      almost_x_years:
+        one: fast 1 Jahr
+        other: fast %{count} Jahre
+  
+  number:
+    human:
+      storage_units:
+        format: "%n %u"
+      decimal_units:
+        format: "%n %u"
+        units:
+          unit: ''
+          thousand: k
+          million: M
+          billion: Mrd
+          trillion: T
+          quadrillion: Q
+  distance:
+    centi:
+      one: Zentimeter
+      other: Zentimeter
+    unit:
+      one: Meter
+      other: Meter
+    thousand:
+      one: Kilometer
+      other: Kilometer
+  units:
+    km: km
+    kmh: km/h
+    m: m
+    h: h
+  scooters:
+    status:
+      copied: Kopiert!
+      click_to_copy_vin: Klicken zum Kopieren der VIN
+      click_to_copy_imei: Klicken zum Kopieren der IMEI
+      vin_with_value: "VIN: %{vin}"
+      imei_with_value: "IMEI: %{imei}"
+      online: Online
+      offline: Offline
+      last_seen_ago: "Zuletzt gesehen vor %{time_ago}"
+      unknown: unbekannt
+      kickstand_with_status: "Ständer %{status}"
+      seatbox_with_status: "Sitzbox %{status}"
+      range_km: "%{range} km Reichweite"
+      range_unknown: Reichweite unbekannt
+      location_unknown: Standort unbekannt
+      main_battery_with_level: "Haupt %{level}"
+      spare_battery_with_level: "Ersatz %{level}"
+      cbb_with_level: "CBB %{level}"
+      aux_with_level: "Aux %{level}"
+    layout_status:
+      status: Status
+      online: Online
+      offline: Offline
+      state: Zustand
+      last_seen: Zuletzt gesehen
+      ago: her
+      main_battery: Hauptbatterie
+      second_battery: Zweitbatterie
+      aux_battery: Hilfsbatterie
+      cb_battery: CB-Batterie
+      kickstand: Ständer
+      seatbox: Sitzbox
+      blinkers: Blinker
+      unlock: Entsperren
+      lock: Sperren
+      left: Links
+      right: Rechts
+      both: Beide
+      off: Aus
+  time:
+    formats:
+      time: "%H:%M"
+      date_time: "%d. %B %Y %H:%M"
+  admin:
+    scooters:
+      show:
+        title: Rollerdetails
+        subtitle: "Details und Verwaltung für %{name}"
+        shell: Shell
+        edit: Bearbeiten
+        back_to_list: Zurück zur Liste
+        scooter_information: Rollerinformationen
+        last_seen: Zuletzt gesehen
+        time_ago: "vor %{time_ago}"
+        never: Nie
+        added_on: Hinzugefügt am
+        user_assignments: Benutzerzuweisungen
+        select_user: Benutzer auswählen...
+        owner_role: Besitzer
+        user_role: Benutzer
+        assign: Zuweisen
+        user_column: Benutzer
+        role_column: Rolle
+        assigned_column: Zugewiesen
+        actions: Aktionen
+        remove_confirm: Sind Sie sicher, dass Sie diesen Benutzer entfernen möchten?
+        recent_events: Neueste Ereignisse
+        view_all: Alle anzeigen
+        recent_telemetry: Neueste Telemetrie
+        time_column: Zeit
+        state_column: Zustand
+        speed_column: Geschwindigkeit
+        location_column: Standort
+        speed_value: "%{speed} km/h"
+  achievements:
+    achievement: Achievement
+    achievements: Achievements
+    are: gibt
+    description: Verfolge deinen Fortschritt und erreiche Achievements während du fährst.
+    discovered_time_ago: Vor %{time_ago} entdeckt
+    earned_time_ago: Vor %{time_ago} erreicht
+    is: gibt
+    keep_exploring: Erkunde weiter! Es %{is_are} noch %{count} geheime %{achievement_s} zu entdecken...
+    next_to_earn: Nächste zu erreichende Achievements
+    none_yet: Noch keine Achievements
+    points: Punkte
+    secret_achievements: Geheime Achievements
+    secret_waiting: Es gibt auch geheime Achievements, die darauf warten, entdeckt zu werden...
+    start_riding: Beginne mit deinem Roller zu fahren, um Achievements zu erzielen und Punkte zu sammeln!
+    what_you_can_earn: 'Hier ist, was du verdienen kannst:'
+    your_achievements: Deine Achievements
+  admin:
+    dashboard:
+      description: Überblick über Systemstatistiken und aktuelle Aktivitäten.
+      events_today: Ereignisse heute
+      recent_events: Neueste Ereignisse
+      recent_users: Neueste Benutzer
+      time_ago: vor %{time_ago}
+      title: Admin-Dashboard
+      total_scooters: Gesamtroller
+      total_trips: Gesamtfahrten
+      total_users: Gesamtbenutzer
+    events:
+      index:
+        back_to_scooter: Zurück zum Roller
+        data: Daten
+        event_type: Ereignistyp
+        from: Von
+        scooter: Roller
+        search_by_scooter: Nach Rollername suchen...
+        subtitle_all: Ereignisverlauf für alle Roller.
+        subtitle_for_scooter: Ereignisverlauf für diesen Roller.
+        time: Zeit
+        title_all: Alle Ereignisse
+        title_for_scooter: Ereignisse für %{scooter}
+        to: Bis
+        type: Typ
+        view: Ansehen
+      show:
+        title: Ereignisdetails
+        subtitle: Ereignis vom %{time}
+        back_to_events: Zurück zu Ereignissen
+        event_information: Ereignisinformationen
+        scooter: Roller
+        type: Typ
+        time: Zeit
+        event_data: Ereignisdaten
+    feature_flags:
+      index:
+        actions: Aktionen
+        default_enabled: Standard aktiviert
+        delete: Löschen
+        delete_confirm: Sind Sie sicher, dass Sie dieses Feature-Flag löschen möchten?
+        description: Feature-Flags für die Anwendung verwalten.
+        description_column: Beschreibung
+        disabled: Deaktiviert
+        edit: Bearbeiten
+        enabled: Aktiviert
+        key: Schlüssel
+        name: Name
+        new_feature_flag: Neues Feature-Flag
+        title: Feature-Flags
+        view: Ansehen
+      form:
+        error: Fehler
+        error_count: Fehler
+        prohibited_saving: verhinderte das Speichern dieses Feature-Flags
+        name: Name
+        key: Schlüssel
+        key_description: Eindeutiger Bezeichner für dieses Feature-Flag (z.B. "leaderboards", "achievements")
+        description: Beschreibung
+        default_enabled: Standardmäßig aktiviert
+        default_enabled_description: Wenn aktiviert, wird dieses Feature standardmäßig für alle Benutzer aktiviert, sofern nicht explizit deaktiviert.
+        cancel: Abbrechen
+        submit: Feature-Flag speichern
+      edit:
+        title: Feature-Flag bearbeiten
+      new:
+        title: Neues Feature-Flag
+      show:
+        title: Feature-Flag-Details
+        edit: Bearbeiten
+        back_to_list: Zurück zur Liste
+        feature_flag_information: Feature-Flag-Informationen
+        name: Name
+        key: Schlüssel
+        description: Beschreibung
+        default_status: Standardstatus
+        enabled: Aktiviert
+        disabled: Deaktiviert
+        users_with_custom_config: Benutzer mit benutzerdefinierter Konfiguration
+        user: Benutzer
+        email: E-Mail
+        status: Status
+        actions: Aktionen
+        manage: Verwalten
+        no_custom_config: Keine Benutzer haben eine benutzerdefinierte Konfiguration für dieses Feature-Flag.
+        all_users_default: Alle Benutzer verwenden die Standardkonfiguration.
+    scooters:
+      index:
+        actions: Aktionen
+        add_scooter: Roller hinzufügen
+        ago: her
+        color: Farbe
+        delete: Löschen
+        delete_confirm: Sind Sie sicher? Dies wird alle zugehörigen Daten löschen.
+        description: Eine Liste aller Roller im System.
+        edit: Bearbeiten
+        imei: IMEI
+        last_seen: Zuletzt gesehen
+        name: Name
+        never: Nie
+        no_owner: Kein Besitzer
+        offline: Offline
+        online: Online
+        owner: Besitzer
+        search_by_imei: Nach IMEI suchen...
+        search_by_name: Nach Name suchen...
+        search_by_vin: Nach VIN suchen...
+        shell: Shell
+        status: Status
+        title: Roller
+        view: Ansehen
+        vin: VIN
+    telemetries:
+      index:
+        title_for_scooter: Telemetrie für %{scooter}
+        title_all: Alle Telemetriedaten
+        subtitle_for_scooter: Telemetriedaten für diesen Roller.
+        subtitle_all: Telemetriedaten für alle Roller.
+        back_to_scooter: Zurück zum Roller
+        state: Status
+        from: Von
+        to: Bis
+        min_speed: Min. Geschwindigkeit
+        max_speed: Max. Geschwindigkeit
+        scooter: Roller
+        time: Zeit
+        speed: Geschwindigkeit
+        location: Standort
+        batteries: Batterien
+        regen: Rekuperation
+        battery0: Batterie 0
+        battery1: Batterie 1
+        view: Ansehen
+      show:
+        title: Telemetriedetails
+        subtitle: Telemetrie vom %{time}
+        back_to_telemetry: Zurück zur Telemetrie
+        basic_information: Grundlegende Informationen
+        scooter: Roller
+        state: Status
+        speed: Geschwindigkeit
+        regen: Rekuperation
+        discharge: Entladung
+        location: Standort
+        at_altitude: auf %{altitude}m Höhe
+        no_location_data: Keine Standortdaten verfügbar
+        battery_status: Batteriestatus
+        main_battery: Hauptbatterie
+        level: Ladezustand
+        cycles: Zyklen
+        temperature: Temperatur
+        health: Gesundheit
+        firmware: Firmware
+        secondary_battery: Sekundärbatterie
+        auxiliary_batteries: Hilfsbatterien
+        aux_level: Ladezustand
+        aux_voltage: Spannung
+        aux_status: Status
+        cbb_serial: CBB-Seriennummer
+        cbb_soh: CBB-Gesundheit
+        cbb_level: CBB-Ladezustand
+        cbb_current: CBB-Strom
+        cbb_status: CBB-Status
+        system_status: Systemstatus
+        firmware_versions: Firmware-Versionen
+        engine: Motor
+        environment: Umgebung
+        engine_status: Motorstatus
+        engine_state: Motorzustand
+        throttle: Gasgriff
+        connectivity: Konnektivität
+        modem: Modem
+        internet: Internet
+        cloud: Cloud
+        network: Netzwerk
+        physical_state: Physischer Zustand
+        control_states: Steuerungszustände
+    trips:
+      edit:
+        average_speed_kmh: Durchschnittsgeschwindigkeit (km/h)
+        back_to_trips: Zurück zu Fahrten
+        distance_meters: Distanz (Meter)
+        end_gps_distance: End-GPS-Distanz
+        errors_prohibited: "%{count} Fehler verhinderten das Speichern dieser Fahrt:"
+        show: Anzeigen
+        start_gps_distance: Start-GPS-Distanz
+        subtitle: 'Fahrt #%{id} - %{date} mit %{scooter}'
+        title: Fahrt bearbeiten
+        trip_information: Fahrtinformationen
+        update_trip: Fahrt aktualisieren
+      index:
+        avg_speed: Durchschnittsgeschw.
+        clear_filters: Filter zurücksetzen
+        completed: Abgeschlossen
+        delete: Löschen
+        delete_confirm: Sind Sie sicher, dass Sie diese Fahrt löschen möchten?
+        description: Eine Liste aller Fahrten im System.
+        distance: Distanz
+        edit: Bearbeiten
+        ended_at: Beendet am
+        filter_button: Filtern
+        filter_trips: Fahrten filtern
+        id: ID
+        in_progress: In Bearbeitung
+        new_trip: Neue Fahrt
+        scooter: Roller
+        started_at: Gestartet am
+        status: Status
+        title: Fahrten
+        user: Benutzer
+        view: Ansehen
+        all_users: Alle Benutzer
+        all_scooters: Alle Roller
+        start_date: Startdatum
+        end_date: Enddatum
+        min_distance: Min. Distanz
+        max_distance: Max. Distanz
+        min_avg_speed: Min. Durchschnittsgeschw.
+        max_avg_speed: Max. Durchschnittsgeschw.
+        all: Alle
+      new:
+        average_speed_kmh: Durchschnittsgeschwindigkeit (km/h)
+        back_to_trips: Zurück zu Fahrten
+        create_trip: Fahrt erstellen
+        description: Einen neuen Fahrtdatensatz erstellen.
+        distance_meters: Distanz (Meter)
+        end_gps_distance: End-GPS-Distanz
+        errors_prohibited: "%{count} Fehler verhinderten das Speichern dieser Fahrt:"
+        leave_blank_for_in_progress: Leer lassen für laufende Fahrten
+        start_gps_distance: Start-GPS-Distanz
+        title: Neue Fahrt
+        trip_information: Fahrtinformationen
+      show:
+        average_speed: Durchschnittsgeschwindigkeit
+        back_to_trips: Zurück zu Fahrten
+        completed: Abgeschlossen
+        detailed_information: Detaillierte Informationen
+        distance: Distanz
+        duration: Dauer
+        edit: Bearbeiten
+        end_gps_distance: End-GPS-Distanz
+        end_location: Endposition
+        end_odometer: End-Kilometerstand
+        end_time: Endzeit
+        in_progress: In Bearbeitung
+        minutes: "%{count} Min"
+        no_gps_data: Keine GPS-Daten verfügbar
+        no_gps_data_short: Keine GPS-Daten
+        no_valid_coordinates: Keine gültigen GPS-Koordinaten
+        scooter: Roller
+        sixty_kmh: 60 km/h
+        start_gps_distance: Start-GPS-Distanz
+        start_location: Startposition
+        start_odometer: Start-Kilometerstand
+        start_time: Startzeit
+        status: Status
+        subtitle: 'Fahrt #%{id} - %{date} mit %{scooter}'
+        title: Fahrtdetails
+        user: Benutzer
+        zero_kmh: 0 km/h
+    user_feature_flags:
+      index:
+        back_to_users: Zurück zu Benutzern
+        default: Standard
+        description: Beschreibung
+        disabled: Deaktiviert
+        enabled: Aktiviert
+        explicitly_disabled: Explizit deaktiviert
+        explicitly_enabled: Explizit aktiviert
+        key: Schlüssel
+        name: Name
+        save_changes: Änderungen speichern
+        title: Feature-Flags für %{name}
+        user_setting: Benutzereinstellung
+        using_default: Verwendet Standard (%{default})
+        using_default_js: Verwendet Standard (%{default})
+    users:
+      edit:
+        danger_zone: Gefahrenbereich
+        default: Standard
+        delete_button: Benutzer löschen
+        delete_confirmation: Sind Sie sicher, dass Sie diesen Benutzer löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden und entfernt alle zugehörigen Daten.
+        delete_user: Diesen Benutzer löschen
+        delete_warning: Sobald Sie einen Benutzer löschen, gibt es kein Zurück mehr. Bitte seien Sie sicher.
+        description: Beschreibung
+        disabled: Deaktiviert
+        enabled: Aktiviert
+        feature_flags: Feature-Flags
+        feature_flags_description: Feature-Flag-Einstellungen für diesen Benutzer verwalten.
+        key: Schlüssel
+        name: Name
+        save_feature_flags: Feature-Flag-Einstellungen speichern
+        subtitle: Benutzerkonto für %{name} bearbeiten.
+        title: Benutzer bearbeiten
+        user_setting: Benutzereinstellung
+      index:
+        actions: Aktionen
+        add_user: Benutzer hinzufügen
+        admin: Admin
+        admin_label: Admin
+        ago: her
+        delete: Löschen
+        delete_confirm: Sind Sie sicher, dass Sie diesen Benutzer löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden und entfernt alle zugehörigen Daten.
+        description: Eine Liste aller Benutzer im System.
+        edit: Bearbeiten
+        email: E-Mail
+        flags: Flags
+        joined: Beigetreten
+        name: Name
+        regular_user: Normaler Benutzer
+        role: Rolle
+        scooters: Roller
+        search_by_email: Nach E-Mail suchen...
+        search_by_name: Nach Name suchen...
+        status: Status
+        title: Benutzer
+        user_label: Benutzer
+        view: Ansehen
+      new:
+        description: Ein neues Benutzerkonto erstellen.
+        title: Neuer Benutzer
+      show:
+        achievements: Achievements
+        administrator: Administrator
+        back_to_list: Zurück zur Liste
+        date: Datum
+        distance: Distanz
+        duration: Dauer
+        edit_user: Benutzer bearbeiten
+        email_address: E-Mail-Adresse
+        feature_flags: Feature-Flags
+        full_name: Vollständiger Name
+        in_progress: In Bearbeitung
+        member_since: Mitglied seit
+        recent_trips: Letzte Fahrten
+        regular_user: Normaler Benutzer
+        role: Rolle
+        scooter: Roller
+        scooters_count: Roller (%{count})
+        subtitle: Detaillierte Informationen über %{name}
+        title: Benutzerdetails
+        user_information: Benutzerinformationen
+  common:
+    are_you_sure: Bist du sicher?
+    auto_detect: Automatisch erkennen
+    back: Zurück
+    copy: Kopieren
+    english: Englisch
+    german: Deutsch
+    important: Wichtig
+    language: Sprache
+    pirate: 🏴‍☠️ Pirat
+  dashboard:
+    add_first_scooter: Füge deinen ersten Roller hinzu
+    avg_speed: Durchschnittsgeschwindigkeit
+    avg_trip_distance: Durchschnittliche Fahrtdistanz
+    date: Datum
+    distance: Distanz
+    download_telemetry: Lade den Telemetrie-Client herunter und richte ihn auf deinem Roller ein
+    duration: Dauer
+    get_started: 'Beginne damit, deinen ersten Roller zu registrieren. So funktioniert''s:'
+    overview: Überblick über deine Roller und Fahrstatistiken.
+    ready_to_ride: Bereit zur Fahrt!
+    recent_trips: Letzte Fahrten
+    register_scooter: Registriere deinen Roller mit seiner VIN (zu finden auf der hinteren linken Seite des Rollerrahmens, auf einer vernieteten Plakette)
+    scooter: Roller
+    scooters_registered:
+      one: 'Du hast 1 Roller registriert. Fahrten werden automatisch erfasst, wenn:'
+      other: 'Du hast %{count} Roller registriert. Fahrten werden automatisch erfasst, wenn:'
+    start_tracking: Beginne, deine Fahrten zu verfolgen und den Status deines Rollers zu überwachen
+    status: Status
+    title: Dashboard
+    total_distance: Gesamtdistanz
+    total_trips: Gesamtfahrten
+    trip_data_logged: Alle Fahrtdaten einschließlich Distanz, Dauer und Route werden automatisch protokolliert
+    trip_ends: Die Fahrt endet, wenn dein Roller geparkt wird oder in den Ruhezustand wechselt
+    trip_starts: Eine Fahrt beginnt, wenn dein Roller in den "Fahrbereit"-Modus wechselt
+    trip_stats: Fahrtstatistiken
+    view_all: Alle anzeigen
+    view_scooters: Deine Roller anzeigen
+    welcome: Willkommen bei Sunshine!
+  devise:
+    passwords:
+      change_my_password: Mein Passwort ändern
+      change_password: Passwort ändern
+      characters_minimum: Zeichen mindestens
+      confirm_new_password: Neues Passwort bestätigen
+      forgot_password: Passwort vergessen?
+      new_password: Neues Passwort
+      send_reset_instructions: Anweisungen zum Zurücksetzen des Passworts senden
+    registrations:
+      cancel_account: Konto löschen
+      create_account: Konto erstellen
+      edit_resource: "%{resource} bearbeiten"
+      leave_blank: "(leer lassen, wenn du es nicht ändern möchtest)"
+      need_current_password: "(wir benötigen dein aktuelles Passwort, um deine Änderungen zu bestätigen)"
+      sign_up: Registrieren
+      unhappy_message: Unzufrieden mit dem Service? Du kannst dein Konto unten löschen.
+      update: Aktualisieren
+      waiting_confirmation: 'Warte auf Bestätigung für:'
+    sessions:
+      sign_in_to_account: Bei deinem Konto anmelden
+    shared:
+      already_have_account: Hast du bereits ein Konto?
+      didnt_receive_confirmation: Keine Bestätigungsanweisungen erhalten?
+      didnt_receive_unlock: Keine Entsperranweisungen erhalten?
+      dont_have_account: Hast du noch kein Konto?
+      forgot_password: Passwort vergessen?
+      sign_in: Anmelden
+      sign_in_with: Mit %{provider} anmelden
+      sign_up: Registrieren
+  footer:
+    about: Über uns
+    contact: Kontakt
+    copyright: Copyright © %{year} Starsong GmbH. Alle Rechte vorbehalten.
+    not_affiliated: Kein Bezug zur unu GmbH.
+    join_community: Tritt der unu Community bei
+    language: Sprache
+    legal_notice: Impressum
+    powered: powered
+    privacy_policy: Datenschutz
+    rescoot_project: Ein Rescoot-Projekt
+    security: Sicherheit
+  leaderboards:
+    above_average: "%{percent}% über dem Durchschnitt"
+    all_time: Gesamt
+    average: Durchschnitt
+    avg_speed: Durchschnittsgeschw.
+    back_to_leaderboard: Zurück zur Rangliste
+    be_first: Sei der Erste, der eine Fahrt abschließt und den ersten Platz belegt!
+    below_average: "%{percent}% unter dem Durchschnitt"
+    day: Tag
+    description: Vergleiche deine Fahrstatistiken mit anderen Rollerbesitzern.
+    display_name: Anzeigename
+    display_name_description: Dies ist der Name, der in der Rangliste angezeigt wird.
+    display_name_visible: Dein Anzeigename (nicht dein echter Name oder E-Mail)
+    distance: Distanz
+    distance_visible: Zurückgelegte Gesamtdistanz
+    fix_errors: 'Bitte behebe die folgenden Fehler:'
+    join: Der Rangliste beitreten
+    location_not_shared: Deine Standortdaten oder Fahrtrouten
+    max_speed: Max. Geschwindigkeit
+    max_speed_visible: Erreichte Höchstgeschwindigkeit
+    month: Monat
+    no_data: Keine Ranglistendaten für diesen Zeitraum verfügbar.
+    no_trips_in_period: Du hast in diesem Zeitraum noch keine Fahrten abgeschlossen.
+    not_shared: 'Wir teilen nicht:'
+    notifications_description: Erhalte Benachrichtigungen, wenn du neue Achievements erzielst.
+    of_riders: von %{total_users} Fahrern
+    opt_in_description: Melde dich für die Rangliste an, um deine Fahrstatistiken mit anderen Rollerbesitzern zu vergleichen.
+    opt_in_now: Jetzt anmelden
+    opt_out_anytime: Du kannst dich jederzeit von der Rangliste abmelden, indem du die Teilnahmeoption oben deaktivierst.
+    participate: An der Rangliste teilnehmen
+    personal_info_not_shared: Persönliche Informationen über dich oder deinen Roller
+    privacy_information: Datenschutzinformationen
+    rank: Rang
+    real_name_not_shared: Deinen echten Namen oder Kontaktinformationen
+    receive_notifications: Erfolgsbenachrichtigungen erhalten
+    rider: Fahrer
+    save_settings: Einstellungen speichern
+    settings: Einstellungen
+    settings_title: Ranglisten-Einstellungen
+    stats_visible: Deine Fahrstatistiken werden für andere Benutzer in der Rangliste sichtbar sein.
+    title: Rangliste
+    top_riders: Top-Fahrer
+    trips: Fahrten
+    trips_visible: Anzahl der abgeschlossenen Fahrten
+    visible_information: 'Wenn du dich für die Rangliste anmeldest, werden folgende Informationen für andere Benutzer sichtbar:'
+    week: Woche
+    you: Du
+    your_rank: Dein Rang
+    your_stats: Deine Statistiken
+  navigation:
+    account_settings: Kontoeinstellungen
+    achievements: Achievements
+    admin: Admin
+    admin_panel: "🌞🧑🏼‍💻 Admin"
+    app_name: "☀️ Sunshine"
+    dashboard: Dashboard
+    events: Ereignisse
+    feature_flags: Feature-Flags
+    hide_admin: Admin-Menü verbergen
+    language: Sprache
+    language_section: Sprache
+    leaderboard: Rangliste
+    points: Punkte
+    radio_gaga: Radio Gaga
+    scooters: Roller
+    sign_in_register: Anmelden / Registrieren
+    sign_out: Abmelden
+    telemetry: Telemetrie
+    tools: Werkzeuge
+    trips: Fahrten
+    unu_uplink: unu-uplink
+    users: Benutzer
+    vin_decoder: VIN-Decoder
+  onboarding:
+    almost_there: Fast geschafft!
+    config_copied: Konfiguration in die Zwischenablage kopiert!
+    config_file: Konfigurationsdatei (radio-gaga.yml)
+    download_config: Konfiguration herunterladen
+    go_to_dashboard: Zum Dashboard
+    scooter_registered: Dein Roller %{name} wurde registriert. Hier ist deine Konfiguration für die Telemetrie-Einrichtung.
+    token_warning: Diese Konfiguration enthält dein API-Token, das nur einmal angezeigt wird. Stelle sicher, dass du es jetzt speicherst!
+  scooters:
+    add_scooter: Roller hinzufügen
+    admin_controls: Admin-Steuerung
+    admin_shell: Admin-Shell
+    alarm_5s: Alarm (5s)
+    alerts: Alarme
+    aux_battery: Hilfsbatterie
+    back: Zurück
+    battery_status: Batteriestatus
+    cb_battery: CB-Batterie
+    config_setup: Deine Konfigurationsdatei (radio-gaga.yml) korrekt mit der richtigen VIN und dem API-Token eingerichtet ist
+    confirm_alarm: Wirklich Alarm auslösen?
+    confirm_update: Client-Update starten?
+    details_and_controls: Rollerdetails und -steuerung.
+    diagnostics: Diagnose
+    download_config: Du kannst bei Bedarf eine neue Konfiguration herunterladen.
+    edit: Bearbeiten
+    find_my_scooter: Meinen Roller finden
+    get_system_info: Systeminfo abrufen
+    get_vehicle_info: Fahrzeuginfo abrufen
+    hazard_lights: Warnblinker
+    honk: Hupen
+    internet_connection: Dein Roller eine aktive Internetverbindung hat
+    kickstand: Ständer %{status}
+    last_known_position: 'Letzte bekannte Position: %{lat}, %{lng} (vor %{time_ago})'
+    last_seen: Zuletzt gesehen vor %{time_ago}
+    left_signal: Linker Blinker
+    live_dashboard: Live-Dashboard
+    main_battery: Hauptbatterie
+    my_scooters: Meine Roller
+    new_token: Neues Token
+    online: Online
+    open_seatbox: Sitzbox öffnen
+    ping: Ping
+    primary_commands: Hauptbefehle
+    range_km: "%{range} km Reichweite"
+    redis_commands: Redis-Befehle
+    request_telemetry: Telemetrie anfordern
+    right_signal: Rechter Blinker
+    scooter_list_description: Eine Liste aller deiner registrierten Roller und deren aktueller Status.
+    seatbox: Sitzbox %{status}
+    secondary_battery: Sekundärbatterie
+    service_status: Dienst-Status
+    shell_commands: Shell-Befehle
+    statistics: Statistiken
+    system_uptime: System-Laufzeit
+    telemetry_instructions: 'Dein Roller hat noch keine Telemetriedaten übermittelt. Bitte stelle sicher, dass:'
+    telemetry_running: Der Telemetrie-Dienst auf deinem Roller läuft
+    turn_off_lock: Ausschalten & sperren
+    turn_off_signals: Blinker ausschalten
+    turn_signals: Blinker
+    unlock_turn_on: Entsperren & einschalten
+    update_client: Client aktualisieren
+    waiting_for_telemetry: Warte auf Telemetriedaten
+  trips:
+    all: Alle
+    all_scooters: Alle Roller
+    average_speed: Durchschnittsgeschwindigkeit
+    avg_speed: Durchschnittsgeschw.
+    back_to_trips: Zurück zu Fahrten
+    clear_filters: Filter zurücksetzen
+    completed: Abgeschlossen
+    date: Datum
+    detailed_information: Detaillierte Informationen
+    details: Fahrtdetails
+    distance: Distanz
+    duration: Dauer
+    end: Ende
+    end_date: Enddatum
+    end_location: Endposition
+    end_time: Endzeit
+    filter: Filtern
+    filter_trips: Fahrten filtern
+    history: Fahrtenhistorie
+    in_progress: In Bearbeitung
+    list_description: Eine Liste aller deiner Fahrten mit Details.
+    max_avg_speed: Max. Durchschnittsgeschw. (km/h)
+    max_distance: Max. Distanz (km)
+    max_duration: Max. Dauer (min)
+    min_avg_speed: Min.
+  vin_decoder:
+    check_digit: Prüfziffer
+    decode_button: VIN dekodieren
+    description: Dekodiere die Fahrzeug-Identifikationsnummer deines Rollers.
+    enter_vin: Fahrzeug-Identifikationsnummer (VIN) eingeben
+    example: 'Beispiel: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW Motor, max. 45 km/h, Baujahr 2021'
+    example_vin: z.B. WUNU2S3A6KZ000001
+    invalid_vin_alert: Bitte gib eine gültige 17-stellige VIN ein, die mit WUN beginnt
+    manufacturing_plant: Produktionswerk (Z = Zhuhai, China)
+    motor_power: Motorleistung (2 = 2kW, 3 = 3kW, 4 = 4kW)
+    serial_number: Seriennummer
+    title: unu VIN-Decoder
+    version: Version (A = max. 25 km/h, B = max. 45 km/h)
+    vin_explanation: Eine Fahrzeug-Identifikationsnummer (VIN) ist ein eindeutiger 17-stelliger Code zur Identifizierung einzelner Kraftfahrzeuge. Bei unu-Rollern enthält die VIN Details zum Modell, Baujahr und andere spezifische Informationen.
+    vin_format_intro: 'Die VIN des unu Scooter 2.x folgt diesem Format:'
+    vin_format_title: unu Scooter 2.x VIN-Format
+    vin_requirements: Die VIN muss 17 Zeichen lang sein und mit WUN beginnen. Probiere es mit WUNU2S3A6KZ000001.
+    what_is_vin: Was ist eine VIN?
+    year_of_manufacture: Baujahr (K = 2019, L = 2020, M = 2021, usw.)
+    # Result page translations
+    results_title: VIN-Decoder Ergebnisse
+    successfully_decoded: "Erfolgreich dekodierte VIN:"
+    decode_another: Weitere VIN dekodieren
+    decoded_information: Dekodierte Informationen
+    details_meaning: Was bedeuten diese Details?
+    manufacturer: Hersteller
+    manufacturer_desc: Bestätigt, dass das Fahrzeug von unu GmbH hergestellt wurde.
+    model: Modell
+    model_desc: Identifiziert das spezifische Modell des unu-Rollers.
+    vehicle_type: Fahrzeugtyp
+    vehicle_type_desc: Gibt die technische Klassifizierung des Fahrzeugs an.
+    variant: Variante
+    variant_desc: Zeigt die Motorleistung des Rollers an.
+    version_desc: Gibt die maximale Geschwindigkeitsfähigkeit des Rollers an.
+    year: Jahr
+    year_desc: Das Modelljahr, in dem der Roller hergestellt wurde.
+    plant: Werk
+    plant_desc: Die Produktionsanlage, in der der Roller hergestellt wurde.
+    serial_number_desc: Die eindeutige Kennung für diesen speziellen Roller.
+    format_title: unu Scooter 2.x VIN-Format
+    format_description: "Die VIN des unu Scooter 2.x folgt diesem Format:"
+    position_breakdown: Positionsaufschlüsselung
+    manufacturer_code: Herstellercode (unu GmbH)
+    model_code: Modellcode (unu Scooter 2.x)
+    motor_power_variant: Motorleistungsvariante
+    speed_version: Geschwindigkeitsversion
+    possible_values: Mögliche Werte
+    motor_power_x: Motorleistung (X)
+    motor_power_2kw: 2 = 2000W (2kW)
+    motor_power_3kw: 3 = 3000W (3kW)
+    motor_power_4kw: 4 = 4000W (4kW)
+    speed_version_y: Geschwindigkeitsversion (Y)
+    speed_version_25: A = Version 25 (max. 25 km/h)
+    speed_version_45: B = Version 45 (max. 45 km/h)
+    year_z: Jahr (Z)
+    year_2017_2019: H = 2017, J = 2018, K = 2019
+    year_2020_2022: L = 2020, M = 2021, N = 2022
+    year_2023_2025: P = 2023, R = 2024, S = 2025
+    year_and_so_on: Und so weiter...
+    plant_p: Werk (P)
+    plant_zhuhai: Z = Zhuhai, China
+    result_example: 'Beispiel: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW Motor, max. 45 km/h, Baujahr 2021'

@@ -1,18 +1,18 @@
 <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
   <div class="px-4 sm:px-0">
-    <h2 class="text-base font-semibold leading-7 text-gray-900">Almost there!</h2>
-    <p class="mt-1 text-sm leading-6 text-gray-600">Your scooter <%= @scooter.name %> has been registered. Here's your configuration for telemetry setup.</p>
+    <h2 class="text-base font-semibold leading-7 text-gray-900"><%= t('onboarding.almost_there') %></h2>
+    <p class="mt-1 text-sm leading-6 text-gray-600"><%= t('onboarding.scooter_registered', name: @scooter.name) %></p>
   </div>
 
   <div class="mt-6">
     <div class="rounded-md bg-gray-50 p-4">
       <div class="mb-4">
-        <h3 class="text-sm font-medium text-gray-900">Configuration File (radio-gaga.yml)</h3>
+        <h3 class="text-sm font-medium text-gray-900"><%= t('onboarding.config_file') %></h3>
       </div>
       <div class="flex items-center justify-between">
         <pre class="text-sm text-gray-900 font-mono"><%= @config.to_yaml %></pre>
         <button onclick="copyConfig()" class="ml-4 btn-secondary text-xs">
-          Copy
+          <%= t('common.copy') %>
         </button>
       </div>
     </div>
@@ -26,9 +26,9 @@
             </svg>
           </div>
           <div class="ml-3">
-            <h3 class="text-sm font-medium text-yellow-800">Important</h3>
+            <h3 class="text-sm font-medium text-yellow-800"><%= t('common.important') %></h3>
             <div class="mt-2 text-sm text-yellow-700">
-              <p>This configuration contains your API token which will only be shown once. Make sure to save it now!</p>
+              <p><%= t('onboarding.token_warning') %></p>
             </div>
           </div>
         </div>
@@ -36,11 +36,11 @@
     </div>
 
     <div class="mt-6 flex justify-between items-center">
-      <%= link_to "Download Configuration", 
+      <%= link_to t('onboarding.download_config'), 
           download_config_scooter_api_tokens_path(@scooter, token_id: params[:token_id]), 
           data: { turbo: false },
           class: "btn-primary" %>
-      <%= link_to "Go to Dashboard", dashboard_path, class: "btn-secondary" %>
+      <%= link_to t('onboarding.go_to_dashboard'), dashboard_path, class: "btn-secondary" %>
     </div>
   </div>
 </div>
@@ -49,7 +49,7 @@
 function copyConfig() {
   const config = `<%= @config.to_yaml.gsub("\n", "\\n") %>`;
   navigator.clipboard.writeText(config).then(() => {
-    alert('Configuration copied to clipboard!');
+    alert('<%= t('onboarding.config_copied') %>');
   });
 }
 </script>

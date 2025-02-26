@@ -3,26 +3,26 @@
   <div class="sm:flex sm:items-center">
     <div class="sm:flex-auto">
       <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= @scooter.name %></h1>
-      <p class="mt-2 text-sm text-gray-700">Scooter details and controls.</p>
+      <p class="mt-2 text-sm text-gray-700"><%= t('scooters.details_and_controls') %></p>
     </div>
     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none flex flex-wrap gap-2">
       <% if current_user.admin? %>
-        <%= link_to "Admin Shell", admin_scooter_shell_path(@scooter), class: "btn-primary" %>
+        <%= link_to t('scooters.admin_shell'), admin_scooter_shell_path(@scooter), class: "btn-primary" %>
       <% end %>
       <% unless @waiting_for_telemetry %>
-        <%= link_to "New Token", 
+        <%= link_to t('scooters.new_token'), 
             show_token_management_scooter_path(@scooter),
             turbo_method: :get,
             class: "btn-primary",
             data: { turbo_stream: true } %>
         <% if current_user.feature_enabled?(FeatureFlag::STATISTICS) %>
-          <%= link_to "Statistics", 
+          <%= link_to t('scooters.statistics'), 
               ride_statistics_scooter_statistics_path(@scooter),
               class: "btn-primary" %>
         <% end %>
       <% end %>
-      <%= link_to "Edit", edit_scooter_path(@scooter), class: "btn-secondary" %>
-      <%= link_to "Back", scooters_path, class: "btn-secondary" %>
+      <%= link_to t('scooters.edit'), edit_scooter_path(@scooter), class: "btn-secondary" %>
+      <%= link_to t('scooters.back'), scooters_path, class: "btn-secondary" %>
     </div>
   </div>
 
@@ -37,15 +37,15 @@
           </svg>
         </div>
         <div class="ml-3">
-          <h3 class="text-sm font-medium text-yellow-800">Waiting for telemetry data</h3>
+          <h3 class="text-sm font-medium text-yellow-800"><%= t('scooters.waiting_for_telemetry') %></h3>
           <div class="mt-2 text-sm text-yellow-700">
-            <p>Your scooter hasn't submitted any telemetry data yet. Please ensure:</p>
+            <p><%= t('scooters.telemetry_instructions') %></p>
             <ul class="mt-2 list-disc pl-5 space-y-1">
-              <li>Your configuration file (radio-gaga.yml) is properly set up with the correct VIN and API token</li>
-              <li>The telemetry service is running on your scooter</li>
-              <li>Your scooter has an active internet connection</li>
+              <li><%= t('scooters.config_setup') %></li>
+              <li><%= t('scooters.telemetry_running') %></li>
+              <li><%= t('scooters.internet_connection') %></li>
             </ul>
-            <p class="mt-2">You can download a fresh configuration below if needed.</p>
+            <p class="mt-2"><%= t('scooters.download_config') %></p>
           </div>
         </div>
       </div>
@@ -61,7 +61,7 @@
   <% if @scooter.is_online? && !@waiting_for_telemetry && @scooter.unlocked? %>
     <div class="mt-8">
       <div class="bg-white shadow-md rounded-lg p-6">
-        <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4">Live Dashboard</h3>
+        <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4"><%= t('scooters.live_dashboard') %></h3>
         <%= render partial: "scooters/dbc", locals: { scooter: @scooter } %>
       </div>
     </div>
@@ -73,7 +73,7 @@
     <div class="mt-8">
       <div class="bg-white shadow-md rounded-lg p-6">
         <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4">
-          Last known position: <%= @scooter.location.lat %>, <%= @scooter.location.lng %> (<%= time_ago_in_words(@scooter.location.created_at) %> ago)
+          <%= t('scooters.last_known_position', lat: @scooter.location.lat, lng: @scooter.location.lng, time_ago: time_ago_in_words(@scooter.location.created_at)) %>
         </h3>
         <div id="map" class="h-96 w-full rounded-lg"></div>
       </div>
@@ -148,13 +148,13 @@
     <!-- Battery Status -->
     <div class="flex flex-col h-full">
       <div class="bg-white shadow-md rounded-lg p-6 flex-grow flex flex-col">
-        <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4">Battery Status</h3>
+        <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4"><%= t('scooters.battery_status') %></h3>
         <div class="grid grid-cols-2 gap-4 flex-grow">
           <!-- Main Battery -->
           <div class="flex items-center space-x-4">
             <%= image_tag @scooter.battery_image_path(@scooter.battery0_level), class: "w-12 h-12", alt: "Main Battery" %>
             <div>
-              <p class="text-sm font-medium text-gray-500">Main Battery</p>
+              <p class="text-sm font-medium text-gray-500"><%= t('scooters.main_battery') %></p>
               <p class="text-lg font-semibold"><%= number_to_percentage(@scooter.battery0_level, precision: 1) %></p>
             </div>
           </div>
@@ -163,7 +163,7 @@
           <div class="flex items-center space-x-4">
             <%= image_tag @scooter.battery_image_path(@scooter.battery1_level), class: "w-12 h-12", alt: "Secondary Battery" %>
             <div>
-              <p class="text-sm font-medium text-gray-500">Secondary</p>
+              <p class="text-sm font-medium text-gray-500"><%= t('scooters.secondary_battery') %></p>
               <p class="text-lg font-semibold"><%= number_to_percentage(@scooter.battery1_level, precision: 1) %></p>
             </div>
           </div>
@@ -172,7 +172,7 @@
           <div class="flex items-center space-x-4">
             <%= image_tag "battery/batt_aux.webp", class: "w-12 h-12", alt: "Aux Battery" %>
             <div>
-              <p class="text-sm font-medium text-gray-500">Aux Battery</p>
+              <p class="text-sm font-medium text-gray-500"><%= t('scooters.aux_battery') %></p>
               <p class="text-lg font-semibold"><%= number_to_percentage(@scooter.aux_battery_level, precision: 1) %></p>
             </div>
           </div>
@@ -181,7 +181,7 @@
           <div class="flex items-center space-x-4">
             <%= image_tag "battery/batt_cbb.webp", class: "w-12 h-12", alt: "CB Battery" %>
             <div>
-              <p class="text-sm font-medium text-gray-500">CB Battery</p>
+              <p class="text-sm font-medium text-gray-500"><%= t('scooters.cb_battery') %></p>
               <p class="text-lg font-semibold"><%= number_to_percentage(@scooter.cbb_battery_level, precision: 1) %></p>
             </div>
           </div>
@@ -197,8 +197,8 @@
     <!-- Recent Trips -->
     <div class="lg:col-span-3">
       <div class="flex justify-between items-center mb-4">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">Recent Trips</h3>
-        <%= link_to "View All", trips_path(scooter_id: @scooter.id), class: "text-sm text-indigo-600 hover:text-indigo-900 font-medium" %>
+        <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('dashboard.recent_trips') %></h3>
+        <%= link_to t('dashboard.view_all'), trips_path(scooter_id: @scooter.id), class: "text-sm text-indigo-600 hover:text-indigo-900 font-medium" %>
       </div>
       
       <div class="flow-root">
@@ -208,17 +208,17 @@
               <table class="min-w-full divide-y divide-gray-300">
           <thead class="bg-gray-50">
             <tr>
-              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Date</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Duration</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Distance</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"><%= t('dashboard.date') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('dashboard.duration') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('dashboard.distance') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('dashboard.status') %></th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200 bg-white">
             <% @trips.each do |trip| %>
               <tr>
                 <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">
-                  <%= link_to trip.started_at.strftime("%B %d, %Y %H:%M"), 
+                  <%= link_to l(trip.started_at, format: :date_time), 
                       trip_path(trip), class: "text-indigo-600 hover:text-indigo-900" %>
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_26_175651) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_27_003002) do
   create_table "achievement_definitions", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
@@ -365,6 +365,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_26_175651) do
     t.string "otp_persistence_seed"
     t.string "otp_session_challenge"
     t.datetime "otp_challenge_expires"
+    t.string "locale"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["otp_challenge_expires"], name: "index_users_on_otp_challenge_expires"

@@ -1,30 +1,30 @@
 <div class="mt-8">
-  <h2 class="text-base font-medium text-gray-900">Trip Stats</h2>
+  <h2 class="text-base font-medium text-gray-900"><%= t('dashboard.trip_stats') %></h2>
   <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
     <%= render partial: "application/stat_card", locals: {
       icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />',
-      title: "Total Trips",
+      title: t('dashboard.total_trips'),
       link_path: trips_path,
       value: @lifetime_stats[:total_trips]
     } %>
 
     <%= render partial: "application/stat_card", locals: {
       icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />',
-      title: "Total Distance",
+      title: t('dashboard.total_distance'),
       link_path: trips_path,
       value: format_distance(@lifetime_stats[:total_distance])
     } %>
 
     <%= render partial: "application/stat_card", locals: {
       icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />',
-      title: "Avg Trip Distance",
+      title: t('dashboard.avg_trip_distance'),
       link_path: trips_path,
       value: format_distance(@lifetime_stats[:avg_trip_distance])
     } %>
 
     <%= render partial: "application/stat_card", locals: {
       icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />',
-      title: "Avg Speed",
+      title: t('dashboard.avg_speed'),
       link_path: trips_path,
       value: format_speed(@lifetime_stats[:avg_speed])
     } %>

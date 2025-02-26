@@ -1,9 +1,9 @@
 <div class="container mx-auto px-4 py-8">
   <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold">Leaderboard Settings</h1>
+    <h1 class="text-2xl font-bold"><%= t('leaderboards.settings_title') %></h1>
     
     <div class="flex space-x-2">
-      <%= link_to "Back to Leaderboard", leaderboards_path, class: "btn-secondary" %>
+      <%= link_to t('leaderboards.back_to_leaderboard'), leaderboards_path, class: "btn-secondary" %>
     </div>
   </div>
 
@@ -11,7 +11,7 @@
     <%= form_with(model: @user_preference, url: update_settings_leaderboards_path, method: :patch) do |form| %>
       <% if @user_preference.errors.any? %>
         <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
-          <h2 class="text-lg font-medium mb-2">Please fix the following errors:</h2>
+          <h2 class="text-lg font-medium mb-2"><%= t('leaderboards.fix_errors') %></h2>
           <ul class="list-disc pl-5">
             <% @user_preference.errors.full_messages.each do |message| %>
               <li><%= message %></li>
@@ -24,58 +24,58 @@
         <div class="flex items-center">
           <%= form.check_box :leaderboard_opt_in, class: "h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500", data: { action: "change->form#toggleDisplayName" } %>
           <div class="ml-3">
-            <%= form.label :leaderboard_opt_in, "Participate in Leaderboard", class: "font-medium text-gray-700" %>
-            <p class="text-gray-500 text-sm">Your riding stats will be visible to other users on the leaderboard.</p>
+            <%= form.label :leaderboard_opt_in, t('leaderboards.participate'), class: "font-medium text-gray-700" %>
+            <p class="text-gray-500 text-sm"><%= t('leaderboards.stats_visible') %></p>
           </div>
         </div>
       </div>
 
       <div class="mb-6" id="display-name-field" data-controller="form">
-        <%= form.label :leaderboard_display_name, "Display Name", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= form.label :leaderboard_display_name, t('leaderboards.display_name'), class: "block text-sm font-medium text-gray-700 mb-1" %>
         <%= form.text_field :leaderboard_display_name, class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
-        <p class="mt-1 text-sm text-gray-500">This is the name that will be shown on the leaderboard.</p>
+        <p class="mt-1 text-sm text-gray-500"><%= t('leaderboards.display_name_description') %></p>
       </div>
 
       <div class="mb-6">
         <div class="flex items-center">
           <%= form.check_box :receive_achievement_notifications, class: "h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500" %>
           <div class="ml-3">
-            <%= form.label :receive_achievement_notifications, "Receive Achievement Notifications", class: "font-medium text-gray-700" %>
-            <p class="text-gray-500 text-sm">Get notified when you earn new achievements.</p>
+            <%= form.label :receive_achievement_notifications, t('leaderboards.receive_notifications'), class: "font-medium text-gray-700" %>
+            <p class="text-gray-500 text-sm"><%= t('leaderboards.notifications_description') %></p>
           </div>
         </div>
       </div>
 
       <div class="border-t border-gray-200 pt-6">
         <div class="flex justify-end">
-          <%= form.submit "Save Settings", class: "btn-primary" %>
+          <%= form.submit t('leaderboards.save_settings'), class: "btn-primary" %>
         </div>
       </div>
     <% end %>
   </div>
 
   <div class="bg-white rounded-lg shadow-md p-6 mt-8">
-    <h2 class="text-xl font-semibold mb-4">Privacy Information</h2>
+    <h2 class="text-xl font-semibold mb-4"><%= t('leaderboards.privacy_information') %></h2>
     
     <div class="prose max-w-none">
-      <p>When you opt in to the leaderboard, the following information will be visible to other users:</p>
+      <p><%= t('leaderboards.visible_information') %></p>
       
       <ul class="list-disc pl-5 mt-2">
-        <li>Your display name (not your real name or email)</li>
-        <li>Total distance traveled</li>
-        <li>Number of trips completed</li>
-        <li>Maximum speed achieved</li>
+        <li><%= t('leaderboards.display_name_visible') %></li>
+        <li><%= t('leaderboards.distance_visible') %></li>
+        <li><%= t('leaderboards.trips_visible') %></li>
+        <li><%= t('leaderboards.max_speed_visible') %></li>
       </ul>
       
-      <p class="mt-4">We do not share:</p>
+      <p class="mt-4"><%= t('leaderboards.not_shared') %></p>
       
       <ul class="list-disc pl-5 mt-2">
-        <li>Your real name or contact information</li>
-        <li>Your location data or trip routes</li>
-        <li>Any personal information about you or your scooter</li>
+        <li><%= t('leaderboards.real_name_not_shared') %></li>
+        <li><%= t('leaderboards.location_not_shared') %></li>
+        <li><%= t('leaderboards.personal_info_not_shared') %></li>
       </ul>
       
-      <p class="mt-4">You can opt out of the leaderboard at any time by unchecking the participation option above.</p>
+      <p class="mt-4"><%= t('leaderboards.opt_out_anytime') %></p>
     </div>
   </div>
 </div>

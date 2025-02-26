@@ -1,0 +1,96 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Format Validation",
+      "warning_code": 30,
+      "fingerprint": "4a54bf8e0ab8e90ba5316b8bfb8b7dcb7024c9fcd7404b339038a6ac7326a372",
+      "check_name": "ValidationRegex",
+      "message": "Insufficient validation for `vin` using `/\\A(WUN)/`. Use `\\A` and `\\z` as anchors",
+      "file": "app/models/vin_lookup.rb",
+      "line": 3,
+      "link": "https://brakemanscanner.org/docs/warning_types/format_validation/",
+      "code": null,
+      "render_path": null,
+      "location": {
+        "type": "model",
+        "model": "VinLookup"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "cwe_id": [
+        777
+      ],
+      "note": "We mean to only check for the beginning"
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "5c650a81b7694c8495252b4683a8424dc99d1c3561479b9c69c6e2fbe2a0a0c6",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/services/telemetry_archival_service.rb",
+      "line": 33,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"INSERT INTO telemetries_archive (#{batch.first.attributes.keys.join(\", \")}) VALUES #{batch.map do\n attributes = telemetry.attributes\n\"(#{telemetry.attributes.values.map do\n ActiveRecord::Base.connection.quote(v)\n end.join(\", \")})\"\n end.join(\", \")}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "TelemetryArchivalService",
+        "method": "s(:self).archive_old_telemetries"
+      },
+      "user_input": "batch.first.attributes.keys.join(\", \")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": "Background job with verified data"
+    },
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "9ae308d50555a80727d9d82a6f1a13e3397de55c582d343c90a814ceaded6b8c",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/admin/scooters_controller.rb",
+      "line": 99,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:user_scooter).permit(:user_id, :role)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::UserScootersController",
+        "method": "user_scooter_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": "Admin may do this"
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "c8a84caa41b786474941f386f864f3daa447a19851192aa3b114cb1a6a67e1e8",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/services/telemetry_archival_service.rb",
+      "line": 62,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"CREATE TABLE telemetries_archive (#{ActiveRecord::Base.connection.columns(\"telemetries\").map do\n type = col.sql_type\nnullable = col.null ? (\"\") : (\" NOT NULL\")\ndefault = if col.default.nil? then\n  \"\"\nelse\n  \" DEFAULT #{ActiveRecord::Base.connection.quote(col.default)}\"\nend\n\"#{col.name} #{col.sql_type}#{(\"\" or \" NOT NULL\")}#{(\"\" or \" DEFAULT #{ActiveRecord::Base.connection.quote(col.default)}\")}\"\n end.join(\", \")})\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "TelemetryArchivalService",
+        "method": "s(:self).ensure_archive_table_exists"
+      },
+      "user_input": "ActiveRecord::Base.connection.columns(\"telemetries\").map do\n type = col.sql_type\nnullable = col.null ? (\"\") : (\" NOT NULL\")\ndefault = if col.default.nil? then\n  \"\"\nelse\n  \" DEFAULT #{ActiveRecord::Base.connection.quote(col.default)}\"\nend\n\"#{col.name} #{col.sql_type}#{(\"\" or \" NOT NULL\")}#{(\"\" or \" DEFAULT #{ActiveRecord::Base.connection.quote(col.default)}\")}\"\n end.join(\", \")",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": "Job with restricted input"
+    }
+  ],
+  "brakeman_version": "7.0.0"
+}

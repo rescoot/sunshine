@@ -1,14 +1,14 @@
 <div>
   <div class="sm:flex sm:items-center justify-between">
     <div class="sm:flex-auto">
-      <h1 class="text-2xl font-semibold leading-6 text-gray-900">Trip Details</h1>
+      <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= t('admin.trips.show.title') %></h1>
       <p class="mt-2 text-sm text-gray-700">
-        Trip #<%= @trip.id %> - <%= @trip.started_at.strftime("%B %d, %Y") %> with <%= @trip.scooter.name %>
+        <%= t('admin.trips.show.subtitle', id: @trip.id, date: @trip.started_at.strftime("%B %d, %Y"), scooter: @trip.scooter.name) %>
       </p>
     </div>
     <div class="mt-4 sm:mt-0 flex items-center gap-4">
-      <%= link_to "Edit", edit_admin_trip_path(@trip), class: "btn-secondary" %>
-      <%= link_to "Back to Trips", admin_trips_path, class: "btn-secondary" %>
+      <%= link_to t('admin.trips.show.edit'), edit_admin_trip_path(@trip), class: "btn-secondary" %>
+      <%= link_to t('admin.trips.show.back_to_trips'), admin_trips_path, class: "btn-secondary" %>
     </div>
   </div>
 
@@ -21,8 +21,8 @@
         <!-- Speed Legend -->
         <div class="absolute top-4 right-4 bg-white p-2 rounded-md shadow-md z-[1000]">
           <div class="flex items-center justify-between space-x-4 mb-1">
-            <span class="text-xs">0 km/h</span>
-            <span class="text-xs">60 km/h</span>
+            <span class="text-xs"><%= t('admin.trips.show.zero_kmh') %></span>
+            <span class="text-xs"><%= t('admin.trips.show.sixty_kmh') %></span>
           </div>
           <div class="h-4 w-32 rounded-sm" style="background: linear-gradient(to right, #4a1d7d, #7a3d93, #ba4a80, #e47e7e, #f4c28f);"></div>
         </div>
@@ -33,8 +33,8 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
           </svg>
-          <h3 class="mt-2 text-sm font-medium text-gray-900">No GPS Data Available</h3>
-          <p class="mt-1 text-sm text-gray-500">This trip doesn't have valid GPS coordinates.</p>
+          <h3 class="mt-2 text-sm font-medium text-gray-900"><%= t('admin.trips.show.no_gps_data') %></h3>
+          <p class="mt-1 text-sm text-gray-500"><%= t('admin.trips.show.no_valid_coordinates') %></p>
         </div>
       </div>
     <% end %>
@@ -44,16 +44,16 @@
     <!-- Trip Stats -->
     <div class="card">
       <div class="p-6">
-        <dt class="text-sm font-medium text-gray-500 truncate">Duration</dt>
+        <dt class="text-sm font-medium text-gray-500 truncate"><%= t('admin.trips.show.duration') %></dt>
         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-          <%= @trip.duration ? "#{(@trip.duration / 60).round} min" : "In Progress" %>
+          <%= @trip.duration ? t('admin.trips.show.minutes', count: (@trip.duration / 60).round) : t('admin.trips.show.in_progress') %>
         </dd>
       </div>
     </div>
 
     <div class="card">
       <div class="p-6">
-        <dt class="text-sm font-medium text-gray-500 truncate">Distance</dt>
+        <dt class="text-sm font-medium text-gray-500 truncate"><%= t('admin.trips.show.distance') %></dt>
         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
           <%= number_with_precision(@trip.distance.to_f / 1000, precision: 2) %> km
         </dd>
@@ -62,7 +62,7 @@
 
     <div class="card">
       <div class="p-6">
-        <dt class="text-sm font-medium text-gray-500 truncate">Average Speed</dt>
+        <dt class="text-sm font-medium text-gray-500 truncate"><%= t('admin.trips.show.average_speed') %></dt>
         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
           <%= number_with_precision(@trip.avg_speed, precision: 1) %> km/h
         </dd>
@@ -71,15 +71,15 @@
 
     <div class="card">
       <div class="p-6">
-        <dt class="text-sm font-medium text-gray-500 truncate">Status</dt>
+        <dt class="text-sm font-medium text-gray-500 truncate"><%= t('admin.trips.show.status') %></dt>
         <dd class="mt-1">
           <% if @trip.ended_at.nil? %>
             <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
-              In Progress
+              <%= t('admin.trips.show.in_progress') %>
             </span>
           <% else %>
             <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-              Completed
+              <%= t('admin.trips.show.completed') %>
             </span>
           <% end %>
         </dd>
@@ -92,41 +92,41 @@
     <div class="card">
       <div class="card-header">
         <h3 class="text-base font-semibold leading-6 text-gray-900">
-          Detailed Information
+          <%= t('admin.trips.show.detailed_information') %>
         </h3>
       </div>
       <div class="border-t border-gray-200">
         <dl>
           <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">User</dt>
+            <dt class="text-sm font-medium text-gray-500"><%= t('admin.trips.show.user') %></dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
               <%= link_to @trip.user.email, admin_user_path(@trip.user), class: "text-indigo-600 hover:text-indigo-900" %>
             </dd>
           </div>
 
           <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">Scooter</dt>
+            <dt class="text-sm font-medium text-gray-500"><%= t('admin.trips.show.scooter') %></dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
               <%= link_to @trip.scooter.name, admin_scooter_path(@trip.scooter), class: "text-indigo-600 hover:text-indigo-900" %>
             </dd>
           </div>
 
           <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">Start Time</dt>
+            <dt class="text-sm font-medium text-gray-500"><%= t('admin.trips.show.start_time') %></dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
               <%= @trip.started_at.strftime("%B %d, %Y %H:%M:%S") %>
             </dd>
           </div>
 
           <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">End Time</dt>
+            <dt class="text-sm font-medium text-gray-500"><%= t('admin.trips.show.end_time') %></dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-              <%= @trip.ended_at&.strftime("%B %d, %Y %H:%M:%S") || "In Progress" %>
+              <%= @trip.ended_at&.strftime("%B %d, %Y %H:%M:%S") || t('admin.trips.show.in_progress') %>
             </dd>
           </div>
 
           <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">Start Location</dt>
+            <dt class="text-sm font-medium text-gray-500"><%= t('admin.trips.show.start_location') %></dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
               <% if @trip.start_lat && @trip.start_lng %>
                 <%= link_to "#{number_with_precision(@trip.start_lat, precision: 6)}, #{number_with_precision(@trip.start_lng, precision: 6)}", 
@@ -134,13 +134,13 @@
                     target: "_blank", 
                     class: "text-indigo-600 hover:text-indigo-900 font-mono" %>
               <% else %>
-                No GPS data
+                <%= t('admin.trips.show.no_gps_data_short') %>
               <% end %>
             </dd>
           </div>
 
           <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">End Location</dt>
+            <dt class="text-sm font-medium text-gray-500"><%= t('admin.trips.show.end_location') %></dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
               <% if @trip.end_lat && @trip.end_lng %>
                 <%= link_to "#{number_with_precision(@trip.end_lat, precision: 6)}, #{number_with_precision(@trip.end_lng, precision: 6)}", 
@@ -148,34 +148,34 @@
                     target: "_blank", 
                     class: "text-indigo-600 hover:text-indigo-900 font-mono" %>
               <% else %>
-                No GPS data
+                <%= t('admin.trips.show.no_gps_data_short') %>
               <% end %>
             </dd>
           </div>
 
           <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">Start Odometer</dt>
+            <dt class="text-sm font-medium text-gray-500"><%= t('admin.trips.show.start_odometer') %></dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
               <%= @trip.start_odometer ? "#{number_with_delimiter(@trip.start_odometer)} m" : "N/A" %>
             </dd>
           </div>
 
           <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">End Odometer</dt>
+            <dt class="text-sm font-medium text-gray-500"><%= t('admin.trips.show.end_odometer') %></dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
               <%= @trip.end_odometer ? "#{number_with_delimiter(@trip.end_odometer)} m" : "N/A" %>
             </dd>
           </div>
 
           <div class="border-b border-gray-200 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">Start GPS Distance</dt>
+            <dt class="text-sm font-medium text-gray-500"><%= t('admin.trips.show.start_gps_distance') %></dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
               <%= @trip.start_gps_distance ? "#{number_with_delimiter(@trip.start_gps_distance)} m" : "N/A" %>
             </dd>
           </div>
 
           <div class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">End GPS Distance</dt>
+            <dt class="text-sm font-medium text-gray-500"><%= t('admin.trips.show.end_gps_distance') %></dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
               <%= @trip.end_gps_distance ? "#{number_with_delimiter(@trip.end_gps_distance)} m" : "N/A" %>
             </dd>

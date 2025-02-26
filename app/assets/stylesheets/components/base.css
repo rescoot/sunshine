@@ -10,3 +10,8 @@
 }
 
 bar { display: none; }
+
+
+.translation_missing {
+  @apply bg-red-500 text-white ring-2 ring-yellow-500 shadow-sm p-2;
+}

@@ -1,10 +1,10 @@
 <div class="sm:flex sm:items-center">
   <div class="sm:flex-auto">
-    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Feature Flags for <%= @user.name %></h1>
-    <p class="mt-2 text-sm text-gray-700">Manage feature flag settings for this user.</p>
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= t('admin.user_feature_flags.index.title', name: @user.name) %></h1>
+    <p class="mt-2 text-sm text-gray-700"><%= t('admin.user_feature_flags.index.description') %></p>
   </div>
   <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-    <%= link_to "Back to Users", admin_users_path, class: "btn-secondary" %>
+    <%= link_to t('admin.user_feature_flags.index.back_to_users'), admin_users_path, class: "btn-secondary" %>
   </div>
 </div>
 
@@ -18,11 +18,11 @@
             <table class="min-w-full divide-y divide-gray-300">
               <thead class="bg-gray-50">
                 <tr>
-                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Name</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Key</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Description</th>
-                  <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Default</th>
-                  <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">User Setting</th>
+                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"><%= t('admin.user_feature_flags.index.name') %></th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.user_feature_flags.index.key') %></th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.user_feature_flags.index.description') %></th>
+                  <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900"><%= t('admin.user_feature_flags.index.default') %></th>
+                  <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900"><%= t('admin.user_feature_flags.index.user_setting') %></th>
           </tr>
         </thead>
               </thead>
@@ -34,9 +34,9 @@
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= feature_flag.description %></td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
                       <% if feature_flag.default_enabled %>
-                        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Enabled</span>
+                        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"><%= t('admin.user_feature_flags.index.enabled') %></span>
                       <% else %>
-                        <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Disabled</span>
+                        <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"><%= t('admin.user_feature_flags.index.disabled') %></span>
                       <% end %>
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
@@ -86,11 +86,11 @@
                       
                       <div class="mt-1 text-xs text-gray-500">
                         <% if current_state == "default" %>
-                          Using default (<%= feature_flag.default_enabled ? "Enabled" : "Disabled" %>)
+                          <%= t('admin.user_feature_flags.index.using_default', default: feature_flag.default_enabled ? t('admin.user_feature_flags.index.enabled') : t('admin.user_feature_flags.index.disabled')) %>
                         <% elsif current_state == "enabled" %>
-                          Explicitly enabled
+                          <%= t('admin.user_feature_flags.index.explicitly_enabled') %>
                         <% else %>
-                          Explicitly disabled
+                          <%= t('admin.user_feature_flags.index.explicitly_disabled') %>
                         <% end %>
                       </div>
                     </td>
@@ -104,7 +104,7 @@
     </div>
 
     <div class="flex justify-end mt-6">
-      <%= form.submit "Save Changes", class: "btn-primary" %>
+      <%= form.submit t('admin.user_feature_flags.index.save_changes'), class: "btn-primary" %>
     </div>
   <% end %>
 </div>
@@ -155,15 +155,15 @@
         let defaultEnabled = false;
         const defaultSpan = featureFlag.querySelector('td:nth-child(4) span');
         if (defaultSpan) {
-          defaultEnabled = defaultSpan.textContent.trim() === 'Enabled';
+          defaultEnabled = defaultSpan.textContent.trim() === '<%= t('admin.user_feature_flags.index.enabled') %>';
         }
         
         if (state === 'default') {
-          descriptionDiv.textContent = `Using default (${defaultEnabled ? 'Enabled' : 'Disabled'})`;
+          descriptionDiv.textContent = '<%= t('admin.user_feature_flags.index.using_default_js') %>'.replace('%{default}', defaultEnabled ? '<%= t('admin.user_feature_flags.index.enabled') %>' : '<%= t('admin.user_feature_flags.index.disabled') %>');
         } else if (state === 'enabled') {
-          descriptionDiv.textContent = 'Explicitly enabled';
+          descriptionDiv.textContent = '<%= t('admin.user_feature_flags.index.explicitly_enabled') %>';
         } else {
-          descriptionDiv.textContent = 'Explicitly disabled';
+          descriptionDiv.textContent = '<%= t('admin.user_feature_flags.index.explicitly_disabled') %>';
         }
       });
     });

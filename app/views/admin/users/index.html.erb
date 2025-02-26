@@ -1,10 +1,10 @@
 <div class="sm:flex sm:items-center">
   <div class="sm:flex-auto">
-    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Users</h1>
-    <p class="mt-2 text-sm text-gray-700">A list of all users in the system.</p>
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= t('admin.users.index.title') %></h1>
+    <p class="mt-2 text-sm text-gray-700"><%= t('admin.users.index.description') %></p>
   </div>
   <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-    <%= link_to "Add User", new_admin_user_path, class: "block btn-primary" %>
+    <%= link_to t('admin.users.index.add_user'), new_admin_user_path, class: "block btn-primary" %>
   </div>
 </div>
 
@@ -16,34 +16,34 @@
           fields: [
             {
               name: :name,
-              label: "Name",
+              label: t('admin.users.index.name'),
               type: :text,
-              placeholder: "Search by name..."
+              placeholder: t('admin.users.index.search_by_name')
             },
             {
               name: :email,
-              label: "Email",
+              label: t('admin.users.index.email'),
               type: :text,
-              placeholder: "Search by email..."
+              placeholder: t('admin.users.index.search_by_email')
             },
             {
               name: :admin,
-              label: "Role",
+              label: t('admin.users.index.role'),
               type: :select,
-              options: [["Admin", true], ["Regular User", false]]
+              options: [[t('admin.users.index.admin'), true], [t('admin.users.index.regular_user'), false]]
             }
           ] %>
       <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
         <table class="min-w-full divide-y divide-gray-300">
           <thead class="bg-gray-50">
             <tr>
-              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Name</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooters</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Joined</th>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"><%= t('admin.users.index.name') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.users.index.email') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.users.index.status') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.users.index.scooters') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.users.index.joined') %></th>
               <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                <span class="sr-only">Actions</span>
+                <span class="sr-only"><%= t('admin.users.index.actions') %></span>
               </th>
             </tr>
           </thead>
@@ -56,16 +56,16 @@
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= user.email %></td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   <% if user.admin? %>
-                    <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10">Admin</span>
+                    <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10"><%= t('admin.users.index.admin_label') %></span>
                   <% else %>
-                    <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">User</span>
+                    <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"><%= t('admin.users.index.user_label') %></span>
                   <% end %>
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                   <%= user.scooters.count %>
                 </td>
                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <%= time_ago_in_words(user.created_at) %> ago
+                  <%= time_ago_in_words(user.created_at) %> <%= t('admin.users.index.ago') %>
                 </td>
                 <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                   <div class="flex items-center justify-end space-x-2">
@@ -74,30 +74,30 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                       </svg>
-                      View
+                      <%= t('admin.users.index.view') %>
                     <% end %>
                     
                     <%= link_to edit_admin_user_path(user), class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4 mr-1">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                       </svg>
-                      Edit
+                      <%= t('admin.users.index.edit') %>
                     <% end %>
                     
                     <%= link_to admin_user_feature_flags_path(user), class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4 mr-1">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18v18H3V3z M9 3v18 M15 3v18 M3 9h18 M3 15h18" />
                       </svg>
-                      Flags
+                      <%= t('admin.users.index.flags') %>
                     <% end %>
                     
                     <%= button_to admin_user_path(user), method: :delete, 
                         class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-red-600 bg-white hover:bg-gray-50 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500",
-                        data: { turbo_confirm: "Are you sure? This will delete all associated data." } do %>
+                        data: { turbo_confirm: t('admin.users.index.delete_confirm') } do %>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-4 w-4 mr-1">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
-                      Delete
+                      <%= t('admin.users.index.delete') %>
                     <% end %>
                   </div>
                 </td>

@@ -5,11 +5,11 @@
       
       <div class="absolute top-2 left-2 flex flex-col gap-2">
         <% if scooter.is_online? %>
-          <div class="badge badge-success">Online</div>
+          <div class="badge badge-success"><%= t('scooters.online') %></div>
         <% elsif scooter.last_seen_at %>
-          <div class="badge badge-error">Offline since <%= time_ago_in_words(scooter.last_seen_at) %></div>
+          <div class="badge badge-error"><%= t('scooters.last_seen', time_ago: time_ago_in_words(scooter.last_seen_at)) %></div>
         <% else %>
-          <div class="badge badge-warning">Pending Setup</div>
+          <div class="badge badge-warning"><%= t('scooters.waiting_for_telemetry') %></div>
         <% end %>
       </div>
     </div>
@@ -34,7 +34,7 @@
           <div class="flex items-center gap-2">
             <%= image_tag scooter.battery_image_path(scooter.battery0_level), class: "w-8 h-8" %>
             <div class="flex-1">
-              <div class="text-xs text-gray-500 mb-1">Main Battery</div>
+              <div class="text-xs text-gray-500 mb-1"><%= t('scooters.main_battery') %></div>
               <div class="h-2 bg-gray-200 rounded-full">
                 <div class="h-full bg-green-500 rounded-full" style="width: <%= scooter.battery0_level %>%"></div>
               </div>
@@ -47,7 +47,7 @@
           <div class="flex items-center gap-2">
             <%= image_tag scooter.battery_image_path(scooter.battery1_level), class: "w-8 h-8" %>
             <div class="flex-1">
-              <div class="text-xs text-gray-500 mb-1">Secondary Battery</div>
+              <div class="text-xs text-gray-500 mb-1"><%= t('scooters.secondary_battery') %></div>
               <div class="h-2 bg-gray-200 rounded-full">
                 <div class="h-full bg-green-500 rounded-full" style="width: <%= scooter.battery1_level %>%"></div>
               </div>
@@ -60,7 +60,7 @@
    <div class="flex items-center gap-2">
      <%= image_tag "battery/batt_aux.webp", class: "w-8 h-8" %>
      <div class="flex-1">
-       <div class="text-xs text-gray-500 mb-1">Aux Battery</div>
+       <div class="text-xs text-gray-500 mb-1"><%= t('scooters.aux_battery') %></div>
        <div class="h-2 bg-gray-200 rounded-full">
          <div class="h-full bg-green-500 rounded-full" style="width: <%= scooter.aux_battery_level %>%"></div>
        </div>
@@ -73,7 +73,7 @@
    <div class="flex items-center gap-2">
      <%= image_tag "battery/batt_cbb.webp", class: "w-8 h-8" %>
      <div class="flex-1">
-       <div class="text-xs text-gray-500 mb-1">CB Battery</div>
+       <div class="text-xs text-gray-500 mb-1"><%= t('scooters.cb_battery') %></div>
        <div class="h-2 bg-gray-200 rounded-full">
          <div class="h-full bg-green-500 rounded-full" style="width: <%= scooter.cbb_battery_level %>%"></div>
        </div>
@@ -89,10 +89,10 @@
           <div class="badge <%= scooter.locked? ? 'badge-error' : 'badge-success' %>">
             <%= scooter.state&.titleize %>
           </div>
-          <div class="badge badge-info">Kickstand <%= scooter.kickstand&.titleize %></div>
-          <div class="badge badge-info">Seatbox <%= scooter.seatbox&.titleize %></div>
+          <div class="badge badge-info"><%= t('scooters.kickstand', status: scooter.kickstand&.titleize) %></div>
+          <div class="badge badge-info"><%= t('scooters.seatbox', status: scooter.seatbox&.titleize) %></div>
           <% if scooter.estimated_range %>
-            <div class="badge badge-info"><%= scooter.estimated_range.round(1) %> km range</div>
+            <div class="badge badge-info"><%= t('scooters.range_km', range: scooter.estimated_range.round(1)) %></div>
           <% end %>
         </div>
       </div>

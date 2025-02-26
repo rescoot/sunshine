@@ -1,8 +1,8 @@
 <div>
   <div class="sm:flex sm:items-center">
     <div class="sm:flex-auto">
-      <h1 class="text-2xl font-semibold leading-6 text-gray-900">unu VIN Decoder</h1>
-      <p class="mt-2 text-sm text-gray-700">Decode your scooter's Vehicle Identification Number.</p>
+      <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= t('vin_decoder.title') %></h1>
+      <p class="mt-2 text-sm text-gray-700"><%= t('vin_decoder.description') %></p>
     </div>
   </div>
 
@@ -37,16 +37,16 @@
       <div class="bg-white shadow-md rounded-lg p-6">
         <div class="mb-4">
           <label for="vin-input" class="block text-gray-700 text-sm font-bold mb-2">
-            Enter Vehicle Identification Number (VIN)
+            <%= t('vin_decoder.enter_vin') %>
           </label>
           <input type="text" 
                 id="vin-input" 
-                placeholder="e.g. WUNU2S3A6KZ000001" 
+                placeholder="<%= t('vin_decoder.example_vin') %>" 
                 required
                 maxlength="17"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
           <p class="text-gray-600 text-xs italic mt-2">
-            VIN must be 17 characters long and start with WUN. Try it out with WUNU2S3A6KZ000001.
+            <%= t('vin_decoder.vin_requirements') %>
           </p>
         </div>
 
@@ -54,7 +54,7 @@
           <button type="button" 
                   onclick="decodeVin()" 
                   class="btn-primary">
-            Decode VIN
+            <%= t('vin_decoder.decode_button') %>
           </button>
         </div>
       </div>
@@ -65,7 +65,7 @@
           if (vin && vin.length === 17 && vin.startsWith('WUN')) {
             window.location.href = '/vin-decoder/' + vin;
           } else {
-            alert('Please enter a valid 17-character VIN starting with WUN');
+            alert('<%= t('vin_decoder.invalid_vin_alert') %>');
           }
         }
         
@@ -80,30 +80,28 @@
 
     <!-- What is a VIN box - flows next to input on desktop -->
     <div class="bg-white shadow-md rounded-lg p-6">
-      <h2 class="text-xl font-semibold mb-4">What is a VIN?</h2>
+      <h2 class="text-xl font-semibold mb-4"><%= t('vin_decoder.what_is_vin') %></h2>
       <p class="text-gray-600 mb-4">
-        A Vehicle Identification Number (VIN) is a unique 17-character code used to identify 
-        individual motor vehicles. For unu scooters, the VIN provides details about the 
-        model, year of manufacture, and other specific information.
+        <%= t('vin_decoder.vin_explanation') %>
       </p>
       
-      <h3 class="text-lg font-semibold mb-2">unu Scooter 2.x VIN Format</h3>
+      <h3 class="text-lg font-semibold mb-2"><%= t('vin_decoder.vin_format_title') %></h3>
       <p class="text-gray-600 mb-2">
-        The unu Scooter 2.x VIN follows this format:
+        <%= t('vin_decoder.vin_format_intro') %>
       </p>
       <div class="bg-gray-50 p-3 rounded-md mb-3 text-sm">
         <code class="font-mono">WUN U2S <span class="text-indigo-600">X</span><span class="text-green-600">Y</span> <span class="text-amber-600">C</span> <span class="text-red-600">Z</span> <span class="text-purple-600">P</span> NNNNNN</code>
       </div>
       <ul class="text-gray-600 text-sm space-y-1 mb-3">
-        <li><span class="font-semibold text-indigo-600">X</span>: Motor power (2 = 2kW, 3 = 3kW, 4 = 4kW)</li>
-        <li><span class="font-semibold text-green-600">Y</span>: Version (A = max 25 km/h, B = max 45 km/h)</li>
-        <li><span class="font-semibold text-amber-600">C</span>: Check digit</li>
-        <li><span class="font-semibold text-red-600">Z</span>: Year of manufacture (K = 2019, L = 2020, M = 2021, etc.)</li>
-        <li><span class="font-semibold text-purple-600">P</span>: Manufacturing plant (Z = Zhuhai, China)</li>
-        <li>NNNNNN: Serial number</li>
+        <li><span class="font-semibold text-indigo-600">X</span>: <%= t('vin_decoder.motor_power') %></li>
+        <li><span class="font-semibold text-green-600">Y</span>: <%= t('vin_decoder.version') %></li>
+        <li><span class="font-semibold text-amber-600">C</span>: <%= t('vin_decoder.check_digit') %></li>
+        <li><span class="font-semibold text-red-600">Z</span>: <%= t('vin_decoder.year_of_manufacture') %></li>
+        <li><span class="font-semibold text-purple-600">P</span>: <%= t('vin_decoder.manufacturing_plant') %></li>
+        <li>NNNNNN: <%= t('vin_decoder.serial_number') %></li>
       </ul>
       <p class="text-gray-500 text-xs italic">
-        Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW motor, max 45 km/h, built in 2021
+        <%= raw t('vin_decoder.example') %>
       </p>
     </div>
   </div>

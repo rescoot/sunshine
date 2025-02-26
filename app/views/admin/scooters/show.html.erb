@@ -1,15 +1,15 @@
 <div>
   <div class="sm:flex sm:items-center">
     <div class="sm:flex-auto">
-      <h1 class="text-2xl font-semibold leading-6 text-gray-900">Scooter Details</h1>
-      <p class="mt-2 text-sm text-gray-700">Details and management for <%= @scooter.name %></p>
+      <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= t('admin.scooters.show.title') %></h1>
+      <p class="mt-2 text-sm text-gray-700"><%= t('admin.scooters.show.subtitle', name: @scooter.name) %></p>
     </div>
     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none flex gap-2">
       <% if @scooter.is_online? %>
-        <%= link_to "Shell", admin_scooter_shell_path(@scooter), class: "btn-primary" %>
+        <%= link_to t('admin.scooters.show.shell'), admin_scooter_shell_path(@scooter), class: "btn-primary" %>
       <% end %>
-      <%= link_to "Edit", edit_admin_scooter_path(@scooter), class: "btn-secondary" %>
-      <%= link_to "Back to List", admin_scooters_path, class: "btn-secondary" %>
+      <%= link_to t('admin.scooters.show.edit'), edit_admin_scooter_path(@scooter), class: "btn-secondary" %>
+      <%= link_to t('admin.scooters.show.back_to_list'), admin_scooters_path, class: "btn-secondary" %>
     </div>
   </div>
 
@@ -17,18 +17,18 @@
     <!-- Scooter Information -->
     <div class="bg-white shadow sm:rounded-lg">
       <div class="px-4 py-5 sm:p-6">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">Scooter Information</h3>
+        <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('admin.scooters.show.scooter_information') %></h3>
         <dl class="mt-6 space-y-6 divide-y divide-gray-100">
           <div class="pt-6 sm:flex">
-            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Last seen</dt>
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6"><%= t('admin.scooters.show.last_seen') %></dt>
             <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
               <div class="text-gray-900">
-                <%= @scooter.last_seen_at ? time_ago_in_words(@scooter.last_seen_at) + " ago" : "Never" %>
+                <%= @scooter.last_seen_at ? t('admin.scooters.show.time_ago', time_ago: time_ago_in_words(@scooter.last_seen_at)) : t('admin.scooters.show.never') %>
               </div>
             </dd>
           </div>
           <div class="pt-6 sm:flex">
-            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Added on</dt>
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6"><%= t('admin.scooters.show.added_on') %></dt>
             <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
               <div class="text-gray-900"><%= @scooter.created_at.strftime("%B %d, %Y") %></div>
             </dd>
@@ -40,7 +40,7 @@
     <!-- User Assignments -->
     <div class="bg-white shadow sm:rounded-lg">
       <div class="px-4 py-5 sm:p-6">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">User Assignments</h3>
+        <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('admin.scooters.show.user_assignments') %></h3>
         
         <!-- Add new user assignment -->
         <div class="mt-4">
@@ -48,16 +48,16 @@
             <div class="flex gap-3">
               <div class="flex-grow">
                 <%= f.collection_select :user_id, @available_users, :id, :name, 
-                    { prompt: "Select user..." },
+                    { prompt: t('admin.scooters.show.select_user') },
                     class: "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
               </div>
               <div>
                 <%= f.select :role, 
-                    options_for_select([["Owner", "owner"], ["User", "user"]]),
+                    options_for_select([[t('admin.scooters.show.owner_role'), "owner"], [t('admin.scooters.show.user_role'), "user"]]),
                     {},
                     class: "block w-32 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" %>
               </div>
-              <%= f.submit "Assign", class: "btn-primary" %>
+              <%= f.submit t('admin.scooters.show.assign'), class: "btn-primary" %>
             </div>
           <% end %>
         </div>
@@ -68,11 +68,11 @@
             <table class="min-w-full divide-y divide-gray-300">
               <thead class="bg-gray-50">
                 <tr>
-                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">User</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Role</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Assigned</th>
+                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"><%= t('admin.scooters.show.user_column') %></th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.scooters.show.role_column') %></th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.scooters.show.assigned_column') %></th>
                   <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                    <span class="sr-only">Actions</span>
+                    <span class="sr-only"><%= t('admin.scooters.show.actions') %></span>
                   </th>
                 </tr>
               </thead>
@@ -90,13 +90,13 @@
                       </span>
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <%= time_ago_in_words(user_scooter.created_at) %> ago
+                      <%= t('admin.scooters.show.time_ago', time_ago: time_ago_in_words(user_scooter.created_at)) %>
                     </td>
                     <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                       <%= button_to "Remove", admin_scooter_user_scooter_path(@scooter, user_scooter), 
                           method: :delete,
                           class: "text-red-600 hover:text-red-900",
-                          data: { turbo_confirm: "Are you sure you want to remove this user?" } %>
+                          data: { turbo_confirm: t('admin.scooters.show.remove_confirm') } %>
                     </td>
                   </tr>
                 <% end %>
@@ -111,8 +111,8 @@
     <div class="bg-white shadow sm:rounded-lg">
       <div class="px-4 py-5 sm:p-6">
         <div class="flex items-center justify-between">
-          <h3 class="text-base font-semibold leading-6 text-gray-900">Recent Events</h3>
-          <%= link_to "View All", admin_scooter_events_path(@scooter), class: "text-sm text-indigo-600 hover:text-indigo-900" %>
+          <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('admin.scooters.show.recent_events') %></h3>
+          <%= link_to t('admin.scooters.show.view_all'), admin_scooter_events_path(@scooter), class: "text-sm text-indigo-600 hover:text-indigo-900" %>
         </div>
         
         <div class="mt-6 flow-root">
@@ -123,7 +123,7 @@
                   <div class="flex items-center min-w-0">
                     <div class="min-w-0">
                       <p class="text-sm font-medium text-gray-900"><%= event.event_type.titleize %></p>
-                      <p class="text-sm text-gray-500"><%= time_ago_in_words(event.created_at) %> ago</p>
+                      <p class="text-sm text-gray-500"><%= t('admin.scooters.show.time_ago', time_ago: time_ago_in_words(event.created_at)) %></p>
                     </div>
                   </div>
                   <div class="ml-4 flex-shrink-0">
@@ -141,8 +141,8 @@
     <div class="bg-white shadow sm:rounded-lg">
       <div class="px-4 py-5 sm:p-6">
         <div class="flex items-center justify-between">
-          <h3 class="text-base font-semibold leading-6 text-gray-900">Recent Telemetry</h3>
-          <%= link_to "View All", admin_scooter_telemetries_path(@scooter), class: "text-sm text-indigo-600 hover:text-indigo-900" %>
+          <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('admin.scooters.show.recent_telemetry') %></h3>
+          <%= link_to t('admin.scooters.show.view_all'), admin_scooter_telemetries_path(@scooter), class: "text-sm text-indigo-600 hover:text-indigo-900" %>
         </div>
         
         <div class="mt-6">
@@ -150,23 +150,23 @@
             <table class="min-w-full divide-y divide-gray-300">
               <thead class="bg-gray-50">
                 <tr>
-                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Time</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">State</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Speed</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
+                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"><%= t('admin.scooters.show.time_column') %></th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.scooters.show.state_column') %></th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.scooters.show.speed_column') %></th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.scooters.show.location_column') %></th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 bg-white">
                 <% @telemetries.first(5).each do |telemetry| %>
                   <tr>
                     <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">
-                      <%= link_to "#{time_ago_in_words(telemetry.created_at)} ago", admin_telemetry_path(telemetry) %>
+                      <%= link_to t('admin.scooters.show.time_ago', time_ago: time_ago_in_words(telemetry.created_at)), admin_telemetry_path(telemetry) %>
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       <%= telemetry.state&.titleize %>
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <%= number_with_precision(telemetry.speed, precision: 1) %> km/h
+                      <%= t('admin.scooters.show.speed_value', speed: number_with_precision(telemetry.speed, precision: 1)) %>
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       <% if telemetry.lat && telemetry.lng %>

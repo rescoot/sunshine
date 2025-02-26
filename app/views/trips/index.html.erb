@@ -1,72 +1,72 @@
 <div class="sm:flex sm:items-center">
   <div class="sm:flex-auto">
-    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Trips History</h1>
-    <p class="mt-2 text-sm text-gray-700">A list of all your trips with their details.</p>
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= t('trips.history') %></h1>
+    <p class="mt-2 text-sm text-gray-700"><%= t('trips.list_description') %></p>
   </div>
 </div>
 
 <div class="mt-6 bg-white shadow sm:rounded-lg">
   <div class="px-4 py-5 sm:p-6">
-    <h3 class="text-base font-semibold leading-6 text-gray-900">Filter Trips</h3>
+    <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('trips.filter_trips') %></h3>
     
     <%= form_tag trips_path, method: :get, class: "mt-4 grid grid-cols-1 gap-y-4 sm:grid-cols-6 sm:gap-x-4" do %>
       <div class="sm:col-span-2">
-        <%= label_tag :scooter_id, "Scooter", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :scooter_id, t('trips.scooter'), class: "block text-sm font-medium text-gray-700" %>
         <%= select_tag :scooter_id, 
             options_from_collection_for_select(current_user.scooters, :id, :name, params[:scooter_id]),
-            { prompt: "All Scooters", class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
+            { prompt: t('trips.all_scooters'), class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
       </div>
       
       <div class="sm:col-span-2">
-        <%= label_tag :start_date, "Start Date", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :start_date, t('trips.start_date'), class: "block text-sm font-medium text-gray-700" %>
         <%= date_field_tag :start_date, params[:start_date], class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       
       <div class="sm:col-span-2">
-        <%= label_tag :end_date, "End Date", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :end_date, t('trips.end_date'), class: "block text-sm font-medium text-gray-700" %>
         <%= date_field_tag :end_date, params[:end_date], class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       
       <div class="sm:col-span-2">
-        <%= label_tag :min_distance, "Min Distance (km)", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :min_distance, t('trips.min_distance'), class: "block text-sm font-medium text-gray-700" %>
         <%= number_field_tag :min_distance, params[:min_distance], min: 0, step: 0.1, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       
       <div class="sm:col-span-2">
-        <%= label_tag :max_distance, "Max Distance (km)", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :max_distance, t('trips.max_distance'), class: "block text-sm font-medium text-gray-700" %>
         <%= number_field_tag :max_distance, params[:max_distance], min: 0, step: 0.1, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       
       <div class="sm:col-span-2">
-        <%= label_tag :min_duration, "Min Duration (min)", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :min_duration, t('trips.min_duration'), class: "block text-sm font-medium text-gray-700" %>
         <%= number_field_tag :min_duration, params[:min_duration], min: 0, step: 1, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       
       <div class="sm:col-span-2">
-        <%= label_tag :max_duration, "Max Duration (min)", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :max_duration, t('trips.max_duration'), class: "block text-sm font-medium text-gray-700" %>
         <%= number_field_tag :max_duration, params[:max_duration], min: 0, step: 1, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       
       <div class="sm:col-span-2">
-        <%= label_tag :min_speed, "Min Avg Speed (km/h)", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :min_speed, t('trips.min_avg_speed'), class: "block text-sm font-medium text-gray-700" %>
         <%= number_field_tag :min_speed, params[:min_speed], min: 0, step: 0.1, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       
       <div class="sm:col-span-2">
-        <%= label_tag :max_speed, "Max Avg Speed (km/h)", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :max_speed, t('trips.max_avg_speed'), class: "block text-sm font-medium text-gray-700" %>
         <%= number_field_tag :max_speed, params[:max_speed], min: 0, step: 0.1, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       
       <div class="sm:col-span-2">
-        <%= label_tag :status, "Status", class: "block text-sm font-medium text-gray-700" %>
+        <%= label_tag :status, t('trips.status'), class: "block text-sm font-medium text-gray-700" %>
         <%= select_tag :status, 
-            options_for_select([["All", ""], ["In Progress", "in_progress"], ["Completed", "completed"]], params[:status]),
+            options_for_select([[t('trips.all'), ""], [t('trips.in_progress'), "in_progress"], [t('trips.completed'), "completed"]], params[:status]),
             { class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" } %>
       </div>
       
       <div class="sm:col-span-6 flex justify-end">
-        <%= submit_tag "Filter", class: "btn-primary" %>
-        <%= link_to "Clear Filters", trips_path, class: "ml-3 btn-secondary" %>
+        <%= submit_tag t('trips.filter'), class: "btn-primary" %>
+        <%= link_to t('trips.clear_filters'), trips_path, class: "ml-3 btn-secondary" %>
       </div>
     <% end %>
   </div>
@@ -81,12 +81,12 @@
           <table class="min-w-full divide-y divide-gray-300">
             <thead class="bg-gray-50">
               <tr>
-                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Date</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooter</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Duration</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Distance</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Avg Speed</th>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"><%= t('trips.date') %></th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('trips.scooter') %></th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('trips.duration') %></th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('trips.distance') %></th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('trips.avg_speed') %></th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('trips.status') %></th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200 bg-white">

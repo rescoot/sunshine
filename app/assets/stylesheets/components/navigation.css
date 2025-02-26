@@ -26,4 +26,9 @@
   .nav-link-mobile {
     @apply block text-gray-300 hover:bg-indigo-900 hover:text-white rounded-md px-3 py-2 text-base font-medium;
   }
+
+  /* Admin mobile navigation link styles */
+  .nav-link-mobile-admin {
+    @apply block text-gray-300 hover:bg-teal-800 hover:text-white rounded-md px-3 py-2 text-base font-medium;
+  }
 }

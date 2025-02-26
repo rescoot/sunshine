@@ -946,7 +946,7 @@ class AchievementService
   def self.check_leaderboard_achievements(user)
     # Leaderboard achievements are now handled by LeaderboardAchievementJob
     # This method is kept for backward compatibility
-    return
+    nil
   end
 
   def self.notify_achievement_earned(user, achievement)

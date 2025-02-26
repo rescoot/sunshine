@@ -1,12 +1,12 @@
 <div class="sm:flex sm:items-center">
   <div class="sm:flex-auto">
-    <h1 class="text-2xl font-semibold leading-6 text-gray-900">VIN Decoder Results</h1>
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= t('vin_decoder.results_title') %></h1>
     <p class="mt-2 text-sm text-gray-700">
-      Successfully decoded VIN: <span class="font-semibold"><%= @vin_lookup.vin %></span>
+      <%= t('vin_decoder.successfully_decoded') %> <span class="font-semibold"><%= @vin_lookup.vin %></span>
     </p>
   </div>
   <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-    <%= link_to "Decode Another VIN", vin_decoder_path, class: "btn-primary" %>
+    <%= link_to t('vin_decoder.decode_another'), vin_decoder_path, class: "btn-primary" %>
   </div>
 </div>
 
@@ -15,7 +15,7 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Results section -->
     <div class="bg-white shadow-md rounded-lg p-6">
-      <h2 class="text-xl font-semibold mb-4">Decoded Information</h2>
+      <h2 class="text-xl font-semibold mb-4"><%= t('vin_decoder.decoded_information') %></h2>
       
       <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded relative mb-4">
         <strong>VIN:</strong> <%= @vin_lookup.vin %>
@@ -35,31 +35,31 @@
       </div>
       
       <div class="mt-6">
-        <h3 class="text-lg font-semibold mb-3">What do these details mean?</h3>
+        <h3 class="text-lg font-semibold mb-3"><%= t('vin_decoder.details_meaning') %></h3>
         <div class="text-gray-600 space-y-2 text-sm">
           <p>
-            <strong>Manufacturer:</strong> Confirms the vehicle is manufactured by unu GmbH.
+            <strong><%= t('vin_decoder.manufacturer') %>:</strong> <%= t('vin_decoder.manufacturer_desc') %>
           </p>
           <p>
-            <strong>Model:</strong> Identifies the specific model of the unu scooter.
+            <strong><%= t('vin_decoder.model') %>:</strong> <%= t('vin_decoder.model_desc') %>
           </p>
           <p>
-            <strong>Vehicle Type:</strong> Provides the technical classification of the vehicle.
+            <strong><%= t('vin_decoder.vehicle_type') %>:</strong> <%= t('vin_decoder.vehicle_type_desc') %>
           </p>
           <p>
-            <strong>Variant:</strong> Indicates the motor power rating of the scooter.
+            <strong><%= t('vin_decoder.variant') %>:</strong> <%= t('vin_decoder.variant_desc') %>
           </p>
           <p>
-            <strong>Version:</strong> Specifies the maximum speed capability of the scooter.
+            <strong><%= t('vin_decoder.version') %>:</strong> <%= t('vin_decoder.version_desc') %>
           </p>
           <p>
-            <strong>Year:</strong> The model year when the scooter was manufactured.
+            <strong><%= t('vin_decoder.year') %>:</strong> <%= t('vin_decoder.year_desc') %>
           </p>
           <p>
-            <strong>Plant:</strong> The manufacturing facility where the scooter was produced.
+            <strong><%= t('vin_decoder.plant') %>:</strong> <%= t('vin_decoder.plant_desc') %>
           </p>
           <p>
-            <strong>Serial Number:</strong> The unique identifier for this specific scooter.
+            <strong><%= t('vin_decoder.serial_number') %>:</strong> <%= t('vin_decoder.serial_number_desc') %>
           </p>
         </div>
       </div>
@@ -67,9 +67,9 @@
     
     <!-- VIN Format Information -->
     <div class="bg-white shadow-md rounded-lg p-6">
-      <h2 class="text-xl font-semibold mb-4">unu Scooter 2.x VIN Format</h2>
+      <h2 class="text-xl font-semibold mb-4"><%= t('vin_decoder.format_title') %></h2>
       <p class="text-gray-600 mb-3">
-        The unu Scooter 2.x VIN follows this format:
+        <%= t('vin_decoder.format_description') %>
       </p>
       <div class="bg-gray-50 p-3 rounded-md mb-4 text-center">
         <code class="font-mono">WUN U2S <span class="text-indigo-600">X</span><span class="text-green-600">Y</span> <span class="text-amber-600">C</span> <span class="text-red-600">Z</span> <span class="text-purple-600">P</span> NNNNNN</code>
@@ -77,46 +77,46 @@
       
       <div class="grid grid-cols-1 gap-4">
         <div>
-          <h4 class="font-semibold mb-2">Position Breakdown</h4>
+          <h4 class="font-semibold mb-2"><%= t('vin_decoder.position_breakdown') %></h4>
           <ul class="text-gray-600 text-sm space-y-1">
-            <li><span class="font-semibold">WUN</span>: Manufacturer code (unu GmbH)</li>
-            <li><span class="font-semibold">U2S</span>: Model code (unu Scooter 2.x)</li>
-            <li><span class="font-semibold text-indigo-600">X</span>: Motor power variant</li>
-            <li><span class="font-semibold text-green-600">Y</span>: Speed version</li>
-            <li><span class="font-semibold text-amber-600">C</span>: Check digit</li>
-            <li><span class="font-semibold text-red-600">Z</span>: Year of manufacture</li>
-            <li><span class="font-semibold text-purple-600">P</span>: Manufacturing plant</li>
-            <li><span class="font-semibold">NNNNNN</span>: Serial number</li>
+            <li><span class="font-semibold">WUN</span>: <%= t('vin_decoder.manufacturer_code') %></li>
+            <li><span class="font-semibold">U2S</span>: <%= t('vin_decoder.model_code') %></li>
+            <li><span class="font-semibold text-indigo-600">X</span>: <%= t('vin_decoder.motor_power_variant') %></li>
+            <li><span class="font-semibold text-green-600">Y</span>: <%= t('vin_decoder.speed_version') %></li>
+            <li><span class="font-semibold text-amber-600">C</span>: <%= t('vin_decoder.check_digit') %></li>
+            <li><span class="font-semibold text-red-600">Z</span>: <%= t('vin_decoder.year_of_manufacture') %></li>
+            <li><span class="font-semibold text-purple-600">P</span>: <%= t('vin_decoder.manufacturing_plant') %></li>
+            <li><span class="font-semibold">NNNNNN</span>: <%= t('vin_decoder.serial_number') %></li>
           </ul>
         </div>
         
         <div>
-          <h4 class="font-semibold mb-2">Possible Values</h4>
+          <h4 class="font-semibold mb-2"><%= t('vin_decoder.possible_values') %></h4>
           <ul class="text-gray-600 text-sm space-y-2">
-            <li><span class="font-semibold text-indigo-600">Motor Power (X)</span>:
+            <li><span class="font-semibold text-indigo-600"><%= t('vin_decoder.motor_power_x') %></span>:
               <ul class="ml-4 mt-1">
-                <li>2 = 2000W (2kW)</li>
-                <li>3 = 3000W (3kW)</li>
-                <li>4 = 4000W (4kW)</li>
+                <li><%= t('vin_decoder.motor_power_2kw') %></li>
+                <li><%= t('vin_decoder.motor_power_3kw') %></li>
+                <li><%= t('vin_decoder.motor_power_4kw') %></li>
               </ul>
             </li>
-            <li><span class="font-semibold text-green-600">Speed Version (Y)</span>:
+            <li><span class="font-semibold text-green-600"><%= t('vin_decoder.speed_version_y') %></span>:
               <ul class="ml-4 mt-1">
-                <li>A = Version 25 (max. 25 km/h)</li>
-                <li>B = Version 45 (max. 45 km/h)</li>
+                <li><%= t('vin_decoder.speed_version_25') %></li>
+                <li><%= t('vin_decoder.speed_version_45') %></li>
               </ul>
             </li>
-            <li><span class="font-semibold text-red-600">Year (Z)</span>:
+            <li><span class="font-semibold text-red-600"><%= t('vin_decoder.year_z') %></span>:
               <ul class="ml-4 mt-1">
-                <li>H = 2017, J = 2018, K = 2019</li>
-                <li>L = 2020, M = 2021, N = 2022</li>
-                <li>P = 2023, R = 2024, S = 2025</li>
-                <li>And so on...</li>
+                <li><%= t('vin_decoder.year_2017_2019') %></li>
+                <li><%= t('vin_decoder.year_2020_2022') %></li>
+                <li><%= t('vin_decoder.year_2023_2025') %></li>
+                <li><%= t('vin_decoder.year_and_so_on') %></li>
               </ul>
             </li>
-            <li><span class="font-semibold text-purple-600">Plant (P)</span>:
+            <li><span class="font-semibold text-purple-600"><%= t('vin_decoder.plant_p') %></span>:
               <ul class="ml-4 mt-1">
-                <li>Z = Zhuhai, China</li>
+                <li><%= t('vin_decoder.plant_zhuhai') %></li>
               </ul>
             </li>
           </ul>
@@ -124,7 +124,7 @@
       </div>
       
       <p class="text-gray-500 text-xs italic mt-4">
-        Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW motor, max 45 km/h, built in 2021
+        <%= raw t('vin_decoder.result_example') %>
       </p>
     </div>
   </div>

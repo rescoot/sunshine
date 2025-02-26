@@ -1,106 +1,63 @@
 <div class="sm:flex sm:items-center">
   <div class="sm:flex-auto">
-    <h1 class="text-2xl font-semibold leading-6 text-gray-900">Your Achievements</h1>
-    <p class="mt-2 text-sm text-gray-700">Track your progress and earn rewards as you ride.</p>
+    <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= t('achievements.your_achievements') %></h1>
+    <p class="mt-2 text-sm text-gray-700"><%= t('achievements.description') %></p>
   </div>
   <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
     <div class="badge badge-info px-4 py-2 flex items-center">
       <span class="text-xl mr-2">🏆</span>
       <div>
         <span class="font-bold"><%= @total_points %></span>
-        <span class="text-sm">points</span>
+        <span class="text-sm"><%= t('achievements.points') %></span>
       </div>
     </div>
   </div>
 </div>
 
 <div class="mt-8">
-
-  <% if @achievements[:earned].any? %>
-    <div class="bg-white shadow-sm rounded-lg overflow-hidden p-6 mb-6">
-      <h2 class="text-xl font-semibold mb-4">Earned Achievements</h2>
-      
-      <% # Regular achievements by type %>
-      <% @achievement_types.each do |type_key, type_name| %>
-        <% visible_achievements = @earned_by_type[type_key.to_s]&.select { |ua| !ua.achievement_definition.secret } %>
-        <% if visible_achievements&.any? %>
-          <div class="mb-6">
-            <h3 class="text-lg font-medium mb-3"><%= type_name %></h3>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <% visible_achievements.sort_by { |ua| ua.achievement_definition.threshold }.each do |user_achievement| %>
-                <% achievement = user_achievement.achievement_definition %>
-                <div class="achievement-card achievement-card-earned">
-                  <div class="achievement-icon">
-                    <%= achievement.icon %>
+  <div class="bg-white shadow-sm rounded-lg overflow-hidden p-6 mb-6">
+    <% # Regular achievements by type %>
+    <% @achievement_types.each do |type_key, type_name| %>
+      <% 
+        visible_earned = @earned_by_type[type_key.to_s]&.select { |ua| !ua.achievement_definition.secret } || []
+        has_in_progress = @in_progress_by_type[type_key.to_s]&.any?
+      %>
+      <% if visible_earned.any? || has_in_progress %>
+        <div class="mb-8">
+          <h3 class="text-lg font-medium mb-3"><%= type_name %></h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <% # Show earned achievements %>
+            <% visible_earned.sort_by { |ua| ua.achievement_definition.threshold }.each do |user_achievement| %>
+              <% achievement = user_achievement.achievement_definition %>
+              <div class="achievement-card achievement-card-earned">
+                <div class="achievement-icon">
+                  <%= achievement.icon %>
+                </div>
+                <div class="flex-grow">
+                  <div class="flex justify-between items-start">
+                    <h4 class="font-medium"><%= achievement.name %></h4>
+                    <span class="badge badge-success">
+                      +<%= achievement.points %>
+                    </span>
                   </div>
-                  <div class="flex-grow">
-                    <div class="flex justify-between items-start">
-                      <h4 class="font-medium"><%= achievement.name %></h4>
-                      <span class="badge badge-success">
-                        +<%= achievement.points %>
-                      </span>
-                    </div>
-                    <p class="text-sm text-gray-600 mb-2"><%= achievement.description %></p>
-                    <div class="text-xs text-gray-500">
-                      Earned <%= time_ago_in_words(user_achievement.earned_at) %> ago
-                    </div>
+                  <p class="text-sm text-gray-600 mb-2"><%= achievement.description %></p>
+                  <div class="text-xs text-gray-500">
+                    <%= t('achievements.earned_time_ago', time_ago: time_ago_in_words(user_achievement.earned_at)) %>
                   </div>
                 </div>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-        
-        <% # Secret achievements that have been earned %>
-        <% secret_achievements = @achievements[:earned].select { |ua| ua.achievement_definition.secret } %>
-        <% if secret_achievements.any? %>
-          <div class="mb-6">
-            <h3 class="text-lg font-medium mb-3">Secret Achievements</h3>
+              </div>
+            <% end %>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <% secret_achievements.sort_by { |ua| ua.achievement_definition.name }.each do |user_achievement| %>
-                <% achievement = user_achievement.achievement_definition %>
-                <div class="relative">
-                  <div class="absolute -inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur-sm opacity-25"></div>
-                  <div class="relative achievement-card achievement-card-earned achievement-card-secret">
-                    <div class="achievement-icon">
-                      <%= achievement.icon %>
-                    </div>
-                    <div class="flex-grow">
-                      <div class="flex justify-between items-start">
-                        <h4 class="font-medium"><%= achievement.name %></h4>
-                        <span class="badge badge-success">
-                          +<%= achievement.points %>
-                        </span>
-                      </div>
-                      <p class="text-sm text-gray-600 mb-2"><%= achievement.description %></p>
-                      <div class="text-xs text-gray-500">
-                        Discovered <%= time_ago_in_words(user_achievement.earned_at) %> ago
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-    </div>
-  <% end %>
-
-  <% if @achievements[:in_progress].any? %>
-    <div class="bg-white shadow-sm rounded-lg overflow-hidden p-6 mb-6">
-      <h2 class="text-xl font-semibold mb-4">Achievements In Progress</h2>
-      
-      <% @achievement_types.each do |type_key, type_name| %>
-        <% if @in_progress_by_type[type_key.to_s]&.any? %>
-          <div class="mb-6">
-            <h3 class="text-lg font-medium mb-3"><%= type_name %></h3>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <% @in_progress_by_type[type_key.to_s].sort_by { |ua| ua.achievement_definition.threshold }.each do |user_achievement| %>
-                <% achievement = user_achievement.achievement_definition %>
+            <% # Show the next in-progress achievement for this category %>
+            <% if has_in_progress %>
+              <% 
+                next_achievement = @in_progress_by_type[type_key.to_s]
+                  .sort_by { |ua| [-ua.progress_percentage, ua.achievement_definition.threshold] }
+                  .first
+              %>
+              <% if next_achievement %>
+                <% achievement = next_achievement.achievement_definition %>
                 <div class="achievement-card achievement-card-progress">
                   <div class="flex justify-between">
                     <div class="flex">
@@ -121,25 +78,78 @@
                   
                   <div class="mt-3">
                     <div class="flex justify-between text-xs text-gray-500 mb-1">
-                      <span><%= user_achievement.formatted_progress %></span>
-                      <span><%= user_achievement.progress_percentage %>%</span>
+                      <span><%= next_achievement.formatted_progress %></span>
+                      <span><%= next_achievement.progress_percentage %>%</span>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-2">
-                      <div class="bg-indigo-500 h-2 rounded-full" style="width: <%= user_achievement.progress_percentage %>%"></div>
+                      <div class="bg-indigo-500 h-2 rounded-full" style="width: <%= next_achievement.progress_percentage %>%"></div>
                     </div>
                   </div>
                 </div>
               <% end %>
-            </div>
+            <% end %>
           </div>
-        <% end %>
+        </div>
       <% end %>
-    </div>
-  <% end %>
+    <% end %>
+      
+    <% # Secret achievements that have been earned %>
+    <% secret_achievements = @achievements[:earned].select { |ua| ua.achievement_definition.secret } %>
+    <% if secret_achievements.any? %>
+      <div class="mb-6">
+        <h3 class="text-lg font-medium mb-3"><%= t('achievements.secret_achievements') %></h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <% secret_achievements.sort_by { |ua| ua.achievement_definition.name }.each do |user_achievement| %>
+            <% achievement = user_achievement.achievement_definition %>
+            <div class="relative">
+              <div class="absolute -inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur-sm opacity-25"></div>
+              <div class="relative achievement-card achievement-card-earned achievement-card-secret">
+                <div class="achievement-icon">
+                  <%= achievement.icon %>
+                </div>
+                <div class="flex-grow">
+                  <div class="flex justify-between items-start">
+                    <h4 class="font-medium"><%= achievement.name %></h4>
+                    <span class="badge badge-success">
+                      +<%= achievement.points %>
+                    </span>
+                  </div>
+                  <p class="text-sm text-gray-600 mb-2"><%= achievement.description %></p>
+                  <div class="text-xs text-gray-500">
+                    <%= t('achievements.discovered_time_ago', time_ago: time_ago_in_words(user_achievement.earned_at)) %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    
+    <% # Always show the secret achievements hint if there are any undiscovered ones %>
+    <% 
+      # Calculate total secret achievements
+      total_secret_achievements = AchievementDefinition.where(secret: true).count
+      # Calculate remaining secret achievements
+      discovered_secret_count = secret_achievements.size
+      remaining_secret_count = total_secret_achievements - discovered_secret_count
+    %>
+    <% if remaining_secret_count > 0 %>
+      <div class="mt-6 text-center">
+        <p class="text-sm text-purple-600 italic">
+          <%= t('achievements.keep_exploring', 
+                is_are: remaining_secret_count == 1 ? t('achievements.is') : t('achievements.are'),
+                count: remaining_secret_count,
+                achievement_s: remaining_secret_count == 1 ? t('achievements.achievement') : t('achievements.achievements')) %>
+        </p>
+      </div>
+    <% end %>
+  </div>
 
   <% if @next_achievements.any? %>
     <div class="bg-white shadow-sm rounded-lg overflow-hidden p-6 mb-6">
-      <h2 class="text-xl font-semibold mb-4">Next Achievements to Earn</h2>
+      <h2 class="text-xl font-semibold mb-4"><%= t('achievements.next_to_earn') %></h2>
       
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <% @next_achievements.each do |achievement| %>
@@ -169,13 +179,13 @@
   <% if @achievements[:earned].empty? && @achievements[:in_progress].empty? %>
     <div class="bg-white shadow-sm rounded-lg overflow-hidden p-8 text-center">
       <div class="text-4xl mb-4">🏆</div>
-      <h2 class="text-xl font-semibold mb-2">No Achievements Yet</h2>
-      <p class="text-gray-600 mb-6">Start riding your scooter to earn achievements and collect points!</p>
-      <p class="text-sm text-purple-600 italic">There are also secret achievements waiting to be discovered...</p>
+      <h2 class="text-xl font-semibold mb-2"><%= t('achievements.none_yet') %></h2>
+      <p class="text-gray-600 mb-6"><%= t('achievements.start_riding') %></p>
+      <p class="text-sm text-purple-600 italic"><%= t('achievements.secret_waiting') %></p>
       
       <% if @next_achievements.any? %>
         <div class="mt-6">
-          <h3 class="text-lg font-medium mb-3">Here's what you can earn:</h3>
+          <h3 class="text-lg font-medium mb-3"><%= t('achievements.what_you_can_earn') %></h3>
           
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <% @next_achievements.each do |achievement| %>
@@ -204,10 +214,4 @@
     </div>
   <% end %>
   
-  <% # Add a hint about secret achievements if the user has achievements but no secret ones yet %>
-  <% if @achievements[:earned].any? && !@achievements[:earned].any? { |ua| ua.achievement_definition.secret } %>
-    <div class="mt-6 text-center">
-      <p class="text-sm text-purple-600 italic">Keep exploring! There are secret achievements waiting to be discovered...</p>
-    </div>
-  <% end %>
 </div>

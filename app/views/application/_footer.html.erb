@@ -1,20 +1,20 @@
 <footer id="footer" class="text-slate-50 py-4 flex-none border-t-4 border-indigo-600" style="background: linear-gradient(to bottom, #3730a3 0%, oklch(0.257 0.09 281.288) 5%, #000000 10%, #000000 100%);">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col items-start">
-    <div class="w-full py-4 justify-between items-center flex flex-col sm:flex-row">
-      <div class="grow flex justify-start mt-4 sm:mt-0">
-        <nav class="flex space-x-6 text-base font-medium">
-          <%= link_to "About", about_path, class: "hover:text-indigo-300" %>
-          <%= link_to "Contact", contact_path, class: "hover:text-indigo-300" %>
-          <%= link_to "VIN Decoder", vin_decoder_path, class: "hover:text-indigo-300" %>
+    <div class="w-full py-4 sm:py-4 pt-2 justify-between sm:items-center flex flex-col sm:flex-row">
+      <div class="grow flex justify-start mt-2 sm:mt-0">
+        <nav class="flex flex-col sm:flex-row sm:space-x-6 space-y-2 sm:space-y-0 text-base font-medium mb-4 sm:mb-0">
+          <%= link_to t('footer.about'), about_path, class: "hover:text-indigo-300" %>
+          <%= link_to t('footer.contact'), contact_path, class: "hover:text-indigo-300" %>
+          <%= link_to t('navigation.vin_decoder'), vin_decoder_path, class: "hover:text-indigo-300" %>
         </nav>
       </div>
 
-      <div class="flex items-center space-x-4 mt-4 sm:mt-0">
+      <div class="flex flex-wrap gap-2 items-center sm:space-x-4 mt-2 sm:mt-0">
         <a href="https://github.com/rescoot" class="flex items-center px-2 py-1 rounded-md border border-gray-700 bg-black hover:bg-gray-900 transition-colors">
           <%= image_tag "rescoot.png", alt: "ReScoot Logo", class: "h-6" %>
           <div class="ml-1.5 flex flex-col">
             <span class="font-bold text-white text-sm leading-tight">Rescoot</span>
-            <span class="text-xs text-slate-400 leading-tight">A Rescoot Project</span>
+            <span class="text-xs text-slate-400 leading-tight"><%= t('footer.rescoot_project') %></span>
           </div>
         </a>
 
@@ -22,14 +22,14 @@
           <%= image_tag "librescoot.png", alt: "Librescoot Logo", class: "h-6" %>
           <div class="ml-1.5 flex flex-col">
             <span class="font-bold text-white text-sm leading-tight">Librescoot</span>
-            <span class="text-xs text-slate-400 leading-tight">powered</span>
+            <span class="text-xs text-slate-400 leading-tight"><%= t('footer.powered') %></span>
           </div>
         </a>
 
         <a href="https://discord.gg/VrumFruSzJ" class="flex items-center bg-indigo-700 hover:bg-indigo-600 rounded-md px-3 py-2 transition-colors">
           <div class="flex items-center">
             <%= image_tag "discord-logo.png", alt: "Discord Logo", class: "h-5 mr-2" %>
-            <span class="mr-2">Join the unu Community</span>
+            <span class="mr-2"><%= t('footer.join_community') %></span>
             <%= image_tag "unu-community.png", alt: "UNU Community", class: "h-5" %>
           </div>
         </a>
@@ -39,12 +39,42 @@
     <div class="py-4 pb-0 text-xs text-slate-400 w-full border-t border-slate-700 mt-2">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
         <div>
-          Copyright © <%= Date.today.year %> Starsong GmbH. All rights reserved. Not officially affiliated with unu GmbH.
+          <%= t('footer.copyright', year: Date.today.year) %><br class="sm:hidden"><%= t('footer.not_affiliated') %>
         </div>
-        <div class="mt-2 sm:mt-0">
-          <%= link_to "Privacy Policy", privacy_policy_path, class: "hover:text-indigo-300" %> · 
-          <%= link_to "Legal Notice", legal_notice_path, class: "hover:text-indigo-300" %> · 
-          <%= link_to "Security", security_path, class: "hover:text-indigo-300" %>
+        <div class="mt-2 sm:mt-0 flex items-center space-x-4">
+          <%= link_to t('footer.privacy_policy'), privacy_policy_path, class: "hover:text-indigo-300" %>
+          <%= link_to t('footer.legal_notice'), legal_notice_path, class: "hover:text-indigo-300" %>
+          <%= link_to t('footer.security'), security_path, class: "hover:text-indigo-300" %>
+          
+          <div class="relative ml-4" data-controller="dropdown">
+            <button data-action="click->dropdown#toggle" class="flex items-center text-slate-400 hover:text-indigo-300">
+              <span class="mr-1">
+                <% if I18n.locale.to_s == 'en' %>
+                  <%= t('common.english') %>
+                <% elsif I18n.locale.to_s == 'de_DE' %>
+                  <%= t('common.german') %>
+                <% else %>
+                  <%= t('common.language') %>
+                <% end %>
+              </span>
+              <svg data-dropdown-target="chevron" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+              </svg>
+            </button>
+            <div data-dropdown-target="menu" class="hidden absolute bottom-full right-0 mb-1 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+              <%= button_to locale_path, method: :post, params: { locale: "en" }, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md border-0 bg-transparent" do %>
+                <%= t('common.english') %>
+              <% end %>
+              <%= button_to locale_path, method: :post, params: { locale: "de_DE" }, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md border-0 bg-transparent" do %>
+                <%= t('common.german') %>
+              <% end %>
+              <% if Rails.env.development? %>
+                <%= button_to locale_path, method: :post, params: { locale: "pirate" }, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md border-0 bg-transparent" do %>
+                  <%= t('common.pirate') %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
         </div>
       </div>
     </div>

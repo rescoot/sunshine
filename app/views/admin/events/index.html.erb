@@ -1,15 +1,15 @@
 <div class="sm:flex sm:items-center">
   <div class="sm:flex-auto">
     <h1 class="text-2xl font-semibold leading-6 text-gray-900">
-      <%= @scooter ? "Events for #{@scooter.name}" : "All Events" %>
+      <%= @scooter ? t('admin.events.index.title_for_scooter', scooter: @scooter.name) : t('admin.events.index.title_all') %>
     </h1>
     <p class="mt-2 text-sm text-gray-700">
-      <%= @scooter ? "Event history for this scooter." : "Event history across all scooters." %>
+      <%= @scooter ? t('admin.events.index.subtitle_for_scooter') : t('admin.events.index.subtitle_all') %>
     </p>
   </div>
   <% if @scooter %>
     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-      <%= link_to "Back to Scooter", admin_scooter_path(@scooter), class: "btn-secondary" %>
+      <%= link_to t('admin.events.index.back_to_scooter'), admin_scooter_path(@scooter), class: "btn-secondary" %>
     </div>
   <% end %>
 </div>
@@ -22,26 +22,26 @@
           fields: [
             {
               name: :event_type,
-              label: "Event Type",
+              label: t('admin.events.index.event_type'),
               type: :select,
               options: ScooterEvent.event_types.keys.map { |k| [k.titleize, k] }
             },
             {
               name: :start_date,
-              label: "From",
+              label: t('admin.events.index.from'),
               type: :date
             },
             {
               name: :end_date,
-              label: "To",
+              label: t('admin.events.index.to'),
               type: :date
             },
             unless @scooter
               {
                 name: :scooter_name,
-                label: "Scooter",
+                label: t('admin.events.index.scooter'),
                 type: :text,
-                placeholder: "Search by scooter name..."
+                placeholder: t('admin.events.index.search_by_scooter')
               }
             end
           ].compact %>
@@ -49,12 +49,12 @@
         <table class="min-w-full divide-y divide-gray-300">
           <thead class="bg-gray-50">
             <tr>
-              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Time</th>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"><%= t('admin.events.index.time') %></th>
               <% unless @scooter %>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooter</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.events.index.scooter') %></th>
               <% end %>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Type</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Data</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.events.index.type') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.events.index.data') %></th>
               <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
                 <span class="sr-only">Actions</span>
               </th>
@@ -95,7 +95,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                       </svg>
-                      View
+                      <%= t('admin.events.index.view') %>
                     <% end %>
                   </div>
                 </td>

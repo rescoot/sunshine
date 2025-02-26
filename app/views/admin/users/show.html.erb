@@ -2,14 +2,14 @@
 <div>
   <div class="sm:flex sm:items-center">
     <div class="sm:flex-auto">
-      <h1 class="text-2xl font-semibold leading-6 text-gray-900">User Details</h1>
-      <p class="mt-2 text-sm text-gray-700">Detailed information about <%= @user.name %></p>
+      <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= t('admin.users.show.title') %></h1>
+      <p class="mt-2 text-sm text-gray-700"><%= t('admin.users.show.subtitle', name: @user.name) %></p>
     </div>
     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-      <%= link_to "Edit User", edit_admin_user_path(@user), class: "ml-3 inline-flex items-center btn-secondary" %>
-      <%= link_to "Feature Flags", admin_user_feature_flags_path(@user), class: "ml-3 inline-flex items-center btn-secondary" %>
-      <%= link_to "Achievements", admin_user_achievements_path(@user), class: "ml-3 inline-flex items-center btn-secondary" %>
-      <%= link_to "Back to List", admin_users_path, class: "ml-3 inline-flex items-center btn-secondary" %>
+      <%= link_to t('admin.users.show.edit_user'), edit_admin_user_path(@user), class: "ml-3 inline-flex items-center btn-secondary" %>
+      <%= link_to t('admin.users.show.feature_flags'), admin_user_feature_flags_path(@user), class: "ml-3 inline-flex items-center btn-secondary" %>
+      <%= link_to t('admin.users.show.achievements'), admin_user_achievements_path(@user), class: "ml-3 inline-flex items-center btn-secondary" %>
+      <%= link_to t('admin.users.show.back_to_list'), admin_users_path, class: "ml-3 inline-flex items-center btn-secondary" %>
     </div>
   </div>
 
@@ -17,34 +17,34 @@
     <!-- User Information -->
     <div class="bg-white shadow sm:rounded-lg">
       <div class="px-4 py-5 sm:p-6">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">User Information</h3>
+        <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('admin.users.show.user_information') %></h3>
         <dl class="mt-6 space-y-6 divide-y divide-gray-100">
           <div class="pt-6 sm:flex">
-            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Full name</dt>
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6"><%= t('admin.users.show.full_name') %></dt>
             <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
               <div class="text-gray-900"><%= @user.name %></div>
             </dd>
           </div>
           <div class="pt-6 sm:flex">
-            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Email address</dt>
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6"><%= t('admin.users.show.email_address') %></dt>
             <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
               <div class="text-gray-900"><%= @user.email %></div>
             </dd>
           </div>
           <div class="pt-6 sm:flex">
-            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Role</dt>
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6"><%= t('admin.users.show.role') %></dt>
             <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
               <div class="text-gray-900">
                 <% if @user.admin? %>
-                  <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10">Administrator</span>
+                  <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 ring-1 ring-inset ring-purple-700/10"><%= t('admin.users.show.administrator') %></span>
                 <% else %>
-                  <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">Regular User</span>
+                  <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"><%= t('admin.users.show.regular_user') %></span>
                 <% end %>
               </div>
             </dd>
           </div>
           <div class="pt-6 sm:flex">
-            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Member since</dt>
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6"><%= t('admin.users.show.member_since') %></dt>
             <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
               <div class="text-gray-900"><%= @user.created_at.strftime("%B %d, %Y") %></div>
             </dd>
@@ -56,7 +56,7 @@
     <!-- Scooters -->
     <div class="bg-white shadow sm:rounded-lg">
       <div class="px-4 py-5 sm:p-6">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">Scooters (<%= @user.scooters.count %>)</h3>
+        <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('admin.users.show.scooters_count', count: @user.scooters.count) %></h3>
         <div class="mt-6 flow-root">
           <div class="-my-5 divide-y divide-gray-200">
             <% @user.user_scooters.includes(:scooter).each do |user_scooter| %>
@@ -90,16 +90,16 @@
   <div class="mt-8">
     <div class="bg-white shadow sm:rounded-lg">
       <div class="px-4 py-5 sm:p-6">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">Recent Trips</h3>
+        <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('admin.users.show.recent_trips') %></h3>
         <div class="mt-6">
           <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
             <table class="min-w-full divide-y divide-gray-300">
               <thead class="bg-gray-50">
                 <tr>
-                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900">Date</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooter</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Duration</th>
-                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Distance</th>
+                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"><%= t('admin.users.show.date') %></th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.users.show.scooter') %></th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.users.show.duration') %></th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.users.show.distance') %></th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 bg-white">
@@ -112,7 +112,7 @@
                       <%= trip.scooter.name %>
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <%= trip.duration ? distance_of_time_in_words(trip.duration) : "In Progress" %>
+                      <%= trip.duration ? distance_of_time_in_words(trip.duration) : t('admin.users.show.in_progress') %>
                     </td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       <%= trip.distance ? number_with_precision(trip.distance / 1000.0, precision: 1) + " km" : "-" %>

@@ -1,15 +1,15 @@
 <div class="sm:flex sm:items-center">
   <div class="sm:flex-auto">
     <h1 class="text-2xl font-semibold leading-6 text-gray-900">
-      <%= @scooter ? "Telemetry for #{@scooter.name}" : "All Telemetry" %>
+      <%= @scooter ? t('admin.telemetries.index.title_for_scooter', scooter: @scooter.name) : t('admin.telemetries.index.title_all') %>
     </h1>
     <p class="mt-2 text-sm text-gray-700">
-      <%= @scooter ? "Telemetry history for this scooter." : "Telemetry history across all scooters." %>
+      <%= @scooter ? t('admin.telemetries.index.subtitle_for_scooter') : t('admin.telemetries.index.subtitle_all') %>
     </p>
   </div>
   <% if @scooter %>
     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-      <%= link_to "Back to Scooter", admin_scooter_path(@scooter), class: "btn-secondary" %>
+      <%= link_to t('admin.telemetries.index.back_to_scooter'), admin_scooter_path(@scooter), class: "btn-secondary" %>
     </div>
   <% end %>
 </div>
@@ -22,23 +22,23 @@
           fields: [
             {
               name: :state,
-              label: "State",
+              label: t('admin.telemetries.index.state'),
               type: :select,
               options: Scooter::POWER_STATES.map { |s| [s.titleize, s] }
             },
             {
               name: :start_date,
-              label: "From",
+              label: t('admin.telemetries.index.from'),
               type: :date
             },
             {
               name: :end_date,
-              label: "To",
+              label: t('admin.telemetries.index.to'),
               type: :date
             },
             {
               name: :min_speed,
-              label: "Min Speed (km/h)",
+              label: t('admin.telemetries.index.min_speed'),
               type: :number,
               min: 0,
               max: 100,
@@ -46,7 +46,7 @@
             },
             {
               name: :max_speed,
-              label: "Max Speed (km/h)",
+              label: t('admin.telemetries.index.max_speed'),
               type: :number,
               min: 0,
               max: 100,
@@ -55,7 +55,7 @@
               unless @scooter
               {
                 name: :scooter_id,
-                label: "Scooter",
+                label: t('admin.telemetries.index.scooter'),
                 type: :select,
                 options: Scooter.all.map { |s| [s.name, s.id] }
               }
@@ -65,14 +65,14 @@
         <table class="min-w-full divide-y divide-gray-300">
           <thead class="bg-gray-50">
             <tr>
-              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Time</th>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"><%= t('admin.telemetries.index.time') %></th>
               <% unless @scooter %>
-                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Scooter</th>
+                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.telemetries.index.scooter') %></th>
               <% end %>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">State</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Speed</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Batteries</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.telemetries.index.state') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.telemetries.index.speed') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.telemetries.index.location') %></th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.telemetries.index.batteries') %></th>
               <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
                 <span class="sr-only">Actions</span>
               </th>
@@ -106,7 +106,7 @@
                   <%= number_with_precision(telemetry.speed, precision: 1) %> km/h
                   <% if telemetry.motor_current&.negative? %>
                     <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20">
-                      REGEN
+                      <%= t('admin.telemetries.index.regen') %>
                     </span>
                   <% end %>
                 </td>
@@ -124,12 +124,12 @@
                   <div class="flex space-x-1">
                     <% if telemetry.battery0_present? %>
                       <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                        B0: <%= number_to_percentage(telemetry.battery0_level, precision: 0) %>
+                        <%= t('admin.telemetries.index.battery0', level: number_to_percentage(telemetry.battery0_level, precision: 0)) %>
                       </span>
                     <% end %>
                     <% if telemetry.battery1_present? %>
                       <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                        B1: <%= number_to_percentage(telemetry.battery1_level, precision: 0) %>
+                        <%= t('admin.telemetries.index.battery1', level: number_to_percentage(telemetry.battery1_level, precision: 0)) %>
                       </span>
                     <% end %>
                   </div>
@@ -141,7 +141,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                       </svg>
-                      View
+                      <%= t('admin.telemetries.index.view') %>
                     <% end %>
                   </div>
                 </td>

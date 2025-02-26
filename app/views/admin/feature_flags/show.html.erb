@@ -1,12 +1,12 @@
 <div>
   <div class="sm:flex sm:items-center">
     <div class="sm:flex-auto">
-      <h1 class="text-2xl font-semibold leading-6 text-gray-900">Feature Flag: <%= @feature_flag.name %></h1>
+      <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= t('admin.feature_flags.show.title', name: @feature_flag.name) %></h1>
       <p class="mt-2 text-sm text-gray-700"><%= @feature_flag.description %></p>
     </div>
     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-      <%= link_to "Edit", edit_admin_feature_flag_path(@feature_flag), class: "ml-3 inline-flex items-center btn-secondary" %>
-      <%= link_to "Back to List", admin_feature_flags_path, class: "ml-3 inline-flex items-center btn-secondary" %>
+      <%= link_to t('admin.feature_flags.show.edit'), edit_admin_feature_flag_path(@feature_flag), class: "ml-3 inline-flex items-center btn-secondary" %>
+      <%= link_to t('admin.feature_flags.show.back_to_list'), admin_feature_flags_path, class: "ml-3 inline-flex items-center btn-secondary" %>
     </div>
   </div>
 
@@ -14,34 +14,34 @@
     <!-- Feature Flag Information -->
     <div class="bg-white shadow sm:rounded-lg">
       <div class="px-4 py-5 sm:p-6">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">Feature Flag Information</h3>
+        <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('admin.feature_flags.show.feature_flag_information') %></h3>
         <dl class="mt-6 space-y-6 divide-y divide-gray-100">
           <div class="pt-6 sm:flex">
-            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Name</dt>
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6"><%= t('admin.feature_flags.show.name') %></dt>
             <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
               <div class="text-gray-900"><%= @feature_flag.name %></div>
             </dd>
           </div>
           <div class="pt-6 sm:flex">
-            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Key</dt>
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6"><%= t('admin.feature_flags.show.key') %></dt>
             <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
               <div class="text-gray-900"><code class="bg-gray-100 px-2 py-1 rounded"><%= @feature_flag.key %></code></div>
             </dd>
           </div>
           <div class="pt-6 sm:flex">
-            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Description</dt>
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6"><%= t('admin.feature_flags.show.description') %></dt>
             <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
               <div class="text-gray-900"><%= @feature_flag.description %></div>
             </dd>
           </div>
           <div class="pt-6 sm:flex">
-            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6">Default Status</dt>
+            <dt class="font-medium text-gray-900 sm:w-64 sm:flex-none sm:pr-6"><%= t('admin.feature_flags.show.default_status') %></dt>
             <dd class="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
               <div class="text-gray-900">
                 <% if @feature_flag.default_enabled %>
-                  <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Enabled</span>
+                  <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"><%= t('admin.feature_flags.show.enabled') %></span>
                 <% else %>
-                  <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Disabled</span>
+                  <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"><%= t('admin.feature_flags.show.disabled') %></span>
                 <% end %>
               </div>
             </dd>
@@ -53,7 +53,7 @@
     <!-- Users with Custom Configuration -->
     <div class="bg-white shadow sm:rounded-lg">
       <div class="px-4 py-5 sm:p-6">
-        <h3 class="text-base font-semibold leading-6 text-gray-900">Users with Custom Configuration (<%= @users_with_config.count %>)</h3>
+        <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('admin.feature_flags.show.users_with_custom_config', count: @users_with_config.count) %></h3>
         
         <% if @users_with_config.any? %>
           <div class="mt-6">
@@ -61,10 +61,10 @@
               <table class="min-w-full divide-y divide-gray-300">
                 <thead class="bg-gray-50">
                   <tr>
-                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">User</th>
-                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
-                    <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Status</th>
-                    <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Actions</th>
+                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"><%= t('admin.feature_flags.show.user') %></th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('admin.feature_flags.show.email') %></th>
+                    <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900"><%= t('admin.feature_flags.show.status') %></th>
+                    <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900"><%= t('admin.feature_flags.show.actions') %></th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 bg-white">
@@ -78,13 +78,13 @@
                       </td>
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
                         <% if user_feature_flag.enabled %>
-                          <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Enabled</span>
+                          <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"><%= t('admin.feature_flags.show.enabled') %></span>
                         <% else %>
-                          <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Disabled</span>
+                          <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"><%= t('admin.feature_flags.show.disabled') %></span>
                         <% end %>
                       </td>
                       <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
-                        <%= link_to "Manage", admin_user_feature_flags_path(user_feature_flag.user), class: "text-indigo-600 hover:text-indigo-900" %>
+                        <%= link_to t('admin.feature_flags.show.manage'), admin_user_feature_flags_path(user_feature_flag.user), class: "text-indigo-600 hover:text-indigo-900" %>
                       </td>
                     </tr>
                   <% end %>
@@ -94,8 +94,8 @@
           </div>
         <% else %>
           <div class="mt-6 text-center py-8 text-gray-500">
-            <p>No users have a custom configuration for this feature flag.</p>
-            <p class="text-sm mt-2">All users are using the default setting (<%= @feature_flag.default_enabled ? "Enabled" : "Disabled" %>).</p>
+            <p><%= t('admin.feature_flags.show.no_custom_config') %></p>
+            <p class="text-sm mt-2"><%= t('admin.feature_flags.show.all_users_default', default: @feature_flag.default_enabled ? t('admin.feature_flags.show.enabled') : t('admin.feature_flags.show.disabled')) %></p>
           </div>
         <% end %>
       </div>
