@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :confirmable
+  devise :otp_authenticatable, :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :confirmable
 
   delegate :leaderboard_opt_in, :leaderboard_display_name, to: :user_preference, allow_nil: true
   has_one :user_preference, dependent: :destroy
@@ -40,6 +40,20 @@ class User < ApplicationRecord
   # Returns a hash with earned and in-progress achievements
   def check_achievements
     AchievementService.check_achievements(self)
+  end
+
+  # Check if 2FA is mandatory for this user
+  def otp_mandatory?
+    return false unless is_admin?
+
+    # If the user is an admin, check if they're within the grace period
+    if confirmed_at.present? && !otp_enabled?
+      grace_period = self.class.otp_mandatory_admin_grace_period || 24.hours
+      return Time.now > (confirmed_at + grace_period)
+    end
+
+    # If the user is an admin and outside the grace period, 2FA is mandatory
+    is_admin?
   end
 
   private

@@ -1,11 +1,11 @@
 # config/routes.rb
 Rails.application.routes.draw do
   # Static pages
-  get 'about', to: 'pages#about', as: :about
-  get 'contact', to: 'pages#contact', as: :contact
-  get 'privacy-policy', to: 'pages#privacy_policy', as: :privacy_policy
-  get 'legal-notice', to: 'pages#legal_notice', as: :legal_notice
-  get 'security', to: 'pages#security', as: :security
+  get "about", to: "pages#about", as: :about
+  get "contact", to: "pages#contact", as: :contact
+  get "privacy-policy", to: "pages#privacy_policy", as: :privacy_policy
+  get "legal-notice", to: "pages#legal_notice", as: :legal_notice
+  get "security", to: "pages#security", as: :security
 
   ## turns out the unu "cloud" REST API is used _only_ for activation of the scooter in the warehouse?!
   # # to reverse the unu cloud requests
@@ -14,7 +14,14 @@ Rails.application.routes.draw do
   #   match "*path", to: "unu#handle", via: :all
   # end
 
-  devise_for :users
+  devise_for :users, controllers: {
+    sessions: "users/sessions"
+  }
+
+  # OTP verification routes
+  namespace :users do
+    resource :otp_verification, only: [ :show, :create ], controller: "otp_verification"
+  end
 
   namespace :admin do
     root to: "dashboard#index"
@@ -82,6 +89,11 @@ Rails.application.routes.draw do
 
   resource :account, only: [ :show, :edit, :update, :destroy ] do
     resources :api_tokens, only: [ :new, :create, :destroy ], controller: "accounts/api_tokens"
+  end
+
+  # Two-factor authentication
+  resource :two_factor_auth, only: [ :new, :create, :destroy ], controller: "two_factor_auth" do
+    get :confirm_disable
   end
 
   resources :scooters do

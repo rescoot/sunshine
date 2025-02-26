@@ -1,0 +1,105 @@
+<div class="max-w-3xl mx-auto p-6">
+  <h1 class="text-2xl font-bold mb-6">Set Up Two-Factor Authentication</h1>
+
+  <div class="bg-white shadow rounded-lg mb-6 p-6">
+    <div class="mb-6">
+      <h2 class="text-lg font-semibold mb-2">Step 1: Scan QR Code</h2>
+      <p class="mb-4">Scan this QR code with your authenticator app (Google Authenticator, Authy, etc.).</p>
+      
+      <div class="mb-4 w-64 h-64">
+        <%= otp_authenticator_token_image(current_user) %>
+      </div>
+      
+      <div class="mb-4">
+        <p class="text-sm text-gray-600">
+          If you can't scan the QR code, you can manually enter this secret key in your authenticator app:
+        </p>
+        <div class="mt-2 p-2 bg-gray-100 rounded font-mono text-sm break-all">
+          <%= current_user.otp_auth_secret %>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <h2 class="text-lg font-semibold mb-2">Step 2: Verify Setup</h2>
+      <p class="mb-4">Enter the verification code from your authenticator app to complete the setup.</p>
+      
+      <%= form_tag two_factor_auth_path, method: :post do %>
+        <div class="mb-4">
+          <label for="otp_attempt" class="block text-sm font-medium text-gray-700">Verification Code</label>
+          <div class="mt-1">
+            <%= text_field_tag :otp_attempt, nil, class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm", placeholder: "Enter 6-digit code", autocomplete: "off", required: true, pattern: "[0-9]{6}", inputmode: "numeric" %>
+          </div>
+        </div>
+        
+        <div class="flex items-center justify-between">
+          <%= submit_tag "Verify and Enable", class: "inline-flex items-center btn-primary" %>
+          <%= link_to "Cancel", account_path, class: "text-sm text-gray-600 hover:text-gray-900" %>
+        </div>
+      <% end %>
+    </div>
+
+    <div>
+      <h2 class="text-lg font-semibold mb-2">Step 3: Save Recovery Codes</h2>
+      <p class="mb-4">
+        These recovery codes can be used to access your account if you lose your phone or cannot access your authenticator app.
+        <strong>Save these codes in a secure place.</strong> They will not be shown again.
+      </p>
+      
+      <div class="grid grid-cols-2 gap-2 mb-4">
+        <% @recovery_codes.each do |idx, code| %>
+          <div class="p-2 bg-gray-100 rounded font-mono text-sm">
+            <%= code %>
+          </div>
+        <% end %>
+      </div>
+      
+      <div class="mt-4 flex space-x-4">
+        <a href="#" onclick="downloadRecoveryCodes(); return false;" class="text-sm text-gray-600 hover:text-gray-900">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          Download Recovery Codes
+        </a>
+        
+        <a href="#" onclick="copyRecoveryCodesToClipboard(); return false;" class="text-sm text-gray-600 hover:text-gray-900">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+          </svg>
+          Copy Recovery Codes to Clipboard
+        </a>
+      </div>
+      
+      <script>
+        function downloadRecoveryCodes() {
+          const codes = <%= @recovery_codes.map { |idx, code| code }.to_json.html_safe %>;
+          const content = codes.join('\n');
+          const blob = new Blob([content], { type: 'text/plain' });
+          const url = URL.createObjectURL(blob);
+          
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'recovery-codes.txt';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        }
+        
+        function copyRecoveryCodesToClipboard() {
+          const codes = <%= @recovery_codes.map { |idx, code| code }.to_json.html_safe %>;
+          const content = codes.join('\n');
+          
+          navigator.clipboard.writeText(content)
+            .then(() => {
+              alert('Recovery codes copied to clipboard!');
+            })
+            .catch(err => {
+              console.error('Failed to copy: ', err);
+              alert('Failed to copy recovery codes. Please try again.');
+            });
+        }
+      </script>
+    </div>
+  </div>
+</div>

@@ -1,17 +1,27 @@
-<div class="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded" data-controller="clipboard">
+<div class="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-md shadow-sm" data-controller="clipboard">
   <div class="flex items-center justify-between">
-    <p class="font-mono text-sm break-all">
-      New token (copy this now, it won't be shown again)
-    </p>
+    <div class="flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <p class="font-medium text-sm text-yellow-800">
+        New token (copy this now, it won't be shown again)
+      </p>
+    </div>
     <button type="button" 
             onclick="copy()"
-            class="text-sm text-blue-600 hover:text-blue-800">
+            class="inline-flex items-center text-sm text-indigo-600 hover:text-indigo-800 font-medium">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+      </svg>
       Copy to clipboard
     </button>
   </div>
-  <p class="mt-2 font-mono text-sm break-all" data-clipboard-text="<%= token %>">
-    <%= token %>
-  </p>
+  <div class="mt-3 p-3 bg-white rounded border border-yellow-200">
+    <p class="font-mono text-sm break-all" data-clipboard-text="<%= token %>">
+      <%= token %>
+    </p>
+  </div>
 </div>
 
 <script>
