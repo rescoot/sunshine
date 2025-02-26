@@ -30,16 +30,19 @@ class TelemetryTripProcessor
     # Ensure distance is an integer
     total_distance = total_distance.to_i
 
-    # Update trip with end data
+    # First update trip with end data (without avg_speed)
     trip.update!(
       ended_at: end_telemetry.created_at,
       end_lat: end_telemetry.lat,
       end_lng: end_telemetry.lng,
       end_odometer: end_telemetry.odometer,
       end_telemetry: end_telemetry,
-      distance: total_distance,
-      avg_speed: TripDetectionService.calculate_average_speed(trip, total_distance)
+      distance: total_distance
     )
+
+    # Now that ended_at is set, calculate and update the average speed
+    avg_speed = TripDetectionService.calculate_average_speed(trip, total_distance)
+    trip.update!(avg_speed: avg_speed)
 
     # Validate the trip meets minimum requirements
     unless TripDetectionService.trip_meets_requirements?(trip)
