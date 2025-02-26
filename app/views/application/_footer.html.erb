@@ -1,0 +1,52 @@
+<footer id="footer" class="text-slate-50 py-4 flex-none border-t-4 border-indigo-600" style="background: linear-gradient(to bottom, #3730a3 0%, oklch(0.257 0.09 281.288) 5%, #000000 10%, #000000 100%);">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col items-start">
+    <div class="w-full py-4 justify-between items-center flex flex-col sm:flex-row">
+      <div class="grow flex justify-start mt-4 sm:mt-0">
+        <nav class="flex space-x-6 text-base font-medium">
+          <%= link_to "About", about_path, class: "hover:text-indigo-300" %>
+          <%= link_to "Contact", contact_path, class: "hover:text-indigo-300" %>
+          <%= link_to "VIN Decoder", vin_decoder_path, class: "hover:text-indigo-300" %>
+        </nav>
+      </div>
+
+      <div class="flex items-center space-x-4 mt-4 sm:mt-0">
+        <a href="https://github.com/rescoot" class="flex items-center px-2 py-1 rounded-md border border-gray-700 bg-black hover:bg-gray-900 transition-colors">
+          <%= image_tag "rescoot.png", alt: "ReScoot Logo", class: "h-6" %>
+          <div class="ml-1.5 flex flex-col">
+            <span class="font-bold text-white text-sm leading-tight">Rescoot</span>
+            <span class="text-xs text-slate-400 leading-tight">A Rescoot Project</span>
+          </div>
+        </a>
+
+        <a href="https://github.com/librescoot" class="flex items-center px-2 py-1 rounded-md border border-gray-700 bg-black hover:bg-gray-900 transition-colors">
+          <%= image_tag "librescoot.png", alt: "Librescoot Logo", class: "h-6" %>
+          <div class="ml-1.5 flex flex-col">
+            <span class="font-bold text-white text-sm leading-tight">Librescoot</span>
+            <span class="text-xs text-slate-400 leading-tight">powered</span>
+          </div>
+        </a>
+
+        <a href="https://discord.gg/VrumFruSzJ" class="flex items-center bg-indigo-700 hover:bg-indigo-600 rounded-md px-3 py-2 transition-colors">
+          <div class="flex items-center">
+            <%= image_tag "discord-logo.png", alt: "Discord Logo", class: "h-5 mr-2" %>
+            <span class="mr-2">Join the unu Community</span>
+            <%= image_tag "unu-community.png", alt: "UNU Community", class: "h-5" %>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="py-4 pb-0 text-xs text-slate-400 w-full border-t border-slate-700 mt-2">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+        <div>
+          Copyright © <%= Date.today.year %> Starsong GmbH. All rights reserved. Not officially affiliated with unu GmbH.
+        </div>
+        <div class="mt-2 sm:mt-0">
+          <%= link_to "Privacy Policy", privacy_policy_path, class: "hover:text-indigo-300" %> · 
+          <%= link_to "Legal Notice", legal_notice_path, class: "hover:text-indigo-300" %> · 
+          <%= link_to "Security", security_path, class: "hover:text-indigo-300" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

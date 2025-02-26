@@ -1,5 +1,12 @@
 # config/routes.rb
 Rails.application.routes.draw do
+  # Static pages
+  get 'about', to: 'pages#about', as: :about
+  get 'contact', to: 'pages#contact', as: :contact
+  get 'privacy-policy', to: 'pages#privacy_policy', as: :privacy_policy
+  get 'legal-notice', to: 'pages#legal_notice', as: :legal_notice
+  get 'security', to: 'pages#security', as: :security
+
   ## turns out the unu "cloud" REST API is used _only_ for activation of the scooter in the warehouse?!
   # # to reverse the unu cloud requests
   # constraints subdomain: "unu.cloud" do
@@ -136,7 +143,7 @@ Rails.application.routes.draw do
 
   get "dashboard", to: "dashboard#index"
 
-  root "welcome#index"
+  root "pages#index"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

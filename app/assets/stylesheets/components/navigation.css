@@ -1,9 +1,29 @@
 @layer components {
   .nav-main {
-    @apply bg-indigo-950 border-b-2 border-indigo-900 shadow-sm;
+    @apply bg-indigo-800 border-b-2 border-indigo-700 shadow-sm;
   }
 
   .nav-admin {
-    @apply bg-teal-900 border-b-2 border-teal-800 shadow-sm;
+    @apply bg-teal-800 border-b-2 border-teal-700 shadow-sm;
+  }
+
+  /* Base navigation link styles */
+  .nav-link {
+    @apply text-gray-300 hover:text-white rounded-md px-3 py-2 text-sm font-medium;
+  }
+
+  /* User navigation link styles */
+  .nav-link-user {
+    @apply hover:bg-indigo-900;
+  }
+
+  /* Admin navigation link styles */
+  .nav-link-admin {
+    @apply hover:bg-teal-900;
+  }
+
+  /* Mobile navigation link styles */
+  .nav-link-mobile {
+    @apply block text-gray-300 hover:bg-indigo-900 hover:text-white rounded-md px-3 py-2 text-base font-medium;
   }
 }

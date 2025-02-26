@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="h-full bg-gray-50">
+<html class="h-full bg-gray-100">
   <head>
     <title>Sunshine</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -21,11 +21,11 @@
   </head>
 
   <body class="h-full">
-    <div class="min-h-full">
+    <div class="min-h-full flex flex-col">
       <%= render partial: "navigation" %>
 
-      <main>
-        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <main class="flex-grow">
+        <div class="mx-auto max-w-7xl px-4 py-6 pb-12 sm:px-6 lg:px-8">
           <% if notice %>
             <div class="rounded-md bg-green-50 p-4 mb-4">
               <div class="flex">
@@ -49,6 +49,8 @@
           <%= yield %>
         </div>
       </main>
+      
+      <%= render partial: "footer" %>
     </div>
   </body>
 </html>

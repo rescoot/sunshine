@@ -7,13 +7,22 @@
       Welcome to Sunshine
     </h2>
     <p class="mt-2 text-center text-sm text-gray-600">
-      Your friendly neighbourhood cloud for librescoot and unu scooters
+      An open source platform for managing unu/librescoot electric scooters
     </p>
   </div>
 
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
     <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
       <div class="space-y-6">
+        <div class="text-gray-700 mb-6">
+          <p class="mb-4">
+            Sunshine is a replacement for the unu Cloud that allows remote control of unu scooters, transmits telemetry data, records trips with detailed analytics, and enables scooter sharing via the cloud.
+          </p>
+          <p class="mb-2">
+            Our platform provides a web interface and API for monitoring real-time telemetry data, tracking trips, managing users with owner/user roles, and controlling various scooter functions.
+          </p>
+        </div>
+
         <div>
           <%= link_to new_user_session_path, 
               class: "w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
@@ -40,29 +49,6 @@
             <% end %>
           </div>
         </div>
-
-        <div class="mt-6">
-          <div class="relative">
-            <div class="absolute inset-0 flex items-center">
-              <div class="w-full border-t border-gray-300"></div>
-            </div>
-            <div class="relative flex justify-center text-sm">
-              <span class="px-2 bg-white text-gray-500">
-                Quick Tools
-              </span>
-            </div>
-          </div>
-
-          <div class="mt-6 grid grid-cols-2 gap-3">
-            <%= link_to vin_decoder_path, 
-                class: "w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-500 bg-white hover:bg-gray-50" do %>
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
-              </svg>
-              VIN Decoder
-            <% end %>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -77,9 +63,6 @@
         <%= link_to "Privacy", "#", class: "hover:underline" %>
       </div>
       <% end %>
-      <p class="text-xs text-gray-500">
-        © <%= Date.current.year %> Starsong GmbH. Not officially affiliated with unu GmbH.
-      </p>
     </div>
   </div>
 </div>

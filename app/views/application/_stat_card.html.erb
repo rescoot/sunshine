@@ -1,0 +1,33 @@
+<%# 
+  Renders a stat card with consistent styling
+  
+  Required parameters:
+  - icon: SVG path for the icon
+  - title: Title of the stat
+  - value: Value to display
+  
+  Optional parameters:
+  - link_path: Path to link the card to (optional)
+  - link_text: Text for the link (defaults to title if link_path is provided)
+%>
+
+<% link_text ||= title %>
+<div class="relative overflow-hidden rounded-lg bg-white p-4 shadow">
+  <dt>
+    <div class="absolute rounded-md bg-indigo-500 p-2">
+      <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <%= icon.html_safe %>
+      </svg>
+    </div>
+    <p class="ml-12 truncate text-sm font-medium text-gray-500">
+      <% if defined?(link_path) && link_path.present? %>
+        <%= link_to link_text, link_path, class: "text-indigo-600 hover:text-indigo-900" %>
+      <% else %>
+        <%= title %>
+      <% end %>
+    </p>
+  </dt>
+  <dd class="ml-12 flex items-baseline">
+    <p class="text-xl font-semibold text-gray-900"><%= value %></p>
+  </dd>
+</div>
