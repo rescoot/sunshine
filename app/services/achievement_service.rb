@@ -121,8 +121,17 @@ class AchievementService
   end
 
   def self.check_speed_achievements(user)
-    # Find maximum speed
-    max_speed = user.trips.maximum(:avg_speed) || 0
+    # Find maximum speed from telemetry data
+    max_speed = 0
+
+    # Get all user's scooters
+    user_scooters = user.scooters.pluck(:id)
+
+    # Find maximum speed across all telemetry data for user's scooters
+    if user_scooters.any?
+      max_telemetry_speed = Telemetry.where(scooter_id: user_scooters).maximum(:speed) || 0
+      max_speed = max_telemetry_speed
+    end
 
     # Check each speed achievement
     AchievementDefinition.by_type("speed").ordered_by_threshold.each do |achievement|
