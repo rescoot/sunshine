@@ -1,23 +1,14 @@
 @layer components {
   .achievement-card {
-    @apply rounded-lg p-4 border transition-all duration-200;
-    background: theme('colors.gray.50');
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 
-      0 2px 4px rgba(0, 0, 0, 0.05),
-      0 1px 2px rgba(0, 0, 0, 0.1);
+    @apply rounded-lg p-4 border transition-all duration-200 bg-gray-50 border-black/10 shadow-black/10 shadow-sm drop-shadow-sm h-full;
   }
 
   .achievement-card:hover {
-    box-shadow: 
-      0 4px 8px rgba(0, 0, 0, 0.05),
-      0 2px 4px rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    @apply shadow-md shadow-black/10;
   }
 
   .achievement-card .achievement-icon {
-    @apply flex-shrink-0 text-3xl mr-3;
-    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+    @apply flex-shrink-0 text-3xl mr-3 drop-shadow-sm;
   }
 
   .achievement-card .achievement-icon.inactive {
@@ -28,36 +19,28 @@
     @apply whitespace-nowrap;
   }
 
-  /* Layout for earned achievements */
   .achievement-card-earned {
-    background: theme('colors.green.50');
-    border-color: theme('colors.green.200');
-    @apply flex items-start;
+    @apply flex items-start bg-gray-50 border-gray-200;
   }
 
-  /* Layout for secret achievements */
+  .achievement-card-earned .flex-grow {
+    @apply flex flex-col h-full justify-between;
+  }
+
   .achievement-card-secret {
-    background: theme('colors.purple.50');
-    border-color: theme('colors.purple.200');
-    box-shadow: 
-      0 4px 8px rgba(128, 0, 128, 0.1),
-      0 2px 4px rgba(128, 0, 128, 0.1);
+    @apply bg-gradient-to-r from-purple-50 to-pink-50 shadow-purple-100 shadow-sm ring-1 ring-purple-600/15;
   }
 
   .achievement-card-secret:hover {
-    box-shadow: 
-      0 6px 12px rgba(128, 0, 128, 0.1),
-      0 3px 6px rgba(128, 0, 128, 0.1);
+    @apply shadow-pink-200;
   }
 
   .achievement-card-secret .badge {
-    @apply bg-purple-100 text-purple-800;
+    @apply text-purple-600 ring-purple-400 bg-gradient-to-r from-purple-50 to-pink-50;
   }
 
-  /* Layout for in-progress achievements */
   .achievement-card-progress {
-    background: theme('colors.blue.50');
-    border-color: theme('colors.blue.200');
+    @apply bg-blue-50 border-blue-200;
   }
 
   .achievement-card-progress .flex,
@@ -67,8 +50,6 @@
 
   /* Layout for next achievements */
   .achievement-card-next {
-    background: theme('colors.gray.100');
-    border-color: theme('colors.gray.200');
-    opacity: 0.9;
+    @apply bg-gray-100 border-gray-200 opacity-90 h-full;
   }
 }

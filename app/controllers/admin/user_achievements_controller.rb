@@ -4,8 +4,11 @@ class Admin::UserAchievementsController < ApplicationController
   before_action :set_user
 
   def index
-    @achievement_definitions = AchievementDefinition.all.order(:name)
+    @achievement_definitions = AchievementDefinition.all.order(:achievement_type, :threshold)
     @user_achievements = @user.user_achievements.includes(:achievement_definition)
+
+    # Group achievements by type for the view
+    @achievements_by_type = @achievement_definitions.group_by(&:achievement_type)
   end
 
   def update

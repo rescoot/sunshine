@@ -11,7 +11,6 @@ Rails.application.routes.draw do
 
   namespace :admin do
     root to: "dashboard#index"
-
     resources :feature_flags
     resources :users do
       resources :feature_flags, only: [ :index, :update ], controller: "user_feature_flags" do
@@ -34,9 +33,9 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :trips
     resources :events, only: [ :index, :show ]
     resources :telemetries, only: [ :index, :show ]
-    resources :trips
     resources :unu_uplink_requests, only: [ :index, :show ]
   end
 

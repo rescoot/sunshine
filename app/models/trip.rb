@@ -26,7 +26,11 @@ class Trip < ApplicationRecord
 
   # Check achievements for the trip's user
   def check_achievements
-    user.check_achievements if user
+    # Invalidate the achievement cache for this user
+    AchievementService.invalidate_cache(user) if user
+
+    # Process achievements in the background
+    AchievementProcessingJob.perform_later(user.id) if user
   end
 
   def duration

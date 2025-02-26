@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_25_125758) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_26_122542) do
   create_table "achievement_definitions", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
@@ -23,6 +23,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_125758) do
     t.datetime "updated_at", null: false
     t.boolean "secret", default: false, null: false
     t.index ["achievement_type"], name: "index_achievement_definitions_on_achievement_type"
+    t.index ["name"], name: "index_achievement_definitions_on_name", unique: true
   end
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -298,7 +299,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_125758) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["achievement_definition_id"], name: "index_user_achievements_on_achievement_definition_id"
+    t.index ["earned_at"], name: "index_user_achievements_on_earned_at"
     t.index ["user_id", "achievement_definition_id"], name: "idx_on_user_id_achievement_definition_id_ebd1e08e89", unique: true
+    t.index ["user_id", "earned_at"], name: "index_user_achievements_on_user_id_and_earned_at"
     t.index ["user_id"], name: "index_user_achievements_on_user_id"
   end
 

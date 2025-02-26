@@ -1,6 +1,15 @@
 class AchievementService
+  CACHE_EXPIRY = 1.hour
+
   # Check and update achievements for a user
+  # This method is now primarily used by the background job
   def self.check_achievements(user)
+    process_and_cache_achievements(user)
+  end
+
+  # Process achievements and store them in cache
+  # Returns the processed achievements
+  def self.process_and_cache_achievements(user)
     # Ensure we have achievement definitions
     seed_achievements_if_needed
 
@@ -10,17 +19,32 @@ class AchievementService
     check_duration_achievements(user)
     check_speed_achievements(user)
     check_ownership_achievements(user)
+    check_membership_duration_achievements(user)
     check_special_achievements(user)
 
-    # Return earned and in-progress achievements
-    # For earned achievements, include both visible and secret achievements
-    # For in-progress achievements, only include visible achievements
-    {
+    # Prepare the achievement data
+    achievements = {
       earned: user.user_achievements.earned.includes(:achievement_definition),
       in_progress: user.user_achievements.in_progress
                        .includes(:achievement_definition)
                        .where(achievement_definitions: { secret: false })
     }
+
+    # Cache the achievement data
+    cache_achievements(user, achievements)
+
+    # Return the achievements
+    achievements
+  end
+
+  # Get achievements for a user, using cache when available
+  def self.get_achievements(user)
+    # Try to get achievements from cache
+    cached = get_cached_achievements(user)
+    return cached if cached.present?
+
+    # If not in cache, process and cache them
+    process_and_cache_achievements(user)
   end
 
   # Get a user's total achievement points
@@ -159,6 +183,28 @@ class AchievementService
 
       # Mark as earned if threshold is met
       if scooter_count >= achievement.threshold && user_achievement.earned_at.nil?
+        user_achievement.earned_at = Time.current
+        notify_achievement_earned(user, achievement)
+      end
+
+      user_achievement.save!
+    end
+  end
+
+  def self.check_membership_duration_achievements(user)
+    # Calculate days since user registration
+    days_as_member = (Date.current - user.created_at.to_date).to_i
+
+    # Find membership duration achievements
+    membership_achievements = AchievementDefinition.where("name LIKE ?", "%Member%").ordered_by_threshold
+
+    # Check each membership achievement
+    membership_achievements.each do |achievement|
+      user_achievement = user.user_achievements.find_or_initialize_by(achievement_definition: achievement)
+      user_achievement.progress = days_as_member
+
+      # Mark as earned if threshold is met
+      if days_as_member >= achievement.threshold && user_achievement.earned_at.nil?
         user_achievement.earned_at = Time.current
         notify_achievement_earned(user, achievement)
       end
@@ -823,6 +869,61 @@ class AchievementService
 
       user_achievement.save!
     end
+
+    # Full Send achievement - Reach 50 km/h from standstill in under 10 seconds
+    full_send = AchievementDefinition.find_by(name: "Full Send")
+    if full_send
+      # Count trips with extreme acceleration
+      extreme_acceleration_trips = 0
+
+      user.trips.where.not(ended_at: nil).each do |trip|
+        # Get all telemetries for this trip
+        trip_telemetries = trip.scooter.telemetries
+                               .where("created_at BETWEEN ? AND ?", trip.started_at, trip.ended_at)
+                               .order(created_at: :asc)
+                               .to_a
+
+        # Need at least a few telemetry readings to analyze
+        if trip_telemetries.size >= 5
+          # Look for sequences where speed increases from near 0 to 50+ km/h
+          trip_telemetries.each_cons(2) do |t1, t2|
+            if t1.speed < 5 && t2.speed >= 50 && (t2.created_at - t1.created_at) <= 10.seconds
+              extreme_acceleration_trips += 1
+              break # Only count once per trip
+            end
+          end
+        end
+      end
+
+      user_achievement = user.user_achievements.find_or_initialize_by(achievement_definition: full_send)
+      user_achievement.progress = extreme_acceleration_trips
+
+      if extreme_acceleration_trips >= full_send.threshold && user_achievement.earned_at.nil?
+        user_achievement.earned_at = Time.current
+        notify_achievement_earned(user, full_send)
+      end
+
+      user_achievement.save!
+    end
+
+    # What Stamina achievement - Finish a trip with duration > 90 minutes
+    what_stamina = AchievementDefinition.find_by(name: "What Stamina")
+    if what_stamina
+      # Check if any trip lasts more than 90 minutes
+      long_duration_trips = user.trips.where.not(ended_at: nil)
+                               .where("(julianday(ended_at) - julianday(started_at)) * 24 * 60 >= ?", 90) # 90 minutes
+                               .count
+
+      user_achievement = user.user_achievements.find_or_initialize_by(achievement_definition: what_stamina)
+      user_achievement.progress = long_duration_trips
+
+      if long_duration_trips >= what_stamina.threshold && user_achievement.earned_at.nil?
+        user_achievement.earned_at = Time.current
+        notify_achievement_earned(user, what_stamina)
+      end
+
+      user_achievement.save!
+    end
   end
 
   def self.calculate_distance_between(lat1, lng1, lat2, lng2)
@@ -856,5 +957,27 @@ class AchievementService
     UserMailer.achievement_earned(user, achievement).deliver_later
 
     # Could also add in-app notifications, push notifications, etc.
+  end
+
+  # Cache methods
+
+  # Cache key for a user's achievements
+  def self.cache_key_for(user)
+    "user_achievements_#{user.id}_#{user.updated_at.to_i}"
+  end
+
+  # Store achievements in cache
+  def self.cache_achievements(user, achievements)
+    Rails.cache.write(cache_key_for(user), achievements, expires_in: CACHE_EXPIRY)
+  end
+
+  # Get cached achievements for a user
+  def self.get_cached_achievements(user)
+    Rails.cache.read(cache_key_for(user))
+  end
+
+  # Invalidate cache for a user
+  def self.invalidate_cache(user)
+    Rails.cache.delete(cache_key_for(user))
   end
 end

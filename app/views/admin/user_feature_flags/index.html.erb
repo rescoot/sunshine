@@ -110,7 +110,7 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  function initializeFeatureFlagControls() {
     // Get all the radio button labels
     const labels = document.querySelectorAll('label.cursor-pointer');
     
@@ -150,7 +150,13 @@
         // Update the text description
         const descriptionDiv = this.closest('td').querySelector('div.mt-1.text-xs.text-gray-500');
         const featureFlag = this.closest('tr');
-        const defaultEnabled = featureFlag.querySelector('td:nth-child(4) span').textContent.trim() === 'Enabled';
+        
+        // Safely get the default state
+        let defaultEnabled = false;
+        const defaultSpan = featureFlag.querySelector('td:nth-child(4) span');
+        if (defaultSpan) {
+          defaultEnabled = defaultSpan.textContent.trim() === 'Enabled';
+        }
         
         if (state === 'default') {
           descriptionDiv.textContent = `Using default (${defaultEnabled ? 'Enabled' : 'Disabled'})`;
@@ -161,5 +167,9 @@
         }
       });
     });
-  });
+  }
+
+  // Initialize on both DOMContentLoaded and turbo:load events
+  document.addEventListener('DOMContentLoaded', initializeFeatureFlagControls);
+  document.addEventListener('turbo:load', initializeFeatureFlagControls);
 </script>

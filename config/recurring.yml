@@ -24,3 +24,7 @@ production:
     class: LeaderboardAchievementJob
     queue: background
     schedule: "@weekly"
+  achievement_processing:
+    class: AchievementProcessingJob
+    queue: background
+    schedule: "every hour"

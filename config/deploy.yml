@@ -4,20 +4,20 @@ image: teal-bauer/sunshine
 servers:
   web:
     hosts:
-      - 178.63.144.127
+    - 178.63.144.117
     env:
       MQTT_ROLE: web
   job:
     hosts:
-      - 178.63.144.127
+    - 178.63.144.117
     cmd: bin/jobs
   mqtt:
     hosts:
-      - 178.63.144.127
+    - 178.63.144.117
     env:
       MQTT_ROLE: background
     cmd: bin/mqtt
-  
+
 builder:
   arch: amd64
   remote: ssh://root@rescoot.org
@@ -25,23 +25,23 @@ builder:
 proxy:
   ssl: true
   hosts:
-    - rescoot.org
-    - sunshine.rescoot.org
-    - unu.rescoot.org
-    - unu.cloud.rescoot.org
+  - rescoot.org
+  - sunshine.rescoot.org
+  - unu.rescoot.org
+  - unu.cloud.rescoot.org
 
 registry:
   server: ghcr.io
   username:
-    - KAMAL_REGISTRY_USERNAME
+  - KAMAL_REGISTRY_USERNAME
   password:
-    - KAMAL_REGISTRY_PASSWORD
+  - KAMAL_REGISTRY_PASSWORD
 
 env:
   secret:
-    - RAILS_MASTER_KEY
-    - MQTT_PASSWORD
-    - SMTP_PASSWORD
+  - RAILS_MASTER_KEY
+  - MQTT_PASSWORD
+  - SMTP_PASSWORD
   clear:
     RAILS_ENV: production
     RAILS_LOG_TO_STDOUT: true
@@ -59,38 +59,38 @@ accessories:
   mqtt:
     image: eclipse-mosquitto:latest
     roles:
-      - web
+    - web
     files:
-      - config/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
-      - config/mosquitto/acl:/mosquitto/config/acl
-      - config/mqtt_certs/ca.crt:/mosquitto/certs/ca.crt
-      - config/mqtt_certs/server/server.crt:/mosquitto/certs/server/server.crt
-      - config/mqtt_certs/server/server.key:/mosquitto/certs/server/server.key
+    - config/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    - config/mosquitto/acl:/mosquitto/config/acl
+    - config/mqtt_certs/ca.crt:/mosquitto/certs/ca.crt
+    - config/mqtt_certs/server/server.crt:/mosquitto/certs/server/server.crt
+    - config/mqtt_certs/server/server.key:/mosquitto/certs/server/server.key
     volumes:
-      - /etc/mosquitto/data/dynamic-security.json:/mosquitto/data/dynamic-security.json
-      - /etc/mosquitto/config/passwd:/mosquitto/config/passwd
-      - /etc/mosquitto/data:/mosquitto/data
-      - /etc/mosquitto/log:/mosquitto/log
-      - /etc/mosquitto/certs:/mosquitto/certs
+    - /etc/mosquitto/data/dynamic-security.json:/mosquitto/data/dynamic-security.json
+    - /etc/mosquitto/config/passwd:/mosquitto/config/passwd
+    - /etc/mosquitto/data:/mosquitto/data
+    - /etc/mosquitto/log:/mosquitto/log
+    - /etc/mosquitto/certs:/mosquitto/certs
     options:
       publish:
-        - "1883:1883"
-        - "8883:8883"
+      - "1883:1883"
+      - "8883:8883"
       restart: unless-stopped
 
   redis:
     image: redis:7-alpine
     roles:
-      - web
+    - web
     port: 127.0.0.1:6379:6379
     volumes:
-      - /var/lib/redis:/data
+    - /var/lib/redis:/data
     options:
       restart: unless-stopped
 
 volumes:
-  - "sunshine_storage:/rails/storage"
-  - "/var/lib/redis:/var/lib/redis"
+- "sunshine_storage:/rails/storage"
+- "/var/lib/redis:/var/lib/redis"
 
 aliases:
   console: app exec --interactive --reuse "bin/rails console"

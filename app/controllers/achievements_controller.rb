@@ -3,8 +3,8 @@ class AchievementsController < ApplicationController
   before_action :check_feature_enabled
 
   def index
-    # Check for new achievements
-    @achievements = AchievementService.check_achievements(current_user)
+    # Get achievements from cache or process them if not cached
+    @achievements = AchievementService.get_achievements(current_user)
 
     # Get total points
     @total_points = AchievementService.total_points(current_user)
