@@ -46,7 +46,12 @@
                   <%= current_user.name.first %>
                 </div>
               <% end %>
-              <span><%= current_user.name %></span>
+              <div class="flex flex-col items-start">
+                <span><%= current_user.name %></span>
+                <% if current_user.feature_enabled?(FeatureFlag::ACHIEVEMENTS) %>
+                  <span class="text-xs text-indigo-300"><%= AchievementService.total_points(current_user) %> points</span>
+                <% end %>
+              </div>
               <svg data-dropdown-target="chevron" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
@@ -106,7 +111,12 @@
                         <%= current_user.name.first %>
                       </div>
                     <% end %>
-                    <span><%= current_user.name %></span>
+                    <div class="flex flex-col items-start">
+                      <span><%= current_user.name %></span>
+                      <% if current_user.feature_enabled?(FeatureFlag::ACHIEVEMENTS) %>
+                        <span class="text-xs text-indigo-300"><%= AchievementService.total_points(current_user) %> points</span>
+                      <% end %>
+                    </div>
                   </div>
                   <svg data-dropdown-target="chevron" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>

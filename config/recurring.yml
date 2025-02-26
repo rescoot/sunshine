@@ -20,3 +20,7 @@ production:
     class: TripFinalizationJob
     queue: background
     schedule: every 5 minutes
+  leaderboard_achievement:
+    class: LeaderboardAchievementJob
+    queue: background
+    schedule: at 11:59pm on Sunday
