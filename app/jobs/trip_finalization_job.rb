@@ -20,23 +20,25 @@ class TripFinalizationJob < ApplicationJob
   private
 
   def process_potential_trip_ends
-    Redis.current.scan_each(match: "scooter:*:potential_trip_end") do |key|
-      scooter_id = key.split(":")[1]
-      telemetry_id = Redis.current.get(key)
+    $redis.with do |conn|
+      conn.scan_each(match: "scooter:*:potential_trip_end") do |key|
+        scooter_id = key.split(":")[1]
+        telemetry_id = conn.get(key)
 
-      next unless telemetry_id
+        next unless telemetry_id
 
-      telemetry = Telemetry.find_by(id: telemetry_id)
-      scooter = Scooter.find_by(id: scooter_id)
+        telemetry = Telemetry.find_by(id: telemetry_id)
+        scooter = Scooter.find_by(id: scooter_id)
 
-      next unless telemetry && scooter
+        next unless telemetry && scooter
 
-      if telemetry.created_at <= TelemetryTripProcessor::STANDBY_THRESHOLD_MINUTES.minutes.ago
-        # This potential end has been in stand-by for 15+ minutes, finalize it
-        Rails.logger.info "Finalizing trip for scooter #{scooter.vin} due to standby timeout"
-        processor = TelemetryTripProcessor.new(telemetry)
-        processor.end_trip(telemetry)
-        Redis.current.del(key)
+        if telemetry.created_at <= TelemetryTripProcessor::STANDBY_THRESHOLD_MINUTES.minutes.ago
+          # This potential end has been in stand-by for 15+ minutes, finalize it
+          Rails.logger.info "Finalizing trip for scooter #{scooter.vin} due to standby timeout"
+          processor = TelemetryTripProcessor.new(telemetry)
+          processor.end_trip(telemetry)
+          conn.del(key)
+        end
       end
     end
   end

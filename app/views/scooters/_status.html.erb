@@ -1,6 +1,7 @@
 <!-- Status Indicators -->
 <div class="my-6 flex flex-wrap gap-2">
   <% if scooter.vin.present? %>
+    <span id="vin-copy-message" class="hidden px-2 py-1 bg-gray-50 absolute text-xs text-green-600">Copied!</span>
     <span 
       id="scooter-vin" 
       class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 cursor-pointer"
@@ -8,10 +9,10 @@
       title="Click to copy VIN">
       VIN: <%= scooter.vin %>
     </span>
-    <span id="vin-copy-message" class="hidden text-xs text-green-600">Copied!</span>
   <% end %>
 
   <% if scooter.imei.present? %>
+    <span id="imei-copy-message" class="hidden absolute text-xs text-green-600">Copied!</span>
     <span 
       id="scooter-imei" 
       class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10 cursor-pointer"
@@ -19,7 +20,6 @@
       title="Click to copy IMEI">
       IMEI: <%= scooter.imei %>
     </span>
-    <span id="imei-copy-message" class="hidden text-xs text-green-600">Copied!</span>
   <% end %>
 
   <% if scooter.is_online? %>
@@ -82,7 +82,7 @@
 <script>
   function copyToClipboard(elementId, messageId) {
     const element = document.getElementById(elementId);
-    const text = element.textContent.replace(/^(VIN|IMEI): /, '').trim();
+    const text = element.textContent.replace(/^\s*(VIN|IMEI):\s*/, '').trim();
     
     navigator.clipboard.writeText(text).then(() => {
       // Show the success message

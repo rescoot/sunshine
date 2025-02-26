@@ -43,5 +43,7 @@ module Sunshine
 
     # config.action_cable.mount_path = "/api/v1/ws"
     config.action_cable.mount_path = "/cable"
+
+    config.solid_queue.logger = ActiveSupport::Logger.new(STDOUT)
   end
 end
