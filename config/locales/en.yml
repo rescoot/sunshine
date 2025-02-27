@@ -1,132 +1,5 @@
 ---
 en:
-  date:
-    formats:
-      default: "%Y-%m-%d"
-      short: "%b %d"
-      long: "%B %d, %Y"
-    day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
-    abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
-    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
-    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
-    order:
-      - :year
-      - :month
-      - :day
-  
-  time:
-    formats:
-      time: "%H:%M"
-      date_time: "%B %d, %Y %H:%M"
-      default: "%a, %d %b %Y %H:%M:%S %z"
-      short: "%d %b %H:%M"
-      long: "%B %d, %Y %H:%M"
-    am: "am"
-    pm: "pm"
-  
-  number:
-    human:
-      storage_units:
-        format: "%n %u"
-      decimal_units:
-        format: "%n %u"
-        units:
-          unit: ''
-          thousand: k
-          million: M
-          billion: B
-          trillion: T
-          quadrillion: Q
-  distance:
-    centi:
-      one: centimeter
-      other: centimeters
-    unit:
-      one: meter
-      other: meters
-    thousand:
-      one: kilometer
-      other: kilometers
-  units:
-    km: km
-    kmh: km/h
-    m: m
-    h: h
-  scooters:
-    status:
-      copied: Copied!
-      click_to_copy_vin: Click to copy VIN
-      click_to_copy_imei: Click to copy IMEI
-      vin_with_value: "VIN: %{vin}"
-      imei_with_value: "IMEI: %{imei}"
-      online: Online
-      offline: Offline
-      last_seen_ago: "Last seen %{time_ago} ago"
-      unknown: unknown
-      kickstand_with_status: "Kickstand %{status}"
-      seatbox_with_status: "Seatbox %{status}"
-      range_km: "%{range} km range"
-      range_unknown: Range unknown
-      location_unknown: Location unknown
-      main_battery_with_level: "Main %{level}"
-      spare_battery_with_level: "Spare %{level}"
-      cbb_with_level: "CBB %{level}"
-      aux_with_level: "Aux %{level}"
-    layout_status:
-      status: Status
-      online: Online
-      offline: Offline
-      state: State
-      last_seen: Last seen
-      ago: ago
-      main_battery: Main Battery
-      second_battery: Second Battery
-      aux_battery: Aux Battery
-      cb_battery: CB Battery
-      kickstand: Kickstand
-      seatbox: Seatbox
-      blinkers: Blinkers
-      unlock: Unlock
-      lock: Lock
-      left: Left
-      right: Right
-      both: Both
-      off: Off
-  time:
-    formats:
-      time: "%H:%M"
-      date_time: "%B %d, %Y %H:%M"
-  admin:
-    scooters:
-      show:
-        title: Scooter Details
-        subtitle: "Details and management for %{name}"
-        shell: Shell
-        edit: Edit
-        back_to_list: Back to List
-        scooter_information: Scooter Information
-        last_seen: Last seen
-        time_ago: "%{time_ago} ago"
-        never: Never
-        added_on: Added on
-        user_assignments: User Assignments
-        select_user: Select user...
-        owner_role: Owner
-        user_role: User
-        assign: Assign
-        user_column: User
-        role_column: Role
-        assigned_column: Assigned
-        actions: Actions
-        remove_confirm: Are you sure you want to remove this user?
-        recent_events: Recent Events
-        view_all: View All
-        recent_telemetry: Recent Telemetry
-        time_column: Time
-        state_column: State
-        speed_column: Speed
-        location_column: Location
-        speed_value: "%{speed} km/h"
   achievements:
     achievement: achievement
     achievements: achievements
@@ -135,7 +8,8 @@ en:
     discovered_time_ago: Discovered %{time_ago} ago
     earned_time_ago: Earned %{time_ago} ago
     is: is
-    keep_exploring: Keep exploring! There %{is_are} %{count} secret %{achievement_s} waiting to be discovered...
+    keep_exploring: Keep exploring! There %{is_are} %{count} secret %{achievement_s}
+      waiting to be discovered...
     next_to_earn: Next Achievements to Earn
     none_yet: No Achievements Yet
     points: points
@@ -172,15 +46,31 @@ en:
         type: Type
         view: View
       show:
-        title: Event Details
-        subtitle: Event from %{time}
         back_to_events: Back to Events
+        event_data: Event Data
         event_information: Event Information
         scooter: Scooter
-        type: Type
+        subtitle: Event from %{time}
         time: Time
-        event_data: Event Data
+        title: Event Details
+        type: Type
     feature_flags:
+      edit:
+        title: Edit Feature Flag
+      form:
+        cancel: Cancel
+        default_enabled: Default Enabled
+        default_enabled_description: If checked, this feature will be enabled by default
+          for all users unless explicitly disabled.
+        description: Description
+        error: Error
+        error_count: error
+        key: Key
+        key_description: Unique identifier for this feature flag (e.g., "leaderboards",
+          "achievements")
+        name: Name
+        prohibited_saving: prohibited this feature flag from being saved
+        submit: Save Feature Flag
       index:
         actions: Actions
         default_enabled: Default Enabled
@@ -196,41 +86,27 @@ en:
         new_feature_flag: New Feature Flag
         title: Feature Flags
         view: View
-      form:
-        error: Error
-        error_count: error
-        prohibited_saving: prohibited this feature flag from being saved
-        name: Name
-        key: Key
-        key_description: Unique identifier for this feature flag (e.g., "leaderboards", "achievements")
-        description: Description
-        default_enabled: Default Enabled
-        default_enabled_description: If checked, this feature will be enabled by default for all users unless explicitly disabled.
-        cancel: Cancel
-        submit: Save Feature Flag
-      edit:
-        title: Edit Feature Flag
       new:
         title: New Feature Flag
       show:
-        title: Feature Flag Details
-        edit: Edit
-        back_to_list: Back to List
-        feature_flag_information: Feature Flag Information
-        name: Name
-        key: Key
-        description: Description
-        default_status: Default Status
-        enabled: Enabled
-        disabled: Disabled
-        users_with_custom_config: Users with Custom Configuration
-        user: User
-        email: Email
-        status: Status
         actions: Actions
-        manage: Manage
-        no_custom_config: No users have custom configuration for this feature flag.
         all_users_default: All users are using the default configuration.
+        back_to_list: Back to List
+        default_status: Default Status
+        description: Description
+        disabled: Disabled
+        edit: Edit
+        email: Email
+        enabled: Enabled
+        feature_flag_information: Feature Flag Information
+        key: Key
+        manage: Manage
+        name: Name
+        no_custom_config: No users have custom configuration for this feature flag.
+        status: Status
+        title: Feature Flag Details
+        user: User
+        users_with_custom_config: Users with Custom Configuration
     scooters:
       index:
         actions: Actions
@@ -257,71 +133,100 @@ en:
         title: Scooters
         view: View
         vin: VIN
+      show:
+        actions: Actions
+        added_on: Added on
+        assign: Assign
+        assigned_column: Assigned
+        back_to_list: Back to List
+        edit: Edit
+        last_seen: Last seen
+        location_column: Location
+        never: Never
+        owner_role: Owner
+        recent_events: Recent Events
+        recent_telemetry: Recent Telemetry
+        remove_confirm: Are you sure you want to remove this user?
+        role_column: Role
+        scooter_information: Scooter Information
+        select_user: Select user...
+        shell: Shell
+        speed_column: Speed
+        speed_value: "%{speed} km/h"
+        state_column: State
+        subtitle: Details and management for %{name}
+        time_ago: "%{time_ago} ago"
+        time_column: Time
+        title: Scooter Details
+        user_assignments: User Assignments
+        user_column: User
+        user_role: User
+        view_all: View All
     telemetries:
       index:
-        title_for_scooter: Telemetry for %{scooter}
-        title_all: All Telemetry
-        subtitle_for_scooter: Telemetry data for this scooter.
-        subtitle_all: Telemetry data across all scooters.
         back_to_scooter: Back to Scooter
-        state: State
-        from: From
-        to: To
-        min_speed: Min Speed
-        max_speed: Max Speed
-        scooter: Scooter
-        time: Time
-        speed: Speed
-        location: Location
         batteries: Batteries
-        regen: Regen
         battery0: Battery 0
         battery1: Battery 1
+        from: From
+        location: Location
+        max_speed: Max Speed
+        min_speed: Min Speed
+        regen: Regen
+        scooter: Scooter
+        speed: Speed
+        state: State
+        subtitle_all: Telemetry data across all scooters.
+        subtitle_for_scooter: Telemetry data for this scooter.
+        time: Time
+        title_all: All Telemetry
+        title_for_scooter: Telemetry for %{scooter}
+        to: To
         view: View
       show:
-        title: Telemetry Details
-        subtitle: Telemetry from %{time}
+        at_altitude: at %{altitude} m altitude
+        aux_level: Level
+        aux_status: Status
+        aux_voltage: Voltage
+        auxiliary_batteries: Auxiliary Batteries
         back_to_telemetry: Back to Telemetry
         basic_information: Basic Information
-        scooter: Scooter
-        state: State
-        speed: Speed
-        regen: Regeneration
-        discharge: Discharge
-        location: Location
-        at_altitude: at %{altitude}m altitude
-        no_location_data: No location data available
         battery_status: Battery Status
-        main_battery: Main Battery
-        level: Level
-        cycles: Cycles
-        temperature: Temperature
-        health: Health
-        firmware: Firmware
-        secondary_battery: Secondary Battery
-        auxiliary_batteries: Auxiliary Batteries
-        aux_level: Level
-        aux_voltage: Voltage
-        aux_status: Status
+        cbb_current: CBB Current
+        cbb_level: CBB Level
         cbb_serial: CBB Serial
         cbb_soh: CBB SoH
-        cbb_level: CBB Level
-        cbb_current: CBB Current
         cbb_status: CBB Status
-        system_status: System Status
-        firmware_versions: Firmware Versions
-        engine: Engine
-        environment: Environment
-        engine_status: Engine Status
-        engine_state: Engine State
-        throttle: Throttle
-        connectivity: Connectivity
-        modem: Modem
-        internet: Internet
         cloud: Cloud
-        network: Network
-        physical_state: Physical State
+        connectivity: Connectivity
         control_states: Control States
+        cycles: Cycles
+        discharge: Discharge
+        engine: Engine
+        engine_state: Engine State
+        engine_status: Engine Status
+        environment: Environment
+        firmware: Firmware
+        firmware_versions: Firmware Versions
+        health: Health
+        internet: Internet
+        level: Level
+        location: Location
+        main_battery: Main Battery
+        modem: Modem
+        network: Network
+        no_location_data: No location data available
+        physical_state: Physical State
+        regen: Regeneration
+        scooter: Scooter
+        secondary_battery: Secondary Battery
+        speed: Speed
+        state: State
+        subtitle: Telemetry from %{time}
+        system_status: System Status
+        temperature: Temperature
+        throttle: Throttle
+        title: Telemetry Details
     trips:
       edit:
         average_speed_kmh: Average Speed (km/h)
@@ -336,6 +241,9 @@ en:
         trip_information: Trip Information
         update_trip: Update Trip
       index:
+        all: All
+        all_scooters: All Scooters
+        all_users: All Users
         avg_speed: Avg Speed
         clear_filters: Clear Filters
         completed: Completed
@@ -344,27 +252,24 @@ en:
         description: A list of all trips in the system.
         distance: Distance
         edit: Edit
+        end_date: End Date
         ended_at: Ended At
         filter_button: Filter
         filter_trips: Filter Trips
         id: ID
         in_progress: In Progress
+        max_avg_speed: Max Avg Speed
+        max_distance: Max Distance
+        min_avg_speed: Min Avg Speed
+        min_distance: Min Distance
         new_trip: New Trip
         scooter: Scooter
+        start_date: Start Date
         started_at: Started At
         status: Status
         title: Trips
         user: User
         view: View
-        all_users: All Users
-        all_scooters: All Scooters
-        start_date: Start Date
-        end_date: End Date
-        min_distance: Min Distance
-        max_distance: Max Distance
-        min_avg_speed: Min Avg Speed
-        max_avg_speed: Max Avg Speed
-        all: All
       new:
         average_speed_kmh: Average Speed (km/h)
         back_to_trips: Back to Trips
@@ -419,16 +324,18 @@ en:
         save_changes: Save Changes
         title: Feature Flags for %{name}
         user_setting: User Setting
-        using_default: Using default (%{default})
-        using_default_js: Using default (%{default})
+        using_default: Using default (%{default_value})
+        using_default_js: Using default (%{default_value})
     users:
       edit:
         danger_zone: Danger Zone
         default: Default
         delete_button: Delete User
-        delete_confirmation: Are you sure you want to delete this user? This action cannot be undone and will remove all associated data.
+        delete_confirmation: Are you sure you want to delete this user? This action
+          cannot be undone and will remove all associated data.
         delete_user: Delete this user
-        delete_warning: Once you delete a user, there is no going back. Please be certain.
+        delete_warning: Once you delete a user, there is no going back. Please be
+          certain.
         description: Description
         disabled: Disabled
         enabled: Enabled
@@ -447,7 +354,8 @@ en:
         admin_label: Admin
         ago: ago
         delete: Delete
-        delete_confirm: Are you sure you want to delete this user? This action cannot be undone and will remove all associated data.
+        delete_confirm: Are you sure you want to delete this user? This action cannot
+          be undone and will remove all associated data.
         description: A list of all users in the system.
         edit: Edit
         email: Email
@@ -496,7 +404,7 @@ en:
     german: Deutsch
     important: Important
     language: Language
-    pirate: 🏴‍☠️ Pirate
+    pirate: "🏴‍☠️ Pirate"
   dashboard:
     add_first_scooter: Add Your First Scooter
     avg_speed: Avg Speed
@@ -509,23 +417,117 @@ en:
     overview: Overview of your scooters and riding statistics.
     ready_to_ride: Ready to Ride!
     recent_trips: Recent Trips
-    register_scooter: Register your scooter using its VIN (found on the back left of your scooter's frame, on a riveted plaque)
+    register_scooter: Register your scooter using its VIN (found on the back left
+      of your scooter's frame, on a riveted plaque)
     scooter: Scooter
     scooters_registered:
       one: 'You have 1 scooter registered. Trips are automatically tracked when:'
-      other: 'You have %{count} scooters registered. Trips are automatically tracked when:'
+      other: 'You have %{count} scooters registered. Trips are automatically tracked
+        when:'
     start_tracking: Start tracking your rides and monitoring your scooter's status
     status: Status
     title: Dashboard
     total_distance: Total Distance
     total_trips: Total Trips
-    trip_data_logged: All trip data including distance, duration, and route are logged automatically
+    trip_data_logged: All trip data including distance, duration, and route are logged
+      automatically
     trip_ends: The trip ends when your scooter is parked or enters hibernation
     trip_starts: A trip starts when your scooter enters "ready-to-drive" mode
     trip_stats: Trip Stats
     view_all: View All
     view_scooters: View Your Scooters
     welcome: Welcome to Sunshine!
+  date:
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
+    abbr_month_names:
+    -
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    formats:
+      default: "%Y-%m-%d"
+      long: "%B %d, %Y"
+      short: "%b %d"
+    month_names:
+    -
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+    order:
+    - :year
+    - :month
+    - :day
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: about 1 hour
+        other: about %{count} hours
+      about_x_months:
+        one: about 1 month
+        other: about %{count} months
+      about_x_years:
+        one: about 1 year
+        other: about %{count} years
+      almost_x_years:
+        one: almost 1 year
+        other: almost %{count} years
+      less_than_x_minutes:
+        one: less than a minute
+        other: less than %{count} minutes
+      less_than_x_seconds:
+        one: less than 1 second
+        other: less than %{count} seconds
+      over_x_years:
+        one: over 1 year
+        other: over %{count} years
+      x_days:
+        one: 1 day
+        other: "%{count} days"
+      x_hours:
+        one: 1 hour
+        other: "%{count} hours"
+      x_minutes:
+        one: 1 minute
+        other: "%{count} minutes"
+      x_months:
+        one: 1 month
+        other: "%{count} months"
+      x_seconds:
+        one: 1 second
+        other: "%{count} seconds"
   devise:
     passwords:
       change_my_password: Change my password
@@ -556,14 +558,27 @@ en:
       sign_in: Sign in
       sign_in_with: Sign in with %{provider}
       sign_up: Sign up
+  distance:
+    centi:
+      one: centimeter
+      other: centimeters
+    thousand:
+      one: kilometer
+      other: kilometers
+    unit:
+      one: meter
+      other: meters
+  errors:
+    messages:
+      not_saved: Not saved
   footer:
     about: About
     contact: Contact
     copyright: Copyright © %{year} Starsong GmbH. All rights reserved.
-    not_affiliated: Not officially affiliated with unu GmbH.
     join_community: Join the unu Community
     language: Language
     legal_notice: Legal Notice
+    not_affiliated: Not officially affiliated with unu GmbH.
     powered: powered
     privacy_policy: Privacy Policy
     rescoot_project: A Rescoot Project
@@ -594,9 +609,11 @@ en:
     not_shared: 'We do not share:'
     notifications_description: Get notified when you earn new achievements.
     of_riders: of %{total_users} riders
-    opt_in_description: Opt in to the leaderboard to compare your riding stats with other scooter owners.
+    opt_in_description: Opt in to the leaderboard to compare your riding stats with
+      other scooter owners.
     opt_in_now: Opt In Now
-    opt_out_anytime: You can opt out of the leaderboard at any time by unchecking the participation option above.
+    opt_out_anytime: You can opt out of the leaderboard at any time by unchecking
+      the participation option above.
     participate: Participate in Leaderboard
     personal_info_not_shared: Any personal information about you or your scooter
     privacy_information: Privacy Information
@@ -612,7 +629,8 @@ en:
     top_riders: Top Riders
     trips: Trips
     trips_visible: Number of trips completed
-    visible_information: 'When you opt in to the leaderboard, the following information will be visible to other users:'
+    visible_information: 'When you opt in to the leaderboard, the following information
+      will be visible to other users:'
     week: Week
     you: You
     your_rank: Your Rank
@@ -641,14 +659,29 @@ en:
     unu_uplink: unu-uplink
     users: Users
     vin_decoder: VIN Decoder
+  number:
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: B
+          million: M
+          quadrillion: Q
+          thousand: k
+          trillion: T
+          unit: ''
+      storage_units:
+        format: "%n %u"
   onboarding:
     almost_there: Almost there!
     config_copied: Configuration copied to clipboard!
     config_file: Configuration File (radio-gaga.yml)
     download_config: Download Configuration
     go_to_dashboard: Go to Dashboard
-    scooter_registered: Your scooter <%= @scooter.name %> has been registered. Here's your configuration for telemetry setup.
-    token_warning: This configuration contains your API token which will only be shown once. Make sure to save it now!
+    scooter_registered: Your scooter <%= @scooter.name %> has been registered. Here's
+      your configuration for telemetry setup.
+    token_warning: This configuration contains your API token which will only be shown
+      once. Make sure to save it now!
   scooters:
     add_scooter: Add Scooter
     admin_controls: Admin Controls
@@ -659,7 +692,8 @@ en:
     back: Back
     battery_status: Battery Status
     cb_battery: CB Battery
-    config_setup: Your configuration file (radio-gaga.yml) is properly set up with the correct VIN and API token
+    config_setup: Your configuration file (radio-gaga.yml) is properly set up with
+      the correct VIN and API token
     confirm_alarm: Really sound alarm?
     confirm_update: Start client update?
     details_and_controls: Scooter details and controls.
@@ -675,6 +709,26 @@ en:
     kickstand: Kickstand %{status}
     last_known_position: 'Last known position: %{lat}, %{lng} (%{time_ago} ago)'
     last_seen: Last seen %{time_ago} ago
+    layout_status:
+      ago: ago
+      aux_battery: Aux Battery
+      blinkers: Blinkers
+      both: Both
+      cb_battery: CB Battery
+      'false': false
+      kickstand: Kickstand
+      last_seen: Last seen
+      left: Left
+      lock: Lock
+      main_battery: Main Battery
+      offline: Offline
+      online: Online
+      right: Right
+      seatbox: Seatbox
+      second_battery: Second Battery
+      state: State
+      status: Status
+      unlock: Unlock
     left_signal: Left Signal
     live_dashboard: Live Dashboard
     main_battery: Main Battery
@@ -688,14 +742,35 @@ en:
     redis_commands: Redis Commands
     request_telemetry: Request Telemetry
     right_signal: Right Signal
-    scooter_list_description: A list of all your registered scooters and their current status.
+    scooter_list_description: A list of all your registered scooters and their current
+      status.
     seatbox: Seatbox %{status}
     secondary_battery: Secondary
     service_status: Service Status
     shell_commands: Shell Commands
     statistics: Statistics
+    status:
+      aux_with_level: Aux %{level}
+      cbb_with_level: CBB %{level}
+      click_to_copy_imei: Click to copy IMEI
+      click_to_copy_vin: Click to copy VIN
+      copied: Copied!
+      imei_with_value: 'IMEI: %{imei}'
+      kickstand_with_status: Kickstand %{status}
+      last_seen_ago: Last seen %{time_ago} ago
+      location_unknown: Location unknown
+      main_battery_with_level: Main %{level}
+      offline: Offline
+      online: Online
+      range_km: "%{range} km range"
+      range_unknown: Range unknown
+      seatbox_with_status: Seatbox %{status}
+      spare_battery_with_level: Spare %{level}
+      unknown: unknown
+      vin_with_value: 'VIN: %{vin}'
     system_uptime: System Uptime
-    telemetry_instructions: 'Your scooter hasn''t submitted any telemetry data yet. Please ensure:'
+    telemetry_instructions: 'Your scooter hasn''t submitted any telemetry data yet.
+      Please ensure:'
     telemetry_running: The telemetry service is running on your scooter
     turn_off_lock: Turn off & lock
     turn_off_signals: Turn Off Signals
@@ -703,6 +778,15 @@ en:
     unlock_turn_on: Unlock & turn on
     update_client: Update Client
     waiting_for_telemetry: Waiting for telemetry data
+  time:
+    am: am
+    formats:
+      date_time: "%B %d, %Y %H:%M"
+      default: "%a, %d %b %Y %H:%M:%S %z"
+      long: "%B %d, %Y %H:%M"
+      short: "%d %b %H:%M"
+      time: "%H:%M"
+    pm: pm
   trips:
     all: All
     all_scooters: All Scooters
@@ -741,111 +825,75 @@ en:
     start_location: Start Location
     start_time: Start Time
     status: Status
-  datetime:
-    distance_in_words:
-      less_than_x_seconds:
-        one: less than 1 second
-        other: less than %{count} seconds
-      x_seconds:
-        one: 1 second
-        other: "%{count} seconds"
-      less_than_x_minutes:
-        one: less than a minute
-        other: less than %{count} minutes
-      x_minutes:
-        one: 1 minute
-        other: "%{count} minutes"
-      about_x_hours:
-        one: about 1 hour
-        other: about %{count} hours
-      x_hours:
-        one: 1 hour
-        other: "%{count} hours"
-      x_days:
-        one: 1 day
-        other: "%{count} days"
-      about_x_months:
-        one: about 1 month
-        other: about %{count} months
-      x_months:
-        one: 1 month
-        other: "%{count} months"
-      about_x_years:
-        one: about 1 year
-        other: about %{count} years
-      over_x_years:
-        one: over 1 year
-        other: over %{count} years
-      almost_x_years:
-        one: almost 1 year
-        other: almost %{count} years
-  errors:
-    messages:
-      not_saved: Not saved
   units:
     h: h
     km: km
     kmh: km/h
     m: m
+    min: min
   vin_decoder:
     check_digit: Check digit
-    decode_button: Decode VIN
-    description: Decode your scooter's Vehicle Identification Number.
-    enter_vin: Enter Vehicle Identification Number (VIN)
-    example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW motor, max 45 km/h, built in 2021'
-    example_vin: e.g. WUNU2S3A6KZ000001
-    invalid_vin_alert: Please enter a valid 17-character VIN starting with WUN
-    manufacturing_plant: Manufacturing plant (Z = Zhuhai, China)
-    motor_power: Motor power (2 = 2kW, 3 = 3kW, 4 = 4kW)
-    serial_number: Serial number
-    title: unu VIN Decoder
-    version: Version (A = max 25 km/h, B = max 45 km/h)
-    vin_explanation: A Vehicle Identification Number (VIN) is a unique 17-character code used to identify individual motor vehicles. For unu scooters, the VIN provides details about the model, year of manufacture, and other specific information.
-    vin_format_intro: 'The unu Scooter 2.x VIN follows this format:'
-    vin_format_title: unu Scooter 2.x VIN Format
-    vin_requirements: VIN must be 17 characters long and start with WUN. Try it out with WUNU2S3A6KZ000001.
-    what_is_vin: What is a VIN?
-    year_of_manufacture: Year of manufacture (K = 2019, L = 2020, M = 2021, etc.)
-    # Result page translations
-    results_title: VIN Decoder Results
-    successfully_decoded: "Successfully decoded VIN:"
     decode_another: Decode Another VIN
+    decode_button: Decode VIN
     decoded_information: Decoded Information
+    description: Decode your scooter's Vehicle Identification Number.
     details_meaning: What do these details mean?
-    manufacturer: Manufacturer
-    manufacturer_desc: Confirms the vehicle is manufactured by unu GmbH.
-    model: Model
-    model_desc: Identifies the specific model of the unu scooter.
-    vehicle_type: Vehicle Type
-    vehicle_type_desc: Provides the technical classification of the vehicle.
-    variant: Variant
-    variant_desc: Indicates the motor power rating of the scooter.
-    version_desc: Specifies the maximum speed capability of the scooter.
-    year: Year
-    year_desc: The model year when the scooter was manufactured.
-    plant: Plant
-    plant_desc: The manufacturing facility where the scooter was produced.
-    serial_number_desc: The unique identifier for this specific scooter.
+    enter_vin: Enter Vehicle Identification Number (VIN)
+    example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW
+      motor, max 45 km/h, built in 2021'
+    example_vin: e.g. WUNU2S3A6KZ000001
+    format_description: 'The unu Scooter 2.x VIN follows this format:'
     format_title: unu Scooter 2.x VIN Format
-    format_description: "The unu Scooter 2.x VIN follows this format:"
-    position_breakdown: Position Breakdown
+    invalid_vin_alert: Please enter a valid 17-character VIN starting with WUN
+    manufacturer: Manufacturer
     manufacturer_code: Manufacturer code (unu GmbH)
+    manufacturer_desc: Confirms the vehicle is manufactured by unu GmbH.
+    manufacturing_plant: Manufacturing plant (Z = Zhuhai, China)
+    model: Model
     model_code: Model code (unu Scooter 2.x)
-    motor_power_variant: Motor power variant
-    speed_version: Speed version
-    possible_values: Possible Values
-    motor_power_x: Motor Power (X)
+    model_desc: Identifies the specific model of the unu scooter.
+    motor_power: Motor power (2 = 2kW, 3 = 3kW, 4 = 4kW)
     motor_power_2kw: 2 = 2000W (2kW)
     motor_power_3kw: 3 = 3000W (3kW)
     motor_power_4kw: 4 = 4000W (4kW)
-    speed_version_y: Speed Version (Y)
+    motor_power_variant: Motor power variant
+    motor_power_x: Motor Power (X)
+    plant: Plant
+    plant_desc: The manufacturing facility where the scooter was produced.
+    plant_p: Plant (P)
+    plant_zhuhai: Z = Zhuhai, China
+    position_breakdown: Position Breakdown
+    possible_values: Possible Values
+    result_example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span>
+      = 4kW motor, max 45 km/h, built in 2021'
+    results_title: VIN Decoder Results
+    serial_number: Serial number
+    serial_number_desc: The unique identifier for this specific scooter.
+    speed_version: Speed version
     speed_version_25: A = Version 25 (max. 25 km/h)
     speed_version_45: B = Version 45 (max. 45 km/h)
-    year_z: Year (Z)
+    speed_version_y: Speed Version (Y)
+    successfully_decoded: 'Successfully decoded VIN:'
+    title: unu VIN Decoder
+    variant: Variant
+    variant_desc: Indicates the motor power rating of the scooter.
+    vehicle_type: Vehicle Type
+    vehicle_type_desc: Provides the technical classification of the vehicle.
+    version: Version (A = max 25 km/h, B = max 45 km/h)
+    version_desc: Specifies the maximum speed capability of the scooter.
+    vin_explanation: A Vehicle Identification Number (VIN) is a unique 17-character
+      code used to identify individual motor vehicles. For unu scooters, the VIN provides
+      details about the model, year of manufacture, and other specific information.
+    vin_format_intro: 'The unu Scooter 2.x VIN follows this format:'
+    vin_format_title: unu Scooter 2.x VIN Format
+    vin_requirements: VIN must be 17 characters long and start with WUN. Try it out
+      with WUNU2S3A6KZ000001.
+    what_is_vin: What is a VIN?
+    year: Year
     year_2017_2019: H = 2017, J = 2018, K = 2019
     year_2020_2022: L = 2020, M = 2021, N = 2022
     year_2023_2025: P = 2023, R = 2024, S = 2025
     year_and_so_on: And so on...
-    plant_p: Plant (P)
-    plant_zhuhai: Z = Zhuhai, China
-    result_example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW motor, max 45 km/h, built in 2021'
+    year_desc: The model year when the scooter was manufactured.
+    year_of_manufacture: Year of manufacture (K = 2019, L = 2020, M = 2021, etc.)
+    year_z: Year (Z)

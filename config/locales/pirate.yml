@@ -1,132 +1,5 @@
 ---
 pirate:
-  date:
-    formats:
-      default: "%Y-%m-%d"
-      short: "%b %d"
-      long: "%B %d, %Y"
-    day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
-    abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
-    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
-    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
-    order:
-      - :year
-      - :month
-      - :day
-
-  time:
-    formats:
-      time: "%H:%M"
-      date_time: "%B %d, %Y %H:%M"
-      default: "%a, %d %b %Y %H:%M:%S %z"
-      short: "%d %b %H:%M"
-      long: "%B %d, %Y %H:%M"
-    am: "am"
-    pm: "pm"
-
-  number:
-    human:
-      storage_units:
-        format: "%n %u"
-      decimal_units:
-        format: "%n %u"
-        units:
-          unit: ''
-          thousand: k
-          million: M
-          billion: B
-          trillion: T
-          quadrillion: Q
-  distance:
-    centi:
-      one: barnacle
-      other: barnacles
-    unit:
-      one: fathom
-      other: fathoms
-    thousand:
-      one: league
-      other: leagues
-  units:
-    km: leagues
-    kmh: knots
-    m: fathoms
-    h: bells
-  scooters:
-    status:
-      copied: Plundered!
-      click_to_copy_vin: Click t' plunder VIN
-      click_to_copy_imei: Click t' plunder IMEI
-      vin_with_value: "Ship's Registry: %{vin}"
-      imei_with_value: "IMEI: %{imei}"
-      online: Sailin' th' seas
-      offline: Lost at sea
-      last_seen_ago: "Last spotted %{time_ago} ago"
-      unknown: unknown
-      kickstand_with_status: "Anchor %{status}"
-      seatbox_with_status: "Treasure chest %{status}"
-      range_km: "%{range} leagues o' range"
-      range_unknown: Range be a mystery
-      location_unknown: Location unknown
-      main_battery_with_level: "Main Sail %{level}"
-      spare_battery_with_level: "Spare Sail %{level}"
-      cbb_with_level: "Crow's Nest %{level}"
-      aux_with_level: "Auxiliary Sail %{level}"
-    layout_status:
-      status: Sailin' Status
-      online: Sailin' th' seas
-      offline: Lost at sea
-      state: Ship's State
-      last_seen: Last spotted
-      ago: ago
-      main_battery: Main Sail
-      second_battery: Secondary Sail
-      aux_battery: Auxiliary Sail
-      cb_battery: Crow's Nest Power
-      kickstand: Anchor
-      seatbox: Treasure chest
-      blinkers: Signal Lanterns
-      unlock: Unfurl th' sails
-      lock: Drop anchor
-      left: Port
-      right: Starboard
-      both: Both
-      off: Douse
-  time:
-    formats:
-      time: "%H:%M"
-      date_time: "%B %d, %Y %H:%M"
-  admin:
-    scooters:
-      show:
-        title: Vessel Details
-        subtitle: "Details and management for %{name}"
-        shell: Command
-        edit: Modify
-        back_to_list: Back t' th' Fleet
-        scooter_information: Vessel Information
-        last_seen: Last spotted
-        time_ago: "%{time_ago} ago"
-        never: Never spotted
-        added_on: Added t' th' fleet on
-        user_assignments: Sailor Assignments
-        select_user: Select sailor...
-        owner_role: Captain
-        user_role: Crew
-        assign: Assign
-        user_column: Sailor
-        role_column: Rank
-        assigned_column: Assigned
-        actions: Captain's Orders
-        remove_confirm: Are ye sure ye want t' make this sailor walk th' plank?
-        recent_events: Recent Ship's Log
-        view_all: View All
-        recent_telemetry: Recent Crow's Nest Reports
-        time_column: Time
-        state_column: Ship's State
-        speed_column: Speed
-        location_column: Location
-        speed_value: "%{speed} knots"
   achievements:
     achievement: treasure
     achievements: treasures
@@ -135,7 +8,8 @@ pirate:
     discovered_time_ago: Discovered %{time_ago} ago
     earned_time_ago: Plundered %{time_ago} ago
     is: be
-    keep_exploring: Keep explorin' th' seven seas! There %{is_are} %{count} secret %{achievement_s} waitin' t' be discovered...
+    keep_exploring: Keep explorin' th' seven seas! There %{is_are} %{count} secret
+      %{achievement_s} waitin' t' be discovered...
     next_to_earn: Next Treasures t' Plunder
     none_yet: No Treasures Yet
     points: doubloons
@@ -186,12 +60,14 @@ pirate:
       form:
         cancel: Abandon
         default_enabled: Default Hoisted
-        default_enabled_description: If checked, this flag will be hoisted by default for all sailors unless explicitly lowered.
+        default_enabled_description: If checked, this flag will be hoisted by default
+          for all sailors unless explicitly lowered.
         description: Description
         error: Blunder
         error_count: blunder
         key: Secret Key
-        key_description: Unique identifier for this ship's flag (e.g., "leaderboards", "treasures")
+        key_description: Unique identifier for this ship's flag (e.g., "leaderboards",
+          "treasures")
         name: Flag Name
         prohibited_saving: prevented this ship's flag from bein' saved
         submit: Save Ship's Flag
@@ -212,6 +88,25 @@ pirate:
         view: View
       new:
         title: New Ship's Flag
+      show:
+        actions: Captain's Orders
+        all_users_default: All sailors be usin' th' default configuration.
+        back_to_list: Back to th' List
+        default_status: Default Status
+        description: Description
+        disabled: Lowered
+        edit: Modify
+        email: Message in a Bottle
+        enabled: Hoisted
+        feature_flag_information: Ship's Flag Information
+        key: Secret Key
+        manage: Command
+        name: Flag Name
+        no_custom_config: No sailors have custom configuration for this ship's flag.
+        status: Status
+        title: Ship's Flag Details
+        user: Sailor
+        users_with_custom_config: Sailors with Custom Configuration
     scooters:
       index:
         actions: Captain's Orders
@@ -219,7 +114,8 @@ pirate:
         ago: ago
         color: Colors
         delete: Sink
-        delete_confirm: Are ye sure? This will send all related treasures to Davy Jones' locker!
+        delete_confirm: Are ye sure? This will send all related treasures to Davy
+          Jones' locker!
         description: A list of all vessels in th' seven seas.
         edit: Modify
         imei: IMEI
@@ -238,71 +134,100 @@ pirate:
         title: Fleet o' Vessels
         view: View
         vin: Ship's Registry
+      show:
+        actions: Captain's Orders
+        added_on: Added to th' fleet on
+        assign: Assign Captain
+        assigned_column: Assigned
+        back_to_list: Back to th' Fleet
+        edit: Modify
+        last_seen: Last spotted
+        location_column: Location
+        never: Never spotted
+        owner_role: Captain's Role
+        recent_events: Recent Ship's Log
+        recent_telemetry: Recent Crow's Nest Reports
+        remove_confirm: Really send to Davy Jones?
+        role_column: Rank
+        scooter_information: Vessel Information
+        select_user: Select Sailor
+        shell: Command
+        speed_column: Speed
+        speed_value: Speed Value
+        state_column: Ship's State
+        subtitle: Vessel Details
+        time_ago: Time ago
+        time_column: Time
+        title: Vessel
+        user_assignments: Sailor Assignments
+        user_column: Sailor
+        user_role: Sailor's Rank
+        view_all: View All
     telemetries:
       index:
-        title_for_scooter: Crow's Nest Report for %{scooter}
-        title_all: All Crow's Nest Reports
-        subtitle_for_scooter: Crow's nest data for this vessel.
-        subtitle_all: Telemetry data from all vessels in th' fleet.
         back_to_scooter: Back to Vessel
-        state: Ship's State
-        from: From
-        to: To
-        min_speed: Min Speed
-        max_speed: Max Speed
-        scooter: Vessel
-        time: Time
-        speed: Speed
-        location: Location
         batteries: Sails
-        regen: Wind Power
         battery0: Main Sail %{level}
         battery1: Secondary Sail %{level}
+        from: From
+        location: Location
+        max_speed: Max Speed
+        min_speed: Min Speed
+        regen: Wind Power
+        scooter: Vessel
+        speed: Speed
+        state: Ship's State
+        subtitle_all: Telemetry data from all vessels in th' fleet.
+        subtitle_for_scooter: Crow's nest data for this vessel.
+        time: Time
+        title_all: All Crow's Nest Reports
+        title_for_scooter: Crow's Nest Report for %{scooter}
+        to: To
         view: View
       show:
-        title: Crow's Nest Details
-        subtitle: Crow's nest report from %{time}
+        at_altitude: at %{altitude} fathoms altitude
+        aux_level: Sail Level
+        aux_status: Sail Status
+        aux_voltage: Sail Power
+        auxiliary_batteries: Auxiliary Sails
         back_to_telemetry: Back to Crow's Nest Reports
         basic_information: Ship's Basic Information
-        scooter: Vessel
-        state: Ship's State
-        speed: Speed
-        regen: Wind Power
-        discharge: Power Usage
-        location: Location
-        at_altitude: at %{altitude} fathoms altitude
-        no_location_data: No map coordinates available, ye scurvy dog!
         battery_status: Sail Status
-        main_battery: Main Sail
-        level: Power Level
-        cycles: Sail Unfurlings
-        temperature: Temperature
-        health: Sail Health
-        firmware: Ship's Brain
-        secondary_battery: Secondary Sail
-        auxiliary_batteries: Auxiliary Sails
-        aux_level: Sail Level
-        aux_voltage: Sail Power
-        aux_status: Sail Status
+        cbb_current: Ship's Current
+        cbb_level: Ship's Power
         cbb_serial: Ship's Registry Number
         cbb_soh: Ship's Health
-        cbb_level: Ship's Power
-        cbb_current: Ship's Current
         cbb_status: Ship's Status
-        system_status: Ship's System Status
-        firmware_versions: Ship's Brain Versions
-        engine: Engine
-        environment: Sea Conditions
-        engine_status: Engine Status
-        engine_state: Engine State
-        throttle: Ship's Throttle
-        connectivity: Ship's Communications
-        modem: Message Bottle
-        internet: Pirate Network
         cloud: Cloud Connection
-        network: Ship's Network
-        physical_state: Ship's Physical State
+        connectivity: Ship's Communications
         control_states: Ship's Control States
+        cycles: Sail Unfurlings
+        discharge: Power Usage
+        engine: Engine
+        engine_state: Engine State
+        engine_status: Engine Status
+        environment: Sea Conditions
+        firmware: Ship's Brain
+        firmware_versions: Ship's Brain Versions
+        health: Sail Health
+        internet: Pirate Network
+        level: Power Level
+        location: Location
+        main_battery: Main Sail
+        modem: Message Bottle
+        network: Ship's Network
+        no_location_data: No map coordinates available, ye scurvy dog!
+        physical_state: Ship's Physical State
+        regen: Wind Power
+        scooter: Vessel
+        secondary_battery: Secondary Sail
+        speed: Speed
+        state: Ship's State
+        subtitle: Crow's nest report from %{time}
+        system_status: Ship's System Status
+        temperature: Temperature
+        throttle: Ship's Throttle
+        title: Crow's Nest Details
     trips:
       edit:
         average_speed_kmh: Average Speed (knots)
@@ -400,23 +325,26 @@ pirate:
         save_changes: Save Changes
         title: Ship's Flags for %{name}
         user_setting: Sailor's Setting
-        using_default: Using default (%{default})
-        using_default_js: Using default (%{default})
+        using_default: Using default (%{default_value})
+        using_default_js: Using default (%{default_value})
     users:
       edit:
         danger_zone: Plank-Walkin' Zone
         default: Default
         delete_button: Walk th' Plank
-        delete_confirmation: Are ye sure ye want this sailor to walk th' plank? This action cannot be undone and will send all their belongings to Davy Jones' locker.
+        delete_confirmation: Are ye sure ye want this sailor to walk th' plank? This
+          action cannot be undone and will send all their belongings to Davy Jones'
+          locker.
         delete_user: Make this sailor walk th' plank
-        delete_warning: Once a sailor walks th' plank, there be no comin' back. Be ye certain, Cap'n?
+        delete_warning: Once a sailor walks th' plank, there be no comin' back. Be
+          ye certain, Cap'n?
         description: Description
         disabled: Lowered
         enabled: Hoisted
         feature_flags: Ship's Flags
         feature_flags_description: Manage ship's flag settings for this sailor.
         key: Secret Key
-        name: Name
+        name: Pirate Name
         save_feature_flags: Save Ship's Flag Settings
         subtitle: Edit sailor's papers for %{name}.
         title: Edit Crew Member
@@ -428,7 +356,8 @@ pirate:
         admin_label: Admiral
         ago: ago
         delete: Walk th' Plank
-        delete_confirm: Are ye sure ye want this sailor to walk th' plank? This action cannot be undone and will send all their belongings to Davy Jones' locker.
+        delete_confirm: Are ye sure ye want this sailor to walk th' plank? This action
+          cannot be undone and will send all their belongings to Davy Jones' locker.
         description: A list of all sailors in th' fleet.
         edit: Edit
         email: Message in a Bottle
@@ -440,7 +369,7 @@ pirate:
         scooters: Vessels
         search_by_email: Search by message in a bottle...
         search_by_name: Search by pirate name...
-        status: Status
+        status: Sailin' Status
         title: Crew Members
         user_label: Swabbie
         view: View
@@ -470,13 +399,14 @@ pirate:
         user_information: Sailor Information
   common:
     are_you_sure: Be ye sure, matey?
+    auto_detect: Auto-detect
     back: Back t' port
     copy: Plunder
-    important: Heed, ye scallywags!
     english: Anglish
     german: Krautish
-    pirate: 🏴‍☠️ Buccaneer
+    important: Heed, ye scallywags!
     language: Lingo
+    pirate: "🏴‍☠️ Buccaneer"
   dashboard:
     add_first_scooter: Add Yer First Vessel, Arr!
     avg_speed: Avg Speed
@@ -485,27 +415,122 @@ pirate:
     distance: Distance
     download_telemetry: Download and set up th' navigation device on yer vessel
     duration: Duration
-    get_started: 'Get started by registerin'' yer first vessel. Here''s how it works, arr:'
+    get_started: 'Get started by registerin'' yer first vessel. Here''s how it works,
+      arr:'
     overview: Overview o' yer fleet and sailin' statistics, arr!
     ready_to_ride: Ready t' Set Sail!
     recent_trips: Recent Voyages
-    register_scooter: Register yer vessel usin' its registry number (found on th' back left o' yer vessel's frame, on a riveted plaque)
+    register_scooter: Register yer vessel usin' its registry number (found on th'
+      back left o' yer vessel's frame, on a riveted plaque)
     scooter: Vessel
     scooters_registered:
       one: 'Ye have 1 vessel in yer fleet. Voyages be automatically tracked when:'
-      other: 'Ye have %{count} vessels in yer fleet. Voyages be automatically tracked when:'
+      other: 'Ye have %{count} vessels in yer fleet. Voyages be automatically tracked
+        when:'
     start_tracking: Start trackin' yer voyages and monitorin' yer vessel's status
-    status: Status
+    status: Sailin' Status
     title: Cap'n's Quarters
     total_distance: Total Distance
     total_trips: Total Voyages
-    trip_data_logged: All voyage data includin' distance, duration, and route be logged in th' cap'n's log
+    trip_data_logged: All voyage data includin' distance, duration, and route be logged
+      in th' cap'n's log
     trip_ends: Th' voyage ends when yer vessel drops anchor or enters port
     trip_starts: A voyage starts when yer vessel unfurls its sails
     trip_stats: Voyage Stats
     view_all: View All Voyages
     view_scooters: View Yer Fleet
     welcome: Ahoy and welcome aboard Sunshine, matey!
+  date:
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
+    abbr_month_names:
+    -
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    formats:
+      default: "%Y-%m-%d"
+      long: "%B %d, %Y"
+      short: "%b %d"
+    month_names:
+    -
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
+    order:
+    - :year
+    - :month
+    - :day
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: about 1 bell
+        other: about %{count} bells
+      about_x_months:
+        one: about 1 moon
+        other: about %{count} moons
+      about_x_years:
+        one: about 1 voyage around the sun
+        other: about %{count} voyages around the sun
+      almost_x_years:
+        one: almost 1 voyage around the sun
+        other: almost %{count} voyages around the sun
+      less_than_x_minutes:
+        one: less than a moment
+        other: less than %{count} moments
+      less_than_x_seconds:
+        one: less than a blink o' an eye
+        other: less than %{count} blinks o' an eye
+      over_x_years:
+        one: over 1 voyage around the sun
+        other: over %{count} voyages around the sun
+      x_days:
+        one: 1 day at sea
+        other: "%{count} days at sea"
+      x_hours:
+        one: 1 bell
+        other: "%{count} bells"
+      x_minutes:
+        one: 1 moment
+        other: "%{count} moments"
+      x_months:
+        one: 1 moon
+        other: "%{count} moons"
+      x_seconds:
+        one: 1 tick o' the clock
+        other: "%{count} ticks o' the clock"
   devise:
     passwords:
       change_my_password: Change me secret key
@@ -520,9 +545,11 @@ pirate:
       create_account: Join th' Pirate Crew
       edit_resource: Edit %{resource}'s Manifest
       leave_blank: "(leave empty if ye don't want t' change it, ye scallywag)"
-      need_current_password: "(we need yer current key t' confirm yer changes, or ye'll walk th' plank)"
+      need_current_password: "(we need yer current key t' confirm yer changes, or
+        ye'll walk th' plank)"
       sign_up: Sign th' Articles
-      unhappy_message: Unhappy with th' voyage? Ye can abandon ship below, but beware o' sharks!
+      unhappy_message: Unhappy with th' voyage? Ye can abandon ship below, but beware
+        o' sharks!
       update: Update Ship's Log
       waiting_confirmation: 'Waitin'' for th'' captain''s approval for:'
     sessions:
@@ -536,13 +563,27 @@ pirate:
       sign_in: Board Ship
       sign_in_with: Board with %{provider}
       sign_up: Join th' Crew
+  distance:
+    centi:
+      one: barnacle
+      other: barnacles
+    thousand:
+      one: league
+      other: leagues
+    unit:
+      one: fathom
+      other: fathoms
+  errors:
+    messages:
+      not_saved: Lost to Davy Jones' locker
   footer:
     about: About th' Fleet
     contact: Send a Message in a Bottle
     copyright: Pirate © %{year} Starsong GmbH. All rights reserved.
-    not_affiliated: Not officially affiliated with th' unu Navy.
     join_community: Join th' Pirate Brotherhood
+    language: Language
     legal_notice: Letters o' Marque
+    not_affiliated: Not officially affiliated with th' unu Navy.
     powered: powered by rum
     privacy_policy: Pirate's Code
     rescoot_project: A Rescoot Vessel
@@ -559,7 +600,8 @@ pirate:
     description: Compare yer sailin' stats with other vessel captains, arr!
     display_name: Pirate Name
     display_name_description: This be th' name that will show in th' cap'n's log.
-    display_name_visible: Yer pirate name (not yer real name or message-in-a-bottle address)
+    display_name_visible: Yer pirate name (not yer real name or message-in-a-bottle
+      address)
     distance: Distance
     distance_visible: Total distance sailed
     fix_errors: 'Fix these errors, ye scallywag:'
@@ -573,9 +615,11 @@ pirate:
     not_shared: 'We don''t share with other pirates:'
     notifications_description: Get notified when ye find new treasures.
     of_riders: of %{total_users} seafarers
-    opt_in_description: Sign up for th' cap'n's log t' compare yer sailin' stats with other vessel captains.
+    opt_in_description: Sign up for th' cap'n's log t' compare yer sailin' stats with
+      other vessel captains.
     opt_in_now: Sign Up Now
-    opt_out_anytime: Ye can leave th' cap'n's log at any time by uncheckin' th' participation option above.
+    opt_out_anytime: Ye can leave th' cap'n's log at any time by uncheckin' th' participation
+      option above.
     participate: Join th' Cap'n's Log
     personal_info_not_shared: Any personal information about ye or yer vessel
     privacy_information: Pirate's Privacy Code
@@ -586,12 +630,14 @@ pirate:
     save_settings: Save Settings
     settings: Ship's Settings
     settings_title: Cap'n's Log Settings
-    stats_visible: Yer sailin' stats will be visible t' other seafarers in th' cap'n's log.
+    stats_visible: Yer sailin' stats will be visible t' other seafarers in th' cap'n's
+      log.
     title: Cap'n's Log
     top_riders: Top Seafarers
     trips: Voyages
     trips_visible: Number o' voyages completed
-    visible_information: 'When ye join th'' cap''n''s log, th'' followin'' information will be visible t'' other seafarers:'
+    visible_information: 'When ye join th'' cap''n''s log, th'' followin'' information
+      will be visible t'' other seafarers:'
     week: Week
     you: Ye
     your_rank: Yer Rank
@@ -606,6 +652,7 @@ pirate:
     events: Ship's Log
     feature_flags: Flags
     hide_admin: Go under deck
+    language: Lingo
     leaderboard: Log o' Glory
     points: doubloons
     radio_gaga: Radio Gaga
@@ -618,15 +665,29 @@ pirate:
     unu_uplink: unu-uplink
     users: Crew Members
     vin_decoder: SIN Decoder
-    language: Lingo
+  number:
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: B
+          million: M
+          quadrillion: Q
+          thousand: k
+          trillion: T
+          unit: ''
+      storage_units:
+        format: "%n %u"
   onboarding:
     almost_there: Land ho! Almost there!
     config_copied: Treasure map copied to yer plunder chest!
     config_file: Navigation Chart (radio-gaga.yml)
     download_config: Download Treasure Map
     go_to_dashboard: To th' Cap'n's Quarters
-    scooter_registered: Yer vessel %{name} be registered in th' fleet. Here be yer map for th' crow's nest setup.
-    token_warning: This map contains yer secret treasure code which will only be shown once. Make sure t' save it now, or walk th' plank!
+    scooter_registered: Yer vessel %{name} be registered in th' fleet. Here be yer
+      map for th' crow's nest setup.
+    token_warning: This map contains yer secret treasure code which will only be shown
+      once. Make sure t' save it now, or walk th' plank!
   scooters:
     add_scooter: Add Vessel
     admin_controls: Cap'n's Secret Controls
@@ -637,7 +698,8 @@ pirate:
     back: Back t' Port
     battery_status: Sail Power Status
     cb_battery: Crow's Nest Power
-    config_setup: Yer map (radio-gaga.yml) be properly set up with th' correct registry and treasure map token
+    config_setup: Yer map (radio-gaga.yml) be properly set up with th' correct registry
+      and treasure map token
     confirm_alarm: Really sound th' alarm bell, matey?
     confirm_update: Start compass update, are ye sure?
     details_and_controls: Vessel details and controls, shiver me timbers!
@@ -653,6 +715,27 @@ pirate:
     kickstand: Anchor %{status}
     last_known_position: 'Last known position: %{lat}, %{lng} (%{time_ago} ago) Arr!'
     last_seen: Last spotted %{time_ago} ago
+    layout_status:
+      ago: ago
+      aux_battery: Auxiliary Sail
+      blinkers: Signal Lanterns
+      both: Both
+      cb_battery: Crow's Nest Power
+      'false': 'False'
+      kickstand: Anchor
+      last_seen: Last spotted
+      left: Port
+      lock: Lock
+      main_battery: Main Sail
+      'off': 'Off'
+      offline: Lost at sea
+      online: Sailin' th' seas
+      right: Starboard
+      seatbox: Treasure Chest
+      second_battery: Secondary Sail
+      state: Ship's State
+      status: Sailin' Status
+      unlock: Unlock
     left_signal: Port Lantern
     live_dashboard: Live Crow's Nest
     main_battery: Main Sail
@@ -666,14 +749,30 @@ pirate:
     redis_commands: Sea Witch Commands
     request_telemetry: Request Crow's Nest Report
     right_signal: Starboard Lantern
-    scooter_list_description: A list o' all yer registered vessels and their current status, arr!
+    scooter_list_description: A list o' all yer registered vessels and their current
+      status, arr!
     seatbox: Treasure chest %{status}
     secondary_battery: Secondary Sail
     service_status: Crew Status
     shell_commands: Kraken Commands
     statistics: Navigation Charts
+    status:
+      aux_with_level: 'Crew''s Rations: %{level}'
+      cbb_with_level: 'Captain''s Grog: %{level}'
+      click_to_copy_imei: Click t' steal this 'ere IMEI
+      click_to_copy_vin: Click t' steal this 'ere VIN
+      copied: Plundered!
+      imei_with_value: 'Secret Code: %{imei}'
+      kickstand_with_status: 'Anchor: %{status}'
+      main_battery_with_level: 'Main Rum Barrel: %{level}'
+      online: Sailin' the seas
+      range_km: 'Voyage Distance: %{range} leagues'
+      seatbox_with_status: 'Treasure Chest: %{status}'
+      spare_battery_with_level: 'Backup Rum Barrel: %{level}'
+      vin_with_value: 'Ship''s Number: %{vin}'
     system_uptime: Ship's Voyage Time
-    telemetry_instructions: 'Yer vessel hasn''t sent any signals yet. Make sure, ye scurvy dog:'
+    telemetry_instructions: 'Yer vessel hasn''t sent any signals yet. Make sure, ye
+      scurvy dog:'
     telemetry_running: Th' crow's nest service be runnin' on yer vessel
     turn_off_lock: Drop anchor
     turn_off_signals: Douse th' Lanterns
@@ -681,6 +780,10 @@ pirate:
     unlock_turn_on: Unfurl th' sails
     update_client: Update Ship's Compass
     waiting_for_telemetry: Waitin' fer signals from th' crow's nest
+  time:
+    formats:
+      date_time: "%B %d, %Y %H:%M"
+      time: "%H:%M"
   trips:
     all: All
     all_scooters: All Vessels
@@ -719,110 +822,77 @@ pirate:
     start_location: Port o' Departure
     start_time: Departure Time
     status: Ship's Status
-  datetime:
-    distance_in_words:
-      less_than_x_seconds:
-        one: less than a blink o' an eye
-        other: less than %{count} blinks o' an eye
-      x_seconds:
-        one: 1 tick o' the clock
-        other: "%{count} ticks o' the clock"
-      less_than_x_minutes:
-        one: less than a moment
-        other: less than %{count} moments
-      x_minutes:
-        one: 1 moment
-        other: "%{count} moments"
-      about_x_hours:
-        one: about 1 bell
-        other: about %{count} bells
-      x_hours:
-        one: 1 bell
-        other: "%{count} bells"
-      x_days:
-        one: 1 day at sea
-        other: "%{count} days at sea"
-      about_x_months:
-        one: about 1 moon
-        other: about %{count} moons
-      x_months:
-        one: 1 moon
-        other: "%{count} moons"
-      about_x_years:
-        one: about 1 voyage around the sun
-        other: about %{count} voyages around the sun
-      over_x_years:
-        one: over 1 voyage around the sun
-        other: over %{count} voyages around the sun
-      almost_x_years:
-        one: almost 1 voyage around the sun
-        other: almost %{count} voyages around the sun
-  errors:
-    messages:
-      not_saved: Lost to Davy Jones' locker
   units:
     h: bells
     km: leagues
     kmh: knots
     m: fathoms
+    min: bells
   vin_decoder:
     check_digit: Check booty mark
-    decode_button: Unravel the VIN code
-    description: Decode yer trusty steed's Vehicle Identification Code, ye scallywag!
-    enter_vin: Scrawl yer Vessel Identification Number (VIN), ye landlubber!
-    example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW motor, sails at max 45 knots, forged in the year 2021'
-    example_vin: e.g. WUNU2S3A6KZ000001
-    invalid_vin_alert: Avast! Ye must enter a proper 17-character VIN startin' with WUN, or walk the plank!
-    manufacturing_plant: Forge o' creation (Z = Zhuhai, China)
-    motor_power: Motor might (2 = 2kW, 3 = 3kW, 4 = 4kW)
-    serial_number: Mark o' the beast (Serial number)
-    title: unu VIN Codex o' Secrets
-    version: Vessel speed class (A = max 25 knots, B = max 45 knots)
-    vin_explanation: A Vessel Identification Number (VIN) be a 17-mark code to single out each mighty steed on the high seas. For unu scooters, the VIN spills the secrets o' the model, birth year, an' other treasures.
-    vin_format_intro: "The unu Scooter 2.x VIN be followin' this grand map:'"
-    vin_format_title: unu Scooter 2.x VIN Chart
-    vin_requirements: Yer VIN must be 17 marks long an' start with WUN, else ye be marooned! Try it with WUNU2S3A6KZ000001.
-    what_is_vin: What be this VIN ye speak of?
-    year_of_manufacture: Year o' the makin' (K = 2019, L = 2020, M = 2021, an' so on, matey!)
-    results_title: Ship's Registry Decoder Results
-    successfully_decoded: "Successfully decoded Ship's Registry:"
     decode_another: Decode Another Ship's Registry
+    decode_button: Unravel the VIN code
     decoded_information: Decoded Ship's Information
+    description: Decode yer trusty steed's Vehicle Identification Code, ye scallywag!
     details_meaning: What do these details mean, ye scurvy dog?
-    manufacturer: Shipbuilder
-    manufacturer_desc: Confirms the vessel was built by unu GmbH shipyard.
-    model: Vessel Model
-    model_desc: Identifies the specific model of the unu vessel.
-    vehicle_type: Vessel Type
-    vehicle_type_desc: Indicates the technical classification of the vessel.
-    variant: Variant
-    variant_desc: Shows the engine power of the vessel.
-    version_desc: Indicates the maximum speed capability of the vessel.
-    year: Year
-    year_desc: The model year in which the vessel was built.
-    plant: Shipyard
-    plant_desc: The shipbuilding facility where the vessel was constructed.
-    serial_number_desc: The unique identifier for this particular vessel.
+    enter_vin: Scrawl yer Vessel Identification Number (VIN), ye landlubber!
+    example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW
+      motor, sails at max 45 knots, forged in the year 2021'
+    example_vin: e.g. WUNU2S3A6KZ000001
+    format_description: 'The unu Vessel 2.x Registry follows this format:'
     format_title: unu Vessel 2.x Registry Format
-    format_description: "The unu Vessel 2.x Registry follows this format:"
-    position_breakdown: Position Breakdown
+    invalid_vin_alert: Avast! Ye must enter a proper 17-character VIN startin' with
+      WUN, or walk the plank!
+    manufacturer: Shipbuilder
     manufacturer_code: Shipbuilder Code (unu GmbH)
+    manufacturer_desc: Confirms the vessel was built by unu GmbH shipyard.
+    manufacturing_plant: Forge o' creation (Z = Zhuhai, China)
+    model: Vessel Model
     model_code: Model Code (unu Vessel 2.x)
-    motor_power_variant: Engine Power Variant
-    speed_version: Speed Version
-    possible_values: Possible Values
-    motor_power_x: Engine Power (X)
+    model_desc: Identifies the specific model of the unu vessel.
+    motor_power: Motor might (2 = 2kW, 3 = 3kW, 4 = 4kW)
     motor_power_2kw: 2 = 2000W (2kW)
     motor_power_3kw: 3 = 3000W (3kW)
     motor_power_4kw: 4 = 4000W (4kW)
-    speed_version_y: Speed Version (Y)
+    motor_power_variant: Engine Power Variant
+    motor_power_x: Engine Power (X)
+    plant: Shipyard
+    plant_desc: The shipbuilding facility where the vessel was constructed.
+    plant_p: Shipyard (P)
+    plant_zhuhai: Z = Zhuhai, China
+    position_breakdown: Position Breakdown
+    possible_values: Possible Values
+    result_example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span>
+      = 4kW engine, max 45 knots, built in 2021'
+    results_title: Ship's Registry Decoder Results
+    serial_number: Mark o' the beast (Serial number)
+    serial_number_desc: The unique identifier for this particular vessel.
+    speed_version: Speed Version
     speed_version_25: A = Version 25 (max 25 knots)
     speed_version_45: B = Version 45 (max 45 knots)
-    year_z: Year (Z)
+    speed_version_y: Speed Version (Y)
+    successfully_decoded: 'Successfully decoded Ship''s Registry:'
+    title: unu VIN Codex o' Secrets
+    variant: Variant
+    variant_desc: Shows the engine power of the vessel.
+    vehicle_type: Vessel Type
+    vehicle_type_desc: Indicates the technical classification of the vessel.
+    version: Vessel speed class (A = max 25 knots, B = max 45 knots)
+    version_desc: Indicates the maximum speed capability of the vessel.
+    vin_explanation: A Vessel Identification Number (VIN) be a 17-mark code to single
+      out each mighty steed on the high seas. For unu scooters, the VIN spills the
+      secrets o' the model, birth year, an' other treasures.
+    vin_format_intro: The unu Scooter 2.x VIN be followin' this grand map:'
+    vin_format_title: unu Scooter 2.x VIN Chart
+    vin_requirements: Yer VIN must be 17 marks long an' start with WUN, else ye be
+      marooned! Try it with WUNU2S3A6KZ000001.
+    what_is_vin: What be this VIN ye speak of?
+    year: Year
     year_2017_2019: H = 2017, J = 2018, K = 2019
     year_2020_2022: L = 2020, M = 2021, N = 2022
     year_2023_2025: P = 2023, R = 2024, S = 2025
     year_and_so_on: And so on, ye scallywag...
-    plant_p: Shipyard (P)
-    plant_zhuhai: Z = Zhuhai, China
-    result_example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW engine, max 45 knots, built in 2021'
+    year_desc: The model year in which the vessel was built.
+    year_of_manufacture: Year o' the makin' (K = 2019, L = 2020, M = 2021, an' so
+      on, matey!)
+    year_z: Year (Z)

@@ -47,7 +47,7 @@
       <div class="p-6">
         <dt class="text-sm font-medium text-gray-500 truncate"><%= t('admin.trips.show.duration') %></dt>
         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
-          <%= @trip.duration ? t('admin.trips.show.minutes', count: (@trip.duration / 60).round) : t('admin.trips.show.in_progress') %>
+          <%= @trip.duration ? distance_of_time_in_words(@trip.duration) : t('admin.trips.show.in_progress') %>
         </dd>
       </div>
     </div>

@@ -22,7 +22,7 @@ class UserAchievement < ApplicationRecord
     when "distance"
       "#{progress.round(1)} / #{achievement_definition.threshold} km"
     when "duration"
-      "#{progress.round(1)} / #{achievement_definition.threshold} hours"
+      "#{progress.round(2)} / #{achievement_definition.threshold} hours"
     when "trips"
       "#{progress.to_i} / #{achievement_definition.threshold.to_i} trips"
     when "speed"

@@ -19,9 +19,9 @@ module ApplicationHelper
     minutes = ((duration % 1.hour) / 1.minute).floor
 
     if hours > 0
-      "#{hours}#{t('units.h')} #{minutes}#{t('units.m')}"
+      "#{hours}#{t('units.h')} #{minutes}#{t('units.min')}"
     else
-      "#{minutes}#{t('units.m')}"
+      "#{minutes}#{t('units.min')}"
     end
   end
 end

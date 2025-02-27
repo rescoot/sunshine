@@ -120,17 +120,23 @@
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
                       <div class="w-32 mx-auto">
                         <div class="flex items-center">
-                          <input type="number" name="progress[<%= achievement.id %>]" value="<%= current_progress %>" 
-                                min="0" max="<%= achievement.threshold %>" step="0.1"
+                          <% 
+                            # Round progress to 2 decimal places for time-based achievements
+                            rounded_progress = achievement.achievement_type == "duration" ? current_progress.round(2) : current_progress
+                            # Set step to 0.01 for time-based achievements, 0.1 for others
+                            step_value = achievement.achievement_type == "duration" ? "0.01" : "0.1"
+                          %>
+                          <input type="number" name="progress[<%= achievement.id %>]" value="<%= rounded_progress %>" 
+                                min="0" max="<%= achievement.threshold %>" step="<%= step_value %>"
                                 class="progress-input block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 <%= current_state == 'in_progress' ? '' : 'opacity-50' %>"
                                 <%= current_state != 'in_progress' ? 'disabled' : '' %>>
                         </div>
                         <div class="mt-1 h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
-                          <% progress_percentage = achievement.progress_percentage(current_progress) %>
+                          <% progress_percentage = achievement.progress_percentage(rounded_progress) %>
                           <div class="h-full bg-indigo-600 rounded-full" style="width: <%= progress_percentage %>%"></div>
                         </div>
                         <div class="mt-1 text-xs text-gray-500 text-center">
-                          <%= current_progress %> / <%= achievement.threshold %>
+                          <%= rounded_progress %> / <%= achievement.threshold %>
                         </div>
                       </div>
                     </td>
@@ -252,7 +258,12 @@
         
         // Update progress text
         const progressText = this.closest('div.w-32').querySelector('div.text-xs.text-gray-500');
-        progressText.textContent = `${value} / ${max}`;
+        
+        // Check if this is a duration-based achievement by looking at the step value
+        const isDurationAchievement = this.step === "0.01";
+        const displayValue = isDurationAchievement ? value.toFixed(2) : value;
+        
+        progressText.textContent = `${displayValue} / ${max}`;
       });
     });
   }

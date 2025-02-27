@@ -14,9 +14,9 @@ module TripsHelper
 
     distance_km = trip.distance / 1000.0
     if distance_km < 1
-      "#{(distance_km * 1000).round} m"
+      "#{(distance_km * 1000).round} #{t('units.m')}"
     else
-      "#{distance_km.round(2)} km"
+      "#{distance_km.round(2)} #{t('units.km')}"
     end
   end
 
@@ -28,15 +28,15 @@ module TripsHelper
     minutes = (duration % 1.hour) / 1.minute
 
     if hours >= 1
-      "#{hours.floor}h #{minutes.floor}m"
+      "#{hours.floor}#{t('units.h')} #{minutes.floor}#{t('units.min')}"
     else
-      "#{minutes.floor}m"
+      "#{minutes.floor}#{t('units.min')}"
     end
   end
 
   def format_trip_speed(trip)
     return tag.span("N/A", class: "text-gray-400") unless trip.avg_speed
-    "#{trip.avg_speed.round(1)} km/h"
+    "#{trip.avg_speed.round(1)} #{t('units.kmh')}"
   end
 
   def format_coordinates(lat, lng)
@@ -45,5 +45,19 @@ module TripsHelper
       "https://www.openstreetmap.org/?mlat=#{lat}&mlon=#{lng}&zoom=16",
       target: "_blank",
       class: "text-indigo-600 hover:text-indigo-900 font-mono"
+  end
+  
+  # Format trip duration in seconds to a human-readable format using translation units
+  def format_duration_seconds(duration_seconds)
+    return nil unless duration_seconds
+    
+    hours = (duration_seconds / 3600).floor
+    minutes = ((duration_seconds % 3600) / 60).floor
+    
+    if hours > 0
+      "#{hours}#{t('units.h')} #{minutes}#{t('units.min')}"
+    else
+      "#{minutes}#{t('units.min')}"
+    end
   end
 end

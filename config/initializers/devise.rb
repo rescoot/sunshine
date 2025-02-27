@@ -310,19 +310,6 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
-end
-
-Warden::Manager.after_set_user do |user, auth, opts|
-  scope = opts[:scope]
-  auth.cookies.signed["#{scope}.id"] = user.id
-  auth.cookies.signed["#{scope}.expires_at"] = 30.minutes.from_now
-end
-
-Warden::Manager.before_logout do |user, auth, opts|
-  scope = opts[:scope]
-  auth.cookies.signed["#{scope}.id"] = nil
-  auth.cookies.signed["#{scope}.expires_at"] = nil
-
   # ==> Devise OTP Extension
   # Configure OTP extension for devise
 
@@ -357,5 +344,5 @@ Warden::Manager.before_logout do |user, auth, opts|
   config.otp_controller_path = "devise"
 
   # Grace period for mandatory OTP setup (for admin users)
-  config.otp_mandatory_admin_grace_period = 24.hours
+  # config.otp_mandatory_admin_grace_period = 24.hours
 end

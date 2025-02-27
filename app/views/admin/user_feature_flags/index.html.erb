@@ -159,7 +159,7 @@
         }
         
         if (state === 'default') {
-          descriptionDiv.textContent = '<%= t('admin.user_feature_flags.index.using_default_js') %>'.replace('%{default}', defaultEnabled ? '<%= t('admin.user_feature_flags.index.enabled') %>' : '<%= t('admin.user_feature_flags.index.disabled') %>');
+          descriptionDiv.textContent = '<%= t('admin.user_feature_flags.index.using_default_js') %>'.replace('%{default_value}', defaultEnabled ? '<%= t('admin.user_feature_flags.index.enabled') %>' : '<%= t('admin.user_feature_flags.index.disabled') %>');
         } else if (state === 'enabled') {
           descriptionDiv.textContent = '<%= t('admin.user_feature_flags.index.explicitly_enabled') %>';
         } else {
