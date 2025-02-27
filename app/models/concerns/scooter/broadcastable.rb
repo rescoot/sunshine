@@ -9,31 +9,55 @@ module Scooter::Broadcastable
   private
 
   def broadcast_updates
-    broadcast_state_update
-    broadcast_batteries_update
-    broadcast_controls_update if saved_change_to_state? || saved_change_to_blinkers?
+    begin
+      broadcast_state_update
+      broadcast_batteries_update
+      
+      # Only attempt to broadcast controls if we're in a web context
+      begin
+        broadcast_controls_update if saved_change_to_state? || saved_change_to_blinkers?
+      rescue => e
+        Rails.logger.error "Error broadcasting controls update: #{e.message}"
+      end
 
-    broadcast_replace_to self,
-      target: "scooter_#{id}_visual",
-      partial: "scooters/visual_status",
-      locals: { scooter: self } if saved_change_to_state? || saved_change_to_blinkers?
+      begin
+        if saved_change_to_state? || saved_change_to_blinkers?
+          broadcast_replace_to self,
+            target: "scooter_#{id}_visual",
+            partial: "scooters/visual_status",
+            locals: { scooter: self }
+        end
+      rescue => e
+        Rails.logger.error "Error broadcasting visual status update: #{e.message}"
+      end
 
-    if saved_change_to_blinkers? || saved_change_to_state?
-      broadcast_update_later_to(
-        self,
-        target: "scooter_#{id}_blinkers",
-        partial: "scooters/blinkers",
-        locals: { scooter: self }
-      )
-    end
+      begin
+        if saved_change_to_blinkers? || saved_change_to_state?
+          broadcast_update_later_to(
+            self,
+            target: "scooter_#{id}_blinkers",
+            partial: "scooters/blinkers",
+            locals: { scooter: self }
+          )
+        end
+      rescue => e
+        Rails.logger.error "Error broadcasting blinkers update: #{e.message}"
+      end
 
-    if saved_change_to_speed?
-      broadcast_update_later_to(
-        self,
-        target: "scooter_#{id}_speed",
-        partial: "scooters/speed",
-        locals: { scooter: self }
-      )
+      begin
+        if saved_change_to_speed?
+          broadcast_update_later_to(
+            self,
+            target: "scooter_#{id}_speed",
+            partial: "scooters/speed",
+            locals: { scooter: self }
+          )
+        end
+      rescue => e
+        Rails.logger.error "Error broadcasting speed update: #{e.message}"
+      end
+    rescue => e
+      Rails.logger.error "Error in broadcast_updates: #{e.message}"
     end
   end
 
@@ -73,8 +97,17 @@ module Scooter::Broadcastable
   end
 
   def broadcast_controls_update
-    broadcast_update_to "controls",
-      ApplicationController.render(partial: "scooters/controls", locals: { scooter: self })
+    begin
+      # Use the regular controls partial since it now has the proper guard clause
+      broadcast_update_to "controls",
+        ApplicationController.render(
+          partial: "scooters/controls", 
+          locals: { scooter: self }
+        )
+    rescue => e
+      Rails.logger.error "Error in broadcast_controls_update: #{e.message}"
+      # Continue execution even if this fails
+    end
   end
 
   def broadcast_update_to(target, content)

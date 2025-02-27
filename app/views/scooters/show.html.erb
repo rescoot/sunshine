@@ -6,7 +6,7 @@
       <p class="mt-2 text-sm text-gray-700"><%= t('scooters.details_and_controls') %></p>
     </div>
     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none flex flex-wrap gap-2">
-      <% if current_user.admin? %>
+      <% if defined?(current_user) && current_user&.admin? %>
         <%= link_to t('scooters.admin_shell'), admin_scooter_shell_path(@scooter), class: "btn-primary" %>
       <% end %>
       <% unless @waiting_for_telemetry %>
@@ -15,7 +15,7 @@
             turbo_method: :get,
             class: "btn-primary",
             data: { turbo_stream: true } %>
-        <% if current_user.feature_enabled?(FeatureFlag::STATISTICS) %>
+        <% if defined?(current_user) && current_user&.feature_enabled?(FeatureFlag::STATISTICS) %>
           <%= link_to t('scooters.statistics'), 
               ride_statistics_scooter_statistics_path(@scooter),
               class: "btn-primary" %>

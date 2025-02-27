@@ -1,0 +1,56 @@
+<div id="scooter_<%= scooter.id %>_visual">
+  <!-- Scooter Visual Status -->
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4">Status</h3>
+    <div class="flex flex-row flex-wrap justify-center sm:gap-4">
+    <% img_class = "h-32 sm:h-48 w-auto object-contain" %>
+    <div class="relative">
+      <%= image_tag scooter.scooter_image_path('side'), class: "#{img_class}", alt: "Scooter Right Side View" %>
+
+      <% if scooter.unlocked? %>
+        <%= image_tag "scooter/side_parked.png", class: "#{img_class} absolute top-0 left-0 animate-glow", style: "mix-blend-mode: screen;" %>
+      <% end %>
+
+      <% if scooter.ready_to_drive? %>
+        <%= image_tag "scooter/side_ready_to_drive.png", class: "#{img_class} absolute top-0 left-0 animate-glow", style: "mix-blend-mode: screen;" %>
+      <% end %>
+
+      <% if scooter.blinkers == "right" || scooter.blinkers == "both" %>
+        <%= image_tag "scooter/side_blink.png", class: "#{img_class} absolute top-0 left-0 animate-blink", style: "mix-blend-mode: screen;" %>
+      <% end %>
+    </div>
+
+    <div class="relative">
+      <%= image_tag scooter.scooter_image_path('front'), class: img_class, alt: "Scooter Front View" %>
+
+      <% if scooter.blinkers != 'off' %>
+        <%= image_tag "scooter/blink_#{scooter.blinkers}.png", class: "#{img_class} absolute top-0 left-0 animate-blink", style: "mix-blend-mode: screen;" %>
+      <% end %>
+      
+      <% if scooter.unlocked? %>
+        <%= image_tag "scooter/pos_light_on.png", class: "#{img_class} absolute top-0 left-0 animate-glow", style: "mix-blend-mode: screen;" %>
+      <% end %>
+      
+      <% if scooter.ready_to_drive? %>
+        <%= image_tag "scooter/low_beam_on.png", class: "#{img_class} absolute top-0 left-0 animate-glow", style: "mix-blend-mode: screen;" %>
+      <% end %>
+    </div>
+
+    <div class="relative">
+      <%= image_tag scooter.scooter_image_path('left_side'), class: "#{img_class}", alt: "Scooter Left Side View" %>
+
+      <% if scooter.unlocked? %>
+        <%= image_tag "scooter/side_parked.png", class: "#{img_class} scale-x-[-1] absolute top-0 left-0 animate-glow", style: "mix-blend-mode: screen;" %>
+      <% end %>
+
+      <% if scooter.ready_to_drive? %>
+        <%= image_tag "scooter/side_ready_to_drive.png", class: "#{img_class} scale-x-[-1] absolute top-0 left-0 animate-glow", style: "mix-blend-mode: screen;" %>
+      <% end %>
+
+      <% if scooter.blinkers == "left" || scooter.blinkers == "both" %>
+        <%= image_tag "scooter/side_blink.png", class: "#{img_class} scale-x-[-1] absolute top-0 left-0 animate-blink", style: "mix-blend-mode: screen;" %>
+      <% end %>
+    </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<%
+  def speed_color(speed)
+    case speed.to_i
+    when 0 then "#888888"
+    when 1..30 then "#00CB00"    # Green
+    when 31..55 then "#FFA500"   # Orange
+    else "#FF0000"               # Red
+    end
+  end
+%>
+
+<%= turbo_frame_tag "scooter_#{scooter.id}_speed" do %>
+  <div class="speedometer">
+    <div class="speed-value">
+      <% if scooter.state == "parked" %>
+        <div class="speed-number">P</div>
+        <div class="speed-unit">parked</div>
+      <% else %>
+        <div class="speed-number"><%= scooter.speed.round %></div>
+        <div class="speed-unit">km/h</div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

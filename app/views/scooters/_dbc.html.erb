@@ -2,8 +2,8 @@
   <div class="status-bar">
     <div class="battery-indicator">
       <span class="battery-icon">🔋</span>
-      <span id="scooter_<%= scooter.id %>_battery"><%= number_to_percentage(scooter.telemetry.battery0_level, precision: 0) %></span>
-      <span id="scooter_<%= scooter.id %>_battery"><%= number_to_percentage(scooter.telemetry.battery1_level, precision: 0) %></span>
+      <span id="scooter_<%= scooter.id %>_battery"><%= number_to_percentage(scooter.telemetry&.battery0_level.to_f, precision: 0) %></span>
+      <span id="scooter_<%= scooter.id %>_battery"><%= number_to_percentage(scooter.telemetry&.battery1_level.to_f, precision: 0) %></span>
     </div>
     <div class="time" id="current-time">12:00</div>
   </div>

@@ -41,10 +41,16 @@ class Scooter < ApplicationRecord
 
   def location
     @location ||= telemetries.where.not(lat: 0, lng: 0).order(created_at: :desc).first
+  rescue => e
+    Rails.logger.error "Error getting location: #{e.message}"
+    nil
   end
 
   def telemetry
     telemetries.recent.first
+  rescue => e
+    Rails.logger.error "Error getting telemetry: #{e.message}"
+    nil
   end
 
   def has_token?

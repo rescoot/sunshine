@@ -42,7 +42,7 @@
     power_stroke = 15
     power_radius = (450 - 25 - power_stroke) / 2
 
-    battery_stroke = scooter.telemetry.battery1_present ? power_stroke / 3 : power_stroke
+    battery_stroke = scooter.telemetry&.battery1_present ? power_stroke / 3 : power_stroke
     battery0_radius = (450 - 25 - battery_stroke) / 2
     battery1_radius = (450 - 25 - (4*battery_stroke)) / 2
 
@@ -61,19 +61,19 @@
     end
 
     power_arc_offset = 0.25
-    power_percent = map_arc_offset(scooter.telemetry.motor_current, -5000, 50000, power_arc_offset)
+    power_percent = map_arc_offset(scooter.telemetry&.motor_current || 0, -5000, 50000, power_arc_offset)
     power_circumference = 2 * Math::PI * power_radius
     power_arc_length = power_circumference * 0.25
     power_arc_val_length = power_arc_length * power_percent.abs
     power_dash_offset = -power_arc_length * power_arc_offset
     power_dash_offset += (power_percent < 0 ? power_arc_val_length : 0)
 
-    battery0_percent = scooter.telemetry.battery0_level / 100.0
+    battery0_percent = scooter.telemetry&.battery0_level.to_f / 100.0
     battery0_circumference = 2 * Math::PI * battery0_radius
     battery0_arc_length = battery0_circumference * 0.25
     battery0_dash_offset = battery0_arc_length * (1 - battery0_percent)
 
-    battery1_percent = scooter.telemetry.battery1_level / 100.0
+    battery1_percent = scooter.telemetry&.battery1_level.to_f / 100.0
     battery1_circumference = 2 * Math::PI * battery1_radius
     battery1_arc_length = battery1_circumference * 0.25
     battery1_dash_offset = battery1_arc_length * (1 - battery1_percent)
@@ -113,7 +113,7 @@
     <circle cx="<%= center_x %>" cy="<%= center_y %>" r="<%= power_radius %>"
         class="indicator"
         stroke-dasharray="<%= power_arc_val_length %> <%= power_circumference %>"
-        style="stroke: <%= power_color(scooter.telemetry.motor_current) %>; stroke-dashoffset: <%= power_dash_offset %>;"
+        style="stroke: <%= power_color(scooter.telemetry&.motor_current || 0) %>; stroke-dashoffset: <%= power_dash_offset %>;"
         stroke-width="<%= power_stroke %>"
         fill="none"
         transform="rotate(-225 <%= center_x %> <%= center_y %>)" />
@@ -135,7 +135,7 @@
         transform="scale(-1, 1) rotate(-225)"
         transform-origin="center" />
 
-    <% if scooter.telemetry.battery1_present %>
+    <% if scooter.telemetry&.battery1_present %>
     <!-- battery1 -->
     <circle cx="<%= center_x %>" cy="<%= center_y %>" r="<%= battery1_radius %>"
         class="background"

@@ -51,6 +51,6 @@ module Scooter::BatteryManagement
   end
 
   def regenerating?
-    telemetry.motor_current < 0
+    telemetry&.motor_current.to_i < 0
   end
 end
