@@ -1,38 +1,36 @@
-@layer components {
-  .dashboard {
-    @apply w-full max-w-lg bg-gray-900 text-white rounded-lg flex flex-col mx-auto relative;
-    height: var(--dashboard-size);
-  }
+@utility dashboard {
+  @apply w-full max-w-lg bg-gray-900 text-white rounded-lg flex flex-col mx-auto relative;
+  height: var(--dashboard-size);
+}
 
-  .dashboard-component {
-    @apply absolute w-full;
-  }
+@utility dashboard-component {
+  @apply absolute w-full;
+}
 
-  .status-bar {
-    @apply h-10 px-4 border-b border-gray-700 flex justify-between items-center;
-  }
+@utility status-bar {
+  @apply h-10 px-4 border-b border-gray-700 flex justify-between items-center;
+}
 
-  .battery-indicator {
-    @apply flex items-center gap-2;
-  }
+@utility battery-indicator {
+  @apply flex items-center gap-2;
+}
 
-  .battery-icon {
-    @apply text-emerald-500 text-xl;
-  }
+@utility battery-icon {
+  @apply text-emerald-500 text-xl;
+}
 
-  .time {
-    @apply text-2xl font-bold;
-  }
+@utility time {
+  @apply text-2xl font-bold;
+}
 
-  .warning-indicators {
-    @apply h-16 px-8 flex justify-between items-center top-12;
-  }
+@utility warning-indicators {
+  @apply h-16 px-8 flex justify-between items-center top-12;
+}
 
-  .speedometer {
-    @apply flex-grow flex flex-col items-center justify-center relative h-full top-8;
-  }
+@utility speedometer {
+  @apply flex-grow flex flex-col items-center justify-center relative h-full top-8;
+}
 
-  .stats {
-    @apply h-16 px-4 flex justify-center bottom-0;
-  }
+@utility stats {
+  @apply h-16 px-4 flex justify-center bottom-0;
 }

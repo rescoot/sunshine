@@ -1,63 +1,155 @@
-@layer components {
-  .badge {
-    @apply inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset;
-  }
+@utility badge {
+  @apply inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset;
+}
 
-  .badge-success {
-    @apply bg-green-50 text-green-700 ring-green-600/20;
-  }
+@utility badge-success {
+  @apply bg-green-50 text-green-700 ring-green-600/20;
+}
 
-  .badge-error {
-    @apply bg-red-50 text-red-700 ring-red-600/20;
-  }
+@utility badge-error {
+  @apply bg-red-50 text-red-700 ring-red-600/20;
+}
 
-  .badge-info {
-    @apply bg-blue-50 text-blue-700 ring-blue-600/20;
-  }
+@utility badge-info {
+  @apply bg-blue-50 text-blue-700 ring-blue-600/20;
+}
 
-  .badge-warning {
-    @apply bg-yellow-50 text-yellow-700 ring-yellow-600/20;
-  }
+@utility badge-warning {
+  @apply bg-yellow-50 text-yellow-700 ring-yellow-600/20;
+}
 
+@utility badge-achievement {
   /* Achievement badge with 3D, plastic-like appearance */
-  .badge-achievement {
-    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-bold shadow-sm;
-    background: linear-gradient(to bottom, theme('colors.indigo.400'), theme('colors.indigo.600'));
-    color: white;
-    border: 1px solid theme('colors.indigo.700');
-    box-shadow: 
-      0 1px 2px rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.25);
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+  @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-bold shadow-xs;
+  background: linear-gradient(
+    to bottom,
+    var(--color-indigo-400),
+    var(--color-indigo-600)
+  );
+  color: white;
+  border: 1px solid var(--color-indigo-700);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+
+  &.green {
+    background: linear-gradient(
+      to bottom,
+      var(--color-green-400),
+      var(--color-green-600)
+    );
+    border: 1px solid var(--color-green-700);
   }
 
-  .badge-achievement.green {
-    background: linear-gradient(to bottom, theme('colors.green.400'), theme('colors.green.600'));
-    border: 1px solid theme('colors.green.700');
+  &.purple {
+    background: linear-gradient(
+      to bottom,
+      var(--color-purple-400),
+      var(--color-purple-600)
+    );
+    border: 1px solid var(--color-purple-700);
   }
 
-  .badge-achievement.purple {
-    background: linear-gradient(to bottom, theme('colors.purple.400'), theme('colors.purple.600'));
-    border: 1px solid theme('colors.purple.700');
+  &.orange {
+    background: linear-gradient(
+      to bottom,
+      var(--color-orange-400),
+      var(--color-orange-600)
+    );
+    border: 1px solid var(--color-orange-700);
   }
 
-  .badge-achievement.orange {
-    background: linear-gradient(to bottom, theme('colors.orange.400'), theme('colors.orange.600'));
-    border: 1px solid theme('colors.orange.700');
+  &.red {
+    background: linear-gradient(
+      to bottom,
+      var(--color-red-400),
+      var(--color-red-600)
+    );
+    border: 1px solid var(--color-red-700);
   }
 
-  .badge-achievement.red {
-    background: linear-gradient(to bottom, theme('colors.red.400'), theme('colors.red.600'));
-    border: 1px solid theme('colors.red.700');
+  &.yellow {
+    background: linear-gradient(
+      to bottom,
+      var(--color-amber-400),
+      var(--color-amber-600)
+    );
+    border: 1px solid var(--color-amber-700);
   }
 
-  .badge-achievement.yellow {
-    background: linear-gradient(to bottom, theme('colors.amber.400'), theme('colors.amber.600'));
-    border: 1px solid theme('colors.amber.700');
+  &.pink {
+    background: linear-gradient(
+      to bottom,
+      var(--color-pink-400),
+      var(--color-pink-600)
+    );
+    border: 1px solid var(--color-pink-700);
   }
+}
 
-  .badge-achievement.pink {
-    background: linear-gradient(to bottom, theme('colors.pink.400'), theme('colors.pink.600'));
-    border: 1px solid theme('colors.pink.700');
+@utility green {
+  &.badge-achievement {
+    background: linear-gradient(
+      to bottom,
+      var(--color-green-400),
+      var(--color-green-600)
+    );
+    border: 1px solid var(--color-green-700);
+  }
+}
+
+@utility purple {
+  &.badge-achievement {
+    background: linear-gradient(
+      to bottom,
+      var(--color-purple-400),
+      var(--color-purple-600)
+    );
+    border: 1px solid var(--color-purple-700);
+  }
+}
+
+@utility orange {
+  &.badge-achievement {
+    background: linear-gradient(
+      to bottom,
+      var(--color-orange-400),
+      var(--color-orange-600)
+    );
+    border: 1px solid var(--color-orange-700);
+  }
+}
+
+@utility red {
+  &.badge-achievement {
+    background: linear-gradient(
+      to bottom,
+      var(--color-red-400),
+      var(--color-red-600)
+    );
+    border: 1px solid var(--color-red-700);
+  }
+}
+
+@utility yellow {
+  &.badge-achievement {
+    background: linear-gradient(
+      to bottom,
+      var(--color-amber-400),
+      var(--color-amber-600)
+    );
+    border: 1px solid var(--color-amber-700);
+  }
+}
+
+@utility pink {
+  &.badge-achievement {
+    background: linear-gradient(
+      to bottom,
+      var(--color-pink-400),
+      var(--color-pink-600)
+    );
+    border: 1px solid var(--color-pink-700);
   }
 }

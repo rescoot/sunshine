@@ -61,7 +61,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
               </svg>
             </button>
-            <div data-dropdown-target="menu" class="hidden absolute bottom-full right-0 mb-1 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+            <div data-dropdown-target="menu" class="hidden absolute bottom-full right-0 mb-1 w-32 rounded-md shadow-lg bg-white ring-1 ring-black/5 z-50">
               <%= button_to locale_path, method: :post, params: { locale: "en" }, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md border-0 bg-transparent" do %>
                 <%= t('common.english') %>
               <% end %>

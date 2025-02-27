@@ -1,67 +1,151 @@
-@layer components {
-  .btn {
-    @apply rounded-md px-3 py-2 text-sm font-semibold text-white border border-transparent transition-all duration-200 transform;
+@utility btn {
+  @apply rounded-md px-3 py-2 text-sm font-semibold text-white border border-transparent transition-all duration-200 transform;
+}
+
+@utility btn-primary {
+  @apply btn hover:translate-y-[2px] hover:pb-2 hover:mb-[2px] border-b-4 hover:border-b-2 border-indigo-800 hover:border-indigo-700 hover:shadow-xs relative;
+  background: linear-gradient(
+    to bottom,
+    var(--color-indigo-500),
+    var(--color-indigo-600)
+  );
+
+  &:hover {
+    background: linear-gradient(
+      to bottom,
+      var(--color-indigo-400),
+      var(--color-indigo-500)
+    );
   }
 
-  .btn-primary {
-    @apply btn hover:translate-y-[2px] hover:pb-2 hover:mb-[2px] border-b-4 hover:border-b-2 border-indigo-800 hover:border-indigo-700 hover:shadow-sm relative;
-    background: linear-gradient(to bottom, theme('colors.indigo.500'), theme('colors.indigo.600'));
-  }
-  
-  .btn-primary:hover {
-    background: linear-gradient(to bottom, theme('colors.indigo.400'), theme('colors.indigo.500'));
-  }
-
-  .btn-primary.green {
+  &.green {
     @apply border-b-4 border-green-800 hover:border-b-2 hover:border-green-700;
-    background: linear-gradient(to bottom, theme('colors.green.500'), theme('colors.green.600'));
-  }
-  
-  .btn-primary.green:hover {
-    background: linear-gradient(to bottom, theme('colors.green.400'), theme('colors.green.500'));
+    background: linear-gradient(
+      to bottom,
+      var(--color-green-500),
+      var(--color-green-600)
+    );
   }
 
-  .btn-primary.red {
+  &.green:hover {
+    background: linear-gradient(
+      to bottom,
+      var(--color-green-400),
+      var(--color-green-500)
+    );
+  }
+
+  &.red {
     @apply border-b-4 border-red-800 hover:border-b-2 hover:border-red-700;
-    background: linear-gradient(to bottom, theme('colors.red.500'), theme('colors.red.600'));
-  }
-  
-  .btn-primary.red:hover {
-    background: linear-gradient(to bottom, theme('colors.red.400'), theme('colors.red.500'));
-  }
-
-  .btn-secondary {
-    @apply btn text-gray-900 border-gray-300 hover:translate-y-[2px] hover:pb-2 hover:mb-[2px] border-b-4 border-gray-400 hover:shadow-sm hover:border-b-2 hover:border-gray-300 relative;
-    background: linear-gradient(to bottom, theme('colors.white'), theme('colors.gray.50'));
-  }
-  
-  .btn-secondary:hover {
-    background: linear-gradient(to bottom, theme('colors.gray.50'), theme('colors.gray.100'));
+    background: linear-gradient(
+      to bottom,
+      var(--color-red-500),
+      var(--color-red-600)
+    );
   }
 
-  .btn-warning {
-    @apply btn hover:translate-y-[2px] hover:pb-2 hover:mb-[2px] border-b-4 border-amber-800 hover:shadow-sm hover:border-b-2 hover:border-amber-700 relative;
-    background: linear-gradient(to bottom, theme('colors.amber.500'), theme('colors.amber.600'));
+  &.red:hover {
+    background: linear-gradient(
+      to bottom,
+      var(--color-red-400),
+      var(--color-red-500)
+    );
   }
-  
-  .btn-warning:hover {
-    background: linear-gradient(to bottom, theme('colors.amber.400'), theme('colors.amber.500'));
+}
+
+@utility green {
+  &.btn-primary {
+    @apply border-b-4 border-green-800 hover:border-b-2 hover:border-green-700;
+    background: linear-gradient(
+      to bottom,
+      var(--color-green-500),
+      var(--color-green-600)
+    );
   }
 
-  .btn-error {
-    @apply btn hover:translate-y-[2px] hover:pb-2 hover:mb-[2px] border-b-4 border-red-800 hover:shadow-sm hover:border-b-2 hover:border-red-700 relative;
-    background: linear-gradient(to bottom, theme('colors.red.500'), theme('colors.red.600'));
+  &.btn-primary:hover {
+    background: linear-gradient(
+      to bottom,
+      var(--color-green-400),
+      var(--color-green-500)
+    );
   }
-  
-  .btn-error:hover {
-    background: linear-gradient(to bottom, theme('colors.red.400'), theme('colors.red.500'));
+}
+
+@utility red {
+  &.btn-primary {
+    @apply border-b-4 border-red-800 hover:border-b-2 hover:border-red-700;
+    background: linear-gradient(
+      to bottom,
+      var(--color-red-500),
+      var(--color-red-600)
+    );
   }
 
-  .dropdown-menu {
-    @apply absolute z-10 mt-2 w-32 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5;
+  &.btn-primary:hover {
+    background: linear-gradient(
+      to bottom,
+      var(--color-red-400),
+      var(--color-red-500)
+    );
   }
+}
 
-  .dropdown-item {
-    @apply block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100;
+@utility btn-secondary {
+  @apply btn text-gray-900 border-gray-300 hover:translate-y-[2px] hover:pb-2 hover:mb-[2px] border-b-4 border-gray-400 hover:shadow-xs hover:border-b-2 hover:border-gray-300 relative;
+  background: linear-gradient(
+    to bottom,
+    var(--color-white),
+    var(--color-gray-50)
+  );
+
+  &:hover {
+    background: linear-gradient(
+      to bottom,
+      var(--color-gray-50),
+      var(--color-gray-100)
+    );
   }
+}
+
+@utility btn-warning {
+  @apply btn hover:translate-y-[2px] hover:pb-2 hover:mb-[2px] border-b-4 border-amber-800 hover:shadow-xs hover:border-b-2 hover:border-amber-700 relative;
+  background: linear-gradient(
+    to bottom,
+    var(--color-amber-500),
+    var(--color-amber-600)
+  );
+
+  &:hover {
+    background: linear-gradient(
+      to bottom,
+      var(--color-amber-400),
+      var(--color-amber-500)
+    );
+  }
+}
+
+@utility btn-error {
+  @apply btn hover:translate-y-[2px] hover:pb-2 hover:mb-[2px] border-b-4 border-red-800 hover:shadow-xs hover:border-b-2 hover:border-red-700 relative;
+  background: linear-gradient(
+    to bottom,
+    var(--color-red-500),
+    var(--color-red-600)
+  );
+
+  &:hover {
+    background: linear-gradient(
+      to bottom,
+      var(--color-red-400),
+      var(--color-red-500)
+    );
+  }
+}
+
+@utility dropdown-menu {
+  @apply absolute z-10 mt-2 w-32 rounded-md bg-white shadow-lg ring-1 ring-black/5;
+}
+
+@utility dropdown-item {
+  @apply block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100;
 }

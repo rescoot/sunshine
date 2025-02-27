@@ -1,34 +1,32 @@
-@layer components {
-  .nav-main {
-    @apply bg-indigo-800 border-b-2 border-indigo-700 shadow-sm;
-  }
+@utility nav-main {
+  @apply bg-indigo-800 border-b-2 border-indigo-700 shadow-xs;
+}
 
-  .nav-admin {
-    @apply bg-teal-800 border-b-2 border-teal-700 shadow-sm;
-  }
+@utility nav-admin {
+  @apply bg-teal-800 border-b-2 border-teal-700 shadow-xs;
+}
 
+@utility nav-link {
   /* Base navigation link styles */
-  .nav-link {
-    @apply text-gray-300 hover:text-white rounded-md px-3 py-2 text-sm font-medium;
-  }
+  @apply text-gray-300 hover:text-white rounded-md px-3 py-2 text-sm font-medium;
+}
 
+@utility nav-link-user {
   /* User navigation link styles */
-  .nav-link-user {
-    @apply hover:bg-indigo-900;
-  }
+  @apply hover:bg-indigo-900;
+}
 
+@utility nav-link-admin {
   /* Admin navigation link styles */
-  .nav-link-admin {
-    @apply hover:bg-teal-900;
-  }
+  @apply hover:bg-teal-900;
+}
 
+@utility nav-link-mobile {
   /* Mobile navigation link styles */
-  .nav-link-mobile {
-    @apply block text-gray-300 hover:bg-indigo-900 hover:text-white rounded-md px-3 py-2 text-base font-medium;
-  }
+  @apply block text-gray-300 hover:bg-indigo-900 hover:text-white rounded-md px-3 py-2 text-base font-medium;
+}
 
+@utility nav-link-mobile-admin {
   /* Admin mobile navigation link styles */
-  .nav-link-mobile-admin {
-    @apply block text-gray-300 hover:bg-teal-800 hover:text-white rounded-md px-3 py-2 text-base font-medium;
-  }
+  @apply block text-gray-300 hover:bg-teal-800 hover:text-white rounded-md px-3 py-2 text-base font-medium;
 }

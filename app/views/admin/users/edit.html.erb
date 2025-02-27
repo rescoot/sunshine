@@ -22,7 +22,7 @@
         <p class="mt-2 text-sm text-gray-700"><%= t('admin.users.edit.feature_flags_description') %></p>
         
         <%= form_with(url: admin_user_feature_flags_path(@user), method: :patch, class: "mt-6 space-y-4") do |form| %>
-          <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+          <div class="overflow-hidden shadow ring-1 ring-black/5 sm:rounded-lg">
             <table class="min-w-full divide-y divide-gray-300">
               <thead class="bg-gray-50">
                 <tr>
