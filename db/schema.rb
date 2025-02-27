@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_25_203655) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_27_192149) do
   create_table "achievement_definitions", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
@@ -147,7 +147,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_203655) do
   end
 
   create_table "telemetries", force: :cascade do |t|
-    t.integer "scooter_id", null: false
+    t.integer "scooter_id"
     t.string "state"
     t.string "kickstand"
     t.string "seatbox"
@@ -409,7 +409,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_25_203655) do
   add_foreign_key "scooter_commands", "users"
   add_foreign_key "scooter_events", "scooters"
   add_foreign_key "scooters", "users", column: "last_unlock_user_id"
-  add_foreign_key "telemetries", "scooters"
+  add_foreign_key "telemetries", "scooters", on_delete: :nullify
   add_foreign_key "trip_segments", "telemetries", column: "end_telemetry_id"
   add_foreign_key "trip_segments", "telemetries", column: "start_telemetry_id"
   add_foreign_key "trip_segments", "trips"

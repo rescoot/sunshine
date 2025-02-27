@@ -1,7 +1,5 @@
 class Telemetry < ApplicationRecord
-  belongs_to :scooter
-
-  validates :scooter, presence: true
+  belongs_to :scooter, optional: true
 
   # Scopes for querying
   scope :recent, -> { order(created_at: :desc) }
@@ -185,15 +183,21 @@ class Telemetry < ApplicationRecord
   end
 
   def update_scooter
+    return unless scooter.present?
+    
     scooter.ble_mac = ble_mac_address if ble_mac_address.present?
     scooter.save!
   end
 
   def invalidate_cache
+    return unless scooter_id.present?
+    
     TelemetryCacheService.invalidate_cache_for_scooter(scooter_id)
   end
 
   def process_trip_state
+    return unless scooter.present?
+    
     TelemetryTripProcessor.new(self).process
   rescue => e
     Rails.logger.error "Error processing trip state for telemetry ##{id}: #{e.message}"
