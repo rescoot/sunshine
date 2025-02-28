@@ -25,12 +25,16 @@ class LeaderboardService
     end
 
     # Group and calculate totals
+    # Join with telemetry directly to get access to speed data
+    query = query.joins("LEFT JOIN telemetries ON telemetries.scooter_id = scooters.id")
+                .where("telemetries.created_at BETWEEN trips.started_at AND trips.ended_at")
+
     leaderboard_data = query.group("users.id, user_preferences.leaderboard_display_name")
                            .select('users.id,
                                    user_preferences.leaderboard_display_name,
                                    SUM(trips.distance) as total_distance,
                                    COUNT(DISTINCT trips.id) as trip_count,
-                                   MAX(trips.avg_speed) as max_speed')
+                                   MAX(telemetries.speed) as max_speed')
                            .order("total_distance DESC")
                            .limit(limit)
 
@@ -68,25 +72,39 @@ class LeaderboardService
     date_range = date_range_for_period(period)
 
     # Get user's data
-    user_data = Trip.where(user_id: user_id)
-    user_data = user_data.where(started_at: date_range) if date_range
-    user_data = user_data.where.not(ended_at: nil)
+    user_trips = Trip.where(user_id: user_id)
+    user_trips = user_trips.where(started_at: date_range) if date_range
+    user_trips = user_trips.where.not(ended_at: nil)
 
-    user_distance = user_data.sum(:distance).to_f / 1000
-    user_trip_count = user_data.count
-    user_avg_speed = user_data.average(:avg_speed).to_f.round(1)
+    user_distance = user_trips.sum(:distance).to_f / 1000
+    user_trip_count = user_trips.count
+
+    # Get user's telemetry data for average speed calculation
+    user_telemetry = Telemetry.joins(scooter: :trips)
+                             .where(trips: { user_id: user_id })
+                             .where.not(trips: { ended_at: nil })
+    user_telemetry = user_telemetry.where("telemetries.created_at BETWEEN trips.started_at AND trips.ended_at")
+    user_telemetry = user_telemetry.where(trips: { started_at: date_range }) if date_range
+    user_avg_speed = user_telemetry.average(:speed).to_f.round(1)
 
     # Get global averages from opted-in users
-    global_data = Trip.joins(user: :user_preference)
+    global_trips = Trip.joins(user: :user_preference)
                      .where(user_preferences: { leaderboard_opt_in: true })
-    global_data = global_data.where(started_at: date_range) if date_range
-    global_data = global_data.where.not(ended_at: nil)
+    global_trips = global_trips.where(started_at: date_range) if date_range
+    global_trips = global_trips.where.not(ended_at: nil)
 
-    global_avg_distance = global_data.average(:distance).to_f / 1000
-    global_avg_trip_count = global_data.count.to_f / User.joins(:user_preference)
+    global_avg_distance = global_trips.average(:distance).to_f / 1000
+    global_avg_trip_count = global_trips.count.to_f / User.joins(:user_preference)
                                                         .where(user_preferences: { leaderboard_opt_in: true })
                                                         .count
-    global_avg_speed = global_data.average(:avg_speed).to_f.round(1)
+
+    # Get global telemetry data for average speed calculation
+    global_telemetry = Telemetry.joins(scooter: { trips: { user: :user_preference } })
+                               .where(user_preferences: { leaderboard_opt_in: true })
+                               .where.not(trips: { ended_at: nil })
+    global_telemetry = global_telemetry.where("telemetries.created_at BETWEEN trips.started_at AND trips.ended_at")
+    global_telemetry = global_telemetry.where(trips: { started_at: date_range }) if date_range
+    global_avg_speed = global_telemetry.average(:speed).to_f.round(1)
 
     {
       user: {

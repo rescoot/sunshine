@@ -407,7 +407,7 @@ en:
     pirate: "🏴‍☠️ Pirate"
   dashboard:
     add_first_scooter: Add Your First Scooter
-    avg_speed: Avg Speed
+    avg_speed: Avg Trip Speed
     avg_trip_distance: Avg Trip Distance
     date: Date
     distance: Distance
