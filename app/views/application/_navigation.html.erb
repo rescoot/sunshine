@@ -55,7 +55,8 @@
               <svg data-dropdown-target="chevron" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black/5 z-50">
-              <%= link_to t('navigation.account_settings'), account_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-md" %>
+              <%= link_to t('navigation.profile'), profile_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-md" %>
+              <%= link_to t('navigation.account_settings'), account_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
 
               <div class="border-t border-gray-100 my-1"></div>
 
@@ -143,6 +144,7 @@
                   </svg>
                 </button>
                 <div data-dropdown-target="menu" class="hidden">
+                  <%= link_to t('navigation.profile'), profile_path, class: "nav-link-mobile" %>
                   <%= link_to t('navigation.account_settings'), account_path, class: "nav-link-mobile" %>
                   <%= button_to t('navigation.sign_out'), destroy_user_session_path, method: :delete, class: "nav-link-mobile w-full text-left" %>
                   <div class="border-t border-gray-700 my-2"></div>

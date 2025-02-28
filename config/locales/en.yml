@@ -617,6 +617,7 @@ en:
     participate: Participate in Leaderboard
     personal_info_not_shared: Any personal information about you or your scooter
     privacy_information: Privacy Information
+    profile_settings: Profile Settings
     rank: Rank
     real_name_not_shared: Your real name or contact information
     receive_notifications: Receive Achievement Notifications
@@ -624,6 +625,7 @@ en:
     save_settings: Save Settings
     settings: Settings
     settings_title: Leaderboard Settings
+    sign_in_to_join: Sign in to join the leaderboard and track your progress.
     stats_visible: Your riding stats will be visible to other users on the leaderboard.
     title: Leaderboard
     top_riders: Top Riders
@@ -635,6 +637,52 @@ en:
     you: You
     your_rank: Your Rank
     your_stats: Your Stats
+    community_averages: Community Averages
+  
+  profiles:
+    achievements: Achievements
+    achievements_visible: Your earned achievements
+    back_to_leaderboard: Back to Leaderboard
+    back_to_profile: Back to Profile
+    community_member: Community Member
+    community_name: Community Name
+    community_name_description: This is the name that will be shown on your public profile and the leaderboard.
+    description: View and manage your public profile settings.
+    display_name_visible: Your community name (not your real name or email)
+    edit_description: Manage your public profile and leaderboard settings.
+    edit_profile: Edit Profile
+    edit_title: Edit Profile
+    enable_leaderboard_prompt: Enable leaderboard participation to compare your stats with other riders.
+    enable_profile_prompt: Enable your public profile to share your achievements with the community.
+    enable_public_profile: Enable Public Profile
+    fix_errors: 'Please fix the following errors:'
+    leaderboard_description: Your riding stats are visible on the leaderboard.
+    leaderboard_disabled: Leaderboard Participation Disabled
+    leaderboard_enabled: Leaderboard Participation Enabled
+    leaderboard_stats: Leaderboard Stats
+    leaderboard_stats_visible: Your riding statistics if you participate in the leaderboard
+    leaderboard_visible: Your riding stats will be visible on the leaderboard.
+    location_not_shared: Your location data or trip routes
+    no_leaderboard_data: No leaderboard data available for this rider.
+    not_shared: 'We do not share:'
+    notifications_description: Get notified when you earn new achievements.
+    opt_out_anytime: You can opt out at any time by disabling your public profile.
+    participate_leaderboard: Participate in Leaderboard
+    personal_info_not_shared: Any personal information about you or your scooter
+    privacy_information: Privacy Information
+    profile: Profile
+    profile_settings: Profile Settings
+    profile_status: Profile Status
+    profile_visible: Your profile will be visible to other users.
+    public_profile_description: Your profile is visible to other users.
+    public_profile_disabled: Public Profile Disabled
+    public_profile_enabled: Public Profile Enabled
+    real_name_not_shared: Your real name or contact information
+    receive_notifications: Receive Achievement Notifications
+    save_settings: Save Settings
+    title: My Profile
+    view_all_achievements: View All Achievements
+    visible_information: 'When you enable your public profile, the following information will be visible to other users:'
   navigation:
     account_settings: Account Settings
     achievements: Achievements
@@ -649,6 +697,7 @@ en:
     language_section: Language
     leaderboard: Leaderboard
     points: points
+    profile: My Profile
     radio_gaga: Radio Gaga
     scooters: Scooters
     sign_in_register: Sign in / Register

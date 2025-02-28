@@ -1,0 +1,146 @@
+<div class="max-w-3xl mx-auto p-6">
+  <div class="sm:flex sm:items-center mb-6">
+    <div class="sm:flex-auto">
+      <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= t('profiles.title') %></h1>
+      <p class="mt-2 text-sm text-gray-700"><%= t('profiles.description') %></p>
+    </div>
+    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+      <%= link_to t('profiles.edit_profile'), edit_profile_path, class: "btn-primary" %>
+    </div>
+  </div>
+
+  <div class="bg-white shadow rounded-lg mb-6 p-6 border border-gray-200">
+    <% if flash[:notice] %>
+      <div class="mb-4 p-4 bg-green-100 text-green-800 rounded">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+    <% if flash[:alert] %>
+      <div class="mb-4 p-4 bg-red-100 text-red-800 rounded">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+    
+    <div class="flex items-center mb-6">
+      <div class="flex-shrink-0">
+        <% if @user.avatar.attached? %>
+          <%= image_tag @user.avatar, class: "h-16 w-16 rounded-full object-cover border-2 border-indigo-100" %>
+        <% else %>
+          <div class="h-16 w-16 rounded-full bg-indigo-600 flex items-center justify-center text-white text-2xl">
+            <%= @user.name.first %>
+          </div>
+        <% end %>
+      </div>
+      <div class="ml-4">
+        <h2 class="text-lg font-semibold text-gray-900"><%= @user.name %></h2>
+        <% if @user_preference&.public_profile && @user_preference&.leaderboard_display_name.present? %>
+          <p class="text-gray-600"><%= t('profiles.community_name') %>: <%= @user_preference.leaderboard_display_name %></p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <h3 class="text-lg font-medium mb-3"><%= t('profiles.profile_status') %></h3>
+      
+      <div class="flex items-center mb-4">
+        <% if @user_preference&.public_profile %>
+          <div class="flex-shrink-0 h-10 w-10 bg-green-100 rounded-full flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <div class="ml-4">
+            <h4 class="text-md font-medium text-gray-900"><%= t('profiles.public_profile_enabled') %></h4>
+            <p class="text-sm text-gray-500"><%= t('profiles.public_profile_description') %></p>
+          </div>
+        <% else %>
+          <div class="flex-shrink-0 h-10 w-10 bg-yellow-100 rounded-full flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <div class="ml-4">
+            <h4 class="text-md font-medium text-gray-900"><%= t('profiles.public_profile_disabled') %></h4>
+            <p class="text-sm text-gray-500"><%= t('profiles.enable_profile_prompt') %></p>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="flex items-center">
+        <% if @user_preference&.leaderboard_opt_in %>
+          <div class="flex-shrink-0 h-10 w-10 bg-green-100 rounded-full flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <div class="ml-4">
+            <h4 class="text-md font-medium text-gray-900"><%= t('profiles.leaderboard_enabled') %></h4>
+            <p class="text-sm text-gray-500"><%= t('profiles.leaderboard_description') %></p>
+          </div>
+        <% else %>
+          <div class="flex-shrink-0 h-10 w-10 bg-yellow-100 rounded-full flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <div class="ml-4">
+            <h4 class="text-md font-medium text-gray-900"><%= t('profiles.leaderboard_disabled') %></h4>
+            <p class="text-sm text-gray-500"><%= t('profiles.enable_leaderboard_prompt') %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <% if @user.feature_enabled?(FeatureFlag::ACHIEVEMENTS) && @achievements %>
+    <div class="bg-white shadow rounded-lg mb-6 p-6 border border-gray-200">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold"><%= t('profiles.achievements') %></h2>
+        <div class="badge badge-info px-4 py-2 flex items-center">
+          <span class="text-xl mr-2">🏆</span>
+          <div>
+            <span class="font-bold"><%= @total_points %></span>
+            <span class="text-sm"><%= t('achievements.points') %></span>
+          </div>
+        </div>
+      </div>
+
+      <% if @achievements[:earned].any? %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <% @achievements[:earned].sort_by { |ua| -ua.earned_at.to_i }.take(6).each do |user_achievement| %>
+            <% achievement = user_achievement.achievement_definition %>
+            <div class="achievement-card achievement-card-earned">
+              <div class="achievement-icon">
+                <%= achievement.icon %>
+              </div>
+              <div class="flex-grow">
+                <div class="flex justify-between items-start">
+                  <h4 class="font-medium"><%= achievement.name %></h4>
+                  <span class="badge badge-success">
+                    +<%= achievement.points %>
+                  </span>
+                </div>
+                <p class="text-sm text-gray-600 mb-2"><%= achievement.description %></p>
+                <div class="text-xs text-gray-500">
+                  <%= t('achievements.earned_time_ago', time_ago: time_ago_in_words(user_achievement.earned_at)) %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        
+        <% if @achievements[:earned].size > 6 %>
+          <div class="mt-4 text-center">
+            <%= link_to t('profiles.view_all_achievements'), achievements_path, class: "text-indigo-600 hover:text-indigo-800" %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="text-center py-6">
+          <div class="text-4xl mb-4">🏆</div>
+          <h3 class="text-lg font-medium mb-2"><%= t('achievements.none_yet') %></h3>
+          <p class="text-gray-600"><%= t('achievements.start_riding') %></p>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

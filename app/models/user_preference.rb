@@ -1,13 +1,14 @@
 class UserPreference < ApplicationRecord
   belongs_to :user
 
-  # Leaderboard participation settings
+  # Profile and leaderboard participation settings
+  attribute :public_profile, :boolean, default: false
   attribute :leaderboard_opt_in, :boolean, default: false
   attribute :leaderboard_display_name, :string
   attribute :receive_achievement_notifications, :boolean, default: true
   attribute :notification_settings, :json, default: {}
 
-  validates :leaderboard_display_name, presence: true, if: :leaderboard_opt_in
+  validates :leaderboard_display_name, presence: true, if: -> { leaderboard_opt_in || public_profile }
   validates :leaderboard_display_name, uniqueness: true, allow_blank: true
   validates :leaderboard_display_name, length: { minimum: 3, maximum: 30 }, allow_blank: true
 

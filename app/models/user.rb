@@ -3,7 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :otp_authenticatable, :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable, :confirmable
 
-  delegate :leaderboard_opt_in, :leaderboard_display_name, to: :user_preference, allow_nil: true
+  delegate :leaderboard_opt_in, :leaderboard_display_name, :public_profile, to: :user_preference, allow_nil: true
   has_one :user_preference, dependent: :destroy
   has_many :user_achievements, dependent: :destroy
   has_many :achievement_definitions, through: :user_achievements

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_27_192149) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_28_140000) do
   create_table "achievement_definitions", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
@@ -338,6 +338,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_27_192149) do
     t.json "notification_settings", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "public_profile", default: false
     t.index ["user_id", "leaderboard_opt_in"], name: "index_user_preferences_on_user_id_and_leaderboard_opt_in"
     t.index ["user_id"], name: "index_user_preferences_on_user_id"
   end

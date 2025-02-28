@@ -99,6 +99,10 @@ Rails.application.routes.draw do
     resources :api_tokens, only: [ :new, :create, :destroy ], controller: "accounts/api_tokens"
   end
 
+  # User profiles
+  resource :profile, only: [ :show, :edit, :update ]
+  get "profiles/:id", to: "profiles#view", as: :view_profile
+
   # Two-factor authentication
   resource :two_factor_auth, only: [ :new, :create, :destroy ], controller: "two_factor_auth" do
     get :confirm_disable
@@ -142,12 +146,7 @@ Rails.application.routes.draw do
 
   resources :trips, only: [ :index, :show ]
 
-  resources :leaderboards, only: [ :index ] do
-    collection do
-      get :settings
-      patch :update_settings
-    end
-  end
+  resources :leaderboards, only: [ :index ]
 
   resources :achievements, only: [ :index ]
 

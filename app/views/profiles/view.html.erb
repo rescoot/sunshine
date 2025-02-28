@@ -1,0 +1,108 @@
+<div class="max-w-3xl mx-auto p-6">
+  <div class="sm:flex sm:items-center mb-6">
+    <div class="sm:flex-auto">
+      <h1 class="text-2xl font-semibold leading-6 text-gray-900">
+        <%= @user_preference.leaderboard_display_name %>'s <%= t('profiles.profile') %>
+      </h1>
+      <p class="mt-2 text-sm text-gray-700"><%= t('profiles.community_member') %></p>
+    </div>
+    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+      <%= link_to t('profiles.back_to_leaderboard'), leaderboards_path, class: "btn-secondary" %>
+    </div>
+  </div>
+
+  <div class="bg-white shadow rounded-lg mb-6 p-6 border border-gray-200">
+    <div class="flex items-center mb-6">
+      <div class="flex-shrink-0">
+        <% if @user.avatar.attached? %>
+          <%= image_tag @user.avatar, class: "h-16 w-16 rounded-full object-cover border-2 border-indigo-100" %>
+        <% else %>
+          <div class="h-16 w-16 rounded-full bg-indigo-600 flex items-center justify-center text-white text-2xl">
+            <%= @user_preference.leaderboard_display_name.first %>
+          </div>
+        <% end %>
+      </div>
+      <div class="ml-4">
+        <h2 class="text-lg font-semibold text-gray-900"><%= @user_preference.leaderboard_display_name %></h2>
+        <% if @user.feature_enabled?(FeatureFlag::ACHIEVEMENTS) %>
+          <p class="text-gray-600"><%= @total_points %> <%= t('achievements.points') %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <% if @user.feature_enabled?(FeatureFlag::LEADERBOARDS) && @user_preference.leaderboard_opt_in %>
+    <div class="bg-white shadow rounded-lg mb-6 p-6 border border-gray-200">
+      <h2 class="text-xl font-semibold mb-4"><%= t('profiles.leaderboard_stats') %></h2>
+      
+      <% 
+        # Get the user's leaderboard stats
+        leaderboard_data = LeaderboardService.generate_leaderboard(:all_time)
+        user_entry = leaderboard_data.find { |e| e[:user_id] == @user.id }
+      %>
+      
+      <% if user_entry %>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-gray-100 rounded-lg p-4 text-center">
+            <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.rank') %></h3>
+            <p class="text-3xl font-bold text-indigo-600">#<%= user_entry[:rank] %></p>
+            <p class="text-sm text-gray-500"><%= t('leaderboards.of_riders', total_users: leaderboard_data.size) %></p>
+          </div>
+          
+          <div class="bg-gray-100 rounded-lg p-4 text-center">
+            <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.distance') %></h3>
+            <p class="text-3xl font-bold text-green-600"><%= user_entry[:distance_km] %> km</p>
+          </div>
+          
+          <div class="bg-gray-100 rounded-lg p-4 text-center">
+            <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.trips') %></h3>
+            <p class="text-3xl font-bold text-purple-600"><%= user_entry[:trip_count] %></p>
+          </div>
+        </div>
+      <% else %>
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+          <p class="text-yellow-700"><%= t('profiles.no_leaderboard_data') %></p>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @user.feature_enabled?(FeatureFlag::ACHIEVEMENTS) && @achievements && @achievements[:earned].any? %>
+    <div class="bg-white shadow rounded-lg mb-6 p-6 border border-gray-200">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold"><%= t('profiles.achievements') %></h2>
+        <div class="badge badge-info px-4 py-2 flex items-center">
+          <span class="text-xl mr-2">🏆</span>
+          <div>
+            <span class="font-bold"><%= @total_points %></span>
+            <span class="text-sm"><%= t('achievements.points') %></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <% # Only show non-secret achievements %>
+        <% @achievements[:earned].reject { |ua| ua.achievement_definition.secret }.sort_by { |ua| -ua.earned_at.to_i }.take(6).each do |user_achievement| %>
+          <% achievement = user_achievement.achievement_definition %>
+          <div class="achievement-card achievement-card-earned">
+            <div class="achievement-icon">
+              <%= achievement.icon %>
+            </div>
+            <div class="flex-grow">
+              <div class="flex justify-between items-start">
+                <h4 class="font-medium"><%= achievement.name %></h4>
+                <span class="badge badge-success">
+                  +<%= achievement.points %>
+                </span>
+              </div>
+              <p class="text-sm text-gray-600 mb-2"><%= achievement.description %></p>
+              <div class="text-xs text-gray-500">
+                <%= t('achievements.earned_time_ago', time_ago: time_ago_in_words(user_achievement.earned_at)) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
