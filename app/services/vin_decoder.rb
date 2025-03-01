@@ -10,6 +10,8 @@ class VinDecoder
     case vin[3..5]
     when "U2S"
       U2sVinDecoder.new(vin)
+    when "U2B"
+      U2bVinDecoder.new(vin)
     when "U1S"
       U1sVinDecoder.new(vin)
     when "URB"
@@ -60,9 +62,14 @@ end
 
 # Command line interface
 if __FILE__ == $PROGRAM_NAME
+  require_relative "u1s_vin_decoder"
+  require_relative "u2s_vin_decoder"
+  require_relative "u2b_vin_decoder"
+  require_relative "rebel_vin_decoder"
+
   if ARGV.empty?
     puts "Usage: ruby vin_decoder.rb VIN1 [VIN2 VIN3 ...]"
-    puts "Example: ruby vin_decoder.rb WUNU2S3A6KZ000001 WUNURBL22ET000023"
+    puts "Example: ruby vin_decoder.rb WUNU2S3A6KZ000001 WUNU2B2B5NZ000313 WUNURBL22ET000023"
     exit 1
   end
 
