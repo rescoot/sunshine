@@ -1,34 +1,34 @@
 service: sunshine
-image: teal-bauer/sunshine
+image: <%= ENV['IMAGE_NAME'] %>
 
 servers:
   web:
     hosts:
-    - 178.63.144.117
+    - <%= ENV['WEB_SERVER_IP'] %>
     env:
       MQTT_ROLE: web
   job:
     hosts:
-    - 178.63.144.117
+    - <%= ENV['JOB_SERVER_IP'] %>
     cmd: bin/jobs
   mqtt:
     hosts:
-    - 178.63.144.117
+    - <%= ENV['MQTT_SERVER_IP'] %>
     env:
       MQTT_ROLE: background
     cmd: bin/mqtt
 
 builder:
   arch: amd64
-  remote: ssh://root@rescoot.org
+  remote: ssh://<%= ENV['BUILDER_USER'] %>@<%= ENV['BUILDER_HOST'] %>
 
 proxy:
   ssl: true
   hosts:
-  - rescoot.org
-  - sunshine.rescoot.org
-  - unu.rescoot.org
-  - unu.cloud.rescoot.org
+  - <%= ENV['PRIMARY_DOMAIN'] %>
+  - <%= ENV['SUNSHINE_DOMAIN'] %>
+  - <%= ENV['UNU_DOMAIN'] %>
+  - <%= ENV['UNU_CLOUD_DOMAIN'] %>
 
 registry:
   server: ghcr.io
@@ -46,11 +46,11 @@ env:
     RAILS_ENV: production
     RAILS_LOG_TO_STDOUT: true
     REDIS_URL: redis://sunshine-redis:6379/1
-    SMTP_ADDRESS: mail.starsonghosted.com
-    MQTT_HOST: mqtt.sunshine.rescoot.org
-    MQTT_PORT: 8883
-    MQTT_SSL: true
-    MQTT_USERNAME: cloud_service
+    SMTP_ADDRESS: <%= ENV['SMTP_ADDRESS'] %>
+    MQTT_HOST: <%= ENV['MQTT_HOST'] %>
+    MQTT_PORT: <%= ENV['MQTT_PORT'] %>
+    MQTT_SSL: <%= ENV['MQTT_SSL'] %>
+    MQTT_USERNAME: <%= ENV['MQTT_USERNAME'] %>
     MQTT_CA_CRT_PATH: config/mqtt_certs/ca.crt
     MQTT_SERVER_CRT_PATH: config/mqtt_certs/server/server.crt
     MQTT_SERVER_KEY_PATH: config/mqtt_certs/server/server.key

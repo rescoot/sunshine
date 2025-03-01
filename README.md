@@ -2,6 +2,11 @@
 
 Sunshine is an open source Rails application for managing unu/librescoot electric scooters. It provides a web interface and API for monitoring telemetry data, tracking trips, and controlling scooter functionality.
 
+## Sponsorship
+
+| [![Starsong Consulting Avatar](https://avatars.githubusercontent.com/u/166622226?s=48)](https://starsong.eu/) | This project is sponsored by [Starsong Consulting](https://starsong.eu/). |
+|-|-|
+
 ## Features
 
 - Real-time telemetry monitoring via MQTT
@@ -9,12 +14,17 @@ Sunshine is an open source Rails application for managing unu/librescoot electri
 - User management with owner/user roles
 - API with token-based authentication
 - Admin dashboard with debugging tools
+- Remote scooter control (lock, unlock, blinkers, honk, seatbox, etc.)
+- Achievements system with various challenges and rewards
+- Leaderboards with user rankings and statistics
+- Two-factor authentication (2FA) for enhanced security
+- Internationalization/localization support
 
 ## Requirements
 
 - Ruby 3.2 or higher
-- Redis 7.0 or higher
-- Mosquitto MQTT broker with authentication
+- Redis 7.0 or higher (for caching, background jobs, and real-time updates)
+- Mosquitto MQTT broker with authentication (for scooter communication)
 
 ## Development Setup
 
@@ -48,24 +58,52 @@ bin/dev
 
 This application is designed to be deployed using [Kamal](https://kamal-deploy.org/). 
 
-1. First, set up your production environment variables in `.env`:
+1. First, set up your production environment variables in `.env.production`:
 ```bash
+# Kamal registry credentials
 KAMAL_REGISTRY_USERNAME=your-username
 KAMAL_REGISTRY_PASSWORD=your-token
+
+# Docker image
+IMAGE_NAME=your-registry/your-image
+
+# Server IPs
+WEB_SERVER_IP=your-web-server-ip
+JOB_SERVER_IP=your-job-server-ip
+MQTT_SERVER_IP=your-mqtt-server-ip
+
+# Builder configuration
+DEPLOY_USER=your-deploy-user
+DEPLOY_HOST=your-deploy-host
+
+# Domain names
+PRIMARY_DOMAIN=your-primary-domain
+SUNSHINE_DOMAIN=your-sunshine-domain
+UNU_DOMAIN=your-unu-domain
+UNU_CLOUD_DOMAIN=your-unu-cloud-domain
+
+# Rails configuration
 RAILS_ENV=production
-REDIS_URL=redis://localhost:6379/1
-MQTT_HOST=mqtt.yourdomain.com
-MQTT_PORT=8883
-MQTT_USERNAME=cloud_service
-MQTT_PASSWORD=your_mqtt_password
+RAILS_LOG_TO_STDOUT=true
+REDIS_URL=redis://sunshine-redis:6379/1
+
+# SMTP configuration
+SMTP_ADDRESS=your-smtp-address
+SMTP_PASSWORD=your-smtp-password
+
+# MQTT configuration
+MQTT_HOST=your-mqtt-host
+MQTT_PORT=your-mqtt-port
 MQTT_SSL=true
-# ...
+MQTT_USERNAME=your-mqtt-username
+MQTT_PASSWORD=your-mqtt-password
 ```
 
-2. Check `config/deploy.yml`
+You can use the provided `.env.production.example` as a template.
 
-3. Deploy:
+2. Deploy:
 ```bash
+source .env.production  # or use `dotenv`
 kamal setup  # first run only
 kamal deploy
 ```
@@ -87,10 +125,10 @@ rails mqtt_certs:create_ca[Rescoot,DE]
 # Generate server certificate
 rails mqtt_certs:create_server
 
-# Generate client certificate (for each client)
+# Optional, if you want to use client cert auth: Generate client certificate (for each client)
 rails mqtt_certs:create_client[client_name]
 
-# Extract public certificates for distribution (not currently needed)
+# Optional: Extract public certificates for distribution (not currently needed)
 rails mqtt_certs:extract_public
 ```
 
@@ -129,7 +167,7 @@ openssl x509 -req -days 3650 -in server.csr -CA ca.crt -CAkey ca.key -CAcreatese
 
 Remove `cafile`, `certfile`, `keyfile` if you're not using your own CA.
 
-4. Set up DynSec authentication. See config/mosquitto/dynamic-security.json for a baseline.
+4. Set up DynSec authentication. See `config/mosquitto/dynamic-security.json` for a baseline.
 
 5. Restart Mosquitto:
 ```bash
@@ -137,18 +175,6 @@ kamal accessory reboot mqtt
 # or if not using kamal
 systemctl restart mosquitto
 ```
-
-## Environment Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `RAILS_ENV` | Rails environment | development |
-| `REDIS_URL` | Redis connection URL | redis://localhost:6379/1 |
-| `MQTT_HOST` | MQTT broker hostname | localhost |
-| `MQTT_PORT` | MQTT broker port | 1883 |
-| `MQTT_SSL` | Enable SSL for MQTT | false |
-| `MQTT_USERNAME` | MQTT broker username | - |
-| `MQTT_PASSWORD` | MQTT broker password | - |
 
 ## Contributing
 
