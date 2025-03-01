@@ -7,3 +7,203 @@
   badge_color: indigo
   points: 10
   secret: false
+- name: Urban Explorer
+  description: Travel 100 kilometers on your scooter
+  achievement_type: distance
+  threshold: 100.0
+  icon: "🏙️"
+  badge_color: green
+  points: 25
+  secret: false
+- name: Road Warrior
+  description: Travel 500 kilometers on your scooter
+  achievement_type: distance
+  threshold: 500.0
+  icon: "🛣️"
+  badge_color: purple
+  points: 50
+  secret: false
+- name: Globe Trotter
+  description: Travel 1,000 kilometers on your scooter
+  achievement_type: distance
+  threshold: 1000.0
+  icon: "🌍"
+  badge_color: orange
+  points: 100
+  secret: false
+- name: First Ride
+  description: Complete your first trip
+  achievement_type: trips
+  threshold: 1.0
+  icon: "🚀"
+  badge_color: indigo
+  points: 5
+  secret: false
+- name: Regular Rider
+  description: Complete 10 trips
+  achievement_type: trips
+  threshold: 10.0
+  icon: "🔄"
+  badge_color: green
+  points: 15
+  secret: false
+- name: Dedicated Commuter
+  description: Complete 50 trips
+  achievement_type: trips
+  threshold: 50.0
+  icon: "🏢"
+  badge_color: purple
+  points: 30
+  secret: false
+- name: Centurion
+  description: Complete 100 trips
+  achievement_type: trips
+  threshold: 100.0
+  icon: "💯"
+  badge_color: red
+  points: 75
+  secret: false
+- name: Speed Demon
+  description: Reach a speed of 45 km/h
+  achievement_type: speed
+  threshold: 45.0
+  icon: "⚡"
+  badge_color: yellow
+  points: 20
+  secret: false
+- name: Lightning Fast
+  description: Reach a speed of 52 km/h
+  achievement_type: speed
+  threshold: 52.0
+  icon: "🌩️"
+  badge_color: orange
+  points: 40
+  secret: false
+- name: Joy Rider
+  description: Spend 5 hours riding your scooter
+  achievement_type: duration
+  threshold: 5.0
+  icon: "⏱️"
+  badge_color: indigo
+  points: 15
+  secret: false
+- name: Endurance Champion
+  description: Spend 24 hours riding your scooter
+  achievement_type: duration
+  threshold: 24.0
+  icon: "⏳"
+  badge_color: purple
+  points: 50
+  secret: false
+- name: Fleet Manager
+  description: Own 2 or more scooters
+  achievement_type: ownership
+  threshold: 2.0
+  icon: "🛴"
+  badge_color: green
+  points: 30
+  secret: false
+- name: Lord of the Odometer
+  description: Travel 10,000 kilometers on your scooter
+  achievement_type: distance
+  threshold: 10000.0
+  icon: "👑"
+  badge_color: orange
+  points: 150
+  secret: false
+- name: Millenial
+  description: Complete 1,000 trips
+  achievement_type: trips
+  threshold: 1000.0
+  icon: "🎇"
+  badge_color: purple
+  points: 150
+  secret: false
+- name: Easy Rider
+  description: Reach a speed of 25 km/h
+  achievement_type: speed
+  threshold: 25.0
+  icon: "🏍️"
+  badge_color: blue
+  points: 10
+  secret: false
+- name: In it for the long term
+  description: Spend 100 hours riding your scooter
+  achievement_type: duration
+  threshold: 100.0
+  icon: "🕰️"
+  badge_color: red
+  points: 100
+  secret: false
+- name: Duke Scoot'em
+  description: Own 3 or more scooters
+  achievement_type: ownership
+  threshold: 3.0
+  icon: "👑"
+  badge_color: purple
+  points: 50
+  secret: false
+- name: Lord of the Scooters
+  description: Own 5 or more scooters
+  achievement_type: ownership
+  threshold: 5.0
+  icon: "🏰"
+  badge_color: indigo
+  points: 100
+  secret: false
+- name: One Week Member
+  description: Been a member for one week
+  achievement_type: special
+  threshold: 7.0
+  icon: "🎉"
+  badge_color: blue
+  points: 10
+  secret: false
+- name: One Month Member
+  description: Been a member for one month
+  achievement_type: special
+  threshold: 30.0
+  icon: "📅"
+  badge_color: green
+  points: 20
+  secret: false
+- name: One Year Member
+  description: Been a member for one year
+  achievement_type: special
+  threshold: 365.0
+  icon: "🏆"
+  badge_color: purple
+  points: 100
+  secret: false
+- name: Two Years Member
+  description: Been a member for two years
+  achievement_type: special
+  threshold: 730.0
+  icon: "🌟"
+  badge_color: yellow
+  points: 150
+  secret: false
+- name: Three Years Member
+  description: Been a member for three years
+  achievement_type: special
+  threshold: 1095.0
+  icon: "💎"
+  badge_color: blue
+  points: 200
+  secret: false
+- name: Four Years Member
+  description: Been a member for four years
+  achievement_type: special
+  threshold: 1460.0
+  icon: "🏅"
+  badge_color: orange
+  points: 250
+  secret: false
+- name: Five Years Member
+  description: Been a member for five years
+  achievement_type: special
+  threshold: 1825.0
+  icon: "👑"
+  badge_color: red
+  points: 300
+  secret: false

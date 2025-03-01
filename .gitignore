@@ -40,3 +40,6 @@ config/mqtt_certs/*
 
 dump.rdb
 flat.sh
+
+# Ignore instance-specific secret achievements
+/config/achievements/secret.yml

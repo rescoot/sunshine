@@ -15,7 +15,7 @@ Sunshine is an open source Rails application for managing unu/librescoot electri
 - API with token-based authentication
 - Admin dashboard with debugging tools
 - Remote scooter control (lock, unlock, blinkers, honk, seatbox, etc.)
-- Achievements system with various challenges and rewards
+- Achievements system with various challenges and rewards (including configurable secret achievements)
 - Leaderboards with user rankings and statistics
 - Two-factor authentication (2FA) for enhanced security
 - Internationalization/localization support
@@ -175,6 +175,31 @@ kamal accessory reboot mqtt
 # or if not using kamal
 systemctl restart mosquitto
 ```
+
+## Achievement System
+
+Sunshine includes an achievement system that rewards users for various activities like distance traveled, trips completed, and special milestones. The system includes both regular achievements (visible to all users) and secret achievements (only revealed after being earned).
+
+### Configuring Achievements
+
+Achievements are configured using YAML files in the `config/achievements` directory:
+
+- `default.yml`: Contains regular (non-secret) achievements that are visible to users before they earn them.
+- `secret.yml.example`: Contains example secret achievements. These are not visible to users until they earn them.
+- `secret.yml`: The actual secret achievements used by your instance. This file is gitignored and should not be committed to the repository.
+
+To set up secret achievements for your instance:
+
+1. Copy the example file to create your own secret achievements file:
+   ```bash
+   cp config/achievements/secret.yml.example config/achievements/secret.yml
+   ```
+
+2. Edit `secret.yml` to customize your secret achievements.
+
+3. The `secret.yml` file will be loaded automatically when the application starts.
+
+See `config/achievements/README.md` for more details on the achievement format and configuration options.
 
 ## Contributing
 

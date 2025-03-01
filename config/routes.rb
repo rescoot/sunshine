@@ -74,6 +74,7 @@ Rails.application.routes.draw do
           post :ping
           post :update_firmware
           post :get_state
+          post :request_telemetry, to: "scooters#get_state"
           post :locate
           post :alarm
           post :redis_command
