@@ -12,7 +12,7 @@ module Scooter::Broadcastable
     begin
       broadcast_state_update
       broadcast_batteries_update
-      
+
       # Only attempt to broadcast controls if we're in a web context
       begin
         broadcast_controls_update if saved_change_to_state? || saved_change_to_blinkers?
@@ -101,7 +101,7 @@ module Scooter::Broadcastable
       # Use the regular controls partial since it now has the proper guard clause
       broadcast_update_to "controls",
         ApplicationController.render(
-          partial: "scooters/controls", 
+          partial: "scooters/controls",
           locals: { scooter: self }
         )
     rescue => e

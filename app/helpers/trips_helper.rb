@@ -46,14 +46,14 @@ module TripsHelper
       target: "_blank",
       class: "text-indigo-600 hover:text-indigo-900 font-mono"
   end
-  
+
   # Format trip duration in seconds to a human-readable format using translation units
   def format_duration_seconds(duration_seconds)
     return nil unless duration_seconds
-    
+
     hours = (duration_seconds / 3600).floor
     minutes = ((duration_seconds % 3600) / 60).floor
-    
+
     if hours > 0
       "#{hours}#{t('units.h')} #{minutes}#{t('units.min')}"
     else
