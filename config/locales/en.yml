@@ -793,6 +793,7 @@ en:
     public_profile_enabled: Public Profile Enabled
     real_name_not_shared: Your real name or contact information
     receive_notifications: Receive Achievement Notifications
+    requires_public_profile: Public profile is required for leaderboard participation
     save_settings: Save Settings
     title: My Profile
     view_all_achievements: View All Achievements

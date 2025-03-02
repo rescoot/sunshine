@@ -801,6 +801,7 @@ pirate:
     public_profile_enabled: Identity Revealed
     real_name_not_shared: Yer real name or contact information
     receive_notifications: Receive Treasure Notifications
+    requires_public_profile: Public profile is required for leaderboard participation
     save_settings: Save Settings
     title: Me Profile
     view_all_achievements: View All Treasures

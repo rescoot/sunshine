@@ -26,26 +26,29 @@
         <h3 class="text-lg font-medium mb-3"><%= t('profiles.profile_settings') %></h3>
         
         <div class="flex items-center mb-4">
-          <%= form.check_box :public_profile, class: "h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500", data: { action: "change->form#toggleDisplayName" } %>
+          <%= form.check_box :public_profile, class: "h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500", id: "public_profile_checkbox" %>
           <div class="ml-3">
             <%= form.label :public_profile, t('profiles.enable_public_profile'), class: "font-medium text-gray-700" %>
             <p class="text-gray-500 text-sm"><%= t('profiles.profile_visible') %></p>
+            <p class="text-gray-500 text-sm italic"><%= t('profiles.requires_public_profile') %></p>
           </div>
         </div>
         
+        <div class="flex items-center mb-4" id="display-name-field" style="display: none;">
+          <div class="ml-8">
+            <%= form.label :leaderboard_display_name, t('profiles.community_name'), class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <%= form.text_field :leaderboard_display_name, class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
+            <p class="mt-1 text-sm text-gray-500"><%= t('profiles.community_name_description') %></p>
+          </div>
+        </div>
+
         <div class="flex items-center">
-          <%= form.check_box :leaderboard_opt_in, class: "h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500", data: { action: "change->form#toggleDisplayName" } %>
+          <%= form.check_box :leaderboard_opt_in, class: "h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500", id: "leaderboard_opt_in_checkbox" %>
           <div class="ml-3">
             <%= form.label :leaderboard_opt_in, t('profiles.participate_leaderboard'), class: "font-medium text-gray-700" %>
             <p class="text-gray-500 text-sm"><%= t('profiles.leaderboard_visible') %></p>
           </div>
         </div>
-      </div>
-
-      <div class="mb-6" id="display-name-field" data-controller="form">
-        <%= form.label :leaderboard_display_name, t('profiles.community_name'), class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= form.text_field :leaderboard_display_name, class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" %>
-        <p class="mt-1 text-sm text-gray-500"><%= t('profiles.community_name_description') %></p>
       </div>
 
       <div class="mb-6">
@@ -95,31 +98,27 @@
 
 <script>
   document.addEventListener("turbo:load", function() {
+    const publicProfileCheckbox = document.getElementById('public_profile_checkbox');
+    const leaderboardOptInCheckbox = document.getElementById('leaderboard_opt_in_checkbox');
+    const displayNameField = document.getElementById('display-name-field');
+    
     const toggleDisplayNameVisibility = function() {
-      const optInCheckbox = document.querySelector('input[name="user_preference[leaderboard_opt_in]"]');
-      const publicProfileCheckbox = document.querySelector('input[name="user_preference[public_profile]"]');
-      const displayNameField = document.getElementById('display-name-field');
+      // Only show display name field if public profile is enabled
+      displayNameField.style.display = publicProfileCheckbox.checked ? 'block' : 'none';
       
-      if (displayNameField) {
-        // Show display name field if either checkbox is checked
-        const showField = (optInCheckbox && optInCheckbox.checked) || 
-                          (publicProfileCheckbox && publicProfileCheckbox.checked);
-        displayNameField.style.display = showField ? 'block' : 'none';
+      // Disable leaderboard opt-in if public profile is not checked
+      if (!publicProfileCheckbox.checked) {
+        leaderboardOptInCheckbox.checked = false;
+        leaderboardOptInCheckbox.disabled = true;
+      } else {
+        leaderboardOptInCheckbox.disabled = false;
       }
     };
     
     // Initial state
     toggleDisplayNameVisibility();
     
-    // Listen for changes on both checkboxes
-    const optInCheckbox = document.querySelector('input[name="user_preference[leaderboard_opt_in]"]');
-    if (optInCheckbox) {
-      optInCheckbox.addEventListener('change', toggleDisplayNameVisibility);
-    }
-    
-    const publicProfileCheckbox = document.querySelector('input[name="user_preference[public_profile]"]');
-    if (publicProfileCheckbox) {
-      publicProfileCheckbox.addEventListener('change', toggleDisplayNameVisibility);
-    }
+    // Listen for changes on public profile checkbox
+    publicProfileCheckbox.addEventListener('change', toggleDisplayNameVisibility);
   });
 </script>

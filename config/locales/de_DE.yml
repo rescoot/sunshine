@@ -815,6 +815,7 @@ de_DE:
     public_profile_enabled: Öffentliches Profil aktiviert
     real_name_not_shared: Dein echter Name oder Kontaktinformationen
     receive_notifications: Achievement-Benachrichtigungen erhalten
+    requires_public_profile: Public profile is required for leaderboard participation
     save_settings: Einstellungen speichern
     title: Mein Profil
     view_all_achievements: Alle Achievements anzeigen
