@@ -16,9 +16,7 @@ Rails.application.routes.draw do
   #   match "*path", to: "unu#handle", via: :all
   # end
 
-  devise_for :users, controllers: {
-    sessions: "users/sessions"
-  }
+  devise_for :users
 
   # OTP verification routes
   namespace :users do
