@@ -196,6 +196,7 @@ de_DE:
         back_to_telemetry: Zurück zur Telemetrie
         basic_information: Grundlegende Informationen
         battery_status: Batteriestatus
+        brake_left: Bremse links
         cbb_current: CBB-Strom
         cbb_level: CBB-Ladezustand
         cbb_serial: CBB-Seriennummer
@@ -212,11 +213,14 @@ de_DE:
         environment: Umgebung
         firmware: Firmware
         firmware_versions: Firmware-Versionen
+        handlebar_lock: Lenkerverriegelung
+        handlebar_position: Lenkerposition
         health: Gesundheit
         internet: Internet
         level: Ladezustand
         location: Standort
         main_battery: Hauptbatterie
+        main_power: Hauptstrom
         modem: Modem
         network: Netzwerk
         no_location_data: Keine Standortdaten verfügbar
@@ -303,6 +307,7 @@ de_DE:
         no_gps_data: Keine GPS-Daten verfügbar
         no_gps_data_short: Keine GPS-Daten
         no_valid_coordinates: Keine gültigen GPS-Koordinaten
+        reassign: Neu zuweisen
         scooter: Roller
         sixty_kmh: 60 km/h
         start_gps_distance: Start-GPS-Distanz
@@ -539,6 +544,66 @@ de_DE:
         one: 1 Sekunde
         other: "%{count} Sekunden"
   devise:
+    otp:
+      credentials_refresh:
+        explain: Um die Sicherheit zu gewährleisten, gib bitte dein Passwort erneut
+          ein.
+        go_on: Fortfahren...
+        title: Bitte gib dein Passwort erneut ein.
+      edit_otp_token:
+        confirmation_code: Bestätigungscode
+        explain: Die Zwei-Faktor-Authentifizierung fügt deinem Konto eine zusätzliche
+          Sicherheitsebene hinzu. Bei der Anmeldung wirst du nach einem Code gefragt,
+          den du auf einem physischen Gerät, wie deinem Telefon, generieren kannst.
+        lead_in: 'Um die Zwei-Faktor-Authentifizierung zu aktivieren:'
+        step_1: '1. Öffne deine Authentifizierungs-App und scanne den unten angezeigten
+          QR-Code:'
+        step_2: '2. Gib den in deiner Authentifizierungs-App angezeigten 6-stelligen
+          Code unten ein:'
+        submit: Fortfahren...
+        title: Zwei-Faktor-Authentifizierung aktivieren
+      general:
+        remember: Angemeldet bleiben
+      otp_tokens:
+        disable_link: Zwei-Faktor-Authentifizierung deaktivieren
+        enable_link: Zwei-Faktor-Authentifizierung aktivieren
+        recovery:
+          code: Wiederherstellungscode
+          codes_list: Hier ist die Liste deiner Wiederherstellungscodes
+          download_codes: Wiederherstellungscodes herunterladen
+          explain: Notiere oder drucke diese Wiederherstellungscodes. Sie ermöglichen
+            dir die Anmeldung, falls dein Token-Gerät verloren, gestohlen oder nicht
+            verfügbar ist.
+          sequence: Sequenz
+          title: Deine Notfall-Wiederherstellungscodes
+        reset_explain: Durch das Zurücksetzen deines Token-Geheimnisses wird die Zwei-Faktor-Authentifizierung
+          vorübergehend deaktiviert.
+        reset_explain_warn: Um die Zwei-Faktor-Authentifizierung wieder zu aktivieren,
+          musst du dein mobiles Gerät mit dem neuen Token-Geheimnis neu registrieren.
+        reset_link: Token-Geheimnis zurücksetzen
+        title: 'Zwei-Faktor-Authentifizierung:'
+      submit_token:
+        explain: Du erhältst diese Nachricht, weil du die Zwei-Faktor-Authentifizierung
+          für dein Konto aktiviert hast
+        prompt: 'Bitte gib deinen Zwei-Faktor-Authentifizierungstoken ein:'
+        recovery_link: Ich habe mein Gerät nicht, ich möchte einen Wiederherstellungscode
+          verwenden
+        recovery_prompt: 'Bitte gib deinen Wiederherstellungscode ein:'
+        submit: Token absenden
+        title: Zwei-Faktor-Authentifizierung
+      token_secret:
+        manual_provisioning: Manueller Bereitstellungscode
+        title: Dein Token-Geheimnis
+      trusted_browsers:
+        browser_not_trusted: Dein Browser ist nicht vertraut.
+        browser_trusted: Dein Browser ist vertraut.
+        explain: Wenn du deinen Browser als vertraut einstellst, wirst du bei der
+          Anmeldung von diesem Browser nicht nach einem Zwei-Faktor-Authentifizierungstoken
+          gefragt.
+        title: Vertraute Browser
+        trust_add: Diesen Browser vertrauen
+        trust_clear: Liste der vertrauten Browser löschen
+        trust_remove: Diesen Browser aus der Liste der vertrauten Browser entfernen
     passwords:
       change_my_password: Mein Passwort ändern
       change_password: Passwort ändern
@@ -559,7 +624,10 @@ de_DE:
       update: Aktualisieren
       waiting_confirmation: 'Warte auf Bestätigung für:'
     sessions:
+      already_signed_out: Erfolgreich abgemeldet.
       sign_in_to_account: Bei deinem Konto anmelden
+      signed_in: Erfolgreich angemeldet.
+      signed_out: Erfolgreich abgemeldet.
     shared:
       already_have_account: Hast du bereits ein Konto?
       didnt_receive_confirmation: Keine Bestätigungsanweisungen erhalten?
@@ -579,6 +647,9 @@ de_DE:
     unit:
       one: Meter
       other: Meter
+  errors:
+    messages:
+      not_saved: Nicht gespeichert
   footer:
     about: Über uns
     contact: Kontakt
@@ -599,6 +670,7 @@ de_DE:
     back_to_leaderboard: Zurück zur Rangliste
     be_first: Sei der Erste, der eine Fahrt abschließt und den ersten Platz belegt!
     below_average: "%{percent}% unter dem Durchschnitt"
+    community_averages: Community-Durchschnitt
     day: Tag
     description: Vergleiche deine Fahrstatistiken mit anderen Rollerbesitzern.
     display_name: Anzeigename
@@ -606,6 +678,7 @@ de_DE:
     display_name_visible: Dein Anzeigename (nicht dein echter Name oder E-Mail)
     distance: Distanz
     distance_visible: Zurückgelegte Gesamtdistanz
+    enable_public_profile: Öffentliches Profil aktivieren
     fix_errors: 'Bitte behebe die folgenden Fehler:'
     join: Der Rangliste beitreten
     location_not_shared: Deine Standortdaten oder Fahrtrouten
@@ -626,6 +699,8 @@ de_DE:
     participate: An der Rangliste teilnehmen
     personal_info_not_shared: Persönliche Informationen über dich oder deinen Roller
     privacy_information: Datenschutzinformationen
+    profile_settings: Profileinstellungen
+    profile_visible: Dein Profil wird für andere Benutzer sichtbar sein.
     rank: Rang
     real_name_not_shared: Deinen echten Namen oder Kontaktinformationen
     receive_notifications: Erfolgsbenachrichtigungen erhalten
@@ -633,6 +708,8 @@ de_DE:
     save_settings: Einstellungen speichern
     settings: Einstellungen
     settings_title: Ranglisten-Einstellungen
+    sign_in_to_join: Melde dich an, um der Rangliste beizutreten und deinen Fortschritt
+      zu verfolgen.
     stats_visible: Deine Fahrstatistiken werden für andere Benutzer in der Rangliste
       sichtbar sein.
     title: Rangliste
@@ -659,6 +736,7 @@ de_DE:
     language_section: Sprache
     leaderboard: Rangliste
     points: Punkte
+    profile: Mein Profil
     radio_gaga: Radio Gaga
     scooters: Roller
     sign_in_register: Anmelden / Registrieren
@@ -692,6 +770,56 @@ de_DE:
       für die Telemetrie-Einrichtung.
     token_warning: Diese Konfiguration enthält dein API-Token, das nur einmal angezeigt
       wird. Stelle sicher, dass du es jetzt speicherst!
+  profiles:
+    achievements: Achievements
+    achievements_visible: Deine erreichten Achievements
+    back_to_leaderboard: Zurück zur Rangliste
+    back_to_profile: Zurück zum Profil
+    community_member: Community-Mitglied
+    community_name: Community-Name
+    community_name_description: Dies ist der Name, der auf deinem öffentlichen Profil
+      und in der Rangliste angezeigt wird.
+    description: Sieh dir deine öffentlichen Profileinstellungen an und verwalte sie.
+    display_name_visible: Dein Community-Name (nicht dein echter Name oder E-Mail)
+    edit_description: Verwalte deine öffentlichen Profil- und Ranglisteneinstellungen.
+    edit_profile: Profil bearbeiten
+    edit_title: Profil bearbeiten
+    enable_leaderboard_prompt: Aktiviere die Ranglisten-Teilnahme, um deine Statistiken
+      mit anderen Fahrern zu vergleichen.
+    enable_profile_prompt: Aktiviere dein öffentliches Profil, um deine Achievements
+      mit der Community zu teilen.
+    enable_public_profile: Öffentliches Profil aktivieren
+    fix_errors: 'Bitte behebe die folgenden Fehler:'
+    leaderboard_description: Deine Fahrstatistiken sind in der Rangliste sichtbar.
+    leaderboard_disabled: Ranglisten-Teilnahme deaktiviert
+    leaderboard_enabled: Ranglisten-Teilnahme aktiviert
+    leaderboard_stats: Ranglisten-Statistiken
+    leaderboard_stats_visible: Deine Fahrstatistiken, wenn du an der Rangliste teilnimmst
+    leaderboard_visible: Deine Fahrstatistiken werden in der Rangliste sichtbar sein.
+    location_not_shared: Deine Standortdaten oder Fahrtrouten
+    no_leaderboard_data: Keine Ranglistendaten für diesen Fahrer verfügbar.
+    not_shared: 'Wir teilen nicht:'
+    notifications_description: Erhalte Benachrichtigungen, wenn du neue Achievements
+      erzielst.
+    opt_out_anytime: Du kannst jederzeit aussteigen, indem du dein öffentliches Profil
+      deaktivierst.
+    participate_leaderboard: An der Rangliste teilnehmen
+    personal_info_not_shared: Persönliche Informationen über dich oder deinen Roller
+    privacy_information: Datenschutzinformationen
+    profile: Profil
+    profile_settings: Profileinstellungen
+    profile_status: Profilstatus
+    profile_visible: Dein Profil wird für andere Benutzer sichtbar sein.
+    public_profile_description: Dein Profil ist für andere Benutzer sichtbar.
+    public_profile_disabled: Öffentliches Profil deaktiviert
+    public_profile_enabled: Öffentliches Profil aktiviert
+    real_name_not_shared: Dein echter Name oder Kontaktinformationen
+    receive_notifications: Achievement-Benachrichtigungen erhalten
+    save_settings: Einstellungen speichern
+    title: Mein Profil
+    view_all_achievements: Alle Achievements anzeigen
+    visible_information: 'Wenn du dein öffentliches Profil aktivierst, werden folgende
+      Informationen für andere Benutzer sichtbar:'
   scooters:
     add_scooter: Roller hinzufügen
     admin_controls: Admin-Steuerung
@@ -719,6 +847,27 @@ de_DE:
     kickstand: Ständer %{status}
     last_known_position: 'Letzte bekannte Position: %{lat}, %{lng} (vor %{time_ago})'
     last_seen: Zuletzt gesehen vor %{time_ago}
+    layout_status:
+      ago: her
+      aux_battery: Hilfsbatterie
+      blinkers: Blinker
+      both: Beide
+      cb_battery: CB-Batterie
+      'false': falsch
+      kickstand: Ständer
+      last_seen: Zuletzt gesehen
+      left: Links
+      lock: Sperren
+      main_battery: Hauptbatterie
+      'off': Aus
+      offline: Offline
+      online: Online
+      right: Rechts
+      seatbox: Sitzfach
+      second_battery: Sekundärbatterie
+      state: Status
+      status: Status
+      unlock: Entsperren
     left_signal: Linker Blinker
     live_dashboard: Live-Dashboard
     main_battery: Hauptbatterie
@@ -747,11 +896,16 @@ de_DE:
       copied: Kopiert
       imei_with_value: 'IMEI: %{imei}'
       kickstand_with_status: 'Ständer: %{status}'
+      last_seen_ago: Zuletzt gesehen vor %{time_ago}
+      location_unknown: Standort unbekannt
       main_battery_with_level: 'Hauptbatterie: %{level}'
+      offline: Offline
       online: Online
       range_km: 'Reichweite: %{range} km'
+      range_unknown: Reichweite unbekannt
       seatbox_with_status: 'Sitzfach: %{status}'
       spare_battery_with_level: 'Ersatzbatterie: %{level}'
+      unknown: unbekannt
       vin_with_value: 'VIN: %{vin}'
     system_uptime: System-Laufzeit
     telemetry_instructions: 'Dein Roller hat noch keine Telemetriedaten übermittelt.
@@ -764,9 +918,14 @@ de_DE:
     update_client: Client aktualisieren
     waiting_for_telemetry: Warte auf Telemetriedaten
   time:
+    am: am
     formats:
       date_time: "%d. %B %Y %H:%M"
+      default: "%a, %d %b %Y %H:%M:%S %z"
+      long: "%B %d, %Y %H:%M"
+      short: "%d %b %H:%M"
       time: "%H:%M"
+    pm: pm
   trips:
     all: Alle
     all_scooters: Alle Roller
@@ -793,6 +952,18 @@ de_DE:
     max_distance: Max. Distanz (km)
     max_duration: Max. Dauer (min)
     min_avg_speed: Min.
+    min_distance: Min. Distanz (km)
+    min_duration: Min. Dauer (min)
+    next_trip: Nächste Fahrt
+    no_gps_coordinates: Diese Fahrt hat keine gültigen GPS-Koordinaten.
+    no_gps_data: Keine GPS-Daten verfügbar
+    previous_trip: Vorherige Fahrt
+    scooter: Roller
+    start: Start
+    start_date: Startdatum
+    start_location: Startposition
+    start_time: Startzeit
+    status: Status
   units:
     h: h
     km: km

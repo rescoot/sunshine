@@ -192,6 +192,7 @@ en:
         back_to_telemetry: Back to Telemetry
         basic_information: Basic Information
         battery_status: Battery Status
+        brake_left: Brake Left
         cbb_current: CBB Current
         cbb_level: CBB Level
         cbb_serial: CBB Serial
@@ -208,11 +209,14 @@ en:
         environment: Environment
         firmware: Firmware
         firmware_versions: Firmware Versions
+        handlebar_lock: Handlebar Lock
+        handlebar_position: Handlebar Position
         health: Health
         internet: Internet
         level: Level
         location: Location
         main_battery: Main Battery
+        main_power: Main Power
         modem: Modem
         network: Network
         no_location_data: No location data available
@@ -299,6 +303,7 @@ en:
         no_gps_data: No GPS Data Available
         no_gps_data_short: No GPS data
         no_valid_coordinates: No valid GPS coordinates
+        reassign: Reassign
         scooter: Scooter
         sixty_kmh: 60 km/h
         start_gps_distance: Start GPS Distance
@@ -529,6 +534,60 @@ en:
         one: 1 second
         other: "%{count} seconds"
   devise:
+    otp:
+      credentials_refresh:
+        explain: In order to ensure this is safe, please enter your password again.
+        go_on: Continue...
+        title: Please enter your password again.
+      edit_otp_token:
+        confirmation_code: Confirmation Code
+        explain: Two-Factor Authentication adds an additional layer of security to
+          your account. When logging in you will be asked for a code that you can
+          generate on a physical device, like your phone.
+        lead_in: 'To Enable Two-Factor Authentication:'
+        step_1: '1. Open your authenticator app and scan the QR code shown below:'
+        step_2: '2. Enter the 6-digit code shown in your authenticator app below:'
+        submit: Continue...
+        title: Enable Two-factor Authentication
+      general:
+        remember: Remember me
+      otp_tokens:
+        disable_link: Disable Two-Factor Authentication
+        enable_link: Enable Two-Factor Authentication
+        recovery:
+          code: Recovery Code
+          codes_list: Here is the list of your recovery codes
+          download_codes: Download recovery codes
+          explain: Take note or print these recovery codes. The will allow you to
+            log back in in case your token device is lost, stolen, or unavailable.
+          sequence: Sequence
+          title: Your Emergency Recovery Codes
+        reset_explain: Resetting your token secret will temporarilly disable Two-Factor
+          Authentication.
+        reset_explain_warn: To re-enable Two-Factor Authentication, you will need
+          to re-enroll your mobile device with the new token secret.
+        reset_link: Reset Token Secret
+        title: 'Two-Factor Authentication:'
+      submit_token:
+        explain: You're getting this because you enabled Two-Factor Authentication
+          on your account
+        prompt: 'Please enter your Two-Factor Authentication token:'
+        recovery_link: I don't have my device, I want to use a recovery code
+        recovery_prompt: 'Please enter your recovery code:'
+        submit: Submit Token
+        title: Two-Factor Authentication
+      token_secret:
+        manual_provisioning: Manual provisioning code
+        title: Your token secret
+      trusted_browsers:
+        browser_not_trusted: Your browser is not trusted.
+        browser_trusted: Your browser is trusted.
+        explain: If you set your browser as trusted, you will not be asked to provide
+          a Two-Factor Authentication token when logging in from that browser.
+        title: Trusted Browsers
+        trust_add: Trust this browser
+        trust_clear: Clear the list of trusted browsers
+        trust_remove: Remove this browser from the list of trusted browsers
     passwords:
       change_my_password: Change my password
       change_password: Change your password
@@ -548,7 +607,10 @@ en:
       update: Update
       waiting_confirmation: 'Currently waiting confirmation for:'
     sessions:
+      already_signed_out: Signed out successfully.
       sign_in_to_account: Sign in to your account
+      signed_in: Signed in successfully.
+      signed_out: Signed out successfully.
     shared:
       already_have_account: Already have an account?
       didnt_receive_confirmation: Didn't receive confirmation instructions?
@@ -591,6 +653,7 @@ en:
     back_to_leaderboard: Back to Leaderboard
     be_first: Be the first to complete a trip and claim the top spot!
     below_average: "%{percent}% below average"
+    community_averages: Community Averages
     day: Day
     description: Compare your riding stats with other scooter owners.
     display_name: Display Name
@@ -598,6 +661,7 @@ en:
     display_name_visible: Your display name (not your real name or email)
     distance: Distance
     distance_visible: Total distance traveled
+    enable_public_profile: Enable Public Profile
     fix_errors: 'Please fix the following errors:'
     join: Join the Leaderboard
     location_not_shared: Your location data or trip routes
@@ -618,6 +682,7 @@ en:
     personal_info_not_shared: Any personal information about you or your scooter
     privacy_information: Privacy Information
     profile_settings: Profile Settings
+    profile_visible: Your profile will be visible to other users.
     rank: Rank
     real_name_not_shared: Your real name or contact information
     receive_notifications: Receive Achievement Notifications
@@ -637,52 +702,6 @@ en:
     you: You
     your_rank: Your Rank
     your_stats: Your Stats
-    community_averages: Community Averages
-  
-  profiles:
-    achievements: Achievements
-    achievements_visible: Your earned achievements
-    back_to_leaderboard: Back to Leaderboard
-    back_to_profile: Back to Profile
-    community_member: Community Member
-    community_name: Community Name
-    community_name_description: This is the name that will be shown on your public profile and the leaderboard.
-    description: View and manage your public profile settings.
-    display_name_visible: Your community name (not your real name or email)
-    edit_description: Manage your public profile and leaderboard settings.
-    edit_profile: Edit Profile
-    edit_title: Edit Profile
-    enable_leaderboard_prompt: Enable leaderboard participation to compare your stats with other riders.
-    enable_profile_prompt: Enable your public profile to share your achievements with the community.
-    enable_public_profile: Enable Public Profile
-    fix_errors: 'Please fix the following errors:'
-    leaderboard_description: Your riding stats are visible on the leaderboard.
-    leaderboard_disabled: Leaderboard Participation Disabled
-    leaderboard_enabled: Leaderboard Participation Enabled
-    leaderboard_stats: Leaderboard Stats
-    leaderboard_stats_visible: Your riding statistics if you participate in the leaderboard
-    leaderboard_visible: Your riding stats will be visible on the leaderboard.
-    location_not_shared: Your location data or trip routes
-    no_leaderboard_data: No leaderboard data available for this rider.
-    not_shared: 'We do not share:'
-    notifications_description: Get notified when you earn new achievements.
-    opt_out_anytime: You can opt out at any time by disabling your public profile.
-    participate_leaderboard: Participate in Leaderboard
-    personal_info_not_shared: Any personal information about you or your scooter
-    privacy_information: Privacy Information
-    profile: Profile
-    profile_settings: Profile Settings
-    profile_status: Profile Status
-    profile_visible: Your profile will be visible to other users.
-    public_profile_description: Your profile is visible to other users.
-    public_profile_disabled: Public Profile Disabled
-    public_profile_enabled: Public Profile Enabled
-    real_name_not_shared: Your real name or contact information
-    receive_notifications: Receive Achievement Notifications
-    save_settings: Save Settings
-    title: My Profile
-    view_all_achievements: View All Achievements
-    visible_information: 'When you enable your public profile, the following information will be visible to other users:'
   navigation:
     account_settings: Account Settings
     achievements: Achievements
@@ -731,6 +750,54 @@ en:
       your configuration for telemetry setup.
     token_warning: This configuration contains your API token which will only be shown
       once. Make sure to save it now!
+  profiles:
+    achievements: Achievements
+    achievements_visible: Your earned achievements
+    back_to_leaderboard: Back to Leaderboard
+    back_to_profile: Back to Profile
+    community_member: Community Member
+    community_name: Community Name
+    community_name_description: This is the name that will be shown on your public
+      profile and the leaderboard.
+    description: View and manage your public profile settings.
+    display_name_visible: Your community name (not your real name or email)
+    edit_description: Manage your public profile and leaderboard settings.
+    edit_profile: Edit Profile
+    edit_title: Edit Profile
+    enable_leaderboard_prompt: Enable leaderboard participation to compare your stats
+      with other riders.
+    enable_profile_prompt: Enable your public profile to share your achievements with
+      the community.
+    enable_public_profile: Enable Public Profile
+    fix_errors: 'Please fix the following errors:'
+    leaderboard_description: Your riding stats are visible on the leaderboard.
+    leaderboard_disabled: Leaderboard Participation Disabled
+    leaderboard_enabled: Leaderboard Participation Enabled
+    leaderboard_stats: Leaderboard Stats
+    leaderboard_stats_visible: Your riding statistics if you participate in the leaderboard
+    leaderboard_visible: Your riding stats will be visible on the leaderboard.
+    location_not_shared: Your location data or trip routes
+    no_leaderboard_data: No leaderboard data available for this rider.
+    not_shared: 'We do not share:'
+    notifications_description: Get notified when you earn new achievements.
+    opt_out_anytime: You can opt out at any time by disabling your public profile.
+    participate_leaderboard: Participate in Leaderboard
+    personal_info_not_shared: Any personal information about you or your scooter
+    privacy_information: Privacy Information
+    profile: Profile
+    profile_settings: Profile Settings
+    profile_status: Profile Status
+    profile_visible: Your profile will be visible to other users.
+    public_profile_description: Your profile is visible to other users.
+    public_profile_disabled: Public Profile Disabled
+    public_profile_enabled: Public Profile Enabled
+    real_name_not_shared: Your real name or contact information
+    receive_notifications: Receive Achievement Notifications
+    save_settings: Save Settings
+    title: My Profile
+    view_all_achievements: View All Achievements
+    visible_information: 'When you enable your public profile, the following information
+      will be visible to other users:'
   scooters:
     add_scooter: Add Scooter
     admin_controls: Admin Controls
@@ -770,6 +837,7 @@ en:
       left: Left
       lock: Lock
       main_battery: Main Battery
+      'off': 'Off'
       offline: Offline
       online: Online
       right: Right

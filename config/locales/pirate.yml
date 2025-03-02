@@ -193,6 +193,7 @@ pirate:
         back_to_telemetry: Back to Crow's Nest Reports
         basic_information: Ship's Basic Information
         battery_status: Sail Status
+        brake_left: Port Brake
         cbb_current: Ship's Current
         cbb_level: Ship's Power
         cbb_serial: Ship's Registry Number
@@ -209,11 +210,14 @@ pirate:
         environment: Sea Conditions
         firmware: Ship's Brain
         firmware_versions: Ship's Brain Versions
+        handlebar_lock: Helm Lock
+        handlebar_position: Helm Position
         health: Sail Health
         internet: Pirate Network
         level: Power Level
         location: Location
         main_battery: Main Sail
+        main_power: Main Power
         modem: Message Bottle
         network: Ship's Network
         no_location_data: No map coordinates available, ye scurvy dog!
@@ -300,6 +304,7 @@ pirate:
         no_gps_data: No Map Data Available
         no_gps_data_short: No map data
         no_valid_coordinates: No valid map coordinates, ye scurvy dog!
+        reassign: Reassign Voyage
         scooter: Vessel
         sixty_kmh: 60 knots
         start_gps_distance: Start Map Distance
@@ -532,6 +537,61 @@ pirate:
         one: 1 tick o' the clock
         other: "%{count} ticks o' the clock"
   devise:
+    otp:
+      credentials_refresh:
+        explain: To make sure this be secure, enter yer secret password again, ye
+          scurvy dog!
+        go_on: Proceed, matey...
+        title: Enter yer secret password again, arr!
+      edit_otp_token:
+        confirmation_code: Verification Mark
+        explain: Two-Factor Authentication adds another layer o' security to yer treasure
+          chest. When boardin' yer ship, ye'll need a special code from yer trusted
+          device, like yer pocket parrot.
+        lead_in: 'To Enable Two-Factor Authentication, ye scallywag:'
+        step_1: '1. Open yer authenticator app and scan th'' treasure map below:'
+        step_2: '2. Enter th'' 6-digit secret code shown in yer authenticator app:'
+        submit: Set Sail...
+        title: Enable Two-Factor Authentication, Arr!
+      general:
+        remember: Remember this vessel
+      otp_tokens:
+        disable_link: Disable Two-Factor Authentication
+        enable_link: Enable Two-Factor Authentication
+        recovery:
+          code: Backup Treasure Key
+          codes_list: Here be th' list o' yer backup treasure keys
+          download_codes: Download backup treasure keys
+          explain: Take note or print these backup keys. They'll let ye back aboard
+            if yer token device be lost at sea, plundered, or otherwise unavailable.
+          sequence: Order
+          title: Yer Emergency Backup Treasure Keys
+        reset_explain: Resettin' yer token secret will temporarily disable Two-Factor
+          Authentication.
+        reset_explain_warn: To re-enable Two-Factor Authentication, ye'll need to
+          register yer mobile device with th' new token secret.
+        reset_link: Reset Token Secret
+        title: 'Two-Factor Authentication, Arr:'
+      submit_token:
+        explain: Ye be seein' this because ye enabled Two-Factor Authentication on
+          yer account, ye wise sailor!
+        prompt: 'Enter yer Two-Factor Authentication token, or walk th'' plank:'
+        recovery_link: Me device be lost at sea! I need to use a backup treasure key!
+        recovery_prompt: 'Enter yer backup treasure key:'
+        submit: Submit Token
+        title: Verify Yer Second Factor!
+      token_secret:
+        manual_provisioning: Manual treasure code
+        title: Yer secret token
+      trusted_browsers:
+        browser_not_trusted: This vessel ain't trusted.
+        browser_trusted: This vessel be trusted.
+        explain: If ye mark this vessel as trusted, ye won't need to provide a Two-Factor
+          Authentication token when boardin' from this vessel.
+        title: Trusted Vessels
+        trust_add: Trust this vessel
+        trust_clear: Clear th' list o' trusted vessels
+        trust_remove: Remove this vessel from th' list o' trusted vessels
     passwords:
       change_my_password: Change me secret key
       change_password: Change yer secret key
@@ -553,7 +613,10 @@ pirate:
       update: Update Ship's Log
       waiting_confirmation: 'Waitin'' for th'' captain''s approval for:'
     sessions:
+      already_signed_out: Ye've already walked th' plank, arr!
       sign_in_to_account: Board yer vessel
+      signed_in: Ye've boarded yer ship successfully, arr!
+      signed_out: Ye've abandoned ship successfully, arr!
     shared:
       already_have_account: Already part o' th' crew?
       didnt_receive_confirmation: Didn't receive th' captain's orders?
@@ -596,6 +659,7 @@ pirate:
     back_to_leaderboard: Back t' Cap'n's Log
     be_first: Be th' first t' complete a voyage and claim th' top spot, arr!
     below_average: "%{percent}% below th' average sailor"
+    community_averages: Crew Averages
     day: Day
     description: Compare yer sailin' stats with other vessel captains, arr!
     display_name: Pirate Name
@@ -604,6 +668,7 @@ pirate:
       address)
     distance: Distance
     distance_visible: Total distance sailed
+    enable_public_profile: Make Yerself Known
     fix_errors: 'Fix these errors, ye scallywag:'
     join: Join th' Cap'n's Log
     location_not_shared: Yer location data or voyage routes
@@ -623,6 +688,8 @@ pirate:
     participate: Join th' Cap'n's Log
     personal_info_not_shared: Any personal information about ye or yer vessel
     privacy_information: Pirate's Privacy Code
+    profile_settings: Sailor Settings
+    profile_visible: Yer identity will be visible to other scallywags.
     rank: Rank
     real_name_not_shared: Yer real name or contact information
     receive_notifications: Receive Treasure Notifications
@@ -630,6 +697,7 @@ pirate:
     save_settings: Save Settings
     settings: Ship's Settings
     settings_title: Cap'n's Log Settings
+    sign_in_to_join: Board yer ship to join th' leaderboard and track yer voyages.
     stats_visible: Yer sailin' stats will be visible t' other seafarers in th' cap'n's
       log.
     title: Cap'n's Log
@@ -653,8 +721,10 @@ pirate:
     feature_flags: Flags
     hide_admin: Go under deck
     language: Lingo
+    language_section: Lingo
     leaderboard: Log o' Glory
     points: doubloons
+    profile: Me Profile
     radio_gaga: Radio Gaga
     scooters: Me Fleet
     sign_in_register: Board Ship / Join Crew
@@ -688,6 +758,54 @@ pirate:
       map for th' crow's nest setup.
     token_warning: This map contains yer secret treasure code which will only be shown
       once. Make sure t' save it now, or walk th' plank!
+  profiles:
+    achievements: Treasures
+    achievements_visible: Yer plundered treasures
+    back_to_leaderboard: Back to th' Cap'n's Log
+    back_to_profile: Back to Me Profile
+    community_member: Crew Member
+    community_name: Pirate Name
+    community_name_description: This be th' name that will show on yer public profile
+      and th' cap'n's log.
+    description: View and manage yer public sailor settings.
+    display_name_visible: Yer pirate name (not yer real name or message-in-a-bottle
+      address)
+    edit_description: Manage yer public profile and cap'n's log settings.
+    edit_profile: Edit Sailor Profile
+    edit_title: Edit Sailor Profile
+    enable_leaderboard_prompt: Join th' cap'n's log to compare yer stats with other
+      seafarers.
+    enable_profile_prompt: Make yerself known to share yer treasures with th' crew.
+    enable_public_profile: Make Yerself Known
+    fix_errors: 'Fix these errors, ye scallywag:'
+    leaderboard_description: Yer sailin' stats be visible in th' cap'n's log.
+    leaderboard_disabled: Cap'n's Log Participation Disabled
+    leaderboard_enabled: Cap'n's Log Participation Enabled
+    leaderboard_stats: Cap'n's Log Stats
+    leaderboard_stats_visible: Yer sailin' statistics if ye join th' cap'n's log
+    leaderboard_visible: Yer sailin' stats will be visible in th' cap'n's log.
+    location_not_shared: Yer location data or voyage routes
+    no_leaderboard_data: No cap'n's log data available for this seafarer.
+    not_shared: 'We don''t share with other pirates:'
+    notifications_description: Get notified when ye find new treasures.
+    opt_out_anytime: Ye can disappear anytime by disablin' yer public profile.
+    participate_leaderboard: Join th' Cap'n's Log
+    personal_info_not_shared: Any personal information about ye or yer vessel
+    privacy_information: Pirate's Privacy Code
+    profile: Profile
+    profile_settings: Sailor Settings
+    profile_status: Sailor Status
+    profile_visible: Yer identity will be visible to other scallywags.
+    public_profile_description: Yer identity is visible to other scallywags.
+    public_profile_disabled: Identity Hidden
+    public_profile_enabled: Identity Revealed
+    real_name_not_shared: Yer real name or contact information
+    receive_notifications: Receive Treasure Notifications
+    save_settings: Save Settings
+    title: Me Profile
+    view_all_achievements: View All Treasures
+    visible_information: 'When ye make yerself known, th'' followin'' information
+      will be visible to other scallywags:'
   scooters:
     add_scooter: Add Vessel
     admin_controls: Cap'n's Secret Controls
@@ -721,7 +839,7 @@ pirate:
       blinkers: Signal Lanterns
       both: Both
       cb_battery: Crow's Nest Power
-      'false': 'False'
+      'false': 'false'
       kickstand: Anchor
       last_seen: Last spotted
       left: Port
@@ -764,11 +882,16 @@ pirate:
       copied: Plundered!
       imei_with_value: 'Secret Code: %{imei}'
       kickstand_with_status: 'Anchor: %{status}'
+      last_seen_ago: Last spotted %{time_ago} ago
+      location_unknown: Location unknown
       main_battery_with_level: 'Main Rum Barrel: %{level}'
+      offline: Lost at sea
       online: Sailin' the seas
       range_km: 'Voyage Distance: %{range} leagues'
+      range_unknown: Range unknown
       seatbox_with_status: 'Treasure Chest: %{status}'
       spare_battery_with_level: 'Backup Rum Barrel: %{level}'
+      unknown: unknown
       vin_with_value: 'Ship''s Number: %{vin}'
     system_uptime: Ship's Voyage Time
     telemetry_instructions: 'Yer vessel hasn''t sent any signals yet. Make sure, ye
@@ -781,9 +904,14 @@ pirate:
     update_client: Update Ship's Compass
     waiting_for_telemetry: Waitin' fer signals from th' crow's nest
   time:
+    am: am
     formats:
       date_time: "%B %d, %Y %H:%M"
+      default: "%a, %d %b %Y %H:%M:%S %z"
+      long: "%B %d, %Y %H:%M"
+      short: "%d %b %H:%M"
       time: "%H:%M"
+    pm: pm
   trips:
     all: All
     all_scooters: All Vessels
@@ -811,7 +939,7 @@ pirate:
     max_duration: Max Voyage Time (bells)
     min_avg_speed: Min Avg Speed (knots)
     min_distance: Min Distance (leagues)
-    min_duration: Min Voyage Time (bells)
+    min_duration: Min Duration (bells)
     next_trip: Next Voyage
     no_gps_coordinates: This voyage has no valid map coordinates, ye scurvy dog!
     no_gps_data: No Map Data Available
