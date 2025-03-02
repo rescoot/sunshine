@@ -23,7 +23,7 @@ production:
   leaderboard_achievement:
     class: LeaderboardAchievementJob
     queue: background
-    schedule: "@weekly"
+    schedule: "every Sunday at 23:59 Europe/Berlin"
   achievement_processing:
     class: AchievementProcessingJob
     queue: background
