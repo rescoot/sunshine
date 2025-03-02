@@ -662,6 +662,16 @@ de_DE:
     privacy_policy: Datenschutz
     rescoot_project: Ein Rescoot-Projekt
     security: Sicherheit
+  helpers:
+    page_entries_info:
+      more_pages:
+        display_entries: Zeige %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> von
+          insgesamt <b>%{total}</b> an
+      one_page:
+        display_entries:
+          one: Zeige <b>%{count}</b> %{entry_name} an
+          other: Zeige <b>alle %{count}</b> %{entry_name} an
+          zero: Keine %{entry_name} gefunden
   leaderboards:
     above_average: "%{percent}% über dem Durchschnitt"
     all_time: Gesamt
@@ -971,6 +981,13 @@ de_DE:
     kmh: km/h
     m: m
     min: min
+  views:
+    pagination:
+      first: "&laquo; Erste"
+      last: Letzte &raquo;
+      next: Nächste &rsaquo;
+      previous: "&lsaquo; Vorherige"
+      truncate: "&hellip;"
   vin_decoder:
     check_digit: Prüfziffer
     decode_another: Weitere VIN dekodieren

@@ -18,6 +18,15 @@ pirate:
     start_riding: Start sailin' yer vessel t' find treasures and collect doubloons!
     what_you_can_earn: 'Here be what ye can plunder:'
     your_achievements: Yer Treasures
+  activerecord:
+    errors:
+      messages:
+        record_invalid: 'Ye failed th'' validation, ye scurvy dog: %{errors}'
+        restrict_dependent_destroy:
+          has_many: Can't send to Davy Jones because dependent %{record} still sail
+            th' seas
+          has_one: Can't send to Davy Jones because a dependent %{record} still sails
+            th' seas
   admin:
     dashboard:
       description: Overview o' th' fleet statistics and recent activity, arr!
@@ -495,9 +504,9 @@ pirate:
     - November
     - December
     order:
-    - :year
-    - :month
-    - :day
+    - year
+    - month
+    - day
   datetime:
     distance_in_words:
       about_x_hours:
@@ -512,6 +521,7 @@ pirate:
       almost_x_years:
         one: almost 1 voyage around the sun
         other: almost %{count} voyages around the sun
+      half_a_minute: half a moment
       less_than_x_minutes:
         one: less than a moment
         other: less than %{count} moments
@@ -536,6 +546,16 @@ pirate:
       x_seconds:
         one: 1 tick o' the clock
         other: "%{count} ticks o' the clock"
+      x_years:
+        one: 1 voyage around the sun
+        other: "%{count} voyages around the sun"
+    prompts:
+      day: Day at Sea
+      hour: Bell
+      minute: Moment
+      month: Moon
+      second: Ticks
+      year: Voyage Around th' Sun
   devise:
     otp:
       credentials_refresh:
@@ -637,8 +657,47 @@ pirate:
       one: fathom
       other: fathoms
   errors:
+    format: "%{attribute} %{message}"
     messages:
+      accepted: must be accepted by th' cap'n
+      blank: can't be empty as a plundered chest
+      confirmation: doesn't match %{attribute}, ye scallywag
+      empty: can't be as empty as a rum bottle
+      equal_to: must be equal to %{count}, no more, no less
+      even: must be even as th' horizon
+      exclusion: be reserved for th' cap'n
+      greater_than: must be greater than %{count}, ye lily-livered landlubber
+      greater_than_or_equal_to: must be greater than or equal to %{count}, or walk
+        th' plank
+      in: must be in %{count}, or ye'll be keelhauled
+      inclusion: ain't on th' ship's manifest
+      invalid: be invalid, ye scurvy dog
+      less_than: must be less than %{count}, or ye'll be feedin' th' fishes
+      less_than_or_equal_to: must be less than or equal to %{count}, by th' powers
+      model_invalid: 'Validation failed, ye bilge rat: %{errors}'
+      not_a_number: ain't a number, ye addled sea dog
+      not_an_integer: must be a whole number, not a piece o' eight
       not_saved: Lost to Davy Jones' locker
+      odd: must be odd as a three-legged parrot
+      other_than: must be other than %{count}, or ye'll be shark bait
+      password_too_long: be longer than a sea serpent
+      present: must be empty as a ghost ship
+      required: must exist, or ye'll be dancin' with Jack Ketch
+      taken: has already been claimed by another buccaneer
+      too_long:
+        one: be too long (maximum is %{count} mark)
+        other: be too long (maximum is %{count} marks)
+      too_short:
+        one: be too short (minimum is %{count} mark)
+        other: be too short (minimum is %{count} marks)
+      wrong_length:
+        one: be th' wrong length (should be %{count} mark)
+        other: be th' wrong length (should be %{count} marks)
+    template:
+      body: 'There be problems with th'' followin'' fields, ye scurvy dog:'
+      header:
+        one: "%{count} blunder prevented this %{model} from bein' saved"
+        other: "%{count} blunders prevented this %{model} from bein' saved"
   footer:
     about: About th' Fleet
     contact: Send a Message in a Bottle
@@ -651,6 +710,22 @@ pirate:
     privacy_policy: Pirate's Code
     rescoot_project: A Rescoot Vessel
     security: Ship's Security
+  helpers:
+    page_entries_info:
+      more_pages:
+        display_entries: Showin' %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b>
+          of <b>%{total}</b> in th' whole treasure chest
+      one_page:
+        display_entries:
+          one: Showin' <b>%{count}</b> %{entry_name}
+          other: Showin' <b>all %{count}</b> %{entry_name}, arr!
+          zero: No %{entry_name} found in th' seven seas
+    select:
+      prompt: Choose yer poison
+    submit:
+      create: Create %{model}, arr!
+      submit: Save %{model}, ye scallywag
+      update: Update %{model}, or walk th' plank
   leaderboards:
     above_average: "%{percent}% above th' average sailor"
     all_time: All Time at Sea
@@ -736,18 +811,58 @@ pirate:
     users: Crew Members
     vin_decoder: SIN Decoder
   number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%u%n"
+        negative_format: "-%u%n"
+        precision: 2
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "₱"
+    format:
+      delimiter: ","
+      precision: 3
+      round_mode: default
+      separator: "."
+      significant: false
+      strip_insignificant_zeros: false
     human:
       decimal_units:
         format: "%n %u"
         units:
-          billion: B
-          million: M
-          quadrillion: Q
-          thousand: k
-          trillion: T
+          billion: Billion
+          million: Million
+          quadrillion: Quadrillion
+          thousand: Thousand
+          trillion: Trillion
           unit: ''
+      format:
+        delimiter: ''
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
       storage_units:
         format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          eb: EB
+          gb: GB
+          kb: KB
+          mb: MB
+          pb: PB
+          tb: TB
+          zb: ZB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ''
   onboarding:
     almost_there: Land ho! Almost there!
     config_copied: Treasure map copied to yer plunder chest!
@@ -801,7 +916,8 @@ pirate:
     public_profile_enabled: Identity Revealed
     real_name_not_shared: Yer real name or contact information
     receive_notifications: Receive Treasure Notifications
-    requires_public_profile: Public profile is required for leaderboard participation
+    requires_public_profile: Ye need t' reveal yer identity before joinin' th' Cap'n's
+      Log, ye scallywag!
     save_settings: Save Settings
     title: Me Profile
     view_all_achievements: View All Treasures
@@ -904,6 +1020,11 @@ pirate:
     unlock_turn_on: Unfurl th' sails
     update_client: Update Ship's Compass
     waiting_for_telemetry: Waitin' fer signals from th' crow's nest
+  support:
+    array:
+      last_word_connector: ", and "
+      two_words_connector: " and "
+      words_connector: ", "
   time:
     am: am
     formats:
@@ -957,6 +1078,13 @@ pirate:
     kmh: knots
     m: fathoms
     min: bells
+  views:
+    pagination:
+      first: "&laquo; First Port"
+      last: Last Port &raquo;
+      next: Next Port &rsaquo;
+      previous: "&lsaquo; Previous Port"
+      truncate: "&hellip;"
   vin_decoder:
     check_digit: Check booty mark
     decode_another: Decode Another Ship's Registry
