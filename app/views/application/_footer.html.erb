@@ -68,7 +68,7 @@
               <%= button_to locale_path, method: :post, params: { locale: "de_DE" }, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md border-0 bg-transparent" do %>
                 <%= t('common.german') %>
               <% end %>
-              <% if Rails.env.development? %>
+              <% if Rails.env.development? || current_user&.is_admin? %>
                 <%= button_to locale_path, method: :post, params: { locale: "pirate" }, class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md border-0 bg-transparent" do %>
                   <%= t('common.pirate') %>
                 <% end %>
