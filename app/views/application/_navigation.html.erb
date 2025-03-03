@@ -9,14 +9,14 @@
 
       <div class="hidden md:flex md:items-center md:space-x-2">
         <% if user_signed_in? %>
-          <%= link_to t('navigation.dashboard'), root_path, class: "nav-link nav-link-user" %>
-          <%= link_to t('navigation.scooters'), scooters_path, class: "nav-link nav-link-user" %>
-          <%= link_to t('navigation.trips'), trips_path, class: "nav-link nav-link-user" %>
+          <%= link_to t('navigation.dashboard'), dashboard_path, class: "nav-link nav-link-user #{current_page?(dashboard_path) ? 'nav-link-active' : ''}" %>
+          <%= link_to t('navigation.scooters'), scooters_path, class: "nav-link nav-link-user #{current_page?(scooters_path) ? 'nav-link-active' : ''}" %>
+          <%= link_to t('navigation.trips'), trips_path, class: "nav-link nav-link-user #{current_page?(trips_path) ? 'nav-link-active' : ''}" %>
           <% if current_user.feature_enabled?(FeatureFlag::LEADERBOARDS) %>
-            <%= link_to t('navigation.leaderboard'), leaderboards_path, class: "nav-link nav-link-user" %>
+            <%= link_to t('navigation.leaderboard'), leaderboards_path, class: "nav-link nav-link-user #{current_page?(leaderboards_path) ? 'nav-link-active' : ''}" %>
           <% end %>
           <% if current_user.feature_enabled?(FeatureFlag::ACHIEVEMENTS) %>
-            <%= link_to t('navigation.achievements'), achievements_path, class: "nav-link nav-link-user" %>
+            <%= link_to t('navigation.achievements'), achievements_path, class: "nav-link nav-link-user #{current_page?(achievements_path) ? 'nav-link-active' : ''}" %>
           <% end %>
         <% end %>
 
@@ -28,7 +28,7 @@
             </svg>
           </button>
           <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black/5 z-50">
-            <%= link_to t('navigation.vin_decoder'), vin_decoder_path, class: "block px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100" %>
+            <%= link_to t('navigation.vin_decoder'), vin_decoder_path, class: "block px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 #{current_page?(vin_decoder_path) ? 'bg-gray-100' : ''}" %>
           </div>
         </div>
 
@@ -55,8 +55,8 @@
               <svg data-dropdown-target="chevron" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black/5 z-50">
-              <%= link_to t('navigation.profile'), profile_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-md" %>
-              <%= link_to t('navigation.account_settings'), account_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+              <%= link_to t('navigation.profile'), profile_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-md #{current_page?(profile_path) ? 'bg-gray-100' : ''}" %>
+              <%= link_to t('navigation.account_settings'), account_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 #{current_page?(account_path) ? 'bg-gray-100' : ''}" %>
 
               <div class="border-t border-gray-100 my-1"></div>
 
@@ -81,7 +81,7 @@
             </div>
           </div>
         <% else %>
-          <%= link_to t('navigation.sign_in_register'), new_user_session_path, class: "nav-link nav-link-user" %>
+          <%= link_to t('navigation.sign_in_register'), new_user_session_path, class: "nav-link nav-link-user #{current_page?(new_user_session_path) ? 'nav-link-active' : ''}" %>
         <% end %>
       </div>
 
@@ -95,14 +95,14 @@
         <div data-mobile-menu-target="menu" class="hidden absolute left-0 right-0 top-16 bg-indigo-950 shadow-lg z-50">
           <div class="px-2 pt-2 pb-3 space-y-1">
             <% if user_signed_in? %>
-              <%= link_to t('navigation.dashboard'), root_path, class: "nav-link-mobile" %>
-              <%= link_to t('navigation.scooters'), scooters_path, class: "nav-link-mobile" %>
-              <%= link_to t('navigation.trips'), trips_path, class: "nav-link-mobile" %>
+              <%= link_to t('navigation.dashboard'), dashboard_path, class: "nav-link-mobile #{current_page?(dashboard_path) ? 'nav-link-active' : ''}" %>
+              <%= link_to t('navigation.scooters'), scooters_path, class: "nav-link-mobile #{current_page?(scooters_path) ? 'nav-link-active' : ''}" %>
+              <%= link_to t('navigation.trips'), trips_path, class: "nav-link-mobile #{current_page?(trips_path) ? 'nav-link-active' : ''}" %>
               <% if current_user.feature_enabled?(FeatureFlag::LEADERBOARDS) %>
-                <%= link_to t('navigation.leaderboard'), leaderboards_path, class: "nav-link-mobile" %>
+                <%= link_to t('navigation.leaderboard'), leaderboards_path, class: "nav-link-mobile #{current_page?(leaderboards_path) ? 'nav-link-active' : ''}" %>
               <% end %>
               <% if current_user.feature_enabled?(FeatureFlag::ACHIEVEMENTS) %>
-                <%= link_to t('navigation.achievements'), achievements_path, class: "nav-link-mobile" %>
+                <%= link_to t('navigation.achievements'), achievements_path, class: "nav-link-mobile #{current_page?(achievements_path) ? 'nav-link-active' : ''}" %>
               <% end %>
               <div class="border-t border-gray-700 my-2"></div>
             <% end %>
@@ -115,7 +115,7 @@
                 </svg>
               </button>
               <div data-dropdown-target="menu" class="hidden">
-                <%= link_to t('navigation.vin_decoder'), vin_decoder_path, class: "nav-link-mobile" %>
+                <%= link_to t('navigation.vin_decoder'), vin_decoder_path, class: "nav-link-mobile #{current_page?(vin_decoder_path) ? 'nav-link-active' : ''}" %>
               </div>
             </div>
 
@@ -144,8 +144,8 @@
                   </svg>
                 </button>
                 <div data-dropdown-target="menu" class="hidden">
-                  <%= link_to t('navigation.profile'), profile_path, class: "nav-link-mobile" %>
-                  <%= link_to t('navigation.account_settings'), account_path, class: "nav-link-mobile" %>
+                  <%= link_to t('navigation.profile'), profile_path, class: "nav-link-mobile #{current_page?(profile_path) ? 'nav-link-active' : ''}" %>
+                  <%= link_to t('navigation.account_settings'), account_path, class: "nav-link-mobile #{current_page?(account_path) ? 'nav-link-active' : ''}" %>
                   <%= button_to t('navigation.sign_out'), destroy_user_session_path, method: :delete, class: "nav-link-mobile w-full text-left" %>
                   <div class="border-t border-gray-700 my-2"></div>
                   <div class="flex flex-row space-x-2 mb-2">
@@ -164,7 +164,7 @@
                 </div>
               </div>
             <% else %>
-              <%= link_to t('navigation.sign_in_register'), new_user_session_path, class: "nav-link-mobile" %>
+              <%= link_to t('navigation.sign_in_register'), new_user_session_path, class: "nav-link-mobile #{current_page?(new_user_session_path) ? 'nav-link-active' : ''}" %>
             <% end %>
           </div>
         </div>
@@ -183,12 +183,12 @@
             <% end %>
           </div>
           <div class="hidden md:flex md:items-center md:space-x-2">
-            <%= link_to t('navigation.dashboard'), admin_root_path, class: "nav-link nav-link-admin" %>
-            <%= link_to t('navigation.users'), admin_users_path, class: "nav-link nav-link-admin" %>
-            <%= link_to t('navigation.feature_flags'), admin_feature_flags_path, class: "nav-link nav-link-admin" %>
-            <%= link_to t('navigation.scooters'), admin_scooters_path, class: "nav-link nav-link-admin" %>
-            <%= link_to t('navigation.events'), admin_events_path, class: "nav-link nav-link-admin" %>
-            <%= link_to t('navigation.trips'), admin_trips_path, class: "nav-link nav-link-admin" %>
+            <%= link_to t('navigation.dashboard'), admin_root_path, class: "nav-link nav-link-admin #{current_page?(admin_root_path) ? 'nav-link-admin-active' : ''}" %>
+            <%= link_to t('navigation.users'), admin_users_path, class: "nav-link nav-link-admin #{current_page?(admin_users_path) ? 'nav-link-admin-active' : ''}" %>
+            <%= link_to t('navigation.feature_flags'), admin_feature_flags_path, class: "nav-link nav-link-admin #{current_page?(admin_feature_flags_path) ? 'nav-link-admin-active' : ''}" %>
+            <%= link_to t('navigation.scooters'), admin_scooters_path, class: "nav-link nav-link-admin #{current_page?(admin_scooters_path) ? 'nav-link-admin-active' : ''}" %>
+            <%= link_to t('navigation.events'), admin_events_path, class: "nav-link nav-link-admin #{current_page?(admin_events_path) ? 'nav-link-admin-active' : ''}" %>
+            <%= link_to t('navigation.trips'), admin_trips_path, class: "nav-link nav-link-admin #{current_page?(admin_trips_path) ? 'nav-link-admin-active' : ''}" %>
 
             <div class="relative" data-controller="dropdown">
               <button data-action="click->dropdown#toggle" class="nav-link nav-link-admin inline-flex items-center gap-2">
@@ -198,8 +198,8 @@
                 </svg>
               </button>
               <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black/5 z-50">
-                <%= link_to t('navigation.radio_gaga'), admin_telemetries_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md" %>
-                <%= link_to t('navigation.unu_uplink'), admin_unu_uplink_requests_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md" %>
+                <%= link_to t('navigation.radio_gaga'), admin_telemetries_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md #{current_page?(admin_telemetries_path) ? 'bg-gray-100' : ''}" %>
+                <%= link_to t('navigation.unu_uplink'), admin_unu_uplink_requests_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md #{current_page?(admin_unu_uplink_requests_path) ? 'bg-gray-100' : ''}" %>
               </div>
             </div>
             <button data-action="admin-navbar#toggle" class="nav-link nav-link-admin ml-4">
@@ -218,12 +218,12 @@
 
             <div data-admin-navbar-target="mobileMenu" class="hidden absolute left-0 right-0 top-32 bg-teal-950 shadow-lg z-50">
               <div class="px-2 pt-2 pb-3 space-y-1">
-                <%= link_to t('navigation.dashboard'), admin_root_path, class: "nav-link-mobile-admin" %>
-                <%= link_to t('navigation.users'), admin_users_path, class: "nav-link-mobile-admin" %>
-                <%= link_to t('navigation.feature_flags'), admin_feature_flags_path, class: "nav-link-mobile-admin" %>
-                <%= link_to t('navigation.scooters'), admin_scooters_path, class: "nav-link-mobile-admin" %>
-                <%= link_to t('navigation.events'), admin_events_path, class: "nav-link-mobile-admin" %>
-                <%= link_to t('navigation.trips'), admin_trips_path, class: "nav-link-mobile-admin" %>
+                <%= link_to t('navigation.dashboard'), admin_root_path, class: "nav-link-mobile-admin #{current_page?(admin_root_path) ? 'nav-link-admin-active' : ''}" %>
+                <%= link_to t('navigation.users'), admin_users_path, class: "nav-link-mobile-admin #{current_page?(admin_users_path) ? 'nav-link-admin-active' : ''}" %>
+                <%= link_to t('navigation.feature_flags'), admin_feature_flags_path, class: "nav-link-mobile-admin #{current_page?(admin_feature_flags_path) ? 'nav-link-admin-active' : ''}" %>
+                <%= link_to t('navigation.scooters'), admin_scooters_path, class: "nav-link-mobile-admin #{current_page?(admin_scooters_path) ? 'nav-link-admin-active' : ''}" %>
+                <%= link_to t('navigation.events'), admin_events_path, class: "nav-link-mobile-admin #{current_page?(admin_events_path) ? 'nav-link-admin-active' : ''}" %>
+                <%= link_to t('navigation.trips'), admin_trips_path, class: "nav-link-mobile-admin #{current_page?(admin_trips_path) ? 'nav-link-admin-active' : ''}" %>
 
                 <div data-controller="dropdown">
                   <button data-action="click->dropdown#toggle" class="nav-link-mobile-admin w-full text-left flex items-center justify-between">
@@ -233,8 +233,8 @@
                     </svg>
                   </button>
                   <div data-dropdown-target="menu" class="hidden pl-4">
-                    <%= link_to t('navigation.radio_gaga'), admin_telemetries_path, class: "nav-link-mobile-admin" %>
-                    <%= link_to t('navigation.unu_uplink'), admin_unu_uplink_requests_path, class: "nav-link-mobile-admin" %>
+                    <%= link_to t('navigation.radio_gaga'), admin_telemetries_path, class: "nav-link-mobile-admin #{current_page?(admin_telemetries_path) ? 'nav-link-admin-active' : ''}" %>
+                    <%= link_to t('navigation.unu_uplink'), admin_unu_uplink_requests_path, class: "nav-link-mobile-admin #{current_page?(admin_unu_uplink_requests_path) ? 'nav-link-admin-active' : ''}" %>
                   </div>
                 </div>
               </div>

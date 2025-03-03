@@ -11,6 +11,16 @@
   @apply text-gray-300 hover:text-white rounded-md px-3 py-2 text-sm font-medium;
 }
 
+@utility nav-link-active {
+  /* Active navigation link styles */
+  @apply bg-indigo-700 text-white;
+}
+
+@utility nav-link-admin-active {
+  /* Active admin navigation link styles */
+  @apply bg-teal-700 text-white;
+}
+
 @utility nav-link-user {
   /* User navigation link styles */
   @apply hover:bg-indigo-900;
