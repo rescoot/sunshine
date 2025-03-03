@@ -1,14 +1,24 @@
 class LeaderboardService
   PERIODS = {
-    day: 1.day,
-    week: 1.week,
-    month: 1.month,
+    current_week: 1.week,
+    previous_week: 1.week,
+    current_month: 1.month,
+    previous_month: 1.month,
     all_time: nil
   }.freeze
 
+  # Cache keys
+  LEADERBOARD_CACHE_KEY = "leaderboard:%{period}:%{date}"
+  USER_POSITION_CACHE_KEY = "leaderboard:user:%{user_id}:%{period}:%{date}"
+  COMMUNITY_AVERAGES_CACHE_KEY = "leaderboard:community:%{period}:%{date}"
+
   # Returns leaderboard data for the specified period
-  def self.generate_leaderboard(period = :week, limit = 100)
-    date_range = date_range_for_period(period)
+  def self.generate_leaderboard(period = :week, limit = 100, date = Date.current)
+    # Use caching for leaderboard data
+    key = LEADERBOARD_CACHE_KEY % { period: period, date: date.to_s }
+
+    Rails.cache.fetch(key, expires_in: cache_expiry_for_period(period)) do
+      date_range = date_range_for_period(period, date)
 
     # Only include users who have opted in
     query = User.joins(:user_preference)
@@ -47,68 +57,79 @@ class LeaderboardService
                            .order("total_distance DESC")
                            .limit(limit)
 
-    # Format the data for display
-    leaderboard_data.map.with_index(1) do |entry, rank|
-      {
-        rank: rank,
-        user_id: entry.id,
-        display_name: entry.leaderboard_display_name,
-        distance_km: (entry.total_distance.to_f / 1000).round(1),
-        trip_count: entry.trip_count,
-        max_speed: entry.max_speed
-      }
+      # Format the data for display
+      leaderboard_data.map.with_index(1) do |entry, rank|
+        {
+          rank: rank,
+          user_id: entry.id,
+          display_name: entry.leaderboard_display_name,
+          distance_km: (entry.total_distance.to_f / 1000).round(1),
+          trip_count: entry.trip_count,
+          max_speed: entry.max_speed
+        }
+      end
     end
   end
 
   # Returns a user's position on the leaderboard
-  def self.user_position(user_id, period = :week)
-    leaderboard = generate_leaderboard(period, 1000) # Get a larger set to find position
+  def self.user_position(user_id, period = :week, date = Date.current)
+    # Use caching for user position data
+    key = USER_POSITION_CACHE_KEY % { user_id: user_id, period: period, date: date.to_s }
 
-    entry = leaderboard.find { |e| e[:user_id] == user_id }
-    return nil unless entry
+    Rails.cache.fetch(key, expires_in: cache_expiry_for_period(period)) do
+      leaderboard = generate_leaderboard(period, 1000, date) # Get a larger set to find position
 
-    {
-      rank: entry[:rank],
-      total_users: leaderboard.size,
-      percentile: ((entry[:rank].to_f / leaderboard.size) * 100).round(1),
-      distance_km: entry[:distance_km],
-      trip_count: entry[:trip_count]
-    }
+      entry = leaderboard.find { |e| e[:user_id] == user_id }
+      return nil unless entry
+
+      {
+        rank: entry[:rank],
+        total_users: leaderboard.size,
+        percentile: ((entry[:rank].to_f / leaderboard.size) * 100).round(1),
+        distance_km: entry[:distance_km],
+        trip_count: entry[:trip_count]
+      }
+    end
   end
 
   # Returns community average stats
-  def self.community_averages(period = :week)
-    date_range = date_range_for_period(period)
+  def self.community_averages(period = :week, date = Date.current)
+    # Use caching for community averages data
+    key = COMMUNITY_AVERAGES_CACHE_KEY % { period: period, date: date.to_s }
 
-    # Get global averages from opted-in users
-    global_trips = Trip.joins(user: :user_preference)
-                     .where(user_preferences: { leaderboard_opt_in: true })
-    global_trips = global_trips.where(started_at: date_range) if date_range
-    global_trips = global_trips.where.not(ended_at: nil)
+    Rails.cache.fetch(key, expires_in: cache_expiry_for_period(period)) do
+      date_range = date_range_for_period(period, date)
 
-    global_avg_distance = global_trips.average(:distance).to_f / 1000
-    global_avg_trip_count = global_trips.count.to_f / User.joins(:user_preference)
-                                                        .where(user_preferences: { leaderboard_opt_in: true })
-                                                        .count
+      # Get global averages from opted-in users
+      global_trips = Trip.joins(user: :user_preference)
+                       .where(user_preferences: { leaderboard_opt_in: true })
+      global_trips = global_trips.where(started_at: date_range) if date_range
+      global_trips = global_trips.where.not(ended_at: nil)
 
-    # Get global telemetry data for average speed calculation
-    global_telemetry = Telemetry.joins(scooter: { trips: { user: :user_preference } })
-                               .where(user_preferences: { leaderboard_opt_in: true })
-                               .where.not(trips: { ended_at: nil })
-    global_telemetry = global_telemetry.where("telemetries.created_at BETWEEN trips.started_at AND trips.ended_at")
-    global_telemetry = global_telemetry.where(trips: { started_at: date_range }) if date_range
-    global_avg_speed = global_telemetry.average(:speed).to_f.round(1)
+      global_avg_distance = global_trips.average(:distance).to_f / 1000
+      global_avg_trip_count = global_trips.count.to_f / User.joins(:user_preference)
+                                                          .where(user_preferences: { leaderboard_opt_in: true })
+                                                          .count
 
-    {
-      distance_km: global_avg_distance.round(1),
-      trip_count: global_avg_trip_count.round(1),
-      avg_speed: global_avg_speed
-    }
+      # Get global telemetry data for average speed calculation
+      global_telemetry = Telemetry.joins(scooter: { trips: { user: :user_preference } })
+                                 .where(user_preferences: { leaderboard_opt_in: true })
+                                 .where.not(trips: { ended_at: nil })
+      global_telemetry = global_telemetry.where("telemetries.created_at BETWEEN trips.started_at AND trips.ended_at")
+      global_telemetry = global_telemetry.where(trips: { started_at: date_range }) if date_range
+      global_avg_speed = global_telemetry.average(:speed).to_f.round(1)
+
+      {
+        distance_km: global_avg_distance.round(1),
+        trip_count: global_avg_trip_count.round(1),
+        avg_speed: global_avg_speed
+      }
+    end
   end
 
   # Returns stats comparing the user to others
-  def self.user_comparison(user_id, period = :week)
-    date_range = date_range_for_period(period)
+  def self.user_comparison(user_id, period = :week, date = Date.current)
+    date_range = date_range_for_period(period, date)
 
     # Get user's data
     user_trips = Trip.where(user_id: user_id)
@@ -127,7 +148,7 @@ class LeaderboardService
     user_avg_speed = user_telemetry.average(:speed).to_f.round(1)
 
     # Get community averages
-    global_average = community_averages(period)
+    global_average = community_averages(period, date)
 
     {
       user: {
@@ -146,18 +167,29 @@ class LeaderboardService
 
   private
 
-  def self.date_range_for_period(period)
+  def self.date_range_for_period(period, date = Date.current)
     case period.to_sym
-    when :day
-      Time.current.beginning_of_day..Time.current.end_of_day
-    when :week
-      Time.current.beginning_of_week..Time.current.end_of_week
-    when :month
-      Time.current.beginning_of_month..Time.current.end_of_month
+    when :current_week, :previous_week
+      date.beginning_of_week..date.end_of_week
+    when :current_month, :previous_month
+      date.beginning_of_month..date.end_of_month
     when :all_time
       nil
     else
-      Time.current.beginning_of_week..Time.current.end_of_week
+      date.beginning_of_week..date.end_of_week
+    end
+  end
+
+  def self.cache_expiry_for_period(period)
+    case period
+    when :current_week, :previous_week
+      6.hours
+    when :current_month, :previous_month
+      1.day
+    when :all_time
+      1.day
+    else
+      6.hours
     end
   end
 end

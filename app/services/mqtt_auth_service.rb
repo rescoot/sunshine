@@ -164,6 +164,7 @@ class MqttAuthService
       textdescription: "Radio Gaga client for #{scooter.vin}",
       roles: [ { rolename: "scooter", priority: 0 } ]
     })
+    Rails.logger.debug(response)
 
     response["response"] == "success"
   end

@@ -10,17 +10,36 @@
   <% end %>
   <div class="mt-4 sm:ml-auto sm:mt-0">
     <div class="period-selector flex space-x-2">
-      <%= link_to t('leaderboards.day'), leaderboards_path(period: :day), 
-          class: "#{@period == :day ? 'btn-primary' : 'btn-secondary'}" %>
-      <%= link_to t('leaderboards.week'), leaderboards_path(period: :week), 
-          class: "#{@period == :week ? 'btn-primary' : 'btn-secondary'}" %>
-      <%= link_to t('leaderboards.month'), leaderboards_path(period: :month), 
-          class: "#{@period == :month ? 'btn-primary' : 'btn-secondary'}" %>
+      <%= link_to t('leaderboards.current_week'), leaderboards_path(period: :current_week), 
+          class: "#{@period == :current_week ? 'btn-primary' : 'btn-secondary'}" %>
+      <%= link_to t('leaderboards.previous_week'), leaderboards_path(period: :previous_week), 
+          class: "#{@period == :previous_week ? 'btn-primary' : 'btn-secondary'}" %>
+      <%= link_to t('leaderboards.current_month'), leaderboards_path(period: :current_month), 
+          class: "#{@period == :current_month ? 'btn-primary' : 'btn-secondary'}" %>
+      <%= link_to t('leaderboards.previous_month'), leaderboards_path(period: :previous_month), 
+          class: "#{@period == :previous_month ? 'btn-primary' : 'btn-secondary'}" %>
       <%= link_to t('leaderboards.all_time'), leaderboards_path(period: :all_time), 
           class: "#{@period == :all_time ? 'btn-primary' : 'btn-secondary'}" %>
     </div>
   </div>
 </div>
+
+<% if @period != :all_time %>
+  <div class="mt-6 mb-6">
+    <h2 class="text-xl font-semibold text-center text-gray-800">
+      <% case @period %>
+      <% when :current_week %>
+        <%= t('leaderboards.week_of', date: Date.current.beginning_of_week.strftime("%B %d, %Y")) %>
+      <% when :previous_week %>
+        <%= t('leaderboards.week_of', date: 1.week.ago.beginning_of_week.strftime("%B %d, %Y")) %>
+      <% when :current_month %>
+        <%= t('leaderboards.month_of', date: Date.current.strftime("%B %Y")) %>
+      <% when :previous_month %>
+        <%= t('leaderboards.month_of', date: 1.month.ago.strftime("%B %Y")) %>
+      <% end %>
+    </h2>
+  </div>
+<% end %>
 
 <div class="mt-8">
   <% # Community Stats (and Your Stats if participating) %>

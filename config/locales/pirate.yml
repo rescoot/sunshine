@@ -8,8 +8,7 @@ pirate:
     discovered_time_ago: Discovered %{time_ago} ago
     earned_time_ago: Plundered %{time_ago} ago
     is: be
-    keep_exploring: Keep explorin' th' seven seas! There %{is_are} %{count} secret
-      %{achievement_s} waitin' t' be discovered...
+    keep_exploring: Keep explorin' th' seven seas! There %{is_are} %{count} secret %{achievement_s} waitin' t' be discovered...
     next_to_earn: Next Treasures t' Plunder
     none_yet: No Treasures Yet
     points: doubloons
@@ -23,10 +22,8 @@ pirate:
       messages:
         record_invalid: 'Ye failed th'' validation, ye scurvy dog: %{errors}'
         restrict_dependent_destroy:
-          has_many: Can't send to Davy Jones because dependent %{record} still sail
-            th' seas
-          has_one: Can't send to Davy Jones because a dependent %{record} still sails
-            th' seas
+          has_many: Can't send to Davy Jones because dependent %{record} still sail th' seas
+          has_one: Can't send to Davy Jones because a dependent %{record} still sails th' seas
   admin:
     dashboard:
       description: Overview o' th' fleet statistics and recent activity, arr!
@@ -69,14 +66,12 @@ pirate:
       form:
         cancel: Abandon
         default_enabled: Default Hoisted
-        default_enabled_description: If checked, this flag will be hoisted by default
-          for all sailors unless explicitly lowered.
+        default_enabled_description: If checked, this flag will be hoisted by default for all sailors unless explicitly lowered.
         description: Description
         error: Blunder
         error_count: blunder
         key: Secret Key
-        key_description: Unique identifier for this ship's flag (e.g., "leaderboards",
-          "treasures")
+        key_description: Unique identifier for this ship's flag (e.g., "leaderboards", "treasures")
         name: Flag Name
         prohibited_saving: prevented this ship's flag from bein' saved
         submit: Save Ship's Flag
@@ -123,8 +118,7 @@ pirate:
         ago: ago
         color: Colors
         delete: Sink
-        delete_confirm: Are ye sure? This will send all related treasures to Davy
-          Jones' locker!
+        delete_confirm: Are ye sure? This will send all related treasures to Davy Jones' locker!
         description: A list of all vessels in th' seven seas.
         edit: Modify
         imei: IMEI
@@ -346,12 +340,9 @@ pirate:
         danger_zone: Plank-Walkin' Zone
         default: Default
         delete_button: Walk th' Plank
-        delete_confirmation: Are ye sure ye want this sailor to walk th' plank? This
-          action cannot be undone and will send all their belongings to Davy Jones'
-          locker.
+        delete_confirmation: Are ye sure ye want this sailor to walk th' plank? This action cannot be undone and will send all their belongings to Davy Jones' locker.
         delete_user: Make this sailor walk th' plank
-        delete_warning: Once a sailor walks th' plank, there be no comin' back. Be
-          ye certain, Cap'n?
+        delete_warning: Once a sailor walks th' plank, there be no comin' back. Be ye certain, Cap'n?
         description: Description
         disabled: Lowered
         enabled: Hoisted
@@ -370,8 +361,7 @@ pirate:
         admin_label: Admiral
         ago: ago
         delete: Walk th' Plank
-        delete_confirm: Are ye sure ye want this sailor to walk th' plank? This action
-          cannot be undone and will send all their belongings to Davy Jones' locker.
+        delete_confirm: Are ye sure ye want this sailor to walk th' plank? This action cannot be undone and will send all their belongings to Davy Jones' locker.
         description: A list of all sailors in th' fleet.
         edit: Edit
         email: Message in a Bottle
@@ -429,25 +419,21 @@ pirate:
     distance: Distance
     download_telemetry: Download and set up th' navigation device on yer vessel
     duration: Duration
-    get_started: 'Get started by registerin'' yer first vessel. Here''s how it works,
-      arr:'
+    get_started: 'Get started by registerin'' yer first vessel. Here''s how it works, arr:'
     overview: Overview o' yer fleet and sailin' statistics, arr!
     ready_to_ride: Ready t' Set Sail!
     recent_trips: Recent Voyages
-    register_scooter: Register yer vessel usin' its registry number (found on th'
-      back left o' yer vessel's frame, on a riveted plaque)
+    register_scooter: Register yer vessel usin' its registry number (found on th' back left o' yer vessel's frame, on a riveted plaque)
     scooter: Vessel
     scooters_registered:
       one: 'Ye have 1 vessel in yer fleet. Voyages be automatically tracked when:'
-      other: 'Ye have %{count} vessels in yer fleet. Voyages be automatically tracked
-        when:'
+      other: 'Ye have %{count} vessels in yer fleet. Voyages be automatically tracked when:'
     start_tracking: Start trackin' yer voyages and monitorin' yer vessel's status
     status: Sailin' Status
     title: Cap'n's Quarters
     total_distance: Total Distance
     total_trips: Total Voyages
-    trip_data_logged: All voyage data includin' distance, duration, and route be logged
-      in th' cap'n's log
+    trip_data_logged: All voyage data includin' distance, duration, and route be logged in th' cap'n's log
     trip_ends: Th' voyage ends when yer vessel drops anchor or enters port
     trip_starts: A voyage starts when yer vessel unfurls its sails
     trip_stats: Voyage Stats
@@ -464,7 +450,9 @@ pirate:
     - Fri
     - Sat
     abbr_month_names:
-    -
+
+    
+    - 
     - Jan
     - Feb
     - Mar
@@ -490,7 +478,9 @@ pirate:
       long: "%B %d, %Y"
       short: "%b %d"
     month_names:
-    -
+
+    
+    - 
     - January
     - February
     - March
@@ -559,15 +549,12 @@ pirate:
   devise:
     otp:
       credentials_refresh:
-        explain: To make sure this be secure, enter yer secret password again, ye
-          scurvy dog!
+        explain: To make sure this be secure, enter yer secret password again, ye scurvy dog!
         go_on: Proceed, matey...
         title: Enter yer secret password again, arr!
       edit_otp_token:
         confirmation_code: Verification Mark
-        explain: Two-Factor Authentication adds another layer o' security to yer treasure
-          chest. When boardin' yer ship, ye'll need a special code from yer trusted
-          device, like yer pocket parrot.
+        explain: Two-Factor Authentication adds another layer o' security to yer treasure chest. When boardin' yer ship, ye'll need a special code from yer trusted device, like yer pocket parrot.
         lead_in: 'To Enable Two-Factor Authentication, ye scallywag:'
         step_1: '1. Open yer authenticator app and scan th'' treasure map below:'
         step_2: '2. Enter th'' 6-digit secret code shown in yer authenticator app:'
@@ -582,19 +569,15 @@ pirate:
           code: Backup Treasure Key
           codes_list: Here be th' list o' yer backup treasure keys
           download_codes: Download backup treasure keys
-          explain: Take note or print these backup keys. They'll let ye back aboard
-            if yer token device be lost at sea, plundered, or otherwise unavailable.
+          explain: Take note or print these backup keys. They'll let ye back aboard if yer token device be lost at sea, plundered, or otherwise unavailable.
           sequence: Order
           title: Yer Emergency Backup Treasure Keys
-        reset_explain: Resettin' yer token secret will temporarily disable Two-Factor
-          Authentication.
-        reset_explain_warn: To re-enable Two-Factor Authentication, ye'll need to
-          register yer mobile device with th' new token secret.
+        reset_explain: Resettin' yer token secret will temporarily disable Two-Factor Authentication.
+        reset_explain_warn: To re-enable Two-Factor Authentication, ye'll need to register yer mobile device with th' new token secret.
         reset_link: Reset Token Secret
         title: 'Two-Factor Authentication, Arr:'
       submit_token:
-        explain: Ye be seein' this because ye enabled Two-Factor Authentication on
-          yer account, ye wise sailor!
+        explain: Ye be seein' this because ye enabled Two-Factor Authentication on yer account, ye wise sailor!
         prompt: 'Enter yer Two-Factor Authentication token, or walk th'' plank:'
         recovery_link: Me device be lost at sea! I need to use a backup treasure key!
         recovery_prompt: 'Enter yer backup treasure key:'
@@ -606,8 +589,7 @@ pirate:
       trusted_browsers:
         browser_not_trusted: This vessel ain't trusted.
         browser_trusted: This vessel be trusted.
-        explain: If ye mark this vessel as trusted, ye won't need to provide a Two-Factor
-          Authentication token when boardin' from this vessel.
+        explain: If ye mark this vessel as trusted, ye won't need to provide a Two-Factor Authentication token when boardin' from this vessel.
         title: Trusted Vessels
         trust_add: Trust this vessel
         trust_clear: Clear th' list o' trusted vessels
@@ -625,11 +607,9 @@ pirate:
       create_account: Join th' Pirate Crew
       edit_resource: Edit %{resource}'s Manifest
       leave_blank: "(leave empty if ye don't want t' change it, ye scallywag)"
-      need_current_password: "(we need yer current key t' confirm yer changes, or
-        ye'll walk th' plank)"
+      need_current_password: "(we need yer current key t' confirm yer changes, or ye'll walk th' plank)"
       sign_up: Sign th' Articles
-      unhappy_message: Unhappy with th' voyage? Ye can abandon ship below, but beware
-        o' sharks!
+      unhappy_message: Unhappy with th' voyage? Ye can abandon ship below, but beware o' sharks!
       update: Update Ship's Log
       waiting_confirmation: 'Waitin'' for th'' captain''s approval for:'
     sessions:
@@ -667,8 +647,7 @@ pirate:
       even: must be even as th' horizon
       exclusion: be reserved for th' cap'n
       greater_than: must be greater than %{count}, ye lily-livered landlubber
-      greater_than_or_equal_to: must be greater than or equal to %{count}, or walk
-        th' plank
+      greater_than_or_equal_to: must be greater than or equal to %{count}, or walk th' plank
       in: must be in %{count}, or ye'll be keelhauled
       inclusion: ain't on th' ship's manifest
       invalid: be invalid, ye scurvy dog
@@ -713,8 +692,7 @@ pirate:
   helpers:
     page_entries_info:
       more_pages:
-        display_entries: Showin' %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b>
-          of <b>%{total}</b> in th' whole treasure chest
+        display_entries: Showin' %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in th' whole treasure chest
       one_page:
         display_entries:
           one: Showin' <b>%{count}</b> %{entry_name}
@@ -736,12 +714,16 @@ pirate:
     below_average: "%{percent}% below th' average sailor"
     community_average: Crew's average booty
     community_averages: Crew Averages
-    day: Day
+    current_week: Current Week at Sea
+    previous_week: Previous Week at Sea
+    current_month: Current Moon
+    previous_month: Previous Moon
+    week_of: Week o' %{date}
+    month_of: Moon o' %{date}
     description: Compare yer sailin' stats with other vessel captains, arr!
     display_name: Pirate Name
     display_name_description: This be th' name that will show in th' cap'n's log.
-    display_name_visible: Yer pirate name (not yer real name or message-in-a-bottle
-      address)
+    display_name_visible: Yer pirate name (not yer real name or message-in-a-bottle address)
     distance: Distance
     distance_visible: Total distance sailed
     enable_public_profile: Make Yerself Known
@@ -751,17 +733,14 @@ pirate:
     location_not_shared: Yer location data or voyage routes
     max_speed: Top Speed
     max_speed_visible: Top speed achieved
-    month: Moon
     no_data: No cap'n's log data available for this time.
     no_trips_in_period: Ye haven't completed any voyages during this time, ye landlubber!
     not_shared: 'We don''t share with other pirates:'
     notifications_description: Get notified when ye find new treasures.
     of_riders: of %{total_users} seafarers
-    opt_in_description: Sign up for th' cap'n's log t' compare yer sailin' stats with
-      other vessel captains.
+    opt_in_description: Sign up for th' cap'n's log t' compare yer sailin' stats with other vessel captains.
     opt_in_now: Sign Up Now
-    opt_out_anytime: Ye can leave th' cap'n's log at any time by uncheckin' th' participation
-      option above.
+    opt_out_anytime: Ye can leave th' cap'n's log at any time by uncheckin' th' participation option above.
     participate: Join th' Cap'n's Log
     personal_info_not_shared: Any personal information about ye or yer vessel
     privacy_information: Pirate's Privacy Code
@@ -775,15 +754,12 @@ pirate:
     settings: Ship's Settings
     settings_title: Cap'n's Log Settings
     sign_in_to_join: Board yer ship to join th' leaderboard and track yer voyages.
-    stats_visible: Yer sailin' stats will be visible t' other seafarers in th' cap'n's
-      log.
+    stats_visible: Yer sailin' stats will be visible t' other seafarers in th' cap'n's log.
     title: Cap'n's Log
     top_riders: Top Seafarers
     trips: Voyages
     trips_visible: Number o' voyages completed
-    visible_information: 'When ye join th'' cap''n''s log, th'' followin'' information
-      will be visible t'' other seafarers:'
-    week: Week
+    visible_information: 'When ye join th'' cap''n''s log, th'' followin'' information will be visible t'' other seafarers:'
     you: Ye
     your_rank: Yer Rank
     your_stats: Yer Sailin' Record
@@ -871,10 +847,8 @@ pirate:
     config_file: Navigation Chart (radio-gaga.yml)
     download_config: Download Treasure Map
     go_to_dashboard: To th' Cap'n's Quarters
-    scooter_registered: Yer vessel %{name} be registered in th' fleet. Here be yer
-      map for th' crow's nest setup.
-    token_warning: This map contains yer secret treasure code which will only be shown
-      once. Make sure t' save it now, or walk th' plank!
+    scooter_registered: Yer vessel %{name} be registered in th' fleet. Here be yer map for th' crow's nest setup.
+    token_warning: This map contains yer secret treasure code which will only be shown once. Make sure t' save it now, or walk th' plank!
   profiles:
     achievements: Treasures
     achievements_visible: Yer plundered treasures
@@ -882,17 +856,14 @@ pirate:
     back_to_profile: Back to Me Profile
     community_member: Crew Member
     community_name: Pirate Name
-    community_name_description: This be th' name that will show on yer public profile
-      and th' cap'n's log.
+    community_name_description: This be th' name that will show on yer public profile and th' cap'n's log.
     copy_link: Copy treasure map to yer clipboard
     description: View and manage yer public sailor settings.
-    display_name_visible: Yer pirate name (not yer real name or message-in-a-bottle
-      address)
+    display_name_visible: Yer pirate name (not yer real name or message-in-a-bottle address)
     edit_description: Manage yer public profile and cap'n's log settings.
     edit_profile: Edit Sailor Profile
     edit_title: Edit Sailor Profile
-    enable_leaderboard_prompt: Join th' cap'n's log to compare yer stats with other
-      seafarers.
+    enable_leaderboard_prompt: Join th' cap'n's log to compare yer stats with other seafarers.
     enable_profile_prompt: Make yerself known to share yer treasures with th' crew.
     enable_public_profile: Make Yerself Known
     fix_errors: 'Fix these errors, ye scallywag:'
@@ -919,13 +890,11 @@ pirate:
     public_profile_enabled: Identity Revealed
     real_name_not_shared: Yer real name or contact information
     receive_notifications: Receive Treasure Notifications
-    requires_public_profile: Ye need t' reveal yer identity before joinin' th' Cap'n's
-      Log, ye scallywag!
+    requires_public_profile: Ye need t' reveal yer identity before joinin' th' Cap'n's Log, ye scallywag!
     save_settings: Save Settings
     title: Me Profile
     view_all_achievements: View All Treasures
-    visible_information: 'When ye make yerself known, th'' followin'' information
-      will be visible to other scallywags:'
+    visible_information: 'When ye make yerself known, th'' followin'' information will be visible to other scallywags:'
     your_public_link: Yer public treasure map
   scooters:
     add_scooter: Add Vessel
@@ -937,8 +906,7 @@ pirate:
     back: Back t' Port
     battery_status: Sail Power Status
     cb_battery: Crow's Nest Power
-    config_setup: Yer map (radio-gaga.yml) be properly set up with th' correct registry
-      and treasure map token
+    config_setup: Yer map (radio-gaga.yml) be properly set up with th' correct registry and treasure map token
     confirm_alarm: Really sound th' alarm bell, matey?
     confirm_update: Start compass update, are ye sure?
     details_and_controls: Vessel details and controls, shiver me timbers!
@@ -988,8 +956,7 @@ pirate:
     redis_commands: Sea Witch Commands
     request_telemetry: Request Crow's Nest Report
     right_signal: Starboard Lantern
-    scooter_list_description: A list o' all yer registered vessels and their current
-      status, arr!
+    scooter_list_description: A list o' all yer registered vessels and their current status, arr!
     seatbox: Treasure chest %{status}
     secondary_battery: Secondary Sail
     service_status: Crew Status
@@ -1015,8 +982,7 @@ pirate:
       unknown: unknown
       vin_with_value: 'Ship''s Number: %{vin}'
     system_uptime: Ship's Voyage Time
-    telemetry_instructions: 'Yer vessel hasn''t sent any signals yet. Make sure, ye
-      scurvy dog:'
+    telemetry_instructions: 'Yer vessel hasn''t sent any signals yet. Make sure, ye scurvy dog:'
     telemetry_running: Th' crow's nest service be runnin' on yer vessel
     turn_off_lock: Drop anchor
     turn_off_signals: Douse th' Lanterns
@@ -1097,13 +1063,11 @@ pirate:
     description: Decode yer trusty steed's Vehicle Identification Code, ye scallywag!
     details_meaning: What do these details mean, ye scurvy dog?
     enter_vin: Scrawl yer Vessel Identification Number (VIN), ye landlubber!
-    example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW
-      motor, sails at max 45 knots, forged in the year 2021'
+    example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW motor, sails at max 45 knots, forged in the year 2021'
     example_vin: e.g. WUNU2S3A6KZ000001
     format_description: 'The unu Vessel 2.x Registry follows this format:'
     format_title: unu Vessel 2.x Registry Format
-    invalid_vin_alert: Avast! Ye must enter a proper 17-character VIN startin' with
-      WUN, or walk the plank!
+    invalid_vin_alert: Avast! Ye must enter a proper 17-character VIN startin' with WUN, or walk the plank!
     manufacturer: Shipbuilder
     manufacturer_code: Shipbuilder Code (unu GmbH)
     manufacturer_desc: Confirms the vessel was built by unu GmbH shipyard.
@@ -1123,8 +1087,7 @@ pirate:
     plant_zhuhai: Z = Zhuhai, China
     position_breakdown: Position Breakdown
     possible_values: Possible Values
-    result_example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span>
-      = 4kW engine, max 45 knots, built in 2021'
+    result_example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW engine, max 45 knots, built in 2021'
     results_title: Ship's Registry Decoder Results
     serial_number: Mark o' the beast (Serial number)
     serial_number_desc: The unique identifier for this particular vessel.
@@ -1141,13 +1104,10 @@ pirate:
     vehicle_type_desc: Indicates the technical classification of the vessel.
     version: Vessel speed class (A = max 25 knots, B = max 45 knots)
     version_desc: Indicates the maximum speed capability of the vessel.
-    vin_explanation: A Vessel Identification Number (VIN) be a 17-mark code to single
-      out each mighty steed on the high seas. For unu scooters, the VIN spills the
-      secrets o' the model, birth year, an' other treasures.
+    vin_explanation: A Vessel Identification Number (VIN) be a 17-mark code to single out each mighty steed on the high seas. For unu scooters, the VIN spills the secrets o' the model, birth year, an' other treasures.
     vin_format_intro: The unu Scooter 2.x VIN be followin' this grand map:'
     vin_format_title: unu Scooter 2.x VIN Chart
-    vin_requirements: Yer VIN must be 17 marks long an' start with WUN, else ye be
-      marooned! Try it with WUNU2S3A6KZ000001.
+    vin_requirements: Yer VIN must be 17 marks long an' start with WUN, else ye be marooned! Try it with WUNU2S3A6KZ000001.
     what_is_vin: What be this VIN ye speak of?
     year: Year
     year_2017_2019: H = 2017, J = 2018, K = 2019
@@ -1155,6 +1115,5 @@ pirate:
     year_2023_2025: P = 2023, R = 2024, S = 2025
     year_and_so_on: And so on, ye scallywag...
     year_desc: The model year in which the vessel was built.
-    year_of_manufacture: Year o' the makin' (K = 2019, L = 2020, M = 2021, an' so
-      on, matey!)
+    year_of_manufacture: Year o' the makin' (K = 2019, L = 2020, M = 2021, an' so on, matey!)
     year_z: Year (Z)

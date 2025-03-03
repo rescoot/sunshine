@@ -4,21 +4,17 @@ de_DE:
     achievement: Achievement
     achievements: Achievements
     are: gibt
-    description: Verfolge deinen Fortschritt und erreiche Achievements während du
-      fährst.
+    description: Verfolge deinen Fortschritt und erreiche Achievements während du fährst.
     discovered_time_ago: Vor %{time_ago} entdeckt
     earned_time_ago: Vor %{time_ago} erreicht
     is: gibt
-    keep_exploring: Erkunde weiter! Es %{is_are} noch %{count} geheime %{achievement_s}
-      zu entdecken...
+    keep_exploring: Erkunde weiter! Es %{is_are} noch %{count} geheime %{achievement_s} zu entdecken...
     next_to_earn: Nächste zu erreichende Achievements
     none_yet: Noch keine Achievements
     points: Punkte
     secret_achievements: Geheime Achievements
-    secret_waiting: Es gibt auch geheime Achievements, die darauf warten, entdeckt
-      zu werden...
-    start_riding: Beginne mit deinem Roller zu fahren, um Achievements zu erzielen
-      und Punkte zu sammeln!
+    secret_waiting: Es gibt auch geheime Achievements, die darauf warten, entdeckt zu werden...
+    start_riding: Beginne mit deinem Roller zu fahren, um Achievements zu erzielen und Punkte zu sammeln!
     what_you_can_earn: 'Hier ist, was du verdienen kannst:'
     your_achievements: Deine Achievements
   activerecord:
@@ -27,8 +23,7 @@ de_DE:
         record_invalid: 'Gültigkeitsprüfung ist fehlgeschlagen: %{errors}'
         restrict_dependent_destroy:
           has_many: Datensatz kann nicht gelöscht werden, da abhängige %{record} existieren.
-          has_one: Datensatz kann nicht gelöscht werden, da ein abhängiger %{record}-Datensatz
-            existiert.
+          has_one: Datensatz kann nicht gelöscht werden, da ein abhängiger %{record}-Datensatz existiert.
   admin:
     dashboard:
       description: Überblick über Systemstatistiken und aktuelle Aktivitäten.
@@ -71,14 +66,12 @@ de_DE:
       form:
         cancel: Abbrechen
         default_enabled: Standardmäßig aktiviert
-        default_enabled_description: Wenn aktiviert, wird dieses Feature standardmäßig
-          für alle Benutzer aktiviert, sofern nicht explizit deaktiviert.
+        default_enabled_description: Wenn aktiviert, wird dieses Feature standardmäßig für alle Benutzer aktiviert, sofern nicht explizit deaktiviert.
         description: Beschreibung
         error: Fehler
         error_count: Fehler
         key: Schlüssel
-        key_description: Eindeutiger Bezeichner für dieses Feature-Flag (z.B. "leaderboards",
-          "achievements")
+        key_description: Eindeutiger Bezeichner für dieses Feature-Flag (z.B. "leaderboards", "achievements")
         name: Name
         prohibited_saving: verhinderte das Speichern dieses Feature-Flags
         submit: Feature-Flag speichern
@@ -113,8 +106,7 @@ de_DE:
         key: Schlüssel
         manage: Verwalten
         name: Name
-        no_custom_config: Keine Benutzer haben eine benutzerdefinierte Konfiguration
-          für dieses Feature-Flag.
+        no_custom_config: Keine Benutzer haben eine benutzerdefinierte Konfiguration für dieses Feature-Flag.
         status: Status
         title: Feature-Flag-Details
         user: Benutzer
@@ -348,18 +340,14 @@ de_DE:
         danger_zone: Gefahrenbereich
         default: Standard
         delete_button: Benutzer löschen
-        delete_confirmation: Sind Sie sicher, dass Sie diesen Benutzer löschen möchten?
-          Diese Aktion kann nicht rückgängig gemacht werden und entfernt alle zugehörigen
-          Daten.
+        delete_confirmation: Sind Sie sicher, dass Sie diesen Benutzer löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden und entfernt alle zugehörigen Daten.
         delete_user: Diesen Benutzer löschen
-        delete_warning: Sobald Sie einen Benutzer löschen, gibt es kein Zurück mehr.
-          Bitte seien Sie sicher.
+        delete_warning: Sobald Sie einen Benutzer löschen, gibt es kein Zurück mehr. Bitte seien Sie sicher.
         description: Beschreibung
         disabled: Deaktiviert
         enabled: Aktiviert
         feature_flags: Feature-Flags
-        feature_flags_description: Feature-Flag-Einstellungen für diesen Benutzer
-          verwalten.
+        feature_flags_description: Feature-Flag-Einstellungen für diesen Benutzer verwalten.
         key: Schlüssel
         name: Name
         save_feature_flags: Feature-Flag-Einstellungen speichern
@@ -373,9 +361,7 @@ de_DE:
         admin_label: Admin
         ago: her
         delete: Löschen
-        delete_confirm: Sind Sie sicher, dass Sie diesen Benutzer löschen möchten?
-          Diese Aktion kann nicht rückgängig gemacht werden und entfernt alle zugehörigen
-          Daten.
+        delete_confirm: Sind Sie sicher, dass Sie diesen Benutzer löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden und entfernt alle zugehörigen Daten.
         description: Eine Liste aller Benutzer im System.
         edit: Bearbeiten
         email: E-Mail
@@ -431,30 +417,24 @@ de_DE:
     avg_trip_distance: Durchschnittliche Fahrtdistanz
     date: Datum
     distance: Distanz
-    download_telemetry: Lade den Telemetrie-Client herunter und richte ihn auf deinem
-      Roller ein
+    download_telemetry: Lade den Telemetrie-Client herunter und richte ihn auf deinem Roller ein
     duration: Dauer
     get_started: 'Beginne damit, deinen ersten Roller zu registrieren. So funktioniert''s:'
     overview: Überblick über deine Roller und Fahrstatistiken.
     ready_to_ride: Bereit zur Fahrt!
     recent_trips: Letzte Fahrten
-    register_scooter: Registriere deinen Roller mit seiner VIN (zu finden auf der
-      hinteren linken Seite des Rollerrahmens, auf einer vernieteten Plakette)
+    register_scooter: Registriere deinen Roller mit seiner VIN (zu finden auf der hinteren linken Seite des Rollerrahmens, auf einer vernieteten Plakette)
     scooter: Roller
     scooters_registered:
       one: 'Du hast 1 Roller registriert. Fahrten werden automatisch erfasst, wenn:'
-      other: 'Du hast %{count} Roller registriert. Fahrten werden automatisch erfasst,
-        wenn:'
-    start_tracking: Beginne, deine Fahrten zu verfolgen und den Status deines Rollers
-      zu überwachen
+      other: 'Du hast %{count} Roller registriert. Fahrten werden automatisch erfasst, wenn:'
+    start_tracking: Beginne, deine Fahrten zu verfolgen und den Status deines Rollers zu überwachen
     status: Status
     title: Dashboard
     total_distance: Gesamtdistanz
     total_trips: Gesamtfahrten
-    trip_data_logged: Alle Fahrtdaten einschließlich Distanz, Dauer und Route werden
-      automatisch protokolliert
-    trip_ends: Die Fahrt endet, wenn dein Roller geparkt wird oder in den Ruhezustand
-      wechselt
+    trip_data_logged: Alle Fahrtdaten einschließlich Distanz, Dauer und Route werden automatisch protokolliert
+    trip_ends: Die Fahrt endet, wenn dein Roller geparkt wird oder in den Ruhezustand wechselt
     trip_starts: Eine Fahrt beginnt, wenn dein Roller in den "Fahrbereit"-Modus wechselt
     trip_stats: Fahrtstatistiken
     view_all: Alle anzeigen
@@ -470,7 +450,9 @@ de_DE:
     - Fr
     - Sa
     abbr_month_names:
-    -
+
+    
+    - 
     - Jan
     - Feb
     - Mär
@@ -496,7 +478,9 @@ de_DE:
       long: "%e. %B %Y"
       short: "%e. %b"
     month_names:
-    -
+
+    
+    - 
     - Januar
     - Februar
     - März
@@ -565,20 +549,15 @@ de_DE:
   devise:
     otp:
       credentials_refresh:
-        explain: Um die Sicherheit zu gewährleisten, gib bitte dein Passwort erneut
-          ein.
+        explain: Um die Sicherheit zu gewährleisten, gib bitte dein Passwort erneut ein.
         go_on: Fortfahren...
         title: Bitte gib dein Passwort erneut ein.
       edit_otp_token:
         confirmation_code: Bestätigungscode
-        explain: Die Zwei-Faktor-Authentifizierung fügt deinem Konto eine zusätzliche
-          Sicherheitsebene hinzu. Bei der Anmeldung wirst du nach einem Code gefragt,
-          den du auf einem physischen Gerät, wie deinem Telefon, generieren kannst.
+        explain: Die Zwei-Faktor-Authentifizierung fügt deinem Konto eine zusätzliche Sicherheitsebene hinzu. Bei der Anmeldung wirst du nach einem Code gefragt, den du auf einem physischen Gerät, wie deinem Telefon, generieren kannst.
         lead_in: 'Um die Zwei-Faktor-Authentifizierung zu aktivieren:'
-        step_1: '1. Öffne deine Authentifizierungs-App und scanne den unten angezeigten
-          QR-Code:'
-        step_2: '2. Gib den in deiner Authentifizierungs-App angezeigten 6-stelligen
-          Code unten ein:'
+        step_1: '1. Öffne deine Authentifizierungs-App und scanne den unten angezeigten QR-Code:'
+        step_2: '2. Gib den in deiner Authentifizierungs-App angezeigten 6-stelligen Code unten ein:'
         submit: Fortfahren...
         title: Zwei-Faktor-Authentifizierung aktivieren
       general:
@@ -590,23 +569,17 @@ de_DE:
           code: Wiederherstellungscode
           codes_list: Hier ist die Liste deiner Wiederherstellungscodes
           download_codes: Wiederherstellungscodes herunterladen
-          explain: Notiere oder drucke diese Wiederherstellungscodes. Sie ermöglichen
-            dir die Anmeldung, falls dein Token-Gerät verloren, gestohlen oder nicht
-            verfügbar ist.
+          explain: Notiere oder drucke diese Wiederherstellungscodes. Sie ermöglichen dir die Anmeldung, falls dein Token-Gerät verloren, gestohlen oder nicht verfügbar ist.
           sequence: Sequenz
           title: Deine Notfall-Wiederherstellungscodes
-        reset_explain: Durch das Zurücksetzen deines Token-Geheimnisses wird die Zwei-Faktor-Authentifizierung
-          vorübergehend deaktiviert.
-        reset_explain_warn: Um die Zwei-Faktor-Authentifizierung wieder zu aktivieren,
-          musst du dein mobiles Gerät mit dem neuen Token-Geheimnis neu registrieren.
+        reset_explain: Durch das Zurücksetzen deines Token-Geheimnisses wird die Zwei-Faktor-Authentifizierung vorübergehend deaktiviert.
+        reset_explain_warn: Um die Zwei-Faktor-Authentifizierung wieder zu aktivieren, musst du dein mobiles Gerät mit dem neuen Token-Geheimnis neu registrieren.
         reset_link: Token-Geheimnis zurücksetzen
         title: 'Zwei-Faktor-Authentifizierung:'
       submit_token:
-        explain: Du erhältst diese Nachricht, weil du die Zwei-Faktor-Authentifizierung
-          für dein Konto aktiviert hast
+        explain: Du erhältst diese Nachricht, weil du die Zwei-Faktor-Authentifizierung für dein Konto aktiviert hast
         prompt: 'Bitte gib deinen Zwei-Faktor-Authentifizierungstoken ein:'
-        recovery_link: Ich habe mein Gerät nicht, ich möchte einen Wiederherstellungscode
-          verwenden
+        recovery_link: Ich habe mein Gerät nicht, ich möchte einen Wiederherstellungscode verwenden
         recovery_prompt: 'Bitte gib deinen Wiederherstellungscode ein:'
         submit: Token absenden
         title: Zwei-Faktor-Authentifizierung
@@ -616,9 +589,7 @@ de_DE:
       trusted_browsers:
         browser_not_trusted: Dein Browser ist nicht vertraut.
         browser_trusted: Dein Browser ist vertraut.
-        explain: Wenn du deinen Browser als vertraut einstellst, wirst du bei der
-          Anmeldung von diesem Browser nicht nach einem Zwei-Faktor-Authentifizierungstoken
-          gefragt.
+        explain: Wenn du deinen Browser als vertraut einstellst, wirst du bei der Anmeldung von diesem Browser nicht nach einem Zwei-Faktor-Authentifizierungstoken gefragt.
         title: Vertraute Browser
         trust_add: Diesen Browser vertrauen
         trust_clear: Liste der vertrauten Browser löschen
@@ -636,8 +607,7 @@ de_DE:
       create_account: Konto erstellen
       edit_resource: "%{resource} bearbeiten"
       leave_blank: "(leer lassen, wenn du es nicht ändern möchtest)"
-      need_current_password: "(wir benötigen dein aktuelles Passwort, um deine Änderungen
-        zu bestätigen)"
+      need_current_password: "(wir benötigen dein aktuelles Passwort, um deine Änderungen zu bestätigen)"
       sign_up: Registrieren
       unhappy_message: Unzufrieden mit dem Service? Du kannst dein Konto unten löschen.
       update: Aktualisieren
@@ -722,8 +692,7 @@ de_DE:
   helpers:
     page_entries_info:
       more_pages:
-        display_entries: Zeige %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> von
-          insgesamt <b>%{total}</b> an
+        display_entries: Zeige %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> von insgesamt <b>%{total}</b> an
       one_page:
         display_entries:
           one: Zeige <b>%{count}</b> %{entry_name} an
@@ -745,7 +714,12 @@ de_DE:
     below_average: "%{percent}% unter dem Durchschnitt"
     community_average: Community-Durchschnitt
     community_averages: Community-Durchschnitt
-    day: Tag
+    current_week: Aktuelle Woche
+    previous_week: Vorherige Woche
+    current_month: Aktueller Monat
+    previous_month: Vorheriger Monat
+    week_of: Woche vom %{date}
+    month_of: "%{date}"
     description: Vergleiche deine Fahrstatistiken mit anderen Rollerbesitzern.
     display_name: Anzeigename
     display_name_description: Dies ist der Name, der in der Rangliste angezeigt wird.
@@ -759,18 +733,14 @@ de_DE:
     location_not_shared: Deine Standortdaten oder Fahrtrouten
     max_speed: Max. Geschwindigkeit
     max_speed_visible: Erreichte Höchstgeschwindigkeit
-    month: Monat
     no_data: Keine Ranglistendaten für diesen Zeitraum verfügbar.
     no_trips_in_period: Du hast in diesem Zeitraum noch keine Fahrten abgeschlossen.
     not_shared: 'Wir teilen nicht:'
-    notifications_description: Erhalte Benachrichtigungen, wenn du neue Achievements
-      erzielst.
+    notifications_description: Erhalte Benachrichtigungen, wenn du neue Achievements erzielst.
     of_riders: von %{total_users} Fahrern
-    opt_in_description: Melde dich für die Rangliste an, um deine Fahrstatistiken
-      mit anderen Rollerbesitzern zu vergleichen.
+    opt_in_description: Melde dich für die Rangliste an, um deine Fahrstatistiken mit anderen Rollerbesitzern zu vergleichen.
     opt_in_now: Jetzt anmelden
-    opt_out_anytime: Du kannst dich jederzeit von der Rangliste abmelden, indem du
-      die Teilnahmeoption oben deaktivierst.
+    opt_out_anytime: Du kannst dich jederzeit von der Rangliste abmelden, indem du die Teilnahmeoption oben deaktivierst.
     participate: An der Rangliste teilnehmen
     personal_info_not_shared: Persönliche Informationen über dich oder deinen Roller
     privacy_information: Datenschutzinformationen
@@ -783,17 +753,13 @@ de_DE:
     save_settings: Einstellungen speichern
     settings: Einstellungen
     settings_title: Ranglisten-Einstellungen
-    sign_in_to_join: Melde dich an, um der Rangliste beizutreten und deinen Fortschritt
-      zu verfolgen.
-    stats_visible: Deine Fahrstatistiken werden für andere Benutzer in der Rangliste
-      sichtbar sein.
+    sign_in_to_join: Melde dich an, um der Rangliste beizutreten und deinen Fortschritt zu verfolgen.
+    stats_visible: Deine Fahrstatistiken werden für andere Benutzer in der Rangliste sichtbar sein.
     title: Rangliste
     top_riders: Top-Fahrer
     trips: Fahrten
     trips_visible: Anzahl der abgeschlossenen Fahrten
-    visible_information: 'Wenn du dich für die Rangliste anmeldest, werden folgende
-      Informationen für andere Benutzer sichtbar:'
-    week: Woche
+    visible_information: 'Wenn du dich für die Rangliste anmeldest, werden folgende Informationen für andere Benutzer sichtbar:'
     you: Du
     your_rank: Dein Rang
     your_stats: Deine Statistiken
@@ -889,10 +855,8 @@ de_DE:
     config_file: Konfigurationsdatei (radio-gaga.yml)
     download_config: Konfiguration herunterladen
     go_to_dashboard: Zum Dashboard
-    scooter_registered: Dein Roller %{name} wurde registriert. Hier ist deine Konfiguration
-      für die Telemetrie-Einrichtung.
-    token_warning: Diese Konfiguration enthält dein API-Token, das nur einmal angezeigt
-      wird. Stelle sicher, dass du es jetzt speicherst!
+    scooter_registered: Dein Roller %{name} wurde registriert. Hier ist deine Konfiguration für die Telemetrie-Einrichtung.
+    token_warning: Diese Konfiguration enthält dein API-Token, das nur einmal angezeigt wird. Stelle sicher, dass du es jetzt speicherst!
   profiles:
     achievements: Achievements
     achievements_visible: Deine erreichten Achievements
@@ -900,18 +864,15 @@ de_DE:
     back_to_profile: Zurück zum Profil
     community_member: Community-Mitglied
     community_name: Community-Name
-    community_name_description: Dies ist der Name, der auf deinem öffentlichen Profil
-      und in der Rangliste angezeigt wird.
+    community_name_description: Dies ist der Name, der auf deinem öffentlichen Profil und in der Rangliste angezeigt wird.
     copy_link: Link in die Zwischenablage kopieren
     description: Sieh dir deine öffentlichen Profileinstellungen an und verwalte sie.
     display_name_visible: Dein Community-Name (nicht dein echter Name oder E-Mail)
     edit_description: Verwalte deine öffentlichen Profil- und Ranglisteneinstellungen.
     edit_profile: Profil bearbeiten
     edit_title: Profil bearbeiten
-    enable_leaderboard_prompt: Aktiviere die Ranglisten-Teilnahme, um deine Statistiken
-      mit anderen Fahrern zu vergleichen.
-    enable_profile_prompt: Aktiviere dein öffentliches Profil, um deine Achievements
-      mit der Community zu teilen.
+    enable_leaderboard_prompt: Aktiviere die Ranglisten-Teilnahme, um deine Statistiken mit anderen Fahrern zu vergleichen.
+    enable_profile_prompt: Aktiviere dein öffentliches Profil, um deine Achievements mit der Community zu teilen.
     enable_public_profile: Öffentliches Profil aktivieren
     fix_errors: 'Bitte behebe die folgenden Fehler:'
     leaderboard_description: Deine Fahrstatistiken sind in der Rangliste sichtbar.
@@ -923,10 +884,8 @@ de_DE:
     location_not_shared: Deine Standortdaten oder Fahrtrouten
     no_leaderboard_data: Keine Ranglistendaten für diesen Fahrer verfügbar.
     not_shared: 'Wir teilen nicht:'
-    notifications_description: Erhalte Benachrichtigungen, wenn du neue Achievements
-      erzielst.
-    opt_out_anytime: Du kannst jederzeit aussteigen, indem du dein öffentliches Profil
-      deaktivierst.
+    notifications_description: Erhalte Benachrichtigungen, wenn du neue Achievements erzielst.
+    opt_out_anytime: Du kannst jederzeit aussteigen, indem du dein öffentliches Profil deaktivierst.
     participate_leaderboard: An der Rangliste teilnehmen
     personal_info_not_shared: Persönliche Informationen über dich oder deinen Roller
     privacy_information: Datenschutzinformationen
@@ -943,8 +902,7 @@ de_DE:
     save_settings: Einstellungen speichern
     title: Mein Profil
     view_all_achievements: Alle Achievements anzeigen
-    visible_information: 'Wenn du dein öffentliches Profil aktivierst, werden folgende
-      Informationen für andere Benutzer sichtbar:'
+    visible_information: 'Wenn du dein öffentliches Profil aktivierst, werden folgende Informationen für andere Benutzer sichtbar:'
     your_public_link: Dein öffentlicher Profillink
   scooters:
     add_scooter: Roller hinzufügen
@@ -956,8 +914,7 @@ de_DE:
     back: Zurück
     battery_status: Batteriestatus
     cb_battery: CB-Batterie
-    config_setup: Deine Konfigurationsdatei (radio-gaga.yml) korrekt mit der richtigen
-      VIN und dem API-Token eingerichtet ist
+    config_setup: Deine Konfigurationsdatei (radio-gaga.yml) korrekt mit der richtigen VIN und dem API-Token eingerichtet ist
     confirm_alarm: Wirklich Alarm auslösen?
     confirm_update: Client-Update starten?
     details_and_controls: Rollerdetails und -steuerung.
@@ -1007,8 +964,7 @@ de_DE:
     redis_commands: Redis-Befehle
     request_telemetry: Telemetrie anfordern
     right_signal: Rechter Blinker
-    scooter_list_description: Eine Liste aller deiner registrierten Roller und deren
-      aktueller Status.
+    scooter_list_description: Eine Liste aller deiner registrierten Roller und deren aktueller Status.
     seatbox: Sitzbox %{status}
     secondary_battery: Sekundärbatterie
     service_status: Dienst-Status
@@ -1034,8 +990,7 @@ de_DE:
       unknown: unbekannt
       vin_with_value: 'VIN: %{vin}'
     system_uptime: System-Laufzeit
-    telemetry_instructions: 'Dein Roller hat noch keine Telemetriedaten übermittelt.
-      Bitte stelle sicher, dass:'
+    telemetry_instructions: 'Dein Roller hat noch keine Telemetriedaten übermittelt. Bitte stelle sicher, dass:'
     telemetry_running: Der Telemetrie-Dienst auf deinem Roller läuft
     turn_off_lock: Ausschalten & sperren
     turn_off_signals: Blinker ausschalten
@@ -1116,8 +1071,7 @@ de_DE:
     description: Dekodiere die Fahrzeug-Identifikationsnummer deines Rollers.
     details_meaning: Was bedeuten diese Details?
     enter_vin: Fahrzeug-Identifikationsnummer (VIN) eingeben
-    example: 'Beispiel: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW
-      Motor, max. 45 km/h, Baujahr 2021'
+    example: 'Beispiel: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW Motor, max. 45 km/h, Baujahr 2021'
     example_vin: z.B. WUNU2S3A6KZ000001
     format_description: 'Die VIN des unu Scooter 2.x folgt diesem Format:'
     format_title: unu Scooter 2.x VIN-Format
@@ -1141,8 +1095,7 @@ de_DE:
     plant_zhuhai: Z = Zhuhai, China
     position_breakdown: Positionsaufschlüsselung
     possible_values: Mögliche Werte
-    result_example: 'Beispiel: WUNU2S4BXM<span class="text-gray-400">Z000123</span>
-      = 4kW Motor, max. 45 km/h, Baujahr 2021'
+    result_example: 'Beispiel: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW Motor, max. 45 km/h, Baujahr 2021'
     results_title: VIN-Decoder Ergebnisse
     serial_number: Seriennummer
     serial_number_desc: Die eindeutige Kennung für diesen speziellen Roller.
@@ -1159,13 +1112,10 @@ de_DE:
     vehicle_type_desc: Gibt die technische Klassifizierung des Fahrzeugs an.
     version: Version (A = max. 25 km/h, B = max. 45 km/h)
     version_desc: Gibt die maximale Geschwindigkeitsfähigkeit des Rollers an.
-    vin_explanation: Eine Fahrzeug-Identifikationsnummer (VIN) ist ein eindeutiger
-      17-stelliger Code zur Identifizierung einzelner Kraftfahrzeuge. Bei unu-Rollern
-      enthält die VIN Details zum Modell, Baujahr und andere spezifische Informationen.
+    vin_explanation: Eine Fahrzeug-Identifikationsnummer (VIN) ist ein eindeutiger 17-stelliger Code zur Identifizierung einzelner Kraftfahrzeuge. Bei unu-Rollern enthält die VIN Details zum Modell, Baujahr und andere spezifische Informationen.
     vin_format_intro: 'Die VIN des unu Scooter 2.x folgt diesem Format:'
     vin_format_title: unu Scooter 2.x VIN-Format
-    vin_requirements: Die VIN muss 17 Zeichen lang sein und mit WUN beginnen. Probiere
-      es mit WUNU2S3A6KZ000001.
+    vin_requirements: Die VIN muss 17 Zeichen lang sein und mit WUN beginnen. Probiere es mit WUNU2S3A6KZ000001.
     what_is_vin: Was ist eine VIN?
     year: Jahr
     year_2017_2019: H = 2017, J = 2018, K = 2019

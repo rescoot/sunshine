@@ -4,15 +4,15 @@ class LeaderboardsController < ApplicationController
   before_action :set_period
 
   def index
-    @leaderboard = LeaderboardService.generate_leaderboard(@period)
+    @leaderboard = LeaderboardService.generate_leaderboard(@period, 100, @date)
 
     # Get community averages for all users
-    @community_averages = LeaderboardService.community_averages(@period)
+    @community_averages = LeaderboardService.community_averages(@period, @date)
 
     if user_signed_in? && current_user.feature_enabled?(FeatureFlag::LEADERBOARDS)
       # Find current user's position
-      @user_position = LeaderboardService.user_position(current_user.id, @period)
-      @user_comparison = LeaderboardService.user_comparison(current_user.id, @period)
+      @user_position = LeaderboardService.user_position(current_user.id, @period, @date)
+      @user_comparison = LeaderboardService.user_comparison(current_user.id, @period, @date)
     end
 
     respond_to do |format|
@@ -42,7 +42,23 @@ class LeaderboardsController < ApplicationController
   end
 
   def set_period
-    @period = params[:period]&.to_sym || :week
+    @period = params[:period]&.to_sym || :current_week
+
+    # Set the appropriate date based on the period
+    @date = case @period
+    when :current_week
+              Date.current
+    when :previous_week
+              1.week.ago.to_date
+    when :current_month
+              Date.current
+    when :previous_month
+              1.month.ago.to_date
+    when :all_time
+              nil
+    else
+              Date.current
+    end
   end
 
   def check_feature_enabled
