@@ -734,6 +734,7 @@ pirate:
     back_to_leaderboard: Back t' Cap'n's Log
     be_first: Be th' first t' complete a voyage and claim th' top spot, arr!
     below_average: "%{percent}% below th' average sailor"
+    community_average: Crew's average booty
     community_averages: Crew Averages
     day: Day
     description: Compare yer sailin' stats with other vessel captains, arr!
@@ -746,6 +747,7 @@ pirate:
     enable_public_profile: Make Yerself Known
     fix_errors: 'Fix these errors, ye scallywag:'
     join: Join th' Cap'n's Log
+    join_leaderboard: Join the Plunderin' Ranks
     location_not_shared: Yer location data or voyage routes
     max_speed: Top Speed
     max_speed_visible: Top speed achieved
@@ -882,6 +884,7 @@ pirate:
     community_name: Pirate Name
     community_name_description: This be th' name that will show on yer public profile
       and th' cap'n's log.
+    copy_link: Copy treasure map to yer clipboard
     description: View and manage yer public sailor settings.
     display_name_visible: Yer pirate name (not yer real name or message-in-a-bottle
       address)
@@ -923,6 +926,7 @@ pirate:
     view_all_achievements: View All Treasures
     visible_information: 'When ye make yerself known, th'' followin'' information
       will be visible to other scallywags:'
+    your_public_link: Yer public treasure map
   scooters:
     add_scooter: Add Vessel
     admin_controls: Cap'n's Secret Controls

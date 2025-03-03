@@ -552,6 +552,9 @@ de_DE:
       x_seconds:
         one: eine Sekunde
         other: "%{count} Sekunden"
+      x_years:
+        one: "%{count} Jahr"
+        other: "%{count} Jahre"
     prompts:
       day: Tag
       hour: Stunde
@@ -675,6 +678,7 @@ de_DE:
       exclusion: ist nicht verfügbar
       greater_than: muss größer als %{count} sein
       greater_than_or_equal_to: muss größer oder gleich %{count} sein
+      in: muss in %{count} sein
       inclusion: ist kein gültiger Wert
       invalid: ist nicht gültig
       less_than: muss kleiner als %{count} sein
@@ -739,6 +743,7 @@ de_DE:
     back_to_leaderboard: Zurück zur Rangliste
     be_first: Sei der Erste, der eine Fahrt abschließt und den ersten Platz belegt!
     below_average: "%{percent}% unter dem Durchschnitt"
+    community_average: Community-Durchschnitt
     community_averages: Community-Durchschnitt
     day: Tag
     description: Vergleiche deine Fahrstatistiken mit anderen Rollerbesitzern.
@@ -750,6 +755,7 @@ de_DE:
     enable_public_profile: Öffentliches Profil aktivieren
     fix_errors: 'Bitte behebe die folgenden Fehler:'
     join: Der Rangliste beitreten
+    join_leaderboard: Bestenliste beitreten
     location_not_shared: Deine Standortdaten oder Fahrtrouten
     max_speed: Max. Geschwindigkeit
     max_speed_visible: Erreichte Höchstgeschwindigkeit
@@ -821,6 +827,7 @@ de_DE:
       format:
         delimiter: "."
         format: "%n %u"
+        negative_format: "-%u%n"
         precision: 2
         separator: ","
         significant: false
@@ -868,6 +875,7 @@ de_DE:
           mb: MB
           pb: PB
           tb: TB
+          zb: ZB
     percentage:
       format:
         delimiter: ''
@@ -894,6 +902,7 @@ de_DE:
     community_name: Community-Name
     community_name_description: Dies ist der Name, der auf deinem öffentlichen Profil
       und in der Rangliste angezeigt wird.
+    copy_link: Link in die Zwischenablage kopieren
     description: Sieh dir deine öffentlichen Profileinstellungen an und verwalte sie.
     display_name_visible: Dein Community-Name (nicht dein echter Name oder E-Mail)
     edit_description: Verwalte deine öffentlichen Profil- und Ranglisteneinstellungen.
@@ -936,6 +945,7 @@ de_DE:
     view_all_achievements: Alle Achievements anzeigen
     visible_information: 'Wenn du dein öffentliches Profil aktivierst, werden folgende
       Informationen für andere Benutzer sichtbar:'
+    your_public_link: Dein öffentlicher Profillink
   scooters:
     add_scooter: Roller hinzufügen
     admin_controls: Admin-Steuerung

@@ -3,169 +3,176 @@
     <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= t('leaderboards.title') %></h1>
     <p class="mt-2 text-sm text-gray-700"><%= t('leaderboards.description') %></p>
   </div>
-  <% if user_signed_in? %>
+  <% if user_signed_in? && !current_user.leaderboard_opt_in %>
     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-      <%= link_to t('leaderboards.profile_settings'), edit_profile_path, class: "btn-primary" %>
+      <%= link_to t('leaderboards.join_leaderboard'), edit_profile_path, class: "btn-primary" %>
     </div>
   <% end %>
+  <div class="mt-4 sm:ml-auto sm:mt-0">
+    <div class="period-selector flex space-x-2">
+      <%= link_to t('leaderboards.day'), leaderboards_path(period: :day), 
+          class: "#{@period == :day ? 'btn-primary' : 'btn-secondary'}" %>
+      <%= link_to t('leaderboards.week'), leaderboards_path(period: :week), 
+          class: "#{@period == :week ? 'btn-primary' : 'btn-secondary'}" %>
+      <%= link_to t('leaderboards.month'), leaderboards_path(period: :month), 
+          class: "#{@period == :month ? 'btn-primary' : 'btn-secondary'}" %>
+      <%= link_to t('leaderboards.all_time'), leaderboards_path(period: :all_time), 
+          class: "#{@period == :all_time ? 'btn-primary' : 'btn-secondary'}" %>
+    </div>
+  </div>
 </div>
 
 <div class="mt-8">
-
-  <% if user_signed_in? && current_user.leaderboard_opt_in %>
+  <% # Community Stats (and Your Stats if participating) %>
+  <% if user_signed_in? && current_user.leaderboard_opt_in && @user_position %>
     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold"><%= t('leaderboards.your_stats') %></h2>
-        
-        <div class="period-selector flex space-x-2">
-          <%= link_to t('leaderboards.day'), leaderboards_path(period: :day), 
-              class: "#{@period == :day ? 'btn-primary' : 'btn-secondary'}" %>
-          <%= link_to t('leaderboards.week'), leaderboards_path(period: :week), 
-              class: "#{@period == :week ? 'btn-primary' : 'btn-secondary'}" %>
-          <%= link_to t('leaderboards.month'), leaderboards_path(period: :month), 
-              class: "#{@period == :month ? 'btn-primary' : 'btn-secondary'}" %>
-          <%= link_to t('leaderboards.all_time'), leaderboards_path(period: :all_time), 
-              class: "#{@period == :all_time ? 'btn-primary' : 'btn-secondary'}" %>
+        <div class="text-sm text-gray-500 bg-gray-100 rounded-lg px-3 py-1">
+          <span class="font-medium">#<%= @user_position[:rank] %></span> <%= t('leaderboards.of_riders', total_users: @user_position[:total_users]) %>
         </div>
       </div>
       
-      <% if @user_position %>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <div class="bg-gray-100 rounded-lg p-4 text-center">
-            <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.your_rank') %></h3>
-            <p class="text-3xl font-bold text-indigo-600">#<%= @user_position[:rank] %></p>
-            <p class="text-sm text-gray-500"><%= t('leaderboards.of_riders', total_users: @user_position[:total_users]) %></p>
-          </div>
-          
-          <div class="bg-gray-100 rounded-lg p-4 text-center">
-            <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.distance') %></h3>
-            <p class="text-3xl font-bold text-green-600"><%= @user_comparison[:user][:distance_km] %> km</p>
-            <p class="text-sm text-gray-500">
-              <% if @user_comparison[:comparison][:distance_percent] > 100 %>
-                <span class="text-green-500"><%= t('leaderboards.above_average', percent: (@user_comparison[:comparison][:distance_percent] - 100)) %></span>
-              <% elsif @user_comparison[:comparison][:distance_percent] < 100 %>
-                <span class="text-red-500"><%= t('leaderboards.below_average', percent: (100 - @user_comparison[:comparison][:distance_percent])) %></span>
-              <% else %>
-                <%= t('leaderboards.average') %>
-              <% end %>
-            </p>
-          </div>
-          
-          <div class="bg-gray-100 rounded-lg p-4 text-center">
-            <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.trips') %></h3>
-            <p class="text-3xl font-bold text-purple-600"><%= @user_comparison[:user][:trip_count] %></p>
-            <p class="text-sm text-gray-500">
-              <% if @user_comparison[:comparison][:trip_count_percent] > 100 %>
-                <span class="text-green-500"><%= t('leaderboards.above_average', percent: (@user_comparison[:comparison][:trip_count_percent] - 100)) %></span>
-              <% elsif @user_comparison[:comparison][:trip_count_percent] < 100 %>
-                <span class="text-red-500"><%= t('leaderboards.below_average', percent: (100 - @user_comparison[:comparison][:trip_count_percent])) %></span>
-              <% else %>
-                <%= t('leaderboards.average') %>
-              <% end %>
-            </p>
-          </div>
-          
-          <div class="bg-gray-100 rounded-lg p-4 text-center">
-            <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.avg_speed') %></h3>
-            <p class="text-3xl font-bold text-orange-600"><%= @user_comparison[:user][:avg_speed] %> km/h</p>
-            <p class="text-sm text-gray-500">
-              <% if @user_comparison[:comparison][:speed_percent] > 100 %>
-                <span class="text-green-500"><%= t('leaderboards.above_average', percent: (@user_comparison[:comparison][:speed_percent] - 100)) %></span>
-              <% elsif @user_comparison[:comparison][:speed_percent] < 100 %>
-                <span class="text-red-500"><%= t('leaderboards.below_average', percent: (100 - @user_comparison[:comparison][:speed_percent])) %></span>
-              <% else %>
-                <%= t('leaderboards.average') %>
-              <% end %>
-            </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="bg-gray-100 rounded-lg p-4">
+          <h3 class="text-lg font-semibold mb-1 text-center"><%= t('leaderboards.distance') %></h3>
+          <p class="text-3xl font-bold text-green-600 text-center"><%= @user_comparison[:user][:distance_km] %> km</p>
+          <div class="mt-2">
+            <% if @user_comparison[:comparison][:distance_percent] > 100 %>
+              <div class="text-green-500 text-center">
+                <%= t('leaderboards.above_average', percent: (@user_comparison[:comparison][:distance_percent] - 100)) %>
+              </div>
+            <% elsif @user_comparison[:comparison][:distance_percent] < 100 %>
+              <div class="text-red-500 text-center">
+                <%= t('leaderboards.below_average', percent: (100 - @user_comparison[:comparison][:distance_percent])) %>
+              </div>
+            <% else %>
+              <div class="text-gray-500 text-center"><%= t('leaderboards.average') %></div>
+            <% end %>
+            <div class="text-center mt-2 text-lg">
+              <span class="text-green-600 font-medium">
+                <%= t('leaderboards.community_average') %>: 
+                <% if @community_averages %>
+                  <%= @community_averages[:distance_km].to_i == @community_averages[:distance_km] ? @community_averages[:distance_km].to_i : @community_averages[:distance_km] %> km
+                <% else %>
+                  <%= @user_comparison[:global_average][:distance_km].to_i == @user_comparison[:global_average][:distance_km] ? @user_comparison[:global_average][:distance_km].to_i : @user_comparison[:global_average][:distance_km] %> km
+                <% end %>
+              </span>
+            </div>
           </div>
         </div>
-      <% else %>
-        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-          <p class="text-yellow-700"><%= t('leaderboards.no_trips_in_period') %></p>
+        
+        <div class="bg-gray-100 rounded-lg p-4">
+          <h3 class="text-lg font-semibold mb-1 text-center"><%= t('leaderboards.trips') %></h3>
+          <p class="text-3xl font-bold text-purple-600 text-center"><%= @user_comparison[:user][:trip_count].to_i %></p>
+          <div class="mt-2">
+            <% if @user_comparison[:comparison][:trip_count_percent] > 100 %>
+              <div class="text-green-500 text-center">
+                <%= t('leaderboards.above_average', percent: (@user_comparison[:comparison][:trip_count_percent] - 100)) %>
+              </div>
+            <% elsif @user_comparison[:comparison][:trip_count_percent] < 100 %>
+              <div class="text-red-500 text-center">
+                <%= t('leaderboards.below_average', percent: (100 - @user_comparison[:comparison][:trip_count_percent])) %>
+              </div>
+            <% else %>
+              <div class="text-gray-500 text-center"><%= t('leaderboards.average') %></div>
+            <% end %>
+            <div class="text-center mt-2 text-lg">
+              <span class="text-purple-600 font-medium">
+                <%= t('leaderboards.community_average') %>: 
+                <% if @community_averages %>
+                  <%= @community_averages[:trip_count].to_i %>
+                <% else %>
+                  <%= @user_comparison[:global_average][:trip_count].to_i %>
+                <% end %>
+              </span>
+            </div>
+          </div>
         </div>
-      <% end %>
+        
+        <div class="bg-gray-100 rounded-lg p-4">
+          <h3 class="text-lg font-semibold mb-1 text-center"><%= t('leaderboards.avg_speed') %></h3>
+          <p class="text-3xl font-bold text-orange-600 text-center"><%= @user_comparison[:user][:avg_speed] %> km/h</p>
+          <div class="mt-2">
+            <% if @user_comparison[:comparison][:speed_percent] > 100 %>
+              <div class="text-green-500 text-center">
+                <%= t('leaderboards.above_average', percent: (@user_comparison[:comparison][:speed_percent] - 100)) %>
+              </div>
+            <% elsif @user_comparison[:comparison][:speed_percent] < 100 %>
+              <div class="text-red-500 text-center">
+                <%= t('leaderboards.below_average', percent: (100 - @user_comparison[:comparison][:speed_percent])) %>
+              </div>
+            <% else %>
+              <div class="text-gray-500 text-center"><%= t('leaderboards.average') %></div>
+            <% end %>
+            <div class="text-center mt-2 text-lg">
+              <span class="text-orange-600 font-medium">
+                <%= t('leaderboards.community_average') %>: 
+                <% if @community_averages %>
+                  <%= @community_averages[:avg_speed] %> km/h
+                <% else %>
+                  <%= @user_comparison[:global_average][:avg_speed] %> km/h
+                <% end %>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
+  <% elsif user_signed_in? && current_user.leaderboard_opt_in %>
     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-      <h2 class="text-xl font-semibold mb-4"><%= t('leaderboards.top_riders') %></h2>
-      
-      <% if @leaderboard.any? %>
-        <div class="overflow-x-auto">
-          <table class="min-w-full">
-            <thead class="bg-gray-50">
-              <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t('leaderboards.rank') %></th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t('leaderboards.rider') %></th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t('leaderboards.distance') %></th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t('leaderboards.trips') %></th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t('leaderboards.max_speed') %></th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <% @leaderboard.each do |entry| %>
-                <tr class="<%= entry[:user_id] == current_user.id ? 'bg-indigo-50' : '' %>">
-                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    <%= entry[:rank] %>
-                    <% if entry[:rank] <= 3 %>
-                      <% case entry[:rank] %>
-                      <% when 1 %>
-                        <span class="text-yellow-500">🥇</span>
-                      <% when 2 %>
-                        <span class="text-gray-400">🥈</span>
-                      <% when 3 %>
-                        <span class="text-amber-600">🥉</span>
-                      <% end %>
-                    <% end %>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <%= entry[:display_name] %>
-                    <% if entry[:user_id] == current_user.id %>
-                      <span class="ml-2 text-xs bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded"><%= t('leaderboards.you') %></span>
-                    <% end %>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= entry[:distance_km] %> km</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= entry[:trip_count] %></td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= entry[:max_speed] %> km/h</td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-      <% else %>
-        <div class="bg-gray-50 rounded-lg p-8 text-center">
-          <p class="text-gray-500 mb-2"><%= t('leaderboards.no_data') %></p>
-          <p class="text-gray-400 text-sm"><%= t('leaderboards.be_first') %></p>
-        </div>
-      <% end %>
+      <h2 class="text-xl font-semibold mb-4"><%= t('leaderboards.your_stats') %></h2>
+      <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+        <p class="text-yellow-700"><%= t('leaderboards.no_trips_in_period') %></p>
+      </div>
     </div>
-
-    <% if @user_comparison && @leaderboard.any? %>
-      <div class="bg-white rounded-lg shadow-md p-6">
-        <h2 class="text-xl font-semibold mb-4"><%= t('leaderboards.community_averages') %></h2>
+  <% elsif @community_averages || (@user_comparison && @leaderboard.any?) %>
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+      <h2 class="text-xl font-semibold mb-4"><%= t('leaderboards.community_averages') %></h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-gray-100 rounded-lg p-4 text-center">
+          <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.distance') %></h3>
+          <p class="text-3xl font-bold text-green-600">
+            <% if @community_averages %>
+              <%= @community_averages[:distance_km].to_i == @community_averages[:distance_km] ? @community_averages[:distance_km].to_i : @community_averages[:distance_km] %> km
+            <% else %>
+              <%= @user_comparison[:global_average][:distance_km].to_i == @user_comparison[:global_average][:distance_km] ? @user_comparison[:global_average][:distance_km].to_i : @user_comparison[:global_average][:distance_km] %> km
+            <% end %>
+          </p>
+          <p class="text-sm text-gray-500"><%= t('leaderboards.average') %></p>
+        </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="bg-gray-100 rounded-lg p-4 text-center">
-            <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.distance') %></h3>
-            <p class="text-3xl font-bold text-green-600"><%= @user_comparison[:global_average][:distance_km] %> km</p>
-            <p class="text-sm text-gray-500"><%= t('leaderboards.average') %></p>
-          </div>
-          
-          <div class="bg-gray-100 rounded-lg p-4 text-center">
-            <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.trips') %></h3>
-            <p class="text-3xl font-bold text-purple-600"><%= @user_comparison[:global_average][:trip_count] %></p>
-            <p class="text-sm text-gray-500"><%= t('leaderboards.average') %></p>
-          </div>
-          
-          <div class="bg-gray-100 rounded-lg p-4 text-center">
-            <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.avg_speed') %></h3>
-            <p class="text-3xl font-bold text-orange-600"><%= @user_comparison[:global_average][:avg_speed] %> km/h</p>
-            <p class="text-sm text-gray-500"><%= t('leaderboards.average') %></p>
-          </div>
+        <div class="bg-gray-100 rounded-lg p-4 text-center">
+          <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.trips') %></h3>
+          <p class="text-3xl font-bold text-purple-600">
+            <% if @community_averages %>
+              <%= @community_averages[:trip_count].to_i %>
+            <% else %>
+              <%= @user_comparison[:global_average][:trip_count].to_i %>
+            <% end %>
+          </p>
+          <p class="text-sm text-gray-500"><%= t('leaderboards.average') %></p>
+        </div>
+        
+        <div class="bg-gray-100 rounded-lg p-4 text-center">
+          <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.avg_speed') %></h3>
+          <p class="text-3xl font-bold text-orange-600">
+            <% if @community_averages %>
+              <%= @community_averages[:avg_speed] %> km/h
+            <% else %>
+              <%= @user_comparison[:global_average][:avg_speed] %> km/h
+            <% end %>
+          </p>
+          <p class="text-sm text-gray-500"><%= t('leaderboards.average') %></p>
         </div>
       </div>
-    <% end %>
-  <% elsif user_signed_in? %>
-    <div class="bg-white rounded-lg shadow-md p-8 text-center">
+    </div>
+  <% end %>
+
+  <% # Join Leaderboard prompt for logged-in users who haven't opted in %>
+  <% if user_signed_in? && !current_user.leaderboard_opt_in %>
+    <div class="bg-white rounded-lg shadow-md p-8 text-center mb-8">
       <h2 class="text-xl font-semibold mb-4"><%= t('leaderboards.join') %></h2>
       <p class="text-gray-600 mb-6"><%= t('leaderboards.opt_in_description') %></p>
       
@@ -173,23 +180,10 @@
     </div>
   <% end %>
   
-  <% # Show leaderboard and community averages for all users %>
+  <% # Leaderboard - Always show if available %>
   <% if @leaderboard.any? %>
     <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-semibold"><%= t('leaderboards.top_riders') %></h2>
-        
-        <div class="period-selector flex space-x-2">
-          <%= link_to t('leaderboards.day'), leaderboards_path(period: :day), 
-              class: "#{@period == :day ? 'btn-primary' : 'btn-secondary'}" %>
-          <%= link_to t('leaderboards.week'), leaderboards_path(period: :week), 
-              class: "#{@period == :week ? 'btn-primary' : 'btn-secondary'}" %>
-          <%= link_to t('leaderboards.month'), leaderboards_path(period: :month), 
-              class: "#{@period == :month ? 'btn-primary' : 'btn-secondary'}" %>
-          <%= link_to t('leaderboards.all_time'), leaderboards_path(period: :all_time), 
-              class: "#{@period == :all_time ? 'btn-primary' : 'btn-secondary'}" %>
-        </div>
-      </div>
+      <h2 class="text-xl font-semibold mb-4"><%= t('leaderboards.top_riders') %></h2>
       
       <div class="overflow-x-auto">
         <table class="min-w-full">
@@ -227,7 +221,7 @@
                   <% end %>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= entry[:distance_km] %> km</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= entry[:trip_count] %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= entry[:trip_count].to_i %></td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= entry[:max_speed] %> km/h</td>
               </tr>
             <% end %>
@@ -235,32 +229,6 @@
         </table>
       </div>
     </div>
-    
-    <% if @community_averages %>
-      <div class="bg-white rounded-lg shadow-md p-6">
-        <h2 class="text-xl font-semibold mb-4"><%= t('leaderboards.community_averages') %></h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="bg-gray-100 rounded-lg p-4 text-center">
-            <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.distance') %></h3>
-            <p class="text-3xl font-bold text-green-600"><%= @community_averages[:distance_km] %> km</p>
-            <p class="text-sm text-gray-500"><%= t('leaderboards.average') %></p>
-          </div>
-          
-          <div class="bg-gray-100 rounded-lg p-4 text-center">
-            <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.trips') %></h3>
-            <p class="text-3xl font-bold text-purple-600"><%= @community_averages[:trip_count] %></p>
-            <p class="text-sm text-gray-500"><%= t('leaderboards.average') %></p>
-          </div>
-          
-          <div class="bg-gray-100 rounded-lg p-4 text-center">
-            <h3 class="text-lg font-semibold mb-1"><%= t('leaderboards.avg_speed') %></h3>
-            <p class="text-3xl font-bold text-orange-600"><%= @community_averages[:avg_speed] %> km/h</p>
-            <p class="text-sm text-gray-500"><%= t('leaderboards.average') %></p>
-          </div>
-        </div>
-      </div>
-    <% end %>
   <% else %>
     <div class="bg-white rounded-lg shadow-md p-8 text-center">
       <p class="text-gray-500 mb-2"><%= t('leaderboards.no_data') %></p>

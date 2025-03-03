@@ -725,6 +725,7 @@ en:
     back_to_leaderboard: Back to Leaderboard
     be_first: Be the first to complete a trip and claim the top spot!
     below_average: "%{percent}% below average"
+    community_average: Community average
     community_averages: Community Averages
     day: Day
     description: Compare your riding stats with other scooter owners.
@@ -736,6 +737,7 @@ en:
     enable_public_profile: Enable Public Profile
     fix_errors: 'Please fix the following errors:'
     join: Join the Leaderboard
+    join_leaderboard: Join Leaderboard
     location_not_shared: Your location data or trip routes
     max_speed: Max Speed
     max_speed_visible: Maximum speed achieved
