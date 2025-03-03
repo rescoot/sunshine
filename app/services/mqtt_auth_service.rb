@@ -2,6 +2,7 @@ class MqttAuthService
   DYNSEC_USER_PREFIX = "radio-gaga"
   CONTROL_TOPIC = "$CONTROL/dynamic-security/v1"
   RESPONSE_TOPIC = "$CONTROL/dynamic-security/v1/response"
+  @@ensured_role = false
 
   def self.provision_scooter(scooter, token)
     new.provision_scooter(scooter, token)
@@ -81,7 +82,8 @@ class MqttAuthService
   end
 
   def ensure_scooter_role
-    # First, create the role
+    return if @@ensured_role
+
     response = publish_control_and_wait({
       command: "createRole",
       rolename: "scooter",
@@ -147,14 +149,12 @@ class MqttAuthService
       return false unless response["response"] == "success" or response["error"] =~ /already exists/
     end
 
-    true
+    @@ensured_role = true
   end
 
   def provision_scooter(scooter, token)
-    # Ensure the role exists with correct ACLs
     return false unless ensure_scooter_role
 
-    # Create client directly with the role
     response = publish_control_and_wait({
       command: "createClient",
       username: scooter.vin,
@@ -164,9 +164,6 @@ class MqttAuthService
       textdescription: "Radio Gaga client for #{scooter.vin}",
       roles: [ { rolename: "scooter", priority: 0 } ]
     })
-    Rails.logger.debug(response)
-
-    response["response"] == "success"
   end
 
   def subscribe_to_response(correlation_id, &block)
