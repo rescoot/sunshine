@@ -18,6 +18,13 @@ en:
     start_riding: Start riding your scooter to earn achievements and collect points!
     what_you_can_earn: 'Here''s what you can earn:'
     your_achievements: Your Achievements
+  activerecord:
+    errors:
+      messages:
+        record_invalid: 'Validation failed: %{errors}'
+        restrict_dependent_destroy:
+          has_many: Cannot delete record because dependent %{record} exist
+          has_one: Cannot delete record because a dependent %{record} exists
   admin:
     dashboard:
       description: Overview of system statistics and recent activity.
@@ -492,47 +499,58 @@ en:
     - November
     - December
     order:
-    - :year
-    - :month
-    - :day
+    - year
+    - month
+    - day
   datetime:
     distance_in_words:
       about_x_hours:
-        one: about 1 hour
+        one: about %{count} hour
         other: about %{count} hours
       about_x_months:
-        one: about 1 month
+        one: about %{count} month
         other: about %{count} months
       about_x_years:
-        one: about 1 year
+        one: about %{count} year
         other: about %{count} years
       almost_x_years:
-        one: almost 1 year
+        one: almost %{count} year
         other: almost %{count} years
+      half_a_minute: half a minute
       less_than_x_minutes:
         one: less than a minute
         other: less than %{count} minutes
       less_than_x_seconds:
-        one: less than 1 second
+        one: less than %{count} second
         other: less than %{count} seconds
       over_x_years:
-        one: over 1 year
+        one: over %{count} year
         other: over %{count} years
       x_days:
-        one: 1 day
+        one: "%{count} day"
         other: "%{count} days"
       x_hours:
         one: 1 hour
         other: "%{count} hours"
       x_minutes:
-        one: 1 minute
+        one: "%{count} minute"
         other: "%{count} minutes"
       x_months:
-        one: 1 month
+        one: "%{count} month"
         other: "%{count} months"
       x_seconds:
-        one: 1 second
+        one: "%{count} second"
         other: "%{count} seconds"
+      x_years:
+        one: "%{count} year"
+        other: "%{count} years"
+    prompts:
+      day: Day
+      hour: Hour
+      minute: Minute
+      month: Month
+      second: Seconds
+      year: Year
   devise:
     otp:
       credentials_refresh:
@@ -631,8 +649,46 @@ en:
       one: meter
       other: meters
   errors:
+    format: "%{attribute} %{message}"
     messages:
+      accepted: must be accepted
+      blank: can't be blank
+      confirmation: doesn't match %{attribute}
+      empty: can't be empty
+      equal_to: must be equal to %{count}
+      even: must be even
+      exclusion: is reserved
+      greater_than: must be greater than %{count}
+      greater_than_or_equal_to: must be greater than or equal to %{count}
+      in: must be in %{count}
+      inclusion: is not included in the list
+      invalid: is invalid
+      less_than: must be less than %{count}
+      less_than_or_equal_to: must be less than or equal to %{count}
+      model_invalid: 'Validation failed: %{errors}'
+      not_a_number: is not a number
+      not_an_integer: must be an integer
       not_saved: Not saved
+      odd: must be odd
+      other_than: must be other than %{count}
+      password_too_long: is too long
+      present: must be blank
+      required: must exist
+      taken: has already been taken
+      too_long:
+        one: is too long (maximum is %{count} character)
+        other: is too long (maximum is %{count} characters)
+      too_short:
+        one: is too short (minimum is %{count} character)
+        other: is too short (minimum is %{count} characters)
+      wrong_length:
+        one: is the wrong length (should be %{count} character)
+        other: is the wrong length (should be %{count} characters)
+    template:
+      body: 'There were problems with the following fields:'
+      header:
+        one: "%{count} error prohibited this %{model} from being saved"
+        other: "%{count} errors prohibited this %{model} from being saved"
   footer:
     about: About
     contact: Contact
@@ -655,6 +711,12 @@ en:
           one: Displaying <b>%{count}</b> %{entry_name}
           other: Displaying <b>all %{count}</b> %{entry_name}
           zero: No %{entry_name} found
+    select:
+      prompt: Please select
+    submit:
+      create: Create %{model}
+      submit: Save %{model}
+      update: Update %{model}
   leaderboards:
     above_average: "%{percent}% above average"
     all_time: All Time
@@ -738,18 +800,58 @@ en:
     users: Users
     vin_decoder: VIN Decoder
   number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%u%n"
+        negative_format: "-%u%n"
+        precision: 2
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: "$"
+    format:
+      delimiter: ","
+      precision: 3
+      round_mode: default
+      separator: "."
+      significant: false
+      strip_insignificant_zeros: false
     human:
       decimal_units:
         format: "%n %u"
         units:
-          billion: B
-          million: M
-          quadrillion: Q
-          thousand: k
-          trillion: T
+          billion: Billion
+          million: Million
+          quadrillion: Quadrillion
+          thousand: Thousand
+          trillion: Trillion
           unit: ''
+      format:
+        delimiter: ''
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
       storage_units:
         format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          eb: EB
+          gb: GB
+          kb: KB
+          mb: MB
+          pb: PB
+          tb: TB
+          zb: ZB
+    percentage:
+      format:
+        delimiter: ''
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ''
   onboarding:
     almost_there: Almost there!
     config_copied: Configuration copied to clipboard!
@@ -769,6 +871,7 @@ en:
     community_name: Community Name
     community_name_description: This is the name that will be shown on your public
       profile and the leaderboard.
+    copy_link: Copy link to clipboard
     description: View and manage your public profile settings.
     display_name_visible: Your community name (not your real name or email)
     edit_description: Manage your public profile and leaderboard settings.
@@ -809,6 +912,7 @@ en:
     view_all_achievements: View All Achievements
     visible_information: 'When you enable your public profile, the following information
       will be visible to other users:'
+    your_public_link: Your public profile link
   scooters:
     add_scooter: Add Scooter
     admin_controls: Admin Controls
@@ -906,6 +1010,11 @@ en:
     unlock_turn_on: Unlock & turn on
     update_client: Update Client
     waiting_for_telemetry: Waiting for telemetry data
+  support:
+    array:
+      last_word_connector: ", and "
+      two_words_connector: " and "
+      words_connector: ", "
   time:
     am: am
     formats:
