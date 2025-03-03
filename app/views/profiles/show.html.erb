@@ -52,6 +52,17 @@
           <div class="ml-4">
             <h4 class="text-md font-medium text-gray-900"><%= t('profiles.public_profile_enabled') %></h4>
             <p class="text-sm text-gray-500"><%= t('profiles.public_profile_description') %></p>
+            <div class="mt-2">
+              <p class="text-sm text-gray-700"><%= t('profiles.your_public_link') %>:</p>
+              <div class="flex items-center mt-1">
+                <%= link_to view_profile_url(id: @user.id), view_profile_path(id: @user.id), class: "text-indigo-600 hover:text-indigo-800 text-sm break-all" %>
+                <button onclick="navigator.clipboard.writeText('<%= view_profile_url(id: @user.id) %>')" class="ml-2 text-gray-500 hover:text-gray-700" title="<%= t('profiles.copy_link') %>">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                  </svg>
+                </button>
+              </div>
+            </div>
           </div>
         <% else %>
           <div class="flex-shrink-0 h-10 w-10 bg-yellow-100 rounded-full flex items-center justify-center">

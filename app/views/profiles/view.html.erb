@@ -1,4 +1,4 @@
-<div class="max-w-3xl mx-auto p-6">
+<div class="max-w-6xl mx-auto p-6">
   <div class="sm:flex sm:items-center mb-6">
     <div class="sm:flex-auto">
       <h1 class="text-2xl font-semibold leading-6 text-gray-900">
@@ -81,8 +81,8 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <% # Only show non-secret achievements %>
-        <% @achievements[:earned].reject { |ua| ua.achievement_definition.secret }.sort_by { |ua| -ua.earned_at.to_i }.take(6).each do |user_achievement| %>
+        <% # Show all non-secret achievements, ordered by recency %>
+        <% @achievements[:earned].reject { |ua| ua.achievement_definition.secret }.sort_by { |ua| -ua.earned_at.to_i }.each do |user_achievement| %>
           <% achievement = user_achievement.achievement_definition %>
           <div class="achievement-card achievement-card-earned">
             <div class="achievement-icon">
