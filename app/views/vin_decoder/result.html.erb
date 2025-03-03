@@ -6,7 +6,19 @@
     </p>
   </div>
   <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-    <%= link_to t('vin_decoder.decode_another'), vin_decoder_path, class: "btn-primary" %>
+    <div class="flex items-center space-x-2">
+      <form action="<%= decode_vin_path(@vin_lookup.vin) %>" method="get" class="flex items-center">
+        <input type="text" 
+               name="vin" 
+               value="<%= @vin_lookup.vin %>" 
+               class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2"
+               maxlength="17">
+        <button type="submit" class="btn-secondary">
+          <%= t('vin_decoder.try_again') %>
+        </button>
+      </form>
+      <%= link_to t('vin_decoder.decode_another'), vin_decoder_path, class: "btn-primary" %>
+    </div>
   </div>
 </div>
 
@@ -23,7 +35,7 @@
       
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <% [ "manufacturer", "model", "vehicle_type", "plant", "variant", "version", "year", "serial_number", "check_digit" ].each do |key| %>
-          <% if @vin_lookup.decode_result.key?(key) %>
+          <% if @vin_lookup.decode_result&.key?(key) %>
             <div class="bg-gray-50 rounded p-3">
               <h3 class="text-sm font-semibold text-gray-600 mb-1">
                 <%= key.to_s.humanize %>

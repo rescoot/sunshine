@@ -1032,6 +1032,7 @@ de_DE:
     speed_version_y: Geschwindigkeitsversion (Y)
     successfully_decoded: 'Erfolgreich dekodierte VIN:'
     title: unu VIN-Decoder
+    try_again: Nochmal versuchen
     variant: Variante
     variant_desc: Zeigt die Motorleistung des Rollers an.
     vehicle_type: Fahrzeugtyp

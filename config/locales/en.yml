@@ -1010,6 +1010,7 @@ en:
     speed_version_y: Speed Version (Y)
     successfully_decoded: 'Successfully decoded VIN:'
     title: unu VIN Decoder
+    try_again: Try again
     variant: Variant
     variant_desc: Indicates the motor power rating of the scooter.
     vehicle_type: Vehicle Type

@@ -7,7 +7,7 @@ class VinDecoder
     raise ArgumentError, "VIN must be 17 characters" unless vin.length == 17
     raise ArgumentError, "Invalid VIN format" unless vin.match?(/^WUN/)
 
-    case vin[3..5]
+    decoder = case vin[3..5]
     when "U2S"
       U2sVinDecoder.new(vin)
     when "U2B"
@@ -15,10 +15,15 @@ class VinDecoder
     when "U1S"
       U1sVinDecoder.new(vin)
     when "URB"
-      RebelVinDecoder.new(vin) if vin[6] == "L"
+      if vin[6] == "L"
+        RebelVinDecoder.new(vin)
+      else
+        raise ArgumentError, "Invalid Rebel VIN format"
+      end
     else
       raise ArgumentError, "Unknown vehicle type"
     end
+    decoder
   end
 
   def initialize(vin)
@@ -26,12 +31,18 @@ class VinDecoder
   end
 
   def decode
-    {
-      manufacturer: decode_manufacturer,
-      model: model_name,
-      vehicle_type: vehicle_type,
-      serial_number: decode_serial_number
-    }.merge(model_specific_fields)
+    begin
+      {
+        manufacturer: decode_manufacturer,
+        model: model_name,
+        vehicle_type: vehicle_type,
+        serial_number: decode_serial_number
+      }.merge(model_specific_fields)
+    rescue => e
+      Rails.logger.error("Error in #{self.class.name}#decode for VIN: #{@vin}: #{e.message}")
+      Rails.logger.error("Error backtrace: #{e.backtrace.join("\n")}")
+      raise
+    end
   end
 
   private

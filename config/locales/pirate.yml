@@ -1130,6 +1130,7 @@ pirate:
     speed_version_y: Speed Version (Y)
     successfully_decoded: 'Successfully decoded Ship''s Registry:'
     title: unu VIN Codex o' Secrets
+    try_again: Once more, ye scallywag!
     variant: Variant
     variant_desc: Shows the engine power of the vessel.
     vehicle_type: Vessel Type

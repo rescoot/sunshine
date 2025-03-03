@@ -44,6 +44,7 @@
                 placeholder="<%= t('vin_decoder.example_vin') %>" 
                 required
                 maxlength="17"
+                value="<%= @vin_lookup&.vin %>"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
           <p class="text-gray-600 text-xs italic mt-2">
             <%= t('vin_decoder.vin_requirements') %>
