@@ -53,7 +53,7 @@ class U2bVinDecoder < VinDecoder
   end
 
   def decode_year
-    year = YEAR_CODES[@vin[9]]
+    year = YEAR_CODES.fetch(@vin[9], nil)
     raise ArgumentError, "Invalid year code" unless year
     year
   end
