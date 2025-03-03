@@ -97,9 +97,9 @@ class Scooter < ApplicationRecord
       "redis_url" => "redis://localhost:6379",
       "telemetry" => {
         "intervals" => {
-          "driving" => "1s",
-          "standby" => "5m",
-          "standby_no_battery" => "8h",
+          "driving" => "5s",
+          "standby" => "10m",
+          "standby_no_battery" => "4h",
           "hibernate" => "24h"
         }
       }
