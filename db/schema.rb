@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_28_140000) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_04_135403) do
   create_table "achievement_definitions", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
@@ -98,6 +98,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_28_140000) do
     t.json "params", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "request_id"
+    t.string "status", default: "pending"
+    t.boolean "queued", default: false
+    t.datetime "processed_at"
+    t.datetime "expires_at"
+    t.boolean "queueable", default: true
+    t.integer "queue_ttl", default: 3600
+    t.index ["expires_at"], name: "index_scooter_commands_on_expires_at"
+    t.index ["request_id"], name: "index_scooter_commands_on_request_id"
+    t.index ["scooter_id", "queued", "status"], name: "index_scooter_commands_on_queue_status"
     t.index ["scooter_id"], name: "index_scooter_commands_on_scooter_id"
     t.index ["user_id"], name: "index_scooter_commands_on_user_id"
   end
@@ -138,6 +148,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_28_140000) do
     t.json "device_ids"
     t.integer "last_unlock_user_id"
     t.datetime "last_unlocked_at"
+    t.boolean "battery0_present"
+    t.boolean "battery1_present"
     t.index ["imei"], name: "index_scooters_on_imei", unique: true
     t.index ["is_online"], name: "index_scooters_on_is_online"
     t.index ["last_seen_at"], name: "index_scooters_on_last_seen_at"
@@ -242,6 +254,102 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_28_140000) do
     t.index ["scooter_id", "lat", "lng"], name: "index_telemetries_on_scooter_id_and_coordinates", where: "lat IS NOT NULL AND lng IS NOT NULL"
     t.index ["scooter_id", "odometer"], name: "index_telemetries_on_scooter_id_and_odometer"
     t.index ["scooter_id"], name: "index_telemetries_on_scooter_id"
+  end
+
+  create_table "telemetries_archive", id: false, force: :cascade do |t|
+    t.integer "id", null: false
+    t.integer "scooter_id", null: false
+    t.string "state"
+    t.string "kickstand"
+    t.string "seatbox"
+    t.string "blinkers"
+    t.decimal "speed", precision: 10, scale: 2
+    t.decimal "odometer", precision: 10, scale: 2
+    t.decimal "motor_voltage", precision: 10, scale: 2
+    t.decimal "motor_current", precision: 10, scale: 2
+    t.decimal "temperature", precision: 10, scale: 2
+    t.decimal "battery0_level", precision: 5, scale: 2
+    t.decimal "battery1_level", precision: 5, scale: 2
+    t.boolean "battery0_present"
+    t.boolean "battery1_present"
+    t.decimal "aux_battery_level", precision: 5, scale: 2
+    t.decimal "aux_battery_voltage", precision: 10, scale: 2
+    t.decimal "cbb_battery_level", precision: 5, scale: 2
+    t.decimal "cbb_battery_current", precision: 10, scale: 2
+    t.decimal "lat", precision: 10, scale: 6
+    t.decimal "lng", precision: 10, scale: 6
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "timestamp"
+    t.string "main_power"
+    t.string "handlebar_lock"
+    t.string "handlebar_position"
+    t.string "brake_left"
+    t.string "brake_right"
+    t.string "blinker_switch"
+    t.string "seatbox_button"
+    t.string "horn_button"
+    t.string "engine_state"
+    t.string "kers_state"
+    t.string "kers_reason_off"
+    t.integer "motor_rpm"
+    t.string "throttle_state"
+    t.string "engine_fw_version"
+    t.string "battery0_state"
+    t.string "battery0_temp_state"
+    t.integer "battery0_soh"
+    t.json "battery0_temps"
+    t.integer "battery0_cycle_count"
+    t.string "battery0_fw_version"
+    t.string "battery0_manufacturing_date"
+    t.string "battery0_serial_number"
+    t.string "battery1_state"
+    t.string "battery1_temp_state"
+    t.integer "battery1_soh"
+    t.json "battery1_temps"
+    t.integer "battery1_cycle_count"
+    t.string "battery1_fw_version"
+    t.string "battery1_manufacturing_date"
+    t.string "battery1_serial_number"
+    t.string "aux_battery_charge_status"
+    t.integer "cbb_battery_temperature"
+    t.integer "cbb_battery_soh"
+    t.string "cbb_battery_charge_status"
+    t.integer "cbb_battery_cell_voltage"
+    t.integer "cbb_battery_cycle_count"
+    t.integer "cbb_battery_full_capacity"
+    t.string "cbb_battery_part_number"
+    t.integer "cbb_battery_remaining_capacity"
+    t.string "cbb_battery_serial_number"
+    t.integer "cbb_battery_time_to_empty"
+    t.integer "cbb_battery_time_to_full"
+    t.string "cbb_battery_unique_id"
+    t.string "environment"
+    t.string "dbc_version"
+    t.string "mdb_version"
+    t.string "nrf_fw_version"
+    t.string "modem_state"
+    t.string "access_tech"
+    t.integer "signal_quality"
+    t.string "internet_status"
+    t.string "ip_address"
+    t.string "cloud_status"
+    t.decimal "altitude", precision: 10, scale: 6
+    t.decimal "gps_speed", precision: 10, scale: 2
+    t.decimal "course", precision: 10, scale: 2
+    t.string "power_state"
+    t.string "power_mux_input"
+    t.string "wakeup_source"
+    t.string "ble_mac_address"
+    t.string "ble_status"
+    t.string "keycard_authentication"
+    t.string "keycard_uid"
+    t.string "keycard_type"
+    t.string "dashboard_mode"
+    t.boolean "dashboard_ready"
+    t.string "dashboard_serial_number"
+    t.index ["created_at"], name: "index_telemetries_archive_on_created_at"
+    t.index ["scooter_id"], name: "index_telemetries_archive_on_scooter_id"
   end
 
   create_table "trip_segments", force: :cascade do |t|
