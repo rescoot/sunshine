@@ -1,3 +1,4 @@
+<%= turbo_stream_from scooter %>
 <div class="bg-white shadow-sm rounded-lg hover:shadow-md transition-shadow duration-200 relative p-2">
   <%= link_to scooter_path(scooter), class: "block" do %>
     <div class="p-4 flex flex-col">
@@ -64,7 +65,7 @@
     </div>
   <% end %>
   
-  <div class="mt-0 border-t py-3 px-4">
+  <div id="scooter_<%= scooter.id %>_quick_controls" class="mt-0 border-t py-3 px-4">
     <%= render partial: "scooters/quick_controls", locals: { scooter: scooter } %>
   </div>
 </div>

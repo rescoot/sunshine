@@ -175,5 +175,13 @@ class ScooterCommandService
       params: params,
       scooter: @scooter.as_json
     }
+
+    # Broadcast updates to the quick controls section
+    Turbo::StreamsChannel.broadcast_replace_to(
+      @scooter,
+      target: "scooter_#{@scooter.id}_quick_controls",
+      partial: "scooters/quick_controls",
+      locals: { scooter: @scooter }
+    )
   end
 end
