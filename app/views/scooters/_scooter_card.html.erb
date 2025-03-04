@@ -1,102 +1,71 @@
-<%= link_to scooter_path(scooter), class: "block bg-white shadow-sm rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-200" do %>
-  <div class="p-4">
-    <div class="relative">
-      <%= image_tag scooter.scooter_image_path("side"), class: "w-full" %>
-      
-      <div class="absolute top-2 left-2 flex flex-col gap-2">
-        <% if scooter.is_online? %>
-          <div class="badge badge-success"><%= t('scooters.online') %></div>
-        <% elsif scooter.last_seen_at %>
-          <div class="badge badge-error"><%= t('scooters.last_seen', time_ago: time_ago_in_words(scooter.last_seen_at)) %></div>
-        <% else %>
-          <div class="badge badge-warning"><%= t('scooters.waiting_for_telemetry') %></div>
-        <% end %>
-      </div>
-    </div>
-
-    <div class="mt-4">
-      <div class="flex justify-between items-start">
-        <div>
-          <h3 class="text-base font-semibold text-gray-900">
-            <%= scooter.name %>
-          </h3>
-          <div class="mt-1 flex items-center gap-4">
-            <span class="text-sm text-gray-500 font-mono"><%= scooter.vin %></span>
-            <% if scooter.imei.present? %>
-              <span class="text-sm text-gray-500 font-mono"><%= scooter.imei %></span>
-            <% end %>
-          </div>
+<%= turbo_stream_from scooter %>
+<div class="bg-white shadow-sm rounded-lg hover:shadow-md transition-shadow duration-200 relative p-2">
+  <%= link_to scooter_path(scooter), class: "block" do %>
+    <div class="p-4 flex flex-col">
+        <div class="w-full mb-2">
+          <%= image_tag scooter.scooter_image_path("side"), class: "w-full max-w-xs mx-auto" %>
         </div>
-      </div>
+        
+        <div class="w-full flex flex-col">
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="text-base font-semibold text-gray-900 flex items-center">
+                <%= scooter.name %>
+                <% if scooter.is_online? %>
+                  <span class="inline-block w-2 h-2 rounded-full bg-green-500 ml-2"></span>
+                <% elsif scooter.last_seen_at %>
+                  <span class="inline-block w-2 h-2 rounded-full bg-red-500 ml-2"></span>
+                <% else %>
+                  <span class="inline-block w-2 h-2 rounded-full bg-yellow-500 ml-2"></span>
+                <% end %>
+              </h3>
+            </div>
+            
+            <div class="text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
 
-      <div class="mt-4 grid grid-cols-2 gap-4">
-        <div class="bg-gray-50 rounded-md p-3">
-          <div class="flex items-center gap-2">
-            <%= image_tag scooter.battery_image_path(scooter.battery0_level), class: "w-8 h-8" %>
-            <div class="flex-1">
-              <div class="text-xs text-gray-500 mb-1"><%= t('scooters.main_battery') %></div>
-              <div class="h-2 bg-gray-200 rounded-full">
-                <div class="h-full bg-green-500 rounded-full" style="width: <%= scooter.battery0_level %>%"></div>
+          <div class="mt-3 flex flex-col space-y-2">
+            <div class="flex items-center space-x-2">
+              <div class="flex flex-col items-center">
+                <div class="badge <%= battery_presence_classes(scooter.battery0_present) %>">
+                  <%= t('scooters.status.main_battery_with_level', level: number_to_percentage(scooter.battery0_level, precision: 0)) %>
+                </div>
               </div>
-              <div class="text-xs text-gray-600 mt-1"><%= number_to_percentage(scooter.battery0_level, precision: 0) %></div>
+              
+              <% if scooter.battery1_present %>
+                <div class="flex flex-col items-center">
+                  <div class="badge <%= battery_presence_classes(scooter.battery1_present) %>">
+                    <%= t('scooters.status.spare_battery_with_level', level: number_to_percentage(scooter.battery1_level, precision: 0)) %>
+                  </div>
+                </div>
+              <% end %>
+
+              <div class="badge <%= battery_status_classes(scooter.aux_battery_level) %>">
+                <%= t('scooters.status.aux_with_level', level: number_to_percentage(scooter.aux_battery_level, precision: 0)) %>
+              </div>
+
+              <div class="badge <%= battery_status_classes(scooter.cbb_battery_level) %>">
+                <%= t('scooters.status.cbb_with_level', level: number_to_percentage(scooter.cbb_battery_level, precision: 0)) %>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+              <div class="badge <%= scooter.locked? ? 'badge-error' : 'badge-success' %>">
+                <%= scooter.state&.titleize %>
+              </div>
+              <div class="badge badge-info"><%= t('scooters.status.kickstand_with_status', status: scooter.kickstand&.titleize || t('scooters.status.unknown')) %></div>
+              <div class="badge badge-info"><%= t('scooters.status.seatbox_with_status', status: scooter.seatbox&.titleize || t('scooters.status.unknown')) %></div>
             </div>
           </div>
         </div>
-
-        <div class="bg-gray-50 rounded-md p-3">
-          <div class="flex items-center gap-2">
-            <%= image_tag scooter.battery_image_path(scooter.battery1_level), class: "w-8 h-8" %>
-            <div class="flex-1">
-              <div class="text-xs text-gray-500 mb-1"><%= t('scooters.secondary_battery') %></div>
-              <div class="h-2 bg-gray-200 rounded-full">
-                <div class="h-full bg-green-500 rounded-full" style="width: <%= scooter.battery1_level %>%"></div>
-              </div>
-              <div class="text-xs text-gray-600 mt-1"><%= number_to_percentage(scooter.battery1_level, precision: 0) %></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-gray-50 rounded-md p-3">
-   <div class="flex items-center gap-2">
-     <%= image_tag "battery/batt_aux.webp", class: "w-8 h-8" %>
-     <div class="flex-1">
-       <div class="text-xs text-gray-500 mb-1"><%= t('scooters.aux_battery') %></div>
-       <div class="h-2 bg-gray-200 rounded-full">
-         <div class="h-full bg-green-500 rounded-full" style="width: <%= scooter.aux_battery_level %>%"></div>
-       </div>
-       <div class="text-xs text-gray-600 mt-1"><%= number_to_percentage(scooter.aux_battery_level, precision: 0) %></div>
-     </div>
-   </div>
- </div>
-
- <div class="bg-gray-50 rounded-md p-3">
-   <div class="flex items-center gap-2">
-     <%= image_tag "battery/batt_cbb.webp", class: "w-8 h-8" %>
-     <div class="flex-1">
-       <div class="text-xs text-gray-500 mb-1"><%= t('scooters.cb_battery') %></div>
-       <div class="h-2 bg-gray-200 rounded-full">
-         <div class="h-full bg-green-500 rounded-full" style="width: <%= scooter.cbb_battery_level %>%"></div>
-       </div>
-       <div class="text-xs text-gray-600 mt-1"><%= number_to_percentage(scooter.cbb_battery_level, precision: 0) %></div>
-     </div>
-   </div>
- </div>
-      </div>
-
-      <div class="mt-4">
-        <%# <div class="text-sm text-gray-500 mb-2">Status</div> %>
-        <div class="flex flex-wrap gap-2">
-          <div class="badge <%= scooter.locked? ? 'badge-error' : 'badge-success' %>">
-            <%= scooter.state&.titleize %>
-          </div>
-          <div class="badge badge-info"><%= t('scooters.kickstand', status: scooter.kickstand&.titleize) %></div>
-          <div class="badge badge-info"><%= t('scooters.seatbox', status: scooter.seatbox&.titleize) %></div>
-          <% if scooter.estimated_range %>
-            <div class="badge badge-info"><%= t('scooters.range_km', range: scooter.estimated_range.round(1)) %></div>
-          <% end %>
-        </div>
-      </div>
     </div>
-
+  <% end %>
+  
+  <div id="scooter_<%= scooter.id %>_quick_controls" class="mt-0 border-t py-3 px-4">
+    <%= render partial: "scooters/quick_controls", locals: { scooter: scooter } %>
   </div>
-<% end %>
+</div>

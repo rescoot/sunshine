@@ -116,6 +116,8 @@ class Scooter < ApplicationRecord
     self.odometer ||= 0
     self.battery0_level ||= 0
     self.battery1_level ||= 0
+    self.battery0_present ||= false
+    self.battery1_present ||= false
     self.aux_battery_level ||= 0
     self.cbb_battery_level ||= 0
   end
