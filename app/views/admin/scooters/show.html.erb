@@ -8,6 +8,7 @@
       <% if @scooter.is_online? %>
         <%= link_to t('admin.scooters.show.shell'), admin_scooter_shell_path(@scooter), class: "btn-primary" %>
       <% end %>
+      <%= button_to t('admin.scooters.show.process_trips'), process_trips_admin_scooter_path(@scooter), method: :post, class: "btn-primary", data: { turbo_confirm: t('admin.scooters.show.process_trips_confirm') } %>
       <%= link_to t('admin.scooters.show.edit'), edit_admin_scooter_path(@scooter), class: "btn-secondary" %>
       <%= link_to t('admin.scooters.show.back_to_list'), admin_scooters_path, class: "btn-secondary" %>
     </div>

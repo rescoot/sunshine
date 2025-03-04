@@ -151,6 +151,8 @@ en:
         location_column: Location
         never: Never
         owner_role: Owner
+        process_trips: Process Trips
+        process_trips_confirm: This will process all telemetry data since the last trip ended and generate new trips. Continue?
         recent_events: Recent Events
         recent_telemetry: Recent Telemetry
         remove_confirm: Are you sure you want to remove this user?
@@ -928,6 +930,7 @@ en:
     back: Back
     battery_status: Battery Status
     cb_battery: CB Battery
+    command_queued: "%{command_name} command queued for when scooter comes online."
     config_setup: Your configuration file (radio-gaga.yml) is properly set up with
       the correct VIN and API token
     confirm_alarm: Really sound alarm?

@@ -156,6 +156,8 @@ de_DE:
         location_column: Standort
         never: Nie
         owner_role: Besitzerrolle
+        process_trips: Fahrten verarbeiten
+        process_trips_confirm: Dies verarbeitet alle Telemetriedaten seit dem Ende der letzten Fahrt und generiert neue Fahrten. Fortfahren?
         recent_events: Neueste Ereignisse
         recent_telemetry: Neueste Telemetrie
         remove_confirm: Wirklich entfernen?
@@ -959,6 +961,8 @@ de_DE:
     back: Zurück
     battery_status: Batteriestatus
     cb_battery: CB-Batterie
+    command_queued: "%{command_name}-Befehl in die Warteschlange gestellt, bis der
+      Roller wieder online ist."
     config_setup: Deine Konfigurationsdatei (radio-gaga.yml) korrekt mit der richtigen
       VIN und dem API-Token eingerichtet ist
     confirm_alarm: Wirklich Alarm auslösen?

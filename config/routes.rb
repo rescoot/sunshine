@@ -39,6 +39,9 @@ Rails.application.routes.draw do
       end
     end
     resources :scooters do
+      member do
+        post :process_trips
+      end
       resources :telemetries, only: [ :index, :show ]
       resources :events, only: [ :index, :show ]
       resources :user_scooters, only: [ :create, :destroy ]

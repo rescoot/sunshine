@@ -28,3 +28,7 @@ production:
     class: AchievementProcessingJob
     queue: background
     schedule: "every hour"
+  cleanup_expired_commands:
+    class: CleanupExpiredCommandsJob
+    queue: background
+    schedule: "every hour"

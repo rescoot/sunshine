@@ -154,6 +154,9 @@ pirate:
         location_column: Location
         never: Never spotted
         owner_role: Captain's Role
+        process_trips: Chart Ye Voyages
+        process_trips_confirm: Arr! This be plottin' all yer ship's logs since yer
+          last voyage ended and drawin' new treasure maps. Proceed, ye scurvy dog?
         recent_events: Recent Ship's Log
         recent_telemetry: Recent Crow's Nest Reports
         remove_confirm: Really send to Davy Jones?
@@ -940,6 +943,8 @@ pirate:
     back: Back t' Port
     battery_status: Sail Power Status
     cb_battery: Crow's Nest Power
+    command_queued: Arr! Yer %{command_name} order be queued in th' hold 'til yer
+      vessel returns to port!
     config_setup: Yer map (radio-gaga.yml) be properly set up with th' correct registry
       and treasure map token
     confirm_alarm: Really sound th' alarm bell, matey?

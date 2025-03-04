@@ -1,5 +1,5 @@
 class Admin::ScootersController < Admin::ApplicationController
-  before_action :set_scooter, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_scooter, only: [ :show, :edit, :update, :destroy, :process_trips ]
 
   def index
     @scooters = Scooter.includes(:users, :user_scooters)
@@ -56,6 +56,13 @@ class Admin::ScootersController < Admin::ApplicationController
   def destroy
     @scooter.destroy
     redirect_to admin_scooters_path, notice: "Scooter was successfully deleted.", status: :see_other
+  end
+
+  def process_trips
+    processor = HistoricalTripProcessor.new(scooter_ids: [ @scooter.id ])
+    stats = processor.process
+
+    redirect_to admin_scooter_path(@scooter), notice: "Trip processing completed. Created #{stats[:valid_trips_created]} new trips."
   end
 
   private

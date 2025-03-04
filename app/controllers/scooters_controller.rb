@@ -171,7 +171,11 @@ class ScootersController < ApplicationController
 
   def handle_command_result(result, command_name)
     if result.success?
-      redirect_to @scooter, notice: "#{command_name} command sent."
+      if result.response&.is_a?(Hash) && result.response[:queued]
+        redirect_to @scooter, notice: "#{command_name} command queued for when scooter comes online."
+      else
+        redirect_to @scooter, notice: "#{command_name} command sent."
+      end
     else
       redirect_to @scooter, alert: "Failed to send #{command_name.downcase} command: #{result.error}"
     end

@@ -1,6 +1,6 @@
 class ScooterCommandService
   Result = Struct.new(:success?, :error, :response)
-  COMMAND_TIMEOUT = 5.seconds
+  COMMAND_TIMEOUT = 10.seconds # Increased from 5 to 10 seconds
   VALID_REDIS_COMMANDS = %w[get set hget hset hgetall lpush lpop].freeze
 
   def initialize(scooter, user = nil)
@@ -25,12 +25,14 @@ class ScooterCommandService
     end
 
     # Record the command in the database if a user is provided
+    scooter_command = nil
     if @user
-      ScooterCommand.create!(
+      scooter_command = ScooterCommand.create!(
         scooter: @scooter,
         user: @user,
         command: command,
-        params: params
+        params: params,
+        request_id: request_id
       )
 
       # If this is an unlock command, also update the scooter's last_unlock_user
@@ -42,26 +44,71 @@ class ScooterCommandService
       end
     end
 
-    if publish_mqtt(command_data)
-      Result.new(true, nil)
+    # Check if scooter is online
+    if @scooter.is_online?
+      # Scooter is online, send command immediately
+      Rails.logger.debug("Publishing #{command_data}")
+      if publish_mqtt(command_data)
+        Rails.logger.debug("Waiting for ack for #{request_id}")
+        response = wait_for_ack(request_id)
+        if response
+          Rails.logger.debug("Got ack!")
+          scooter_command&.mark_as_succeeded if response["status"] == "success"
+          scooter_command&.mark_as_failed if response["status"] == "error"
+          handle_command_response(command_data[:command], command_data[:params], response)
+        else
+          scooter_command&.mark_as_failed
+          Result.new(false, "Command timed out")
+        end
+      else
+        scooter_command&.mark_as_failed
+        Result.new(false, "Failed to send command")
+      end
+    elsif scooter_command&.queueable?
+      # Scooter is offline but command is queueable, queue it
+      scooter_command.update(queued: true)
+      Result.new(true, nil, { queued: true })
     else
+      # Scooter is offline and command is not queueable
+      Result.new(false, "Scooter is offline and command cannot be queued")
+    end
+  rescue StandardError => e
+    Rails.logger.error("Error sending command: #{e.message}")
+    Result.new(false, e.message)
+  end
+
+  # Method to send a previously queued command
+  def send_queued_command(command)
+    return Result.new(false, "Command has expired") if command.expired?
+
+    command_data = {
+      command: command.command,
+      params: command.params,
+      timestamp: Time.current.to_i,
+      request_id: command.request_id
+    }
+
+    command_data[:stream] = true if command.command == "shell"
+
+    Rails.logger.debug("Publishing queued command #{command_data}")
+    if publish_mqtt(command_data)
+      Rails.logger.debug("Waiting for ack for #{command.request_id}")
+      response = wait_for_ack(command.request_id)
+      if response
+        Rails.logger.debug("Got ack!")
+        command.mark_as_succeeded if response["status"] == "success"
+        command.mark_as_failed if response["status"] == "error"
+        handle_command_response(command.command, command.params, response)
+      else
+        command.mark_as_failed
+        Result.new(false, "Command timed out")
+      end
+    else
+      command.mark_as_failed
       Result.new(false, "Failed to send command")
     end
-
-    # Rails.logger.debug("Publishing #{command_data}")
-    # if publish_mqtt(command_data)
-    #   Rails.logger.debug("Waiting for ack for #{request_id}")
-    #   response = wait_for_ack(request_id)
-    #   if response
-    #     Rails.logger.debug("Got ack!")
-    #     handle_command_response(command_data[:command], command_data[:params], response)
-    #   else
-    #     Result.new(false, "Command timed out")
-    #   end
-    # else
-    #   Result.new(false, "Failed to send command")
-    # end
   rescue StandardError => e
+    Rails.logger.error("Error sending queued command: #{e.message}")
     Result.new(false, e.message)
   end
 
