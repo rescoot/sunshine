@@ -73,3 +73,7 @@ gem "rubocop", "~> 1.71"
 
 # Two-factor authentication for Devise
 gem "devise-otp", "~> 1.0.0"
+
+gem "erb", "~> 4.0"
+
+gem "foreman", "~> 0.88.1"
