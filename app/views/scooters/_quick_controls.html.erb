@@ -1,0 +1,105 @@
+<div data-controller="toggle-controls">
+  <!-- Primary Controls Row -->
+  <div class="flex items-center space-x-2">
+    <% if scooter.unlocked? %>
+      <%= button_to lock_scooter_path(scooter), class: "btn-primary red py-2 px-2 flex items-center justify-center" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+        </svg>
+        <span><%= t('scooters.quick.turn_off_lock') %></span>
+      <% end %>
+    <% else %>
+      <%= button_to unlock_scooter_path(scooter), class: "btn-primary green py-2 px-2 flex items-center justify-center" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M14.5 1A4.5 4.5 0 0010 5.5V9H3a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-1.5V5.5a3 3 0 116 0v2.75a.75.75 0 001.5 0V5.5A4.5 4.5 0 0014.5 1z" clip-rule="evenodd" />
+        </svg>
+        <span><%= t('scooters.quick.unlock_turn_on') %></span>
+      <% end %>
+    <% end %>
+
+    <%= button_to open_seatbox_scooter_path(scooter), class: "btn-primary py-2 px-2 flex items-center justify-center" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd" />
+      </svg>
+      <span><%= t('scooters.quick.open_seatbox') %></span>
+    <% end %>
+
+    <%= button_to locate_scooter_path(scooter), class: "btn-primary py-2 px-2 flex items-center justify-center" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+      </svg>
+      <span><%= t('scooters.quick.find_my_scooter') %></span>
+    <% end %>
+
+    <!-- Toggle Button with Chevron -->
+    <button type="button" data-action="toggle-controls#toggle" class="btn-secondary py-2 px-2 flex items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-200" data-toggle-controls-target="icon" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+      </svg>
+      <span class="sr-only"><%= t('scooters.more_controls') %></span>
+    </button>
+  </div>
+
+  <!-- Additional Controls (Hidden by Default) -->
+  <div data-toggle-controls-target="content" class="mt-4 hidden">
+    <!-- Turn Signals -->
+    <div class="mb-4">
+      <h4 class="text-xs font-medium text-gray-700 mb-2"><%= t('scooters.turn_signals') %></h4>
+      <div class="flex flex-wrap gap-2">
+        <%= button_to blinkers_scooter_path(scooter, state: "left"), class: "btn-warning py-2 flex items-center justify-center" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+          </svg>
+          <%= t('scooters.quick.left_signal') %>
+        <% end %>
+        
+        <%= button_to blinkers_scooter_path(scooter, state: "right"), class: "btn-warning py-2 flex items-center justify-center" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+          <%= t('scooters.quick.right_signal') %>
+        <% end %>
+        
+        <%= button_to blinkers_scooter_path(scooter, state: "both"), class: "btn-primary red py-2 flex items-center justify-center" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+          <%= t('scooters.quick.hazard_lights') %>
+        <% end %>
+        
+        <%= button_to blinkers_scooter_path(scooter, state: "off"), class: "btn-secondary py-2 flex items-center justify-center text-gray-700" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+          <%= t('scooters.quick.turn_off_signals') %>
+        <% end %>
+      </div>
+    </div>
+    
+    <!-- Alerts -->
+    <div class="mb-4">
+      <h4 class="text-xs font-medium text-gray-700 mb-2"><%= t('scooters.alerts') %></h4>
+      <div class="flex flex-wrap gap-2">
+        <%= button_to honk_scooter_path(scooter), class: "btn-secondary py-2 flex items-center justify-center" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1v-4.382l6.553 3.276A1 1 0 0018 15V3z" clip-rule="evenodd" />
+          </svg>
+          <%= t('scooters.honk') %>
+        <% end %>
+
+        <%= button_to alarm_scooter_path(scooter),
+            class: "btn-warning py-2 flex items-center justify-center",
+            data: { 
+              controller: "confirm",
+              action: "confirm#confirm",
+              confirm_message_value: t('scooters.confirm_alarm')
+            } do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+          <%= t('scooters.alarm_5s') %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

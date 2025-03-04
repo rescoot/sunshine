@@ -8,7 +8,8 @@ en:
     discovered_time_ago: Discovered %{time_ago} ago
     earned_time_ago: Earned %{time_ago} ago
     is: is
-    keep_exploring: Keep exploring! There %{is_are} %{count} secret %{achievement_s} waiting to be discovered...
+    keep_exploring: Keep exploring! There %{is_are} %{count} secret %{achievement_s}
+      waiting to be discovered...
     next_to_earn: Next Achievements to Earn
     none_yet: No Achievements Yet
     points: points
@@ -66,12 +67,14 @@ en:
       form:
         cancel: Cancel
         default_enabled: Default Enabled
-        default_enabled_description: If checked, this feature will be enabled by default for all users unless explicitly disabled.
+        default_enabled_description: If checked, this feature will be enabled by default
+          for all users unless explicitly disabled.
         description: Description
         error: Error
         error_count: error
         key: Key
-        key_description: Unique identifier for this feature flag (e.g., "leaderboards", "achievements")
+        key_description: Unique identifier for this feature flag (e.g., "leaderboards",
+          "achievements")
         name: Name
         prohibited_saving: prohibited this feature flag from being saved
         submit: Save Feature Flag
@@ -340,9 +343,11 @@ en:
         danger_zone: Danger Zone
         default: Default
         delete_button: Delete User
-        delete_confirmation: Are you sure you want to delete this user? This action cannot be undone and will remove all associated data.
+        delete_confirmation: Are you sure you want to delete this user? This action
+          cannot be undone and will remove all associated data.
         delete_user: Delete this user
-        delete_warning: Once you delete a user, there is no going back. Please be certain.
+        delete_warning: Once you delete a user, there is no going back. Please be
+          certain.
         description: Description
         disabled: Disabled
         enabled: Enabled
@@ -361,7 +366,8 @@ en:
         admin_label: Admin
         ago: ago
         delete: Delete
-        delete_confirm: Are you sure you want to delete this user? This action cannot be undone and will remove all associated data.
+        delete_confirm: Are you sure you want to delete this user? This action cannot
+          be undone and will remove all associated data.
         description: A list of all users in the system.
         edit: Edit
         email: Email
@@ -423,17 +429,20 @@ en:
     overview: Overview of your scooters and riding statistics.
     ready_to_ride: Ready to Ride!
     recent_trips: Recent Trips
-    register_scooter: Register your scooter using its VIN (found on the back left of your scooter's frame, on a riveted plaque)
+    register_scooter: Register your scooter using its VIN (found on the back left
+      of your scooter's frame, on a riveted plaque)
     scooter: Scooter
     scooters_registered:
       one: 'You have 1 scooter registered. Trips are automatically tracked when:'
-      other: 'You have %{count} scooters registered. Trips are automatically tracked when:'
+      other: 'You have %{count} scooters registered. Trips are automatically tracked
+        when:'
     start_tracking: Start tracking your rides and monitoring your scooter's status
     status: Status
     title: Dashboard
     total_distance: Total Distance
     total_trips: Total Trips
-    trip_data_logged: All trip data including distance, duration, and route are logged automatically
+    trip_data_logged: All trip data including distance, duration, and route are logged
+      automatically
     trip_ends: The trip ends when your scooter is parked or enters hibernation
     trip_starts: A trip starts when your scooter enters "ready-to-drive" mode
     trip_stats: Trip Stats
@@ -450,9 +459,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
-
-    
-    - 
+    -
     - Jan
     - Feb
     - Mar
@@ -478,9 +485,7 @@ en:
       long: "%B %d, %Y"
       short: "%b %d"
     month_names:
-
-    
-    - 
+    -
     - January
     - February
     - March
@@ -554,7 +559,9 @@ en:
         title: Please enter your password again.
       edit_otp_token:
         confirmation_code: Confirmation Code
-        explain: Two-Factor Authentication adds an additional layer of security to your account. When logging in you will be asked for a code that you can generate on a physical device, like your phone.
+        explain: Two-Factor Authentication adds an additional layer of security to
+          your account. When logging in you will be asked for a code that you can
+          generate on a physical device, like your phone.
         lead_in: 'To Enable Two-Factor Authentication:'
         step_1: '1. Open your authenticator app and scan the QR code shown below:'
         step_2: '2. Enter the 6-digit code shown in your authenticator app below:'
@@ -569,15 +576,19 @@ en:
           code: Recovery Code
           codes_list: Here is the list of your recovery codes
           download_codes: Download recovery codes
-          explain: Take note or print these recovery codes. The will allow you to log back in in case your token device is lost, stolen, or unavailable.
+          explain: Take note or print these recovery codes. The will allow you to
+            log back in in case your token device is lost, stolen, or unavailable.
           sequence: Sequence
           title: Your Emergency Recovery Codes
-        reset_explain: Resetting your token secret will temporarilly disable Two-Factor Authentication.
-        reset_explain_warn: To re-enable Two-Factor Authentication, you will need to re-enroll your mobile device with the new token secret.
+        reset_explain: Resetting your token secret will temporarilly disable Two-Factor
+          Authentication.
+        reset_explain_warn: To re-enable Two-Factor Authentication, you will need
+          to re-enroll your mobile device with the new token secret.
         reset_link: Reset Token Secret
         title: 'Two-Factor Authentication:'
       submit_token:
-        explain: You're getting this because you enabled Two-Factor Authentication on your account
+        explain: You're getting this because you enabled Two-Factor Authentication
+          on your account
         prompt: 'Please enter your Two-Factor Authentication token:'
         recovery_link: I don't have my device, I want to use a recovery code
         recovery_prompt: 'Please enter your recovery code:'
@@ -589,7 +600,8 @@ en:
       trusted_browsers:
         browser_not_trusted: Your browser is not trusted.
         browser_trusted: Your browser is trusted.
-        explain: If you set your browser as trusted, you will not be asked to provide a Two-Factor Authentication token when logging in from that browser.
+        explain: If you set your browser as trusted, you will not be asked to provide
+          a Two-Factor Authentication token when logging in from that browser.
         title: Trusted Browsers
         trust_add: Trust this browser
         trust_clear: Clear the list of trusted browsers
@@ -692,7 +704,8 @@ en:
   helpers:
     page_entries_info:
       more_pages:
-        display_entries: Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total
+        display_entries: Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b>
+          of <b>%{total}</b> in total
       one_page:
         display_entries:
           one: Displaying <b>%{count}</b> %{entry_name}
@@ -714,12 +727,8 @@ en:
     below_average: "%{percent}% below average"
     community_average: Community average
     community_averages: Community Averages
-    current_week: Current Week
-    previous_week: Previous Week
     current_month: Current Month
-    previous_month: Previous Month
-    week_of: Week of %{date}
-    month_of: "%{date}"
+    current_week: Current Week
     description: Compare your riding stats with other scooter owners.
     display_name: Display Name
     display_name_description: This is the name that will be shown on the leaderboard.
@@ -733,16 +742,21 @@ en:
     location_not_shared: Your location data or trip routes
     max_speed: Max Speed
     max_speed_visible: Maximum speed achieved
+    month_of: "%{date}"
     no_data: No leaderboard data available for this period.
     no_trips_in_period: You haven't completed any trips during this period yet.
     not_shared: 'We do not share:'
     notifications_description: Get notified when you earn new achievements.
     of_riders: of %{total_users} riders
-    opt_in_description: Opt in to the leaderboard to compare your riding stats with other scooter owners.
+    opt_in_description: Opt in to the leaderboard to compare your riding stats with
+      other scooter owners.
     opt_in_now: Opt In Now
-    opt_out_anytime: You can opt out of the leaderboard at any time by unchecking the participation option above.
+    opt_out_anytime: You can opt out of the leaderboard at any time by unchecking
+      the participation option above.
     participate: Participate in Leaderboard
     personal_info_not_shared: Any personal information about you or your scooter
+    previous_month: Previous Month
+    previous_week: Previous Week
     privacy_information: Privacy Information
     profile_settings: Profile Settings
     profile_visible: Your profile will be visible to other users.
@@ -759,7 +773,9 @@ en:
     top_riders: Top Riders
     trips: Trips
     trips_visible: Number of trips completed
-    visible_information: 'When you opt in to the leaderboard, the following information will be visible to other users:'
+    visible_information: 'When you opt in to the leaderboard, the following information
+      will be visible to other users:'
+    week_of: Week of %{date}
     you: You
     your_rank: Your Rank
     your_stats: Your Stats
@@ -847,8 +863,10 @@ en:
     config_file: Configuration File (radio-gaga.yml)
     download_config: Download Configuration
     go_to_dashboard: Go to Dashboard
-    scooter_registered: Your scooter <%= @scooter.name %> has been registered. Here's your configuration for telemetry setup.
-    token_warning: This configuration contains your API token which will only be shown once. Make sure to save it now!
+    scooter_registered: Your scooter <%= @scooter.name %> has been registered. Here's
+      your configuration for telemetry setup.
+    token_warning: This configuration contains your API token which will only be shown
+      once. Make sure to save it now!
   profiles:
     achievements: Achievements
     achievements_visible: Your earned achievements
@@ -856,15 +874,18 @@ en:
     back_to_profile: Back to Profile
     community_member: Community Member
     community_name: Community Name
-    community_name_description: This is the name that will be shown on your public profile and the leaderboard.
+    community_name_description: This is the name that will be shown on your public
+      profile and the leaderboard.
     copy_link: Copy link to clipboard
     description: View and manage your public profile settings.
     display_name_visible: Your community name (not your real name or email)
     edit_description: Manage your public profile and leaderboard settings.
     edit_profile: Edit Profile
     edit_title: Edit Profile
-    enable_leaderboard_prompt: Enable leaderboard participation to compare your stats with other riders.
-    enable_profile_prompt: Enable your public profile to share your achievements with the community.
+    enable_leaderboard_prompt: Enable leaderboard participation to compare your stats
+      with other riders.
+    enable_profile_prompt: Enable your public profile to share your achievements with
+      the community.
     enable_public_profile: Enable Public Profile
     fix_errors: 'Please fix the following errors:'
     leaderboard_description: Your riding stats are visible on the leaderboard.
@@ -894,7 +915,8 @@ en:
     save_settings: Save Settings
     title: My Profile
     view_all_achievements: View All Achievements
-    visible_information: 'When you enable your public profile, the following information will be visible to other users:'
+    visible_information: 'When you enable your public profile, the following information
+      will be visible to other users:'
     your_public_link: Your public profile link
   scooters:
     add_scooter: Add Scooter
@@ -906,7 +928,8 @@ en:
     back: Back
     battery_status: Battery Status
     cb_battery: CB Battery
-    config_setup: Your configuration file (radio-gaga.yml) is properly set up with the correct VIN and API token
+    config_setup: Your configuration file (radio-gaga.yml) is properly set up with
+      the correct VIN and API token
     confirm_alarm: Really sound alarm?
     confirm_update: Start client update?
     details_and_controls: Scooter details and controls.
@@ -946,17 +969,29 @@ en:
     left_signal: Left Signal
     live_dashboard: Live Dashboard
     main_battery: Main Battery
+    more_controls: More Controls
     my_scooters: My Scooters
     new_token: New Token
     online: Online
     open_seatbox: Open Seatbox
     ping: Ping
     primary_commands: Primary Commands
+    quick:
+      find_my_scooter: Find
+      hazard_lights: Both
+      left_signal: Left
+      open_seatbox: Open Seat
+      right_signal: Right
+      turn_off_lock: Lock
+      turn_off_signals: 'Off'
+      unlock_turn_on: Unlock
+    quick_controls: Quick Controls
     range_km: "%{range} km range"
     redis_commands: Redis Commands
     request_telemetry: Request Telemetry
     right_signal: Right Signal
-    scooter_list_description: A list of all your registered scooters and their current status.
+    scooter_list_description: A list of all your registered scooters and their current
+      status.
     seatbox: Seatbox %{status}
     secondary_battery: Secondary
     service_status: Service Status
@@ -964,6 +999,7 @@ en:
     statistics: Statistics
     status:
       aux_with_level: Aux %{level}
+      battery: Battery %{number} %{status}
       cbb_with_level: CBB %{level}
       click_to_copy_imei: Click to copy IMEI
       click_to_copy_vin: Click to copy VIN
@@ -973,16 +1009,20 @@ en:
       last_seen_ago: Last seen %{time_ago} ago
       location_unknown: Location unknown
       main_battery_with_level: Main %{level}
+      missing: Missing
       offline: Offline
       online: Online
+      present: Present
       range_km: "%{range} km range"
       range_unknown: Range unknown
       seatbox_with_status: Seatbox %{status}
       spare_battery_with_level: Spare %{level}
       unknown: unknown
       vin_with_value: 'VIN: %{vin}'
+      waiting_for_telemetry: Waiting for telemetry
     system_uptime: System Uptime
-    telemetry_instructions: 'Your scooter hasn''t submitted any telemetry data yet. Please ensure:'
+    telemetry_instructions: 'Your scooter hasn''t submitted any telemetry data yet.
+      Please ensure:'
     telemetry_running: The telemetry service is running on your scooter
     turn_off_lock: Turn off & lock
     turn_off_signals: Turn Off Signals
@@ -1063,7 +1103,8 @@ en:
     description: Decode your scooter's Vehicle Identification Number.
     details_meaning: What do these details mean?
     enter_vin: Enter Vehicle Identification Number (VIN)
-    example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW motor, max 45 km/h, built in 2021'
+    example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW
+      motor, max 45 km/h, built in 2021'
     example_vin: e.g. WUNU2S3A6KZ000001
     format_description: 'The unu Scooter 2.x VIN follows this format:'
     format_title: unu Scooter 2.x VIN Format
@@ -1087,7 +1128,8 @@ en:
     plant_zhuhai: Z = Zhuhai, China
     position_breakdown: Position Breakdown
     possible_values: Possible Values
-    result_example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span> = 4kW motor, max 45 km/h, built in 2021'
+    result_example: 'Example: WUNU2S4BXM<span class="text-gray-400">Z000123</span>
+      = 4kW motor, max 45 km/h, built in 2021'
     results_title: VIN Decoder Results
     serial_number: Serial number
     serial_number_desc: The unique identifier for this specific scooter.
@@ -1104,10 +1146,13 @@ en:
     vehicle_type_desc: Provides the technical classification of the vehicle.
     version: Version (A = max 25 km/h, B = max 45 km/h)
     version_desc: Specifies the maximum speed capability of the scooter.
-    vin_explanation: A Vehicle Identification Number (VIN) is a unique 17-character code used to identify individual motor vehicles. For unu scooters, the VIN provides details about the model, year of manufacture, and other specific information.
+    vin_explanation: A Vehicle Identification Number (VIN) is a unique 17-character
+      code used to identify individual motor vehicles. For unu scooters, the VIN provides
+      details about the model, year of manufacture, and other specific information.
     vin_format_intro: 'The unu Scooter 2.x VIN follows this format:'
     vin_format_title: unu Scooter 2.x VIN Format
-    vin_requirements: VIN must be 17 characters long and start with WUN. Try it out with WUNU2S3A6KZ000001.
+    vin_requirements: VIN must be 17 characters long and start with WUN. Try it out
+      with WUNU2S3A6KZ000001.
     what_is_vin: What is a VIN?
     year: Year
     year_2017_2019: H = 2017, J = 2018, K = 2019

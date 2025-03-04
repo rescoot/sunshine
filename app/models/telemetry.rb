@@ -186,6 +186,9 @@ class Telemetry < ApplicationRecord
     return unless scooter.present?
 
     scooter.ble_mac = ble_mac_address if ble_mac_address.present?
+    scooter.battery0_present = battery0_present if battery0_present.present?
+    scooter.battery1_present = battery1_present if battery1_present.present?
+
     scooter.save!
   end
 
