@@ -1011,11 +1011,11 @@ de_DE:
       find_my_scooter: Suchen
       hazard_lights: Beide
       left_signal: Links
-      open_seatbox: Sitz öffnen
+      open_seatbox: Sitz
       right_signal: Rechts
-      turn_off_lock: Sperren
+      turn_off_lock: Aus
       turn_off_signals: Aus
-      unlock_turn_on: Starten
+      unlock_turn_on: An
     quick_controls: Schnellsteuerung
     range_km: "%{range} km Reichweite"
     redis_commands: Redis-Befehle

@@ -992,11 +992,11 @@ pirate:
       find_my_scooter: Find Ship
       hazard_lights: Both Lanterns Aglow
       left_signal: Port
-      open_seatbox: Open Chest
+      open_seatbox: Chest
       right_signal: Starboard
-      turn_off_lock: Drop Anchor
-      turn_off_signals: Belay That
-      unlock_turn_on: Set Sail
+      turn_off_lock: Anchor
+      turn_off_signals: Hatches
+      unlock_turn_on: Sail
     quick_controls: Swift Commands
     range_km: "%{range} leagues o' range"
     redis_commands: Sea Witch Commands

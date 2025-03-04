@@ -980,11 +980,11 @@ en:
       find_my_scooter: Find
       hazard_lights: Both
       left_signal: Left
-      open_seatbox: Open Seat
+      open_seatbox: Open
       right_signal: Right
-      turn_off_lock: Lock
+      turn_off_lock: "Off"
       turn_off_signals: 'Off'
-      unlock_turn_on: Unlock
+      unlock_turn_on: "On"
     quick_controls: Quick Controls
     range_km: "%{range} km range"
     redis_commands: Redis Commands
