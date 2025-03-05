@@ -157,7 +157,8 @@ de_DE:
         never: Nie
         owner_role: Besitzerrolle
         process_trips: Fahrten verarbeiten
-        process_trips_confirm: Dies verarbeitet alle Telemetriedaten seit dem Ende der letzten Fahrt und generiert neue Fahrten. Fortfahren?
+        process_trips_confirm: Dies verarbeitet alle Telemetriedaten seit dem Ende
+          der letzten Fahrt und generiert neue Fahrten. Fortfahren?
         recent_events: Neueste Ereignisse
         recent_telemetry: Neueste Telemetrie
         remove_confirm: Wirklich entfernen?
@@ -955,6 +956,7 @@ de_DE:
     add_scooter: Roller hinzufügen
     admin_controls: Admin-Steuerung
     admin_shell: Admin-Shell
+    admin_view: Admin-Ansicht
     alarm_5s: Alarm (5s)
     alerts: Alarme
     aux_battery: Hilfsbatterie
@@ -1021,6 +1023,7 @@ de_DE:
       turn_off_signals: Aus
       unlock_turn_on: An
     quick_controls: Schnellsteuerung
+    quick_stats: Schnellübersicht
     range_km: "%{range} km Reichweite"
     redis_commands: Redis-Befehle
     request_telemetry: Telemetrie anfordern
@@ -1064,6 +1067,7 @@ de_DE:
     turn_signals: Blinker
     unlock_turn_on: Entsperren & einschalten
     update_client: Client aktualisieren
+    view_statistics: Statistiken anzeigen
     waiting_for_telemetry: Warte auf Telemetriedaten
   support:
     array:

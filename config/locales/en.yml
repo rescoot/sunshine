@@ -152,7 +152,8 @@ en:
         never: Never
         owner_role: Owner
         process_trips: Process Trips
-        process_trips_confirm: This will process all telemetry data since the last trip ended and generate new trips. Continue?
+        process_trips_confirm: This will process all telemetry data since the last
+          trip ended and generate new trips. Continue?
         recent_events: Recent Events
         recent_telemetry: Recent Telemetry
         remove_confirm: Are you sure you want to remove this user?
@@ -924,6 +925,7 @@ en:
     add_scooter: Add Scooter
     admin_controls: Admin Controls
     admin_shell: Admin Shell
+    admin_view: Admin View
     alarm_5s: Alarm (5s)
     alerts: Alerts
     aux_battery: Aux Battery
@@ -985,10 +987,11 @@ en:
       left_signal: Left
       open_seatbox: Open
       right_signal: Right
-      turn_off_lock: "Off"
+      turn_off_lock: 'Off'
       turn_off_signals: 'Off'
-      unlock_turn_on: "On"
+      unlock_turn_on: 'On'
     quick_controls: Quick Controls
+    quick_stats: Quick Stats
     range_km: "%{range} km range"
     redis_commands: Redis Commands
     request_telemetry: Request Telemetry
@@ -1032,6 +1035,7 @@ en:
     turn_signals: Turn Signals
     unlock_turn_on: Unlock & turn on
     update_client: Update Client
+    view_statistics: View Statistics
     waiting_for_telemetry: Waiting for telemetry data
   support:
     array:
