@@ -1,20 +1,21 @@
 services:
-  # sunshine:
-  #   build: .
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - .:/app
-  #     - bundle_cache:/usr/local/bundle
-  #   environment:
-  #     - RAILS_ENV=development
-  #     - RAILS_MAX_THREADS=5
-  #     - MQTT_HOST=mqtt
-  #     - MQTT_PORT=1883
-  #     - MQTT_USER=sunshine
-  #     - MQTT_PASSWORD=development
-  #   depends_on:
-  #     - mqtt
+  sunshine:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+    environment:
+      - RAILS_ENV=development
+      - RAILS_MAX_THREADS=5
+      - MQTT_HOST=localhost
+      - MQTT_PORT=1883
+      - MQTT_USERNAME=cloud_service
+      - MQTT_PASSWORD=password
+    depends_on:
+      - mqtt
+    network_mode: host
 
   # radio-gaga:
   #   build:
@@ -39,7 +40,7 @@ services:
       - "1883:1883"
       - "9001:9001"
     volumes:
-      - ./config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./config/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
       - ./config/mosquitto/passwd:/mosquitto/config/passwd
       - ./config/mosquitto/acl:/mosquitto/config/acl
       - mqtt_data:/mosquitto/data
