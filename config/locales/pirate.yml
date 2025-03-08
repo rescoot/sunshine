@@ -937,6 +937,7 @@ pirate:
     add_scooter: Add Vessel
     admin_controls: Cap'n's Secret Controls
     admin_shell: Cap'n's Console
+    admin_view: Captain's Quarterdeck
     alarm_5s: Ring th' Bell (5s)
     alerts: Alerts
     aux_battery: Auxiliary Sail
@@ -1003,6 +1004,7 @@ pirate:
       turn_off_signals: Hatches
       unlock_turn_on: Sail
     quick_controls: Swift Commands
+    quick_stats: Speedy Stats o' the Ship
     range_km: "%{range} leagues o' range"
     redis_commands: Sea Witch Commands
     request_telemetry: Request Crow's Nest Report
@@ -1046,6 +1048,7 @@ pirate:
     turn_signals: Signal Lanterns
     unlock_turn_on: Unfurl th' sails
     update_client: Update Ship's Compass
+    view_statistics: Read the Ship's Log
     waiting_for_telemetry: Waitin' fer signals from th' crow's nest
   support:
     array:

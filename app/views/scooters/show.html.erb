@@ -1,240 +1,295 @@
 <%= turbo_stream_from @scooter %>
 <div>
-  <div class="sm:flex sm:items-center">
-    <div class="sm:flex-auto">
-      <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= @scooter.name %></h1>
-      <p class="mt-2 text-sm text-gray-700"><%= t('scooters.details_and_controls') %></p>
-    </div>
-    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none flex flex-wrap gap-2">
-      <% if defined?(current_user) && current_user&.admin? %>
-        <%= link_to t('scooters.admin_shell'), admin_scooter_shell_path(@scooter), class: "btn-primary" %>
-      <% end %>
-      <% unless @waiting_for_telemetry %>
-        <%= link_to t('scooters.new_token'), 
-            show_token_management_scooter_path(@scooter),
-            turbo_method: :get,
-            class: "btn-primary",
-            data: { turbo_stream: true } %>
-        <% if defined?(current_user) && current_user&.feature_enabled?(FeatureFlag::STATISTICS) %>
-          <%= link_to t('scooters.statistics'), 
-              ride_statistics_scooter_statistics_path(@scooter),
-              class: "btn-primary" %>
-        <% end %>
-      <% end %>
-      <%= link_to t('scooters.edit'), edit_scooter_path(@scooter), class: "btn-secondary" %>
-      <%= link_to t('scooters.back'), scooters_path, class: "btn-secondary" %>
-    </div>
-  </div>
-
-  <%= render partial: "status", locals: { scooter: @scooter } %>
-  
-  <% if @waiting_for_telemetry && @scooter.api_token %>
-    <div class="rounded-md bg-yellow-50 p-4 mt-6">
-      <div class="flex">
-        <div class="flex-shrink-0">
-          <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12zm0-9a1 1 0 011 1v4a1 1 0 11-2 0V8a1 1 0 011-1z" clip-rule="evenodd" />
-          </svg>
-        </div>
-        <div class="ml-3">
-          <h3 class="text-sm font-medium text-yellow-800"><%= t('scooters.waiting_for_telemetry') %></h3>
-          <div class="mt-2 text-sm text-yellow-700">
-            <p><%= t('scooters.telemetry_instructions') %></p>
-            <ul class="mt-2 list-disc pl-5 space-y-1">
-              <li><%= t('scooters.config_setup') %></li>
-              <li><%= t('scooters.telemetry_running') %></li>
-              <li><%= t('scooters.internet_connection') %></li>
-            </ul>
-            <p class="mt-2"><%= t('scooters.download_config') %></p>
+  <!-- Scooter Header -->
+  <div class="mb-6">
+    <div class="sm:flex sm:items-center">
+      <div class="sm:flex-auto">
+        <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= @scooter.name %></h1>
+        <p class="mt-2 text-sm text-gray-700"><%= t('scooters.details_and_controls') %></p>
+      </div>
+      <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+        <div class="flex flex-wrap items-center justify-end gap-2">
+          <% if defined?(current_user) && current_user&.admin? %>
+            <%= link_to t('scooters.admin_view'), admin_scooter_path(@scooter), class: "btn-primary" %>
+          <% end %>
+          
+          <!-- Button group with overflow menu -->
+          <div class="relative" data-controller="dropdown">
+            <div class="flex space-x-2">
+              <%= link_to t('scooters.edit'), edit_scooter_path(@scooter), class: "btn-secondary" %>
+              <%= link_to t('scooters.back'), scooters_path, class: "btn-secondary" %>
+              
+              <button type="button" data-action="dropdown#toggle" class="btn-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                </svg>
+              </button>
+            </div>
+            
+            <div data-dropdown-target="menu" class="dropdown-menu hidden">
+              <div class="py-1">
+                <% unless @waiting_for_telemetry %>
+                  <%= link_to t('scooters.new_token'), 
+                      show_token_management_scooter_path(@scooter),
+                      turbo_method: :get,
+                      class: "dropdown-item",
+                      data: { turbo_stream: true } %>
+                <% end %>
+                <% if defined?(current_user) && current_user&.feature_enabled?(FeatureFlag::STATISTICS) && !@waiting_for_telemetry %>
+                  <%= link_to t('scooters.statistics'), 
+                      ride_statistics_scooter_statistics_path(@scooter),
+                      class: "dropdown-item" %>
+                <% end %>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  <% end %>
-
-  <div id="api_token_section">
-    <% if @waiting_for_telemetry || @show_token_section %>
-      <%= render "scooters/api_token", scooter: @scooter, token: @token %>
-    <% end %>
   </div>
 
-  <% if @scooter.is_online? && !@waiting_for_telemetry && @scooter.unlocked? %>
-    <div class="mt-8">
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4"><%= t('scooters.live_dashboard') %></h3>
-        <%= render partial: "scooters/dbc", locals: { scooter: @scooter } %>
-      </div>
-    </div>
-  <% end %>
-
-  <%= render partial: "command_queue_notice" unless @scooter&.is_online? %>
-  
-  <% if @scooter.location? %>
-    <div class="mt-8">
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4">
-          <%= t('scooters.last_known_position', lat: @scooter.location.lat, lng: @scooter.location.lng, time_ago: time_ago_in_words(@scooter.location.created_at)) %>
-        </h3>
-        <div id="map" class="h-96 w-full rounded-lg"></div>
-      </div>
-    </div>
-    
-    <%= content_for :head do %>
-      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-        crossorigin=""/>
-    <% end %>
-
-    <!-- Include Leaflet directly in the body to ensure it's loaded during Turbo navigation -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-      crossorigin=""></script>
-
-    <script>
-    // Define the map initialization function
-    function initMap() {
-      // Check if map container exists before initializing
-      const mapContainer = document.getElementById('map');
-      if (!mapContainer) {
-        console.log("Map container not found, skipping map initialization");
-        return;
-      }
-      
-      // Check if Leaflet is loaded
-      if (typeof L === 'undefined') {
-        console.log("Leaflet not loaded yet, retrying in 100ms");
-        setTimeout(initMap, 100);
-        return;
-      }
-      
-      // Check if map is already initialized
-      if (mapContainer._leaflet_id) {
-        console.log("Map already initialized");
-        return;
-      }
-      
-      console.log("Initializing map");
-      const map = L.map('map');
-      
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap contributors'
-      }).addTo(map);
-
-      const startMarker = L.marker([<%= @scooter.location.lat %>, <%= @scooter.location.lng %>])
-        .addTo(map)
-      map.setView([<%= @scooter.location.lat %>, <%= @scooter.location.lng %>], 15);
-    }
-    
-    // Initialize map after the page has fully loaded
-    document.addEventListener('DOMContentLoaded', function() {
-      // Wait a bit to ensure everything is loaded
-      setTimeout(initMap, 100);
-    });
-    
-    // Initialize map after Turbo navigation
-    document.addEventListener('turbo:render', function() {
-      // Wait a bit longer after Turbo navigation to ensure everything is loaded
-      setTimeout(initMap, 200);
-    });
-    </script>
-  <% end %>
-
-  <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Left Column: Scooter Info and Controls -->
     <div class="lg:col-span-2">
-      <%= render partial: "scooters/visual_status", locals: { scooter: @scooter } %>
+      <!-- Hidden original status partial for reference purposes -->
+      <div class="hidden">
+        <%= render partial: "status", locals: { scooter: @scooter } %>
+      </div>
+      
+      <% if @waiting_for_telemetry && @scooter.api_token %>
+        <div class="rounded-md bg-yellow-50 p-4 mb-6">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12zm0-9a1 1 0 011 1v4a1 1 0 11-2 0V8a1 1 0 011-1z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-yellow-800"><%= t('scooters.waiting_for_telemetry') %></h3>
+              <div class="mt-2 text-sm text-yellow-700">
+                <p><%= t('scooters.telemetry_instructions') %></p>
+                <ul class="mt-2 list-disc pl-5 space-y-1">
+                  <li><%= t('scooters.config_setup') %></li>
+                  <li><%= t('scooters.telemetry_running') %></li>
+                  <li><%= t('scooters.internet_connection') %></li>
+                </ul>
+                <p class="mt-2"><%= t('scooters.download_config') %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <div id="api_token_section">
+        <% if @waiting_for_telemetry || @show_token_section %>
+          <%= render "scooters/api_token", scooter: @scooter, token: @token %>
+        <% end %>
+      </div>
+
+      <!-- Visual Status Section -->
+      <div class="mb-6">
+        <%= render partial: "scooters/visual_status", locals: { scooter: @scooter } %>
+      </div>
+      
+      <% if !@scooter&.is_online? %>
+        <%= render partial: "command_queue_notice" %>
+      <% end %>
+      
+      <!-- Controls Section -->
+      <div class="mb-6">
+        <%= render partial: "controls", locals: { scooter: @scooter } %>
+      </div>
+      
+      <% if @scooter.is_online? && !@waiting_for_telemetry && @scooter.unlocked? %>
+        <div class="mb-6">
+          <div class="bg-white shadow-md rounded-lg p-6">
+            <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4"><%= t('scooters.live_dashboard') %></h3>
+            <%= render partial: "scooters/dbc", locals: { scooter: @scooter } %>
+          </div>
+        </div>
+      <% end %>
     </div>
 
-    <!-- Battery Status -->
-    <div class="flex flex-col h-full">
-      <div class="bg-white shadow-md rounded-lg p-6 flex-grow flex flex-col">
-        <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4"><%= t('scooters.battery_status') %></h3>
-        <div class="grid grid-cols-2 gap-4 flex-grow">
-          <!-- Main Battery -->
-          <div class="flex items-center space-x-4">
-            <%= image_tag @scooter.battery_image_path(@scooter.battery0_level), class: "w-12 h-12", alt: "Main Battery" %>
+    <!-- Right column: Quick Stats, Location Map and Recent Trips -->
+    <div class="lg:col-span-1">
+      <!-- Quick Stats Section -->
+      <div class="mb-6">
+        <div class="bg-white shadow-md rounded-lg p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('scooters.quick_stats') %></h3>
+            <% if defined?(current_user) && current_user&.feature_enabled?(FeatureFlag::STATISTICS) && !@waiting_for_telemetry %>
+              <%= link_to t('scooters.view_statistics'), 
+                  ride_statistics_scooter_statistics_path(@scooter),
+                  class: "text-sm text-indigo-600 hover:text-indigo-900" %>
+            <% end %>
+          </div>
+          
+          <!-- Essential Status Information -->
+          <div class="flex flex-wrap gap-4 mb-4">
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center rounded-md <%= @scooter.is_online? ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20' %> px-2 py-1 text-xs font-medium ring-1 ring-inset">
+                <%= @scooter.is_online? ? t('scooters.status.online') : t('scooters.status.offline') %>
+              </span>
+              
+              <span class="inline-flex items-center rounded-md <%= @scooter.unlocked? ? 'bg-green-50 text-green-700 ring-green-600/20' : 'bg-red-50 text-red-700 ring-red-600/20' %> px-2 py-1 text-xs font-medium ring-1 ring-inset">
+                <%= @scooter.state %>
+              </span>
+            </div>
+            
             <div>
-              <p class="text-sm font-medium text-gray-500"><%= t('scooters.main_battery') %></p>
-              <p class="text-lg font-semibold"><%= number_to_percentage(@scooter.battery0_level, precision: 1) %></p>
+              <% if @scooter.estimated_range %>
+                <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20">
+                  <%= t('scooters.status.range_km', range: @scooter.estimated_range) %>
+                </span>
+              <% end %>
             </div>
           </div>
-
-          <!-- Secondary Battery -->
-          <div class="flex items-center space-x-4">
-            <%= image_tag @scooter.battery_image_path(@scooter.battery1_level), class: "w-12 h-12", alt: "Secondary Battery" %>
-            <div>
-              <p class="text-sm font-medium text-gray-500"><%= t('scooters.secondary_battery') %></p>
-              <p class="text-lg font-semibold"><%= number_to_percentage(@scooter.battery1_level, precision: 1) %></p>
+          
+          <!-- Battery Status (Compact) -->
+          <div class="grid grid-cols-2 gap-3">
+            <!-- Main Battery -->
+            <div class="flex items-center space-x-2">
+              <%= image_tag @scooter.battery_image_path(@scooter.battery0_level), class: "w-8 h-8 transform scale-x-[-1]", alt: "Main Battery" %>
+              <div>
+                <p class="text-xs font-medium text-gray-500"><%= t('scooters.main_battery') %></p>
+                <p class="text-sm font-semibold"><%= number_to_percentage(@scooter.battery0_level, precision: 0) %></p>
+              </div>
             </div>
-          </div>
 
-          <!-- Aux Battery -->
-          <div class="flex items-center space-x-4">
-            <%= image_tag "battery/batt_aux.webp", class: "w-12 h-12", alt: "Aux Battery" %>
-            <div>
-              <p class="text-sm font-medium text-gray-500"><%= t('scooters.aux_battery') %></p>
-              <p class="text-lg font-semibold"><%= number_to_percentage(@scooter.aux_battery_level, precision: 1) %></p>
+            <!-- Secondary Battery -->
+            <div class="flex items-center space-x-2">
+              <%= image_tag @scooter.battery_image_path(@scooter.battery1_level), class: "w-8 h-8 transform scale-x-[-1]", alt: "Secondary Battery" %>
+              <div>
+                <p class="text-xs font-medium text-gray-500"><%= t('scooters.secondary_battery') %></p>
+                <p class="text-sm font-semibold"><%= number_to_percentage(@scooter.battery1_level, precision: 0) %></p>
+              </div>
             </div>
-          </div>
 
-          <!-- CB Battery -->
-          <div class="flex items-center space-x-4">
-            <%= image_tag "battery/batt_cbb.webp", class: "w-12 h-12", alt: "CB Battery" %>
-            <div>
-              <p class="text-sm font-medium text-gray-500"><%= t('scooters.cb_battery') %></p>
-              <p class="text-lg font-semibold"><%= number_to_percentage(@scooter.cbb_battery_level, precision: 1) %></p>
+            <!-- Aux Battery -->
+            <div class="flex items-center space-x-2">
+              <%= image_tag "battery/batt_aux.webp", class: "w-8 h-8 transform scale-x-[-1]", alt: "Aux Battery" %>
+              <div>
+                <p class="text-xs font-medium text-gray-500"><%= t('scooters.aux_battery') %></p>
+                <p class="text-sm font-semibold"><%= number_to_percentage(@scooter.aux_battery_level, precision: 0) %></p>
+              </div>
+            </div>
+
+            <!-- CB Battery -->
+            <div class="flex items-center space-x-2">
+              <%= image_tag "battery/batt_cbb.webp", class: "w-8 h-8 transform scale-x-[-1]", alt: "CB Battery" %>
+              <div>
+                <p class="text-xs font-medium text-gray-500"><%= t('scooters.cb_battery') %></p>
+                <p class="text-sm font-semibold"><%= number_to_percentage(@scooter.cbb_battery_level, precision: 0) %></p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Controls -->
-    <div class="lg:col-span-3 mb-6">
-      <%= render partial: "controls", locals: { scooter: @scooter } %>
-    </div>
-
-    <!-- Recent Trips -->
-    <div class="lg:col-span-3">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('dashboard.recent_trips') %></h3>
-        <%= link_to t('dashboard.view_all'), trips_path(scooter_id: @scooter.id), class: "text-sm text-indigo-600 hover:text-indigo-900 font-medium" %>
-      </div>
       
-      <div class="flow-root">
-        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <div class="overflow-hidden shadow ring-1 ring-black/5 sm:rounded-lg">
-              <table class="min-w-full divide-y divide-gray-300">
-          <thead class="bg-gray-50">
-            <tr>
-              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900"><%= t('dashboard.date') %></th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('dashboard.duration') %></th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('dashboard.distance') %></th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><%= t('dashboard.status') %></th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
-            <% @trips.each do |trip| %>
-              <tr>
-                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-900">
-                  <%= link_to l(trip.started_at, format: :date_time), 
-                      trip_path(trip), class: "text-indigo-600 hover:text-indigo-900" %>
-                </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <%= format_trip_duration(trip) %>
-                </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <%= format_trip_distance(trip) %>
-                </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <%= trip_status_badge(trip) %>
-                </td>
-              </tr>
+      <!-- Location Map Section -->
+      <% if @scooter.location? %>
+        <div class="mb-6">
+          <div class="bg-white shadow-md rounded-lg p-6">
+            <h3 class="text-base font-semibold leading-6 text-gray-900 mb-4">
+              <%= t('scooters.last_known_position', lat: @scooter.location.lat, lng: @scooter.location.lng, time_ago: time_ago_in_words(@scooter.location.created_at)) %>
+            </h3>
+            <div id="map" class="h-64 w-full rounded-lg"></div>
+          </div>
+        </div>
+        
+        <%= content_for :head do %>
+          <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin=""/>
+        <% end %>
+
+        <!-- Include Leaflet directly in the body to ensure it's loaded during Turbo navigation -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+          crossorigin=""></script>
+
+        <script>
+        // Define the map initialization function
+        function initMap() {
+          // Check if map container exists before initializing
+          const mapContainer = document.getElementById('map');
+          if (!mapContainer) {
+            console.log("Map container not found, skipping map initialization");
+            return;
+          }
+          
+          // Check if Leaflet is loaded
+          if (typeof L === 'undefined') {
+            console.log("Leaflet not loaded yet, retrying in 100ms");
+            setTimeout(initMap, 100);
+            return;
+          }
+          
+          // Check if map is already initialized
+          if (mapContainer._leaflet_id) {
+            console.log("Map already initialized");
+            return;
+          }
+          
+          console.log("Initializing map");
+          const map = L.map('map');
+          
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+          }).addTo(map);
+
+          const startMarker = L.marker([<%= @scooter.location.lat %>, <%= @scooter.location.lng %>])
+            .addTo(map)
+          map.setView([<%= @scooter.location.lat %>, <%= @scooter.location.lng %>], 15);
+        }
+        
+        // Initialize map after the page has fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+          // Wait a bit to ensure everything is loaded
+          setTimeout(initMap, 100);
+        });
+        
+        // Initialize map after Turbo navigation
+        document.addEventListener('turbo:render', function() {
+          // Wait a bit longer after Turbo navigation to ensure everything is loaded
+          setTimeout(initMap, 200);
+        });
+        </script>
+      <% end %>
+
+      <!-- Recent Trips Section (Limited to 5) -->
+      <div class="mb-6">
+        <div class="bg-white shadow-md rounded-lg p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-base font-semibold leading-6 text-gray-900"><%= t('dashboard.recent_trips') %></h3>
+            <%= link_to t('dashboard.view_all'), trips_path(scooter_id: @scooter.id), class: "text-sm text-indigo-600 hover:text-indigo-900 font-medium" %>
+          </div>
+          
+          <!-- Trip Cards instead of Table -->
+          <div class="space-y-4">
+            <% @trips.first(5).each do |trip| %>
+              <%= link_to trip_path(trip), class: "block" do %>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+                  <div class="flex justify-between">
+                    <span class="text-sm font-medium text-gray-900">
+                      <%= l(trip.started_at, format: :date_time) %>
+                    </span>
+                    <span class="text-sm font-normal">
+                      <%= format_trip_distance(trip) %>
+                    </span>
+                  </div>
+                  <div class="mt-1 flex justify-between items-center">
+                    <span class="text-xs text-gray-500">
+                      <%= format_trip_duration(trip) %>
+                    </span>
+                    <span>
+                      <%= trip_status_badge(trip) %>
+                    </span>
+                  </div>
+                </div>
+              <% end %>
             <% end %>
-              </tbody>
-            </table>
-            </div>
           </div>
         </div>
       </div>
