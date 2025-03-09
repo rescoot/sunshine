@@ -1,3 +1,7 @@
+<% @scooters.each do |scooter| %>
+  <%= turbo_stream_from scooter %>
+<% end %>
+
 <div class="sm:flex sm:items-center mb-8">
   <div class="sm:flex-auto">
     <h1 class="text-2xl font-semibold leading-6 text-gray-900"><%= t('scooters.my_scooters') %></h1>
