@@ -1,6 +1,6 @@
 <% if current_user.feature_enabled?(FeatureFlag::ACHIEVEMENTS) && @recent_achievements.any? %>
   <div class="mt-8">
-    <div class="sm:flex sm:items-center">
+    <div class="flex flex-col sm:flex-row sm:items-center">
       <div class="sm:flex-auto">
         <h2 class="text-lg font-medium text-gray-900">Recent Achievements</h2>
       </div>
@@ -17,7 +17,15 @@
     </div>
     
     <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <% @recent_achievements.each do |user_achievement| %>
+      <%# For mobile devices, only show the first 2 achievements %>
+      <% displayed_achievements = @recent_achievements %>
+      <% is_mobile_device = true if request.user_agent =~ /Mobile|webOS/ %>
+      
+      <% if is_mobile_device %>
+        <% displayed_achievements = @recent_achievements.first(2) %>
+      <% end %>
+      
+      <% displayed_achievements.each do |user_achievement| %>
         <% achievement = user_achievement.achievement_definition %>
         <div class="achievement-card achievement-card-earned">
           <div class="achievement-icon">
@@ -35,6 +43,12 @@
               Earned <%= time_ago_in_words(user_achievement.earned_at) %> ago
             </div>
           </div>
+        </div>
+      <% end %>
+      
+      <% if is_mobile_device && @recent_achievements.size > 2 %>
+        <div class="text-center col-span-1 pt-2">
+          <%= link_to "See #{@recent_achievements.size - 2} more...", achievements_path, class: "text-indigo-600" %>
         </div>
       <% end %>
     </div>

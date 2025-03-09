@@ -1,6 +1,6 @@
 <div class="mt-8">
   <h2 class="text-base font-medium text-gray-900"><%= t('dashboard.trip_stats') %></h2>
-  <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+  <dl class="mt-5 grid grid-cols-2 gap-5 sm:grid-cols-2 lg:grid-cols-4">
     <%= render partial: "application/stat_card", locals: {
       icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />',
       title: t('dashboard.total_trips'),

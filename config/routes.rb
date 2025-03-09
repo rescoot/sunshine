@@ -99,6 +99,7 @@ Rails.application.routes.draw do
 
   resource :account, only: [ :show, :edit, :update, :destroy ] do
     resources :api_tokens, only: [ :new, :create, :destroy ], controller: "accounts/api_tokens"
+    patch "update_landing_page", on: :collection
   end
 
   # User profiles

@@ -1,0 +1,33 @@
+<div class="bg-white shadow rounded-lg mb-6 p-6 border border-gray-200">
+  <div class="mb-4">
+    <h2 class="text-lg font-semibold flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      </svg>
+      Default Landing Page
+    </h2>
+    <p class="text-sm text-gray-600 mt-1">
+      Choose which page you'd like to see first after logging in.
+    </p>
+  </div>
+
+  <% current_selection = @user_preference.default_landing_page || "dashboard" %>
+  
+  <%= form_with(model: @user_preference, url: update_landing_page_account_path, method: :patch) do |form| %>
+    <div class="space-y-3">
+      <% UserPreference::LANDING_PAGE_OPTIONS.each do |value, label| %>
+        <div class="flex items-center">
+          <%= form.radio_button :default_landing_page, value, 
+              id: "landing_page_#{value}", 
+              checked: (value == current_selection),
+              class: "h-4 w-4 text-indigo-600 border-gray-300 focus:ring-indigo-500" %>
+          <%= form.label "default_landing_page_#{value}", label, class: "ml-3 block text-sm font-medium text-gray-700" %>
+        </div>
+      <% end %>
+    </div>
+    
+    <div class="mt-4">
+      <%= form.submit "Update Landing Page", class: "inline-flex items-center btn-primary" %>
+    </div>
+  <% end %>
+</div>

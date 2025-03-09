@@ -1,0 +1,46 @@
+<% if @scooters.any? %>
+  <div class="mt-5 mb-8">
+    <div class="flex items-center justify-between">
+      <h2 class="text-lg font-medium text-gray-900">Your Scooters</h2>
+      <div class="text-right">
+        <%= link_to "View All", scooters_path, class: "text-sm text-indigo-600 hover:text-indigo-800" %>
+      </div>
+    </div>
+    
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <% @scooters.each do |scooter| %>
+        <%= link_to scooter_path(scooter), class: "block" do %>
+          <div class="bg-white rounded-lg shadow p-3 hover:shadow-md transition-shadow duration-200">
+            <div class="flex items-center">
+              <div class="w-1/3 flex-shrink-0 mr-3">
+                <%= image_tag scooter.scooter_image_path("side"), class: "w-full object-contain" %>
+              </div>
+              <div class="w-2/3 flex-grow">
+                <div class="flex items-center">
+                  <h3 class="text-sm font-medium truncate">
+                    <%= scooter.name %>
+                  </h3>
+                  <span class="ml-1 inline-block w-2 h-2 rounded-full <%= scooter.is_online? ? 'bg-green-500' : 'bg-red-500' %>"></span>
+                </div>
+                <div class="text-xs text-gray-600 mt-1">
+                  <span class="badge badge-sm <%= scooter.state&.include?('drive') ? 'badge-success' : 'badge-info' %>">
+                    <%= scooter.state&.titleize || 'Unknown' %>
+                  </span>
+                </div>
+                <div class="text-xs text-gray-500 mt-1">
+                  <% if scooter.battery0_present %>
+                    <%= number_to_percentage(scooter.battery0_level, precision: 0) %> battery
+                    <% estimated_range = (scooter.battery0_level.to_f * 0.5).round %> 
+                    <span class="text-gray-400">~<%= estimated_range %> km range</span>
+                  <% else %>
+                    No battery
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

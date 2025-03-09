@@ -1,0 +1,37 @@
+<div class="bg-white shadow rounded-lg mb-6 p-6 border border-gray-200">
+    <div class="mb-4">
+      <h2 class="text-lg font-semibold flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+        </svg>
+        API Tokens
+      </h2>
+      <p class="text-sm text-gray-600 mt-1 mb-4">
+        Create and manage API tokens to access your account programmatically.
+      </p>
+      
+      <div class="mb-4">
+        <%= turbo_frame_tag "new_token_form" do %>
+          <%= link_to "Generate New Token", new_account_api_token_path,
+              class: "inline-flex items-center btn-primary green",
+              data: { turbo_frame: "new_token_form" } %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if flash[:api_token].present? %>
+      <%= render partial: "accounts/token_flash", locals: { token: flash[:api_token] } %>
+    <% end %>
+
+    <div id="api_tokens_list">
+      <% if @api_tokens.any? %>
+        <div id="tokens_table" class="mt-4">
+          <%= render "token_list", api_tokens: @api_tokens %>
+        </div>
+      <% else %>
+        <div class="text-center py-4 text-gray-500 italic">
+          No API tokens yet. Generate one to get started.
+        </div>
+      <% end %>
+    </div>
+  </div>

@@ -19,7 +19,7 @@
         <%= icon.html_safe %>
       </svg>
     </div>
-    <p class="ml-12 truncate text-sm font-medium text-gray-500">
+    <p class="ml-12 truncate text-xs sm:text-sm font-medium text-gray-500">
       <% if defined?(link_path) && link_path.present? %>
         <%= link_to link_text, link_path, class: "text-indigo-600 hover:text-indigo-900" %>
       <% else %>

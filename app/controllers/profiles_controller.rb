@@ -39,6 +39,12 @@ class ProfilesController < ApplicationController
   private
 
   def user_preference_params
-    params.require(:user_preference).permit(:public_profile, :leaderboard_opt_in, :leaderboard_display_name, :receive_achievement_notifications)
+    params.require(:user_preference).permit(
+      :public_profile,
+      :leaderboard_opt_in,
+      :leaderboard_display_name,
+      :receive_achievement_notifications,
+      :default_landing_page
+    )
   end
 end

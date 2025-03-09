@@ -8,9 +8,11 @@
 <% if @scooters.none? %>
   <%= render "onboarding" %>
 <% elsif @recent_trips.none? %>
+  <%= render "scooter_tiles" %>
   <%= render "waiting_for_trips" %>
   <%= render "recent_achievements" %>
 <% else %>
+  <%= render "scooter_tiles" %>
   <%= render "trip_stats" %>
   <%= render "recent_achievements" %>
   <%= render "recent_trips" %>

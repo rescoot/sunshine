@@ -7,6 +7,14 @@ class UserPreference < ApplicationRecord
   attribute :leaderboard_display_name, :string
   attribute :receive_achievement_notifications, :boolean, default: true
   attribute :notification_settings, :json, default: {}
+  attribute :default_landing_page, :string, default: "dashboard"
+
+  # Available landing page options
+  LANDING_PAGE_OPTIONS = [
+    [ "dashboard", "Dashboard" ],
+    [ "scooters", "Scooters List" ],
+    [ "last_used_scooter", "Most Recently Used Scooter" ]
+  ]
 
   validates :leaderboard_display_name, presence: true, if: -> { public_profile }
   validates :public_profile, inclusion: { in: [ true ] }, if: -> { leaderboard_opt_in }

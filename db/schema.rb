@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_04_135403) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_08_212916) do
   create_table "achievement_definitions", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
@@ -447,6 +447,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_04_135403) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "public_profile", default: false
+    t.string "default_landing_page", default: "dashboard"
     t.index ["user_id", "leaderboard_opt_in"], name: "index_user_preferences_on_user_id_and_leaderboard_opt_in"
     t.index ["user_id"], name: "index_user_preferences_on_user_id"
   end
@@ -463,38 +464,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_04_135403) do
     t.index ["user_id"], name: "index_user_scooters_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.string "telegram_chat_id"
-    t.boolean "is_admin", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
-    t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string "unconfirmed_email"
-    t.string "otp_auth_secret"
-    t.string "otp_recovery_secret"
-    t.boolean "otp_enabled", default: false, null: false
-    t.boolean "otp_mandatory", default: false, null: false
-    t.datetime "otp_enabled_on"
-    t.integer "otp_failed_attempts", default: 0, null: false
-    t.integer "otp_recovery_counter", default: 0, null: false
-    t.string "otp_persistence_seed"
-    t.string "otp_session_challenge"
-    t.datetime "otp_challenge_expires"
-    t.string "locale"
-    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["otp_challenge_expires"], name: "index_users_on_otp_challenge_expires"
-    t.index ["otp_session_challenge"], name: "index_users_on_otp_session_challenge", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-  end
+# Could not dump table "users" because of following StandardError
+#   Unknown type 'string' for column 'locale'
+
 
   create_table "vin_lookups", force: :cascade do |t|
     t.string "vin", null: false

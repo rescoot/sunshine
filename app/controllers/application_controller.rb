@@ -61,7 +61,30 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    stored_location_for(resource) || dashboard_path
+    # Check if there's a stored location from Devise (i.e., user was redirected to login)
+    stored_location = stored_location_for(resource)
+    return stored_location if stored_location.present?
+
+    # If the user has a preference for landing page, use it
+    if resource.user_preference&.default_landing_page.present?
+      case resource.user_preference.default_landing_page
+      when "dashboard"
+        dashboard_path
+      when "scooters"
+        scooters_path
+      when "last_used_scooter"
+        # Find the user's most recently used scooter
+        last_scooter = resource.scooters.joins(:trips)
+                              .order("trips.started_at DESC")
+                              .first
+        last_scooter.present? ? scooter_path(last_scooter) : dashboard_path
+      else
+        dashboard_path
+      end
+    else
+      # Default to dashboard if no preference is set
+      dashboard_path
+    end
   end
 
   def after_sign_out_path_for(_scope)

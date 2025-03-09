@@ -7,16 +7,6 @@
   </div>
 
   <div class="bg-white shadow rounded-lg mb-6 p-6 border border-gray-200">
-    <% if flash[:notice] %>
-      <div class="mb-4 p-4 bg-green-100 text-green-800 rounded">
-        <%= flash[:notice] %>
-      </div>
-    <% end %>
-    <% if flash[:alert] %>
-      <div class="mb-4 p-4 bg-red-100 text-red-800 rounded">
-        <%= flash[:alert] %>
-      </div>
-    <% end %>
     <div class="flex items-center mb-6">
       <div class="flex-shrink-0">
         <% if current_user.avatar.attached? %>
@@ -33,95 +23,16 @@
       </div>
     </div>
     
+    
     <div class="flex space-x-4 mt-4">
       <%= link_to 'Edit Account', edit_account_path, class: 'inline-flex items-center btn-primary' %>
       <%= button_to 'Delete Account', account_path, method: :delete, class: 'inline-flex items-center btn-primary red', form: { data: { turbo_confirm: 'Are you sure? This cannot be undone.' } } %>
     </div>
   </div>
 
-  <div class="bg-white shadow rounded-lg mb-6 p-6 border border-gray-200">
-    <div class="mb-4">
-      <h2 class="text-lg font-semibold flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-        </svg>
-        API Tokens
-      </h2>
-      <p class="text-sm text-gray-600 mt-1 mb-4">
-        Create and manage API tokens to access your account programmatically.
-      </p>
-      
-      <div class="mb-4">
-        <%= turbo_frame_tag "new_token_form" do %>
-          <%= link_to "Generate New Token", new_account_api_token_path,
-              class: "inline-flex items-center btn-primary green",
-              data: { turbo_frame: "new_token_form" } %>
-        <% end %>
-      </div>
-    </div>
+  <%= render partial: "landing_page_card" %>
 
-    <% if flash[:api_token].present? %>
-      <%= render partial: "accounts/token_flash", locals: { token: flash[:api_token] } %>
-    <% end %>
-
-    <div id="api_tokens_list">
-      <% if @api_tokens.any? %>
-        <div id="tokens_table" class="mt-4">
-          <%= render "token_list", api_tokens: @api_tokens %>
-        </div>
-      <% else %>
-        <div class="text-center py-4 text-gray-500 italic">
-          No API tokens yet. Generate one to get started.
-        </div>
-      <% end %>
-    </div>
-
-  </div>
-
-  <div class="bg-white shadow rounded-lg p-6 border border-gray-200">
-    <div class="mb-4">
-      <h2 class="text-lg font-semibold flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-        </svg>
-        Two-Factor Authentication
-      </h2>
-      <p class="text-sm text-gray-600 mt-1">
-        Two-factor authentication adds an extra layer of security to your account by requiring a verification code from your phone in addition to your password.
-      </p>
-    </div>
-
-    <div class="mt-4">
-      <% if current_user.otp_enabled? %>
-        <div class="flex items-center mb-4">
-          <div class="flex-shrink-0 h-10 w-10 bg-green-100 rounded-full flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-          <div class="ml-4">
-            <h3 class="text-md font-medium text-gray-900">Two-factor authentication is enabled</h3>
-            <p class="text-sm text-gray-500">Your account is protected with two-factor authentication.</p>
-          </div>
-        </div>
-        
-        <%= link_to "Disable Two-Factor Authentication", confirm_disable_two_factor_auth_path, 
-            class: "inline-flex items-center btn-primary red" %>
-      <% else %>
-        <div class="flex items-center mb-4">
-          <div class="flex-shrink-0 h-10 w-10 bg-yellow-100 rounded-full flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-          </div>
-          <div class="ml-4">
-            <h3 class="text-md font-medium text-gray-900">Two-factor authentication is not enabled</h3>
-            <p class="text-sm text-gray-500">Add an extra layer of security to your account.</p>
-          </div>
-        </div>
-        
-        <%= link_to "Enable Two-Factor Authentication", new_two_factor_auth_path, class: "inline-flex items-center btn-primary green" %>
-      <% end %>
-    </div>
-  </div>
+  <%= render partial: "2fa_card" %>
+  
+  <%= render partial: "api_tokens_card" %>
 </div>
