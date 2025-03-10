@@ -41,7 +41,7 @@ bundle install
 
 3. Set up the database:
 ```bash
-rails db:create db:migrate
+./bin/rails db:create db:migrate
 ```
 
 4. Start Redis:
