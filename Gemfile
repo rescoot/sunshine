@@ -69,7 +69,7 @@ gem "google-protobuf", "~> 3.25"
 
 gem "tailwindcss-ruby", "~> 4.0"
 
-gem "rubocop", "~> 1.71"
+gem "rubocop", "~> 1.74"
 
 # Two-factor authentication for Devise
 gem "devise-otp", "~> 1.0.0"
