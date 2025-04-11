@@ -1,6 +1,6 @@
 # Sunshine ☀️
 
-Sunshine is an open source Rails application for managing unu/librescoot electric scooters. It provides a web interface and API for monitoring telemetry data, tracking trips, and controlling scooter functionality.
+Sunshine is a source-available Rails application for managing unu/librescoot electric scooters. It provides a web interface and API for monitoring telemetry data, tracking trips, and controlling scooter functionality.
 
 ## Sponsorship
 
