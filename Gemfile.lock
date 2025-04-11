@@ -459,7 +459,7 @@ DEPENDENCIES
   propshaft
   protobuf (~> 3.10)
   puma (>= 5.0)
-  rails (~> 8.0.1)
+  rails (~> 8.0.2)
   redis (~> 5.3)
   rubocop (~> 1.71)
   rubocop-rails-omakase
