@@ -211,4 +211,10 @@ See `config/achievements/README.md` for more details on the achievement format a
 
 ## License
 
-This project is licensed under the GNU Affero General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the Elastic License v2.0. In short, this means you cannot:
+
+- provide the software to others as a hosted or managed service
+- alter or remove copyright or licensing info
+
+See the [LICENSE](LICENSE) file for details.
+If you want to offer Sunshine as a commercial service, contact us to discuss commercial licensing options.
