@@ -216,5 +216,5 @@ This project is licensed under the Elastic License v2.0. In short, this means yo
 - provide the software to others as a hosted or managed service
 - alter or remove copyright or licensing info
 
-See the [LICENSE](LICENSE) file for details.
+See the [LICENSE.md](LICENSE.md) file for details.
 If you want to offer Sunshine as a commercial service, contact us to discuss commercial licensing options.
