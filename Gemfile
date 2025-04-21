@@ -67,7 +67,7 @@ gem "protobuf", "~> 3.10"
 
 gem "google-protobuf", "~> 3.25"
 
-gem "tailwindcss-ruby", "~> 4.0"
+gem "tailwindcss-ruby", "~> 4.1"
 
 gem "rubocop", "~> 1.71"
 
