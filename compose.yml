@@ -1,20 +1,26 @@
 services:
-  # sunshine:
-  #   build: .
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - .:/app
-  #     - bundle_cache:/usr/local/bundle
-  #   environment:
-  #     - RAILS_ENV=development
-  #     - RAILS_MAX_THREADS=5
-  #     - MQTT_HOST=mqtt
-  #     - MQTT_PORT=1883
-  #     - MQTT_USER=sunshine
-  #     - MQTT_PASSWORD=development
-  #   depends_on:
-  #     - mqtt
+  sunshine:
+    build: .
+    ports:
+      - "3000:80"
+    volumes:
+      - sunshine_storage:/rails/storage
+      - sunshine_log:/rails/log
+      - sunshine_tmp:/rails/tmp
+    environment:
+      - RAILS_ENV=production
+      - RAILS_MAX_THREADS=5
+      - RAILS_LOG_TO_STDOUT=true
+      - MQTT_HOST=mqtt
+      - MQTT_PORT=1883
+      - MQTT_USER=sunshine
+      - MQTT_PASSWORD=development
+      - REDIS_URL=redis://redis:6379/1
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE:-$(openssl rand -hex 64)}
+      - SOLID_QUEUE_POLLING_INTERVAL=1
+    depends_on:
+      - mqtt
+      - redis
 
   # radio-gaga:
   #   build:
@@ -39,9 +45,8 @@ services:
       - "1883:1883"
       - "9001:9001"
     volumes:
-      - ./config/mosquitto.conf:/mosquitto/config/mosquitto.conf
-      - ./config/mosquitto/passwd:/mosquitto/config/passwd
-      - ./config/mosquitto/acl:/mosquitto/config/acl
+      - ./config/mosquitto:/mosquitto/config/
+      - ./config/mqtt_certs:/mosquitto/certs/
       - mqtt_data:/mosquitto/data
       - mqtt_log:/mosquitto/log
 
@@ -53,7 +58,9 @@ services:
       - redis_data:/data
 
 volumes:
-  bundle_cache:
+  sunshine_storage:
+  sunshine_log:
+  sunshine_tmp:
   redis_data:
   mqtt_data:
   mqtt_log:
