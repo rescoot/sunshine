@@ -27,7 +27,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
           </button>
-          <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black/5 z-50">
+          <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black/5 z-1100">
             <%= link_to t('navigation.vin_decoder'), vin_decoder_path, class: "block px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100 #{current_page?(vin_decoder_path) ? 'bg-gray-100' : ''}" %>
           </div>
         </div>
@@ -54,7 +54,7 @@
               </div>
               <svg data-dropdown-target="chevron" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
-            <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black/5 z-50">
+            <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black/5 z-1100">
               <%= link_to t('navigation.profile'), profile_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-md #{current_page?(profile_path) ? 'bg-gray-100' : ''}" %>
               <%= link_to t('navigation.account_settings'), account_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 #{current_page?(account_path) ? 'bg-gray-100' : ''}" %>
 
@@ -92,7 +92,7 @@
           </svg>
         </button>
 
-        <div data-mobile-menu-target="menu" class="hidden absolute left-0 right-0 top-16 bg-indigo-950 shadow-lg z-50">
+        <div data-mobile-menu-target="menu" class="hidden absolute left-0 right-0 top-16 bg-indigo-950 shadow-lg z-1100">
           <div class="px-2 pt-2 pb-3 space-y-1">
             <% if user_signed_in? %>
               <%= link_to t('navigation.dashboard'), dashboard_path, class: "nav-link-mobile #{current_page?(dashboard_path) ? 'nav-link-active' : ''}" %>
@@ -197,7 +197,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                 </svg>
               </button>
-              <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black/5 z-50">
+              <div data-dropdown-target="menu" class="hidden absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black/5 z-1100">
                 <%= link_to t('navigation.radio_gaga'), admin_telemetries_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md #{current_page?(admin_telemetries_path) ? 'bg-gray-100' : ''}" %>
                 <%= link_to t('navigation.unu_uplink'), admin_unu_uplink_requests_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md #{current_page?(admin_unu_uplink_requests_path) ? 'bg-gray-100' : ''}" %>
               </div>
@@ -216,7 +216,7 @@
               </svg>
             </button>
 
-            <div data-admin-navbar-target="mobileMenu" class="hidden absolute left-0 right-0 top-32 bg-teal-950 shadow-lg z-50">
+            <div data-admin-navbar-target="mobileMenu" class="hidden absolute left-0 right-0 top-32 bg-teal-950 shadow-lg z-1100">
               <div class="px-2 pt-2 pb-3 space-y-1">
                 <%= link_to t('navigation.dashboard'), admin_root_path, class: "nav-link-mobile-admin #{current_page?(admin_root_path) ? 'nav-link-admin-active' : ''}" %>
                 <%= link_to t('navigation.users'), admin_users_path, class: "nav-link-mobile-admin #{current_page?(admin_users_path) ? 'nav-link-admin-active' : ''}" %>
