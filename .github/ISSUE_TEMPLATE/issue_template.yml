@@ -1,0 +1,69 @@
+name: Issue Report
+description: File a bug report, feature request, or question
+title: "Brief description of the issue"
+labels: []
+body:
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Issue Type
+      description: What type of issue is this?
+      options:
+        - Bug Report
+        - Feature Request
+        - Question
+        - Documentation
+      default: 0
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: labels
+    attributes:
+      label: Applicable Labels
+      description: Select all labels that apply to this issue
+      options:
+        - label: "bug - Something isn't working"
+        - label: "enhancement - New feature or request"
+        - label: "question - Further information is requested"
+        - label: "documentation - Improvements or additions to documentation"
+        - label: "good first issue - Good for newcomers"
+        - label: "help wanted - Extra attention is needed"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Provide a clear description of the issue or feature request
+      placeholder: Describe the issue or feature in detail...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce (for bugs)
+      description: If this is a bug, how can we reproduce it?
+      placeholder: |
+        1. Open the tool
+        2. Click on '...'
+        3. See error
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Screenshots, error messages, or other helpful information
+      placeholder: Any additional information that might be helpful...
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: "I have searched existing issues to avoid duplicates"
+          required: true
