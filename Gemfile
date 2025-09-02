@@ -43,7 +43,7 @@ gem "telegram-bot-ruby", "~> 2.2"
 
 gem "active_model_serializers", "~> 0.10.15"
 
-gem "connection_pool", "~> 2.4"
+gem "connection_pool", "~> 2.5"
 
 gem "kaminari", "~> 1.2"
 
